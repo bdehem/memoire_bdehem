@@ -53,14 +53,14 @@ PathPlanning::~PathPlanning()
 // Function to reset the desired pose sent to the controller
 void PathPlanning::reset()
 {
-  double next_z = 1.0;
+  height_of_flight = 1.5;
   gridInitialized = false;
 
   // XMax and YMax are the half of the distance between the horizontal and vertical border lines of
   // the vision of the drone. Those values come from bottom camera data and 0.8 is used as a
   // security factor in the case of the drone is not well oriented.
-  XMax = next_z * 0.435 * 0.8 * 0.5;
-  YMax = next_z * 0.326 * 0.8 * 0.5;
+  XMax = height_of_flight * 0.435 * 0.8 * 0.5;
+  YMax = height_of_flight * 0.326 * 0.8 * 0.5;
 }
 
 // This function publish the position where the drone has to get. It is used as pose_ref in the
@@ -131,10 +131,36 @@ void PathPlanning::InitializeGrid()
 // !! abscisse = I and ordoonee = J
 void PathPlanning::GetFieldOfView(double x, double y, int* iMin, int* iMax, int* jMin, int* jMax)
 {
-  ROS_INFO("======================================Getting FOV================================================");
   XYToCell(x+XMax,y+YMax,iMax,jMax);
   XYToCell(x-XMax,y-YMax,iMin,jMin);
-  ROS_INFO("========================================Got FOV==================================================");
+  int idrone;
+  int jdrone;
+  XYToCell(x,y,&idrone,&jdrone);
+//  std::string str = "\n";
+//  for (int i = -10; i< 20;i++)
+//  {
+//    for (int j = -10 ; j<20 ; j++)
+//    {
+//      if (i==idrone    && j==jdrone)
+//      {
+//        str.append("D");
+//      }
+//      else if (*iMin <= i && i <= *iMax && *jMin <= j && j <= *jMax)
+//      {
+//        str.append("+");
+//      }
+//      else if (i<0 || i>9 || j<0 || j > 9)
+//      {
+//        str.append(" ");
+//      }
+//      else
+//      {
+//        str.append(".");
+//      }
+//    }
+//    str.append("\n");
+//  }
+//  std::cout << str << '\n';
 }
 
 // This function transforms i and j coordinates to x and y position in the real playground.
@@ -144,34 +170,28 @@ void PathPlanning::CellToXY(int i, int j, double* x, double* y)
   *y = grid_origin_y + (double)(j * (SIDE/10.0));
 }
 
+void PathPlanning::XYToCell(double x, double y, int* i, int* j)
+{
+  *i = ((x - grid_origin_x) / (SIDE/10.0));
+  *j = ((y - grid_origin_y) / (SIDE/10.0));
+}
+
 //void PathPlanning::XYToCell(double x, double y, int* i, int* j)
 //{
 //  ROS_INFO("start XYToCell:x,y = %f, %f",x,y);
-//  *i = (int)((x - grid_origin_x) / (SIDE/10.0));
-//  *j = (int)((y - grid_origin_y) / (SIDE/10.0));
+//  double xrel = x - grid_origin_x;
+//  double yrel = y - grid_origin_y;
+//  ROS_INFO("xrel,yrel = %f, %f",xrel,yrel);
+//  double di = xrel / (SIDE/10.0);
+//  double dj = yrel / (SIDE/10.0);
+//  ROS_INFO("di,dj = %f, %f",di,dj);
+//  int ii = di;
+//  int jj = dj;
+//  ROS_INFO("ii,jj = %d, %d",ii,jj);
+//  *i = ii;
+//  *j = jj;
 //  ROS_INFO("end XYToCell:i,j = %d, %d",*i,*j);
 //}
-
-void PathPlanning::XYToCell(double x, double y, int* i, int* j)
-{
-  ROS_INFO("start XYToCell:x,y = %f, %f",x,y);
-  double xrel = x - grid_origin_x;
-  double yrel = y - grid_origin_y;
-  ROS_INFO("xrel,yrel = %f, %f",xrel,yrel);
-  double di = xrel / (SIDE/10.0);
-  double dj = yrel / (SIDE/10.0);
-  ROS_INFO("di,dj = %f, %f",di,dj);
-  int ii = di;
-  int jj = dj;
-  ROS_INFO("ii,jj = %d, %d",ii,jj);
-  int* pi = &ii;
-  int* pj = &jj;
-  ROS_INFO("pi,pj = %p, %p",pi,pj);
-  ROS_INFO("*pi,*pj = %d, %d",*pi,*pj);
-  i = pi;
-  j = pj;
-  ROS_INFO("end XYToCell:i,j = %d, %d",*i,*j);
-}
 
 int PathPlanning::inGrid(int i)
 {
@@ -189,13 +209,14 @@ void PathPlanning::UpdateMap(double x, double y)
   int iMax;
   int jMax;
   GetFieldOfView(x, y, &iMin, &iMax, &jMin, &jMax);
-  for (int i = inGrid(iMin); i < inGrid(iMax); i++)
+
+  for (int i = inGrid(iMin); i <= inGrid(iMax); i++)
   {
-    for (int j = inGrid(jMin); j < inGrid(jMax); j++)
+    for (int j = inGrid(jMin); j <= inGrid(jMax); j++)
     {
       if (myGrid[i][j] != EXPLORED)
       {
-        if (i == iMin || i == iMax - 1 || j == jMin || j == jMax - 1)
+        if (i == iMin || i == iMax || j == jMin || j == jMax )
         {
           myGrid[i][j] = BORDER;
         }
@@ -207,8 +228,16 @@ void PathPlanning::UpdateMap(double x, double y)
       }
     }
   }
-  ROS_INFO_THROTTLE(3,"Map updated. Explored %d/%d cells",nExploredCell,gridSize);
-  ROS_INFO_THROTTLE(3,"current FOV: i=%d-%d; j=%d-%d",iMin,iMax,jMin,jMax);
+//  ROS_INFO_THROTTLE(3,"Map updated. Explored %d/%d cells",nExploredCell,gridSize);
+//  ROS_INFO_THROTTLE(3,"current FOV: i=%d-%d; j=%d-%d",iMin,iMax,jMin,jMax);
+//  ROS_INFO_THROTTLE(3,"=====================================Map Updated==============================================");
+
+  if (nExploredCell == gridSize)
+  {
+    std_msgs::Empty empty_msg;
+    explore_pub.publish(empty_msg);
+    ROS_INFO("The map was explored completely, there are no more border cells!");
+  }
 }
 
 // This function returns the squared distance between two cells.
@@ -222,42 +251,90 @@ int PathPlanning::sqdistance(int i, int j, int k, int l)
 // cells of the map and tell the drone to go to the nearrest one.
 void PathPlanning::advanced_xy_desired(double* x, double* y)
 {
-//  ROS_INFO("start advanced_xy_desired");
-//  int* drone_i;
-//  int* drone_j;
-//  ROS_INFO("=====================================Getting IJPOS ===============================================");
-//  XYToCell(pose.x,pose.y,drone_i,drone_j);
-//  ROS_INFO("=======================================Got IJPOS =================================================");
-  int bestDist = 1;
+  int i_pos;
+  int j_pos;
+  XYToCell(pose.x,pose.y,&i_pos,&j_pos);
+  int bestDist = -1;
   int currDist;
-  int closestJ = 0;
-  int closestI = 0;
+  int closestJ;
+  int closestI;
 
-//  for (int i = 0; i < SIDE * 10; i++)
-//  {
-//    for (int j = 0; j < SIDE * 10; j++)
-//    {
-//      currDist = sqdistance(*drone_i, *drone_j, i, j);
-//      if (myGrid[i][j] == BORDER &&  currDist < bestDist)
-//      {
-//        bestDist = currDist;
-//        closestJ = j;
-//        closestI = i;
-//      }
-//    }
-//  }
-  if (bestDist == 1000)
+  for (int i = 0; i < SIDE * 10; i++)
   {
-    std_msgs::Empty empty_msg;
-    explore_pub.publish(empty_msg);
-    ROS_INFO("The map was explored completely, there are no more border cells!");
+    for (int j = 0; j < SIDE * 10; j++)
+    {
+      currDist = sqdistance(i, j, i_pos, j_pos);
+      if (myGrid[i][j]==BORDER  &&  (currDist<bestDist || bestDist==-1) )
+      {
+        bestDist = currDist;
+        closestJ = j;
+        closestI = i;
+      }
+    }
   }
-  CellToXY(closestI, closestJ, x, y);
+  if (bestDist == -1)
+  {
+    *x = pose.x;
+    *y = pose.y;
+  }
+  else
+  {
+    CellToXY(closestI, closestJ, x, y);
+  }
+  std::string str = "\n";
+  for (int i = -10; i< 20;i++)
+  {
+    for (int j = -10 ; j<20 ; j++)
+    {
+      if (i==i_pos    && j==j_pos)
+      {
+        str.append("D");
+      }
+      else if (i==closestI && j==closestJ)
+      {
+        str.append("+");
+      }
+      else if (i<0 || i>9 || j<0 || j > 9)
+      {
+        str.append(" ");
+      }
+      else
+      {
+        switch(myGrid[i][j])
+        {
+          case EXPLORED:
+            str.append("X");
+            break;
+          case UNEXPLORED:
+            str.append(".");
+            break;
+          case BORDER:
+            str.append("_");
+            break;
+        }
+      }
+    }
+    str.append("\n");
+  }
+  std::cout << str << '\n';
+  printf("Explored %d/100 cells\n",nExploredCell);
+  printf("Drone  : %d,%d  --- %f,%f\n",i_pos,j_pos,pose.x,pose.y);
+  printf("Target : %d,%d\n",closestI,closestJ);
+}
+
+void PathPlanning::wait()
+{
+  publish_poseref(0,0,height_of_flight,0,false,false);
+}
+
+void PathPlanning::takeOff()
+{
+  publish_poseref(0,0,height_of_flight,0,true,false);
 }
 
 void PathPlanning::seek()
 {
-  publish_poseref(pose.x+1.0, 0,1,0,false,false);
+  publish_poseref(pose.x+1.0, 0,height_of_flight,0,false,false);
 }
 
 void PathPlanning::explore()
@@ -266,16 +343,19 @@ void PathPlanning::explore()
   double* x;
   double* y;
   advanced_xy_desired(x,y);
-  publish_poseref(*x,*y,1,0,false,false);
+  publish_poseref(*x,*y,height_of_flight,0,false,false);
 }
 
 void PathPlanning::backToBase()
 {
-  publish_poseref(0,0,1,0,false,false);
+  publish_poseref(0,0,height_of_flight,0,false,false);
 }
 
-
-
+void PathPlanning::land()
+{
+    publish_poseref(0,0,0,0,false,true);
+    ROS_INFO("landing");
+}
 
 // Main function, will publish pose_ref with regard to the selected strategy coming from the
 // Strategy node.
@@ -285,8 +365,7 @@ int main(int argc, char** argv)
   PathPlanning myPath;
   myPath.reset();
   ros::Rate r(20);  // Refresh every 1/20 second.
-
-  myPath.publish_poseref(0,0,1,0,false,false);
+  myPath.wait();
   ros::spinOnce();
   r.sleep();
   ROS_INFO("poseref initialized and launched");
@@ -296,13 +375,14 @@ int main(int argc, char** argv)
     switch(myPath.getStrategy())
     {
       case WAIT:
-        myPath.publish_poseref(0,0,1,0,false,false);
+        myPath.wait();
         break;
       case TAKEOFF:
-        myPath.publish_poseref(0,0,1,0,true,false);
+        myPath.takeOff();
         break;
       case SEEK:
-        myPath.seek();
+        myPath.explore();
+//        myPath.seek();
         break;
       case EXPLORE:
         myPath.explore();
@@ -311,8 +391,7 @@ int main(int argc, char** argv)
         myPath.backToBase();
         break;
       case LAND:
-        myPath.publish_poseref(0,0,0,0,false,true);
-        ROS_INFO("landing");
+        myPath.land();
         break;
     }
 

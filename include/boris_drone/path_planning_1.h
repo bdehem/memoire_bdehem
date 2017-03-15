@@ -57,6 +57,7 @@ private:
 
   double grid_origin_x;
   double grid_origin_y;
+  double height_of_flight;
 
   int myGrid[SIDE * 10][SIDE * 10];
   int gridSize;
@@ -84,9 +85,12 @@ public:
   void XYToCell(double x, double y, int* i, int* j);
   int sqdistance(int i, int j, int k, int l);
   int getStrategy();
+  void wait();
+  void takeOff();
   void seek();
   void explore();
   void backToBase();
+  void land();
 };
 
 #endif /*boris_drone_PATH_PLANNING_H */
