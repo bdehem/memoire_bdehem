@@ -80,12 +80,25 @@ void PathPlanning::publish_poseref(double x_ref, double y_ref, double z_ref, dou
   poseref_pub.publish(poseref_msg);
 }
 
+void PathPlanning::publish_poseref(double x_ref, double y_ref, double z_ref, double rotZ_ref)
+{
+  publish_poseref(x_ref, y_ref, z_ref, rotZ_ref,false,false);
+}
+
+void PathPlanning::publish_poseref(bool takeoff, bool land)
+{
+  publish_poseref(0, 0, height_of_flight, 0,takeoff,land);
+}
+
+
+
 // This function is called when this node receives a message from the topic "pose_estimation". So it
 // takes this message and put it in a variable where it will be used in the other functions.
 
 void PathPlanning::poseCb(const boris_drone::Pose3D::ConstPtr posePtr)
 {
   pose = *posePtr;
+  ROS_INFO_THROTTLE(3,"pose: x=%f; y=%f; z=%f, yaw = %f",pose.x,pose.y,pose.z,pose.rotZ);
 }
 
 // This function is called when this node receives a message from the topic "strategy". So it
@@ -324,17 +337,17 @@ void PathPlanning::advanced_xy_desired(double* x, double* y)
 
 void PathPlanning::wait()
 {
-  publish_poseref(0,0,height_of_flight,0,false,false);
+  publish_poseref(false,false);
 }
 
 void PathPlanning::takeOff()
 {
-  publish_poseref(0,0,height_of_flight,0,true,false);
+  publish_poseref(true,false);
 }
 
 void PathPlanning::seek()
 {
-  publish_poseref(pose.x+1.0, 0,height_of_flight,0,false,false);
+  publish_poseref(pose.x+10.0, 0,height_of_flight,0);
 }
 
 void PathPlanning::explore()
@@ -343,17 +356,17 @@ void PathPlanning::explore()
   double* x;
   double* y;
   advanced_xy_desired(x,y);
-  publish_poseref(*x,*y,height_of_flight,0,false,false);
+  publish_poseref(*x,*y,height_of_flight,0);
 }
 
 void PathPlanning::backToBase()
 {
-  publish_poseref(0,0,height_of_flight,0,false,false);
+  publish_poseref(0,0,height_of_flight,0);
 }
 
 void PathPlanning::land()
 {
-    publish_poseref(0,0,0,0,false,true);
+    publish_poseref(false,true);
     ROS_INFO("landing");
 }
 
@@ -381,14 +394,13 @@ int main(int argc, char** argv)
         myPath.takeOff();
         break;
       case SEEK:
-        myPath.explore();
-//        myPath.seek();
+        myPath.seek();
         break;
       case EXPLORE:
-        myPath.explore();
+        myPath.seek();
         break;
       case BACKTOBASE:
-        myPath.backToBase();
+        myPath.seek();
         break;
       case LAND:
         myPath.land();

@@ -75,6 +75,8 @@ public:
   //! Destructor
   ~PathPlanning();
   void publish_poseref(double x_ref, double y_ref, double z_ref, double rotZ_ref, bool takeoff, bool land);
+  void publish_poseref(double x_ref, double y_ref, double z_ref, double rotZ_ref);
+  void publish_poseref(bool takeoff, bool land);
   void reset();
   void InitializeGrid();
   void UpdateMap(double x, double y);
