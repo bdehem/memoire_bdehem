@@ -19,6 +19,8 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package( OpenCV REQUIRED core nonfree )# ocl gpu)
 
+find_package( cvsba REQUIRED )
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -153,7 +155,6 @@ add_executable(controller_custom src/controller/controller_custom.cpp)
 add_executable(controller src/controller/controller.cpp)
 add_executable(pose_estimation src/pose_estimation/pose_estimation.cpp)
 add_executable(map_keyframe_based src/map/map_keyframe_based.cpp src/map/frame.cpp src/opencv_utils.cpp src/map/projection_2D.cpp src/map/keyframe.cpp src/read_from_launch.cpp)
-add_executable(map_keyframe_based_1 src/map/map_keyframe_based_1.cpp src/map/frame.cpp src/opencv_utils.cpp src/map/projection_2D.cpp src/map/keyframe.cpp src/read_from_launch.cpp)
 add_executable(computer_vision  src/computer_vision/processed_image.cpp  src/computer_vision/computer_vision.cpp src/computer_vision/target.cpp src/map/projection_2D.cpp src/opencv_utils.cpp src/read_from_launch.cpp)
 add_executable(vision_gui  src/vision_gui/vision_gui.cpp  src/vision_gui/vision_gui.cpp)
 add_executable(path_planning src/path_planning/path_planning.cpp)
@@ -171,7 +172,6 @@ add_dependencies(controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTE
 add_dependencies(pose_estimation ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 #add_dependencies(simple_map ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(map_keyframe_based ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(map_keyframe_based_1 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(computer_vision ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(vision_gui ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(path_planning ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -188,8 +188,7 @@ add_dependencies(multi_strategy ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXP
 target_link_libraries(controller ${catkin_LIBRARIES})
 target_link_libraries(controller_custom ${catkin_LIBRARIES})
 target_link_libraries(pose_estimation ${catkin_LIBRARIES})
-target_link_libraries(map_keyframe_based ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBRARIES} opencv_nonfree libvtkCommon.so libvtkFiltering.so)
-target_link_libraries(map_keyframe_based_1 ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBRARIES} opencv_nonfree libvtkCommon.so libvtkFiltering.so)
+target_link_libraries(map_keyframe_based ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBRARIES} opencv_nonfree libvtkCommon.so libvtkFiltering.so ${cvsba_LIBS})
 target_link_libraries(computer_vision ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} opencv_nonfree)
 target_link_libraries(vision_gui ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} opencv_nonfree)
 target_link_libraries(path_planning ${catkin_LIBRARIES})

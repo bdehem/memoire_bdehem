@@ -48,6 +48,11 @@
 class Frame
 {
 private:
+  boris_drone::ProcessedImageMsg msg;    //!< ProcessedImage Message
+  std::vector<cv::Point2f> imgPoints;    //!< 2D coordinates of keypoints in OpenCV format
+  boris_drone::Pose3D pose_visual_msg;   //!< visual pose estimated (not used in this implementation)
+  cv::Mat descriptors;                   //!< descriptors of keypoints in OpenCV format
+
 public:
   //! Contructor for an empty object.
   Frame();
@@ -72,12 +77,6 @@ public:
   //! \param[out] pointcloud: result of the conversion to PCL format
   void convertToPcl(std::vector< cv::Point3f > points_out, int keyframe_id,
                     pcl::PointCloud< pcl::PointXYZRGBSIFT >::Ptr& pointcloud);
-
-  // Attributes
-  boris_drone::ProcessedImageMsg msg;      //!< ProcessedImage Message
-  std::vector< cv::Point2f > imgPoints;  //!< 3D coordinates of keypoints in OpenCV format
-  boris_drone::Pose3D pose_visual_msg;     //!< visual pose estimated (not used in this implementation)
-  cv::Mat descriptors;                   //!< descriptors of keypoints in OpenCV format
 };
 
 #endif /* boris_drone_FRAME_H */

@@ -10,13 +10,14 @@
 
 #include <boris_drone/map/map_keyframe_based.h>
 
-std::vector< KeyFrame* > KeyFrame::instances_list;
+std::vector<KeyFrame*> KeyFrame::instances_list;
+pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr KeyFrame::cloud;
 
-KeyFrame::KeyFrame() : cloud(new pcl::PointCloud< pcl::PointXYZRGBSIFT >())
+KeyFrame::KeyFrame()
 {
 }
 
-KeyFrame::KeyFrame(boris_drone::Pose3D& pose) : cloud(new pcl::PointCloud< pcl::PointXYZRGBSIFT >())
+KeyFrame::KeyFrame(boris_drone::Pose3D& pose)
 {
   // add the current keyframe to the list of all existing keyframes
   this->instances_list.push_back(this);
@@ -39,19 +40,17 @@ void KeyFrame::resetList()
   KeyFrame::instances_list.clear();
 }
 
-void KeyFrame::addPoints(pcl::PointCloud< pcl::PointXYZRGBSIFT >::Ptr& pointcloud,
-                         std::vector< int >& new_points)
+void KeyFrame::addPoints(pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr pointcloud)
 {
   *(this->cloud) += *pointcloud;
-  this->points.insert(this->points.end(), new_points.begin(), new_points.end());
+  size_t size_cloud = this->cloud->size();
+  size_t size_added = pointcloud->size();
+  for (int i = size_cloud; i < size_cloud+size_added; i++) {
+    this->points.push_back(i);
+  }
   this->convertDescriptors();
 }
 
-void KeyFrame::addPoints(pcl::PointCloud< pcl::PointXYZRGBSIFT >::Ptr& pointcloud)
-{
-  *(this->cloud) += *pointcloud;
-  this->convertDescriptors();
-}
 
 KeyFrame* KeyFrame::getKeyFrame(const int i)
 {
@@ -70,6 +69,11 @@ int KeyFrame::getID()
 
 int KeyFrame::size()
 {
+  return this->points.size();
+}
+
+int KeyFrame::cloud_size()
+{
   return this->cloud->size();
 }
 
@@ -78,28 +82,29 @@ boris_drone::Pose3D KeyFrame::getPose()
   return this->pose;
 }
 
-void KeyFrame::getDescriptors(cv::Mat& descriptors)
+void KeyFrame::getDescriptors(cv::Mat& thedescriptors)
 {
   if (this->descriptors.rows == 0)
   {
     this->convertDescriptors();
   }
-  descriptors = this->descriptors;
+  thedescriptors = this->descriptors;
 }
 
 void KeyFrame::convertDescriptors()
 {
-  this->descriptors = cv::Mat_< float >(this->cloud->points.size(), DESCRIPTOR_SIZE);
-  for (unsigned i = 0; i < this->cloud->points.size(); ++i)
+  this->descriptors = cv::Mat_<float>(this->size(), DESCRIPTOR_SIZE);
+  for (unsigned i = 0; i < this->size(); ++i)
   {
     for (unsigned j = 0; j < DESCRIPTOR_SIZE; ++j)
     {
-      this->descriptors.at< float >(i, j) = cloud->points[i].descriptor[j];
+      this->descriptors.at<float>(i, j) = this->cloud->points[this->points[i]].descriptor[j];
     }
   }
 }
 
-void KeyFrame::matchWithFrame(Frame& frame, std::vector< std::vector< int > >& idx_matching_points,
+void KeyFrame::matchWithFrame(Frame& frame,
+                              std::vector< std::vector<int> >& idx_matching_points,
                               std::vector< cv::Point3f >& keyframe_matching_points,
                               std::vector< cv::Point2f >& frame_matching_points)
 {
@@ -123,7 +128,7 @@ void KeyFrame::matchWithFrame(Frame& frame, std::vector< std::vector< int > >& i
   {
     if (use_ratio_test)
     {
-      std::vector< std::vector< cv::DMatch > > knn_matches;
+      std::vector<std::vector<cv::DMatch> > knn_matches;
       matcher.knnMatch(frame.descriptors, this->descriptors, knn_matches, 2);
 
       // ratio_test + threshold test
@@ -133,13 +138,13 @@ void KeyFrame::matchWithFrame(Frame& frame, std::vector< std::vector< int > >& i
         {
           if (knn_matches[k][0].distance < DIST_THRESHOLD)
           {
-            std::vector< int > v(2);
+            std::vector<int> v(2);
             v[0] = knn_matches[k][0].trainIdx;
             v[1] = knn_matches[k][0].queryIdx;
             idx_matching_points.push_back(v);
 
             cv::Point3f keyframe_point;
-            pcl::PointXYZRGBSIFT pcl_point = this->cloud->points[knn_matches[k][0].trainIdx];
+            pcl::PointXYZRGBSIFT pcl_point = this->cloud->points[this->points[knn_matches[k][0].trainIdx]];
             keyframe_point.x = pcl_point.x;
             keyframe_point.y = pcl_point.y;
             keyframe_point.z = pcl_point.z;
@@ -165,7 +170,7 @@ void KeyFrame::matchWithFrame(Frame& frame, std::vector< std::vector< int > >& i
           idx_matching_points.push_back(v);
 
           cv::Point3f keyframe_point;
-          pcl::PointXYZRGBSIFT pcl_point = this->cloud->points[simple_matches[k].trainIdx];
+          pcl::PointXYZRGBSIFT pcl_point = this->cloud->points[this->points[simple_matches[k].trainIdx]];
           keyframe_point.x = pcl_point.x;
           keyframe_point.y = pcl_point.y;
           keyframe_point.z = pcl_point.z;

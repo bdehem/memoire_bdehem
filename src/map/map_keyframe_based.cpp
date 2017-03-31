@@ -17,11 +17,11 @@ Map::Map()
 
   // initialize default status boolean
   this->processedImgReceived = false;
-  this->tracking_lost = false;
-  this->pending_reset = false;
+  this->tracking_lost        = false;
+  this->pending_reset        = false;
 
   // get launch parameters
-  ros::param::get("~do_search", this->do_search);
+  ros::param::get("~do_search",    this->do_search);
   ros::param::get("~stop_if_lost", this->stop_if_lost);
 
   // define some threshold used later
@@ -34,35 +34,27 @@ Map::Map()
   reference_keyframe = new KeyFrame();
 
   // Subsribers
-
-  processed_image_channel_in = nh.resolveName("processed_image");
-  processed_image_sub = nh.subscribe(processed_image_channel_in, 1, &Map::processedImageCb,
-                                     this);  // carefull!!! size of queue is 1
-
-  reset_pose_channel = nh.resolveName("reset_pose");
-  reset_pose_sub = nh.subscribe(reset_pose_channel, 1, &Map::resetPoseCb, this);
-
-  end_reset_pose_channel = nh.resolveName("end_reset_pose");
-  end_reset_pose_sub = nh.subscribe(end_reset_pose_channel, 1, &Map::endResetPoseCb, this);
+  processed_image_channel = nh.resolveName("processed_image");
+  processed_image_sub     = nh.subscribe(processed_image_channel, 1, &Map::processedImageCb, this);
+  reset_pose_channel      = nh.resolveName("reset_pose");
+  reset_pose_sub          = nh.subscribe(reset_pose_channel, 1, &Map::resetPoseCb, this);
+  end_reset_pose_channel  = nh.resolveName("end_reset_pose");
+  end_reset_pose_sub      = nh.subscribe(end_reset_pose_channel, 1, &Map::endResetPoseCb, this);
 
   // Publishers
-
-  pose_PnP_channel = nh.resolveName("pose_visual");
-  pose_PnP_pub = nh.advertise< boris_drone::Pose3D >(pose_PnP_channel, 1);
-
+  pose_visual_channel     = nh.resolveName("pose_visual");
+  pose_visual_pub         = nh.advertise< boris_drone::Pose3D >(pose_visual_channel, 1);
   pose_correction_channel = nh.resolveName("pose_visual_correction");
-  pose_correction_pub = nh.advertise< boris_drone::Pose3D >(pose_correction_channel, 1);
-
-  target_channel_out = nh.resolveName("boris_drone/target_detected");
-  target_pub = nh.advertise< boris_drone::TargetDetected >(target_channel_out, 1);
+  pose_correction_pub     = nh.advertise< boris_drone::Pose3D >(pose_correction_channel, 1);
+  target_channel          = nh.resolveName("boris_drone/target_detected");
+  target_pub              = nh.advertise< boris_drone::TargetDetected >(target_channel, 1);
 
   // initialize the map and the visualizer
-  pcl::visualization::PointCloudColorHandlerCustom< pcl::PointXYZRGBSIFT > single_color(cloud, 0,
-                                                                                        255, 0);
+  pcl::visualization::PointCloudColorHandlerCustom< pcl::PointXYZRGBSIFT > single_color(cloud, 0, 255, 0);
   visualizer->setBackgroundColor(0, 0.1, 0.3);
-  visualizer->addPointCloud< pcl::PointXYZRGBSIFT >(cloud, single_color, "SIFT_cloud");
-  visualizer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3,
-                                               "SIFT_cloud");
+  visualizer->addPointCloud<pcl::PointXYZRGBSIFT>(cloud, single_color, "SIFT_cloud");
+
+  zer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3, "SIFT_cloud");
   visualizer->addCoordinateSystem(1.0);  // red: x, green: y, blue: z
 
   // get camera parameters in launch file
@@ -75,9 +67,10 @@ Map::Map()
     ROS_ERROR("img_size not properly transmitted");
   }
 
-  this->camera_matrix_K =
-      (cv::Mat_< double >(3, 3) << Read::focal_length_x(), 0, Read::img_center_x(), 0,
-       Read::focal_length_y(), Read::img_center_y(), 0, 0, 1);
+  this->camera_matrix_K =  (cv::Mat_< double >(3, 3) <<
+      Read::focal_length_x(), 0                     , Read::img_center_x(),
+      0,                      Read::focal_length_y(), Read::img_center_y(),
+      0,                      0,                      1                   );
 
   // initialize empty opencv vectors
   this->tvec = cv::Mat::zeros(3, 1, CV_64FC1);
@@ -138,7 +131,7 @@ void Map::processedImageCb(const boris_drone::ProcessedImageMsg::ConstPtr proces
     //TOC(doPnP, "doPnP");
 
     // filter out bad PnP estimation not yet treated: case where PnP thinks he has a good pose
-    // etimation while he actually has found the bad clone configuration (symmetry in ground plane:
+    // estimation when he actually has found the bad clone configuration (symmetry in ground plane:
     // like a mirror effect), resulting in negative altitude and bad (uninterpretable?) other
     // meausures
     if (abs(PnP_pose.z - current_frame.msg.pose.z) > 0.8)  // treshold in cm
@@ -258,7 +251,7 @@ void Map::publishPoseVisual(boris_drone::Pose3D poseFrame, boris_drone::Pose3D p
   pose_correction.rotX = poseFrame.rotX - posePnP.rotX;
   pose_correction.rotY = poseFrame.rotY - posePnP.rotY;
   pose_correction.rotZ = poseFrame.rotZ - posePnP.rotZ;
-  pose_PnP_pub.publish(PnP_pose);
+  pose_visual_pub.publish(PnP_pose);
   pose_correction_pub.publish(pose_correction);
 }
 
@@ -278,7 +271,7 @@ bool Map::doPnP(Frame current_frame, boris_drone::Pose3D& PnP_pose, std::vector<
   if (ref_keyframe_matching_points.size() < threshold_lost)
   {
     if (ref_keyframe == reference_keyframe)
-      ROS_INFO("TRACKING LOST ! (Not enough matching points: %d)",
+      ROS_INFO_THROTTLE(3,"TRACKING LOST ! (Not enough matching points: %d)",
                ref_keyframe_matching_points.size());
     return false;
   }
@@ -289,10 +282,17 @@ bool Map::doPnP(Frame current_frame, boris_drone::Pose3D& PnP_pose, std::vector<
 
   TIC(solvePnPRansac);
   // solve with P3P
-  cv::solvePnPRansac(ref_keyframe_matching_points, frame_matching_points, this->camera_matrix_K,
-                     distCoeffs, rvec, tvec, true, 2500, 2, 2 * threshold_new_keyframe, inliers,
-                     CV_P3P);  // alternatives: CV_EPNP and CV_ITERATIVE
-  //TOC(solvePnPRansac, "solvePnPRansac");
+  try{
+    cv::solvePnPRansac(ref_keyframe_matching_points, frame_matching_points, this->camera_matrix_K,
+                       distCoeffs, rvec, tvec, true, 2500, 2, 2 * threshold_new_keyframe, inliers,
+                       CV_P3P);  // alternatives: CV_EPNP and CV_ITERATIVE
+  }
+  catch (const cv::Exception& e) {
+    ROS_INFO_THROTTLE(3,"caught cv exception");
+
+  }
+
+//  //TOC(solvePnPRansac, "solvePnPRansac");
 
   // ROS_DEBUG("rvec: %+2.6f, %+2.6f, %+2.6f", rvec.at< double >(0, 0), rvec.at< double >(1, 0),
   //           rvec.at< double >(2, 0));
@@ -300,7 +300,7 @@ bool Map::doPnP(Frame current_frame, boris_drone::Pose3D& PnP_pose, std::vector<
   if (inliers.size() < threshold_lost)
   {
     if (ref_keyframe == reference_keyframe)
-      ROS_INFO("TRACKING LOST ! (Not enough inliers)");
+      ROS_INFO_THROTTLE(3,"TRACKING LOST ! (Not enough inliers)");
     return false;
   }
 
@@ -358,10 +358,6 @@ bool Map::doPnP(Frame current_frame, boris_drone::Pose3D& PnP_pose, std::vector<
 
   PnP_pose.header.stamp = current_frame.msg.pose.header.stamp;  // needed for rqt_plot
 
-  ROS_DEBUG("# img:%4d, keyframe%d:%4d, match:%4d, inliers:%4d", current_frame.imgPoints.size(),
-            ref_keyframe->getID(), ref_keyframe->cloud->points.size(),
-            ref_keyframe_matching_points.size(), inliers.size());
-
   return true;
 }
 
@@ -372,7 +368,7 @@ void Map::targetDetectedPublisher()
   {
     if (lastProcessedImgReceived->target_detected)
     {
-      ROS_DEBUG("TARGET IS DETECTED");
+      ROS_DEBUG_THROTTLE(3,"TARGET IS DETECTED");
 
       boris_drone::TargetDetected msg;
       msg.pose = lastProcessedImgReceived->pose;
@@ -562,47 +558,6 @@ void Map::getVisiblePoints(const boris_drone::Pose3D& pose, std::vector< int >& 
   }
 }
 
-void Map::getDescriptors(const boris_drone::Pose3D& pose, cv::Mat& descriptors,
-                         std::vector< int >& idx, bool only_visible)
-{
-  // only_visible = false;
-  if (!only_visible)  // get all points descriptors
-  {
-    descriptors = cv::Mat_< float >(cloud->points.size(), DESCRIPTOR_SIZE);
-    for (unsigned i = 0; i < cloud->points.size(); ++i)
-    {
-      for (unsigned j = 0; j < DESCRIPTOR_SIZE; ++j)
-      {
-        descriptors.at< float >(i, j) = cloud->points[i].descriptor[j];
-      }
-      idx.push_back(i);
-    }
-  }
-  if (only_visible)  // get only points visible from pose
-                     // It doesn't take into account obstacles
-  {
-    ROS_DEBUG("GET_DESCRIPTORS, pose:pos(%f, %f, %f) rot(%f, %f, %f)", pose.x, pose.y, pose.z,
-              pose.rotX, pose.rotY, pose.rotZ);
-
-    this->getVisiblePoints(pose, idx);
-    this->getDescriptors(idx, descriptors);
-
-    ROS_DEBUG(" %d POINTS VISIBLE", idx.size());
-  }
-}
-
-void Map::getDescriptors(const std::vector< int >& idx, cv::Mat& descriptors)
-{
-  descriptors = cv::Mat_< float >(idx.size(), DESCRIPTOR_SIZE);
-  for (unsigned i = 0; i < idx.size(); ++i)
-  {
-    for (unsigned j = 0; j < DESCRIPTOR_SIZE; ++j)
-    {
-      descriptors.at< float >(i, j) = cloud->points[idx[i]].descriptor[j];
-    }
-  }
-}
-
 bool Map::newKeyFrameNeeded(int number_of_common_keypoints)
 {
   return newKeyFrameNeeded(number_of_common_keypoints, this->reference_keyframe);
@@ -619,10 +574,17 @@ void cloud_debug(pcl::PointCloud< pcl::PointXYZRGBSIFT >::ConstPtr cloud)
 {
   for (size_t i = 0; i < cloud->points.size(); ++i)
   {
-    ROS_DEBUG("points[%d] = (%f, %f, %f)", i, cloud->points[i].x, cloud->points[i].y,
-              cloud->points[i].z);
+    ROS_DEBUG("points[%z] = (%f, %f, %f)", i, cloud->points[i].x,
+                                              cloud->points[i].y,
+                                              cloud->points[i].z);
   }
 }
+
+void Map::visualize(int spinTime)
+{
+  this->visualizer->spinOnce(spinTime);
+}
+
 
 int main(int argc, char** argv)
 {
@@ -638,7 +600,7 @@ int main(int argc, char** argv)
   ros::Time t = ros::Time::now() + ros::Duration(13);
   while (ros::Time::now() < t)
   {
-    map.visualizer->spinOnce(100);
+    map.visualize(100);
   }
 
   ros::Rate r(3);
@@ -648,7 +610,7 @@ int main(int argc, char** argv)
   while (ros::ok())
   {
     TIC(cloud);
-    map.visualizer->spinOnce(10);
+    map.visualize(10);
     //TOC(cloud, "cloud");
 
     TIC(target);

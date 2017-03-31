@@ -40,17 +40,17 @@
 class KeyFrame
 {
 private:
-  static std::vector< KeyFrame* > instances_list;
+  static std::vector<KeyFrame*> instances_list;
 
-  int ID;                         //!< Identification number of the keyframe
-  std::vector< int > points;      //!< indexes of points in the pointcloud (the map)
-  boris_drone::Pose3D pose;         //!< pose of the drone from which the keypoints were observed
-  cv::FlannBasedMatcher matcher;  //!< object for descriptiors comparison
-  cv::Mat descriptors;            //!< descriptors in opencv format
+  pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr cloud;
+
+  int ID;                         // Identification number of the keyframe
+  std::vector<int> points;        // indexes of points in the pointcloud (the map)
+  boris_drone::Pose3D pose;       // pose of the drone from which the keypoints were observed
+  cv::FlannBasedMatcher matcher;  // object for descriptors comparison
+  cv::Mat descriptors;            // descriptors in opencv format
 
 public:
-  pcl::PointCloud< pcl::PointXYZRGBSIFT >::Ptr cloud;  // all keypoints of this keyframe
-
   //! Empty Contructor.
   KeyFrame();
 
@@ -69,19 +69,14 @@ public:
 
   //! Method to add a list of points to the current Keyframe
   //! \param[in] pointcloud points to add in PCL format
-  //! \parma[in] map_idx_points indexes of thes points in the map pointcloud
-  void addPoints(pcl::PointCloud< pcl::PointXYZRGBSIFT >::Ptr& pointcloud,
-                 std::vector< int >& map_idx_points);
-
-  //! Method to add a list of points to the current Keyframe
-  //! \param[in] pointcloud points to add in PCL format
-  void addPoints(pcl::PointCloud< pcl::PointXYZRGBSIFT >::Ptr& pointcloud);
-
+  void addPoints(pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr pointcloud);
   //! Method to get current KeyFrame ID number
   int getID();
 
   //! Method to get the number of keypoints in the current Keyframe
   int size();
+
+  int cloud_size();
 
   //! Method to get the pose of the drone from which the keypoints were observed
   boris_drone::Pose3D getPose();
@@ -99,9 +94,9 @@ public:
   //! j the frame index
   //! \param[out] keyframe_matching_points Vector of matching points (3D) in the Keyframe
   //! \param[out] frame_matching_points Vector of matching points (2D) in the Frame
-  void matchWithFrame(Frame& frame, std::vector< std::vector< int > >& idx_matching_points,
-                      std::vector< cv::Point3f >& keyframe_matching_points,
-                      std::vector< cv::Point2f >& frame_matching_points);
+  void matchWithFrame(Frame& frame, std::vector<std::vector<int> >& idx_matching_points,
+                      std::vector<cv::Point3f>& keyframe_matching_points,
+                      std::vector<cv::Point2f>& frame_matching_points);
 };
 
 #endif /* boris_drone_KEYFRAME_H */
