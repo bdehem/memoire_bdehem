@@ -43,6 +43,21 @@ cv::Mat rollPitchYawToRotationMatrix(const double roll, const double pitch, cons
   return Rz * Ry * Rx;
 }
 
+void getCameraPositionMatrices(const boris_drone::Pose3D& pose, cv::Mat& R, cv::Mat& T)
+{
+  double yaw   = -pose.rotZ;
+  double pitch = -pose.rotY;
+  double roll  = -pose.rotX;
+
+  // compute the rotation matrix from world  to the drone
+  cv::Mat world2drone = rollPitchYawToRotationMatrix(roll, pitch, yaw);
+  // compute the rotation matrix from the drone to the camera
+  cv::Mat drone2cam = rollPitchYawToRotationMatrix(PI, 0, -PI / 2);
+  // compute the rotation matrix from the world to the camera
+  R = drone2cam * world2drone;
+  T = (cv::Mat_< double >(3, 1) << pose.x, pose.y, pose.z);
+}
+
 //! Transofmation (rotation and translation) matrix given RPY angles and translation lengths
 cv::Mat rTMatrix(const cv::Mat rot, const double tx, const double ty, const double tz)
 {

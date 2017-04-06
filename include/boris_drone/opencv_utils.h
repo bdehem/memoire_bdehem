@@ -18,6 +18,8 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/nonfree/features2d.hpp>
 
+#include <boris_drone/Pose3D.h>
+#include <boris_drone/boris_drone.h>
 #include <boris_drone/PointXYZRGBSIFT.h>
 
 //! \return the rotation matrix given the roll angle (around x axis)
@@ -31,6 +33,9 @@ cv::Mat rotationMatrixZ(const double angle);
 
 //! \return the rotation matrix given the roll,pitch,yaw angles
 cv::Mat rollPitchYawToRotationMatrix(const double roll, const double pitch, const double yaw);
+
+//! \get rotation matrix used by cv
+void getCameraPositionMatrices(const boris_drone::Pose3D& pose, cv::Mat& R, cv::Mat& T);
 
 //! \return the transformation (rotation and transltation) matrix
 cv::Mat rTMatrix(const cv::Mat rot, const double tx, const double ty, const double tz);

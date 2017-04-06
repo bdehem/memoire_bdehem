@@ -77,7 +77,7 @@
     <param name="use_OpticalFlowPyrLK" value="true"/>
   </node>
 
-  <node name="boris_drone_map_keyframe_based" pkg="boris_drone" type="map_keyframe_based" output="screen">
+  <node name="boris_drone_mapping_node" pkg="boris_drone" type="mapping_node" output="screen">
     <param name="do_search" value="true" />
     <param name="stop_if_lost" value="true" />
   </node>

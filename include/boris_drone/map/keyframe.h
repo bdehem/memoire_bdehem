@@ -1,6 +1,6 @@
 /*!
  *  \file keyframe.h
- *  \brief This header file contains KeyFrame class definition
+ *  \brief This header file contains Keyframe class definition
  *         In this file, 3D points refer to points in world coordinates,
  *         and 2D points refer to points in the calibrated image coordinates.
  *  \authors Arnaud Jacques & Alexandre Leclere
@@ -24,79 +24,83 @@
 #include <pcl/point_types.h>      // pcl::PointXYZRGB
 #include <pcl_ros/point_cloud.h>  // pcl::PointCloud
 
+#include <cvsba/cvsba.h>
+
 #include <boost/shared_ptr.hpp>
 
 /* boris_drone */
 #include <boris_drone/PointXYZRGBSIFT.h>
 #include <boris_drone/Pose3D.h>
+#include <boris_drone/opencv_utils.h>
 
-/** \class KeyFrame
- *  A KeyFrame object stores 3D points seen on a same picture
- *  In the future, with triangulation enabled for 3D reconstruction
- *  a KeyFrame object will store 3D points seen from some close poses
- *  (close to be defined according to the camera observation model)
- *  A list of Frames (containing 2D keypoint) will be necessary
+//forward reference to be able to have a pointer to map
+class MappingNode;
+
+/**
+ * \class Keyframe
+ * A Keyframe object stores 3D points seen on a same picture
+ * In the future, with triangulation enabled for 3D reconstruction
+ * a Keyframe object will store 3D points seen from some close poses
+ * (close to be defined according to the camera observation model)
+ * A list of Frames (containing 2D keypoint) will be necessary
  */
-class KeyFrame
+class Keyframe
 {
 private:
-  static std::vector<KeyFrame*> instances_list;
-
-  pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr cloud;
-
-  int ID;                         // Identification number of the keyframe
-  std::vector<int> points;        // indexes of points in the pointcloud (the map)
-  boris_drone::Pose3D pose;       // pose of the drone from which the keypoints were observed
-  cv::FlannBasedMatcher matcher;  // object for descriptors comparison
-  cv::Mat descriptors;            // descriptors in opencv format
+  int ID;                    //!< Identification number of the keyframe
+  cv::Mat descriptors;       //!< descriptors in opencv format
 
 public:
-  //! Empty Contructor.
-  KeyFrame();
+  std::vector<int> points;   //!< indices of points in the pointcloud (the map).
+  boris_drone::Pose3D pose;  //!< pose of the drone from which the keypoints were observed
+
+  std::vector<cv::Point2f> unmatched_imgPoints;  //!< 2D coordinates of unmatched keypoints in OpenCV format
+  std::vector<cv::Point2f> mapped_imgPoints;     //!< 2D coordinates of mapepd keypoints in OpenCV format
+
+  MappingNode* map;
+
+  //! Constructor.
+  //! \param[in] map Pointer to the map
+  Keyframe(MappingNode* p_global_map);
 
   //! Constructor
+  //! \param[in] map Pointer to the map
   //! \param[in] pose Pose of the drone from which the keypoints were observed
-  KeyFrame(boris_drone::Pose3D& pose);
+  Keyframe(MappingNode* p_global_map, boris_drone::Pose3D& pose);
+
+  //! Constructor
+  //! \param[in] map Pointer to the map
+  //! \param[in] frame from which the Keyframe is built
+  Keyframe(MappingNode* p_global_map, const Frame& frame);
+
+  //! Constructor
+  //! \param[in] map Pointer to the map
+  //! \param[in] pose Pose of the drone from which the keypoints were observed
+  //! \param[in] frame from which the Keyframe is built
+  Keyframe(MappingNode* p_global_map, boris_drone::Pose3D& pose, const Frame& frame);
 
   //! Destructor.
-  ~KeyFrame();
+  ~Keyframe();
 
-  //! Function to get a Keyframe by its ID
-  static KeyFrame* getKeyFrame(const int ID);
 
-  //! Function to remove all previous KeyFrames taken
-  static void resetList();
+  void matchWithMap(MappingNode* map);
 
-  //! Method to add a list of points to the current Keyframe
-  //! \param[in] pointcloud points to add in PCL format
-  void addPoints(pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr pointcloud);
-  //! Method to get current KeyFrame ID number
+  void matchWithKeyframe(Keyframe other);
+
+  //! Method to get current Keyframe ID number
   int getID();
-
-  //! Method to get the number of keypoints in the current Keyframe
-  int size();
-
-  int cloud_size();
 
   //! Method to get the pose of the drone from which the keypoints were observed
   boris_drone::Pose3D getPose();
 
-  //! Method to get the keypoints descriptors
-  //! \param[out] descriptors Descriptors in the OpenCV format
-  void getDescriptors(cv::Mat& descriptors);
-
-  //! Method to get convert keypoints descriptors in the OpenCV format
-  void convertDescriptors();
-
-  //! Method to compare the current KeyFrame to a 2D Frame
+  //! Method to compare the current Keyframe to a 2D Frame
   //! \param[in] frame Frame to compare
-  //! \param[out] idx_matching_points Vector of pairs of indexes: (i,j) with i the map index,
-  //! j the frame index
+  //! \param[out] idx_matching_points Vector of pairs of indexes: (i,j) with i the map index, j the frame index
   //! \param[out] keyframe_matching_points Vector of matching points (3D) in the Keyframe
   //! \param[out] frame_matching_points Vector of matching points (2D) in the Frame
-  void matchWithFrame(Frame& frame, std::vector<std::vector<int> >& idx_matching_points,
-                      std::vector<cv::Point3f>& keyframe_matching_points,
-                      std::vector<cv::Point2f>& frame_matching_points);
+  void matchWithFrame(Frame& frame, std::vector< std::vector< int > >& idx_matching_points,
+                      std::vector< cv::Point3f >& keyframe_matching_points,
+                      std::vector< cv::Point2f >& frame_matching_points);
 };
 
 #endif /* boris_drone_KEYFRAME_H */
