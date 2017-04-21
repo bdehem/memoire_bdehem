@@ -23,89 +23,81 @@
 // #include <ardrone_autonomy/Navdata.h>
 #include <geometry_msgs/Twist.h>
 #include <std_msgs/Empty.h>
+#include <std_msgs/Int16.h>
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/PoseRef.h>
 #include <boris_drone/StrategyMsg.h>
 #include <boris_drone/boris_drone.h>
 #include <boris_drone/cellUpdate.h>
+
+#define UNEXPLORED 0
+#define BORDER 1
+#define EXPLORED 2
+
 class PathPlanning
 {
 private:
   ros::NodeHandle nh;
 
+  ros::Publisher explore_pub;
   ros::Publisher poseref_pub;
   ros::Subscriber pose_sub;
   ros::Subscriber strategy_sub;
 
+  std::string explore_channel;
   std::string poseref_channel;
   std::string pose_channel;
   std::string strategy_channel;
 
-  //Just for some tests
-  ros::Publisher mapcell_pub;
-  std::string mapcell_channel;
-
-  int i;
-  int j;
   //! Callback when pose is received
   void poseCb(const boris_drone::Pose3D::ConstPtr posePtr);
   void strategyCb(const boris_drone::StrategyMsg::ConstPtr strategyPtr);
-  // double distance(int i, int j, int k, int l);
 
+  int strategy;
+
+  double grid_origin_x;
+  double grid_origin_y;
+  double height_of_flight;
+
+  int myGrid[SIDE * 10][SIDE * 10];
+  int gridSize;
+  int nExploredCell;
+
+  float destination_x;
+  float destination_y;
+  float destination_z;
+
+  boris_drone::Pose3D pose;
+
+  bool gridInitialized;
+
+  double XMax;
+  double YMax;
 public:
   //! Constructor
   PathPlanning();
   //! Destructor
   ~PathPlanning();
-
-
-  boris_drone::cellUpdate cellUpdateMsg;
-  void init();
-  double next_x;
-  double next_y;
-  double next_z;
-  double next_rotZ;
-  bool instruction_publishing;
-  boris_drone::StrategyMsg lastStrategyReceived;
-  boris_drone::Pose3D lastPoseReceived;
-  bool landing;
-  bool takeoff;
-  void publish_poseref();
-  void yaw_desired();
-  bool xy_desired();
+  void publish_poseref(double x_ref, double y_ref, double z_ref, double rotZ_ref, bool takeoff, bool land);
+  void publish_poseref(double x_ref, double y_ref, double z_ref, double rotZ_ref);
+  void publish_poseref(bool takeoff, bool land);
   void reset();
-  void SetRef(double x_ref, double y_ref, double z_ref, double rotZ_ref);
   void InitializeGrid();
-  bool gridInitialized;
-  int myGrid[SIDE * 10][SIDE * 10];
-  int bordersList[SIDE * 100];  // What is the maximum number of frontier cells?
-  // bool advanced_xy_desired();
-  bool ThereIsAWallCell(int i, int j);
   void UpdateMap(double x, double y);
-  void AbsOrdMinMax(double x, double y, int* absMin, int* absMax, int* ordMin, int* ordMax);
-  void advanced_xy_desired(double x, double y, double* k, double* l);
+  void GetFieldOfView(double x, double y, int* iMin, int* iMax, int* jMin, int* jMax);
+  int inGrid(int i);
+  void advanced_xy_desired(double* x, double* y);
   void CellToXY(int i, int j, double* xfromcell, double* yfromcell);
-  double distance(int i, int j, int k, int l);
-  double XMax;
-  double YMax;
-  int CellUp;
-  int CellDown;
-  int CellRight;
-  int CellLeft;
-  int myAbsMin;
-  int myAbsMax;
-  int myOrdMin;
-  int myOrdMax;
-  double xfromcell;
-  double yfromcell;
-  double xfromcell2;
-  double yfromcell2;
-  int closestJ;
-  int closestI;
-  double poseRefX;
-  double poseRefY;
-  double bestDist;
-  double alt;
+  void XYToCell(double x, double y, int* i, int* j);
+  int sqdistance(int i, int j, int k, int l);
+  int getStrategy();
+  void wait();
+  void takeOff();
+  void seek();
+  void explore();
+  void backToBase();
+  void go_to();
+  void land();
 };
 
 #endif /*boris_drone_PATH_PLANNING_H */

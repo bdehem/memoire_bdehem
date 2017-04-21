@@ -34,7 +34,7 @@
 #include <boris_drone/opencv_utils.h>
 
 //forward reference to be able to have a pointer to map
-class MappingNode;
+class Map;
 
 /**
  * \class Keyframe
@@ -46,52 +46,39 @@ class MappingNode;
  */
 class Keyframe
 {
-private:
-  int ID;                    //!< Identification number of the keyframe
+public:
   cv::Mat descriptors;       //!< descriptors in opencv format
 
-public:
   std::vector<int> points;   //!< indices of points in the pointcloud (the map).
   boris_drone::Pose3D pose;  //!< pose of the drone from which the keypoints were observed
 
-  std::vector<cv::Point2f> unmatched_imgPoints;  //!< 2D coordinates of unmatched keypoints in OpenCV format
-  std::vector<cv::Point2f> mapped_imgPoints;     //!< 2D coordinates of mapepd keypoints in OpenCV format
+  std::vector<cv::Point2f> unmapped_imgPoints;  //!< 2D coordinates of unmapped keypoints in OpenCV format
+  std::vector<cv::Point2f> mapped_imgPoints;    //!< 2D coordinates of mapepd keypoints in OpenCV format
 
-  MappingNode* map;
+  Map* map;
 
   //! Constructor.
   //! \param[in] map Pointer to the map
-  Keyframe(MappingNode* p_global_map);
+  Keyframe(Map* p_global_map);
 
   //! Constructor
   //! \param[in] map Pointer to the map
   //! \param[in] pose Pose of the drone from which the keypoints were observed
-  Keyframe(MappingNode* p_global_map, boris_drone::Pose3D& pose);
+  Keyframe(Map* p_global_map, boris_drone::Pose3D& pose);
 
   //! Constructor
   //! \param[in] map Pointer to the map
   //! \param[in] frame from which the Keyframe is built
-  Keyframe(MappingNode* p_global_map, const Frame& frame);
+  Keyframe(Map* p_global_map, const Frame& frame);
 
   //! Constructor
   //! \param[in] map Pointer to the map
   //! \param[in] pose Pose of the drone from which the keypoints were observed
   //! \param[in] frame from which the Keyframe is built
-  Keyframe(MappingNode* p_global_map, boris_drone::Pose3D& pose, const Frame& frame);
+  Keyframe(Map* p_global_map, const boris_drone::Pose3D& pose, const Frame& frame);
 
   //! Destructor.
   ~Keyframe();
-
-
-  void matchWithMap(MappingNode* map);
-
-  void matchWithKeyframe(Keyframe other);
-
-  //! Method to get current Keyframe ID number
-  int getID();
-
-  //! Method to get the pose of the drone from which the keypoints were observed
-  boris_drone::Pose3D getPose();
 
   //! Method to compare the current Keyframe to a 2D Frame
   //! \param[in] frame Frame to compare

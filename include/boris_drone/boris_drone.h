@@ -20,6 +20,7 @@
 #define EXPLORE 3
 #define BACKTOBASE 4
 #define LAND 5
+#define GOTO 6
 
 //! Role code definitions (multistrategy)
 #define EMERGENCY_STOP 0

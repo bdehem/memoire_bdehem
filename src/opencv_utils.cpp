@@ -43,28 +43,37 @@ cv::Mat rollPitchYawToRotationMatrix(const double roll, const double pitch, cons
   return Rz * Ry * Rx;
 }
 
-void getCameraPositionMatrices(const boris_drone::Pose3D& pose, cv::Mat& R, cv::Mat& T)
+void getCameraPositionMatrices(const boris_drone::Pose3D& pose, cv::Mat& R, cv::Mat& T, bool front)
 {
   double yaw   = -pose.rotZ;
   double pitch = -pose.rotY;
   double roll  = -pose.rotX;
 
-  // compute the rotation matrix from world  to the drone
+  // compute the rotation matrices
   cv::Mat world2drone = rollPitchYawToRotationMatrix(roll, pitch, yaw);
-  // compute the rotation matrix from the drone to the camera
-  cv::Mat drone2cam = rollPitchYawToRotationMatrix(PI, 0, -PI / 2);
+  cv::Mat drone2cam;
+  if (front)
+  {
+    drone2cam = rollPitchYawToRotationMatrix(PI/2, 0, -PI / 2);
+  }
+  else
+  {
+    drone2cam = rollPitchYawToRotationMatrix(PI,   0, -PI / 2);
+  }
+
   // compute the rotation matrix from the world to the camera
   R = drone2cam * world2drone;
+
   T = (cv::Mat_< double >(3, 1) << pose.x, pose.y, pose.z);
 }
 
 //! Transofmation (rotation and translation) matrix given RPY angles and translation lengths
 cv::Mat rTMatrix(const cv::Mat rot, const double tx, const double ty, const double tz)
 {
-  cv::Mat Rt = (cv::Mat_< double >(3, 4) << rot.at< double >(0, 0), rot.at< double >(0, 1),
-                rot.at< double >(0, 2), tx, rot.at< double >(1, 0), rot.at< double >(1, 1),
-                rot.at< double >(1, 2), ty, rot.at< double >(2, 0), rot.at< double >(2, 1),
-                rot.at< double >(2, 2), tz);
+  cv::Mat Rt = (cv::Mat_<double>(3, 4) << rot.at<double>(0, 0), rot.at<double>(0, 1),
+                rot.at<double>(0, 2), tx, rot.at<double>(1, 0), rot.at<double>(1, 1),
+                rot.at<double>(1, 2), ty, rot.at<double>(2, 0), rot.at<double>(2, 1),
+                rot.at<double>(2, 2), tz);
   return Rt;
 }
 
@@ -86,4 +95,12 @@ std::vector< cv::Point2f > Points(const std::vector< cv::KeyPoint >& keypoints)
     result.push_back(cv::Point2f(keypoints[i].pt.x, keypoints[i].pt.y));
   }
   return result;
+}
+
+
+double getSqDist(boris_drone::Pose3D pose1, boris_drone::Pose3D pose2)
+{
+  return ((pose1.x-pose2.x) * (pose1.x-pose2.x))
+       + ((pose1.y-pose2.y) * (pose1.y-pose2.y))
+       + ((pose1.z-pose2.z) * (pose1.z-pose2.z));
 }

@@ -36,36 +36,23 @@ Strategy::Strategy()
   // This node only publish in the topic strategy that is read from the path_planning.
 
   // Subscribers
-
-  target_channel = nh.resolveName("boris_drone/target_detected/");
+  target_channel = nh.resolveName("boris_drone/target_detected");
   target_sub = nh.subscribe(target_channel, 10, &Strategy::targetDetectedCb, this);
+
+  pose_channel = nh.resolveName("pose_estimation");
+  pose_sub = nh.subscribe(pose_channel, 10, &Strategy::poseCb, this);
+
+  explore_channel = nh.resolveName("finished_exploring");
+  explore_sub = nh.subscribe(explore_channel,10,&Strategy::exploreCb,this);
 
   /* ** Other group's comments: ** */
   // TODO: subscribe to channels in funtion of the role ...
   // TODO: do not use absolute path to get the target_detected channel of the current drone
   // TODO: get the other drone name from the DroneRoles message sent by swarm_initialization
 
-  target_channel_from_master = nh.resolveName("/boris_drone_5/boris_drone/target_detected/");
-  target_sub_from_master =
-      nh.subscribe(target_channel_from_master, 10, &Strategy::targetDetectedFromMasterCb, this);
-
-  target_channel_from_slave = nh.resolveName("/boris_drone_4/boris_drone/target_detected/");
-  target_sub_from_slave =
-      nh.subscribe(target_channel_from_slave, 10, &Strategy::targetDetectedFromSlaveCb, this);
-
-  multi_strategy_channel = nh.resolveName("/drones_roles");
-  multi_strategy_sub = nh.subscribe(multi_strategy_channel, 10, &Strategy::multi_strategyCb, this);
-
-  navdata_channel = nh.resolveName("/boris_drone_5/motherboard1/ardrone/navdata");
-  navdata_sub = nh.subscribe(navdata_channel, 10, &Strategy::navdataCb, this);
-
-  pose_from_slave_channel = nh.resolveName("boris_drone_4/pose_estimation");
-  pose_from_slave_sub = nh.subscribe(pose_from_slave_channel, 10, &Strategy::poseFromSlaveCb, this);
-
   // Publishers
-
   strategy_channel = nh.resolveName("strategy");
-  strategy_pub = nh.advertise< boris_drone::StrategyMsg >(strategy_channel, 1);
+  strategy_pub = nh.advertise<boris_drone::StrategyMsg>(strategy_channel, 1);
 
   /* ** Other group's comments: ** */
   // TODO: Publisher to send a "ready state" message with the drone_name
@@ -76,13 +63,10 @@ Strategy::Strategy()
 
   // Initialization of some parameters.
 
-  Intheair = false;
-  StrategyCbreceived = false;
-  TargetDetectedFromMaster = false;
-  TargetDetectedFromSlave = false;
-  backupCalled = false;
-  batteryLeft = 100;
-  oldbatteryLeft = 101;
+  TargetFound = false;
+  FinishedExploring = false;
+  go_high = false;
+  strategy = WAIT;
 }
 
 // Destructor
@@ -90,85 +74,45 @@ Strategy::~Strategy()
 {
 }
 
-// each strategy is corresponding to a number. This number will be sent (with a pose if needed) to
-// the pathplanning.
 
-void Strategy::reset()
-{
-  strategychosen = 0.0;
-  oldstrategychosen = 0.0;
-}
-
-void Strategy::Takeoff()
-{
-  oldstrategychosen = strategychosen;
-  strategychosen = 1.0;
-}
-
-void Strategy::Seek()
-{
-  oldstrategychosen = strategychosen;
-  strategychosen = 2.0;
-}
-
-void Strategy::Goto()
-{
-  oldstrategychosen = strategychosen;
-  strategychosen = 3.0;
-}
-
-void Strategy::Land()
-{
-  oldstrategychosen = strategychosen;
-  strategychosen = 4.0;
-}
-
-void Strategy::Follow()
-{
-  oldstrategychosen = strategychosen;
-  strategychosen = 5.0;
-}
-
-void Strategy::BackToBase()
-{
-  oldstrategychosen = strategychosen;
-  strategychosen = 6.0;
-}
-
-// This function is used to find the role of the drone, i.e. if it the main or the secondary drone.
-int Strategy::FindRole()
-{
-  i = 0;
-  while (ros::ok() && i < 2)  // 2 car 2 drones pour le moment
-  {
-    if (lastDronesrolesreceived.roles[i].name == drone_name)
-    {
-      return lastDronesrolesreceived.roles[i].role;
-    }
-    i++;
-  }
-  /* ** Other group's comments: ** */
-  // TODO: the drone should wait until a role is attributed ...
-  printf("I did not find my role");
-  return 0.0;
-}
-
-// This function give the position chosen to the object of this function.
-void Strategy::SetXYChosen(double xchosen, double ychosen)
+// This function gives the position chosen to the object of this function.
+void Strategy::SetXYZChosen(float xchosen, float ychosen, float zchosen)
 {
   this->xchosen = xchosen;
   this->ychosen = ychosen;
+  this->zchosen = zchosen;
 }
 
-// This function sent the strategy number and the position chosen to the path_planning.
+void Strategy::SetStrategy(int strategy)
+{
+  this->strategy = strategy;
+  this->publish_strategy();
+  ROS_INFO("strategy set to %d",strategy);
+}
+
+int Strategy::GetStrategy()
+{
+  return strategy;
+}
+
+double Strategy::getAltitude()
+{
+  return pose.z;
+}
+
+// This function sends the strategy number and the position chosen to the path_planning.
 void Strategy::publish_strategy()
 {
   // instantiate the strategy message
   boris_drone::StrategyMsg strategy_msg;
 
-  strategy_msg.type = strategychosen;
-  strategy_msg.x = xchosen;
-  strategy_msg.y = ychosen;
+  strategy_msg.type = strategy;
+  if (strategy == GOTO)
+  {
+    strategy_msg.x = xchosen;
+    strategy_msg.y = ychosen;
+    strategy_msg.z = zchosen;
+  }
 
   // publish
   strategy_pub.publish(strategy_msg);
@@ -177,218 +121,98 @@ void Strategy::publish_strategy()
 // This function is called when the topic of the target_detected of this drone publishes something.
 void Strategy::targetDetectedCb(const boris_drone::TargetDetected::ConstPtr targetDetectedPtr)
 {
-  lastTargetDetected = *targetDetectedPtr;
-  oldstrategychosen = strategychosen;
-  // xchosen = lastTargetDetectedFromSlave.world_point.x;
-  // ychosen = lastTargetDetectedFromMaster.world_point.y;
-}
-
-// This function is called when the topic of the target_detected of the drone master publishes
-// something. The place of the target become the x and y chosen that will be sent to the
-// pathplanning.
-void Strategy::targetDetectedFromMasterCb(
-    const boris_drone::TargetDetected::ConstPtr lastTargetDetectedPtr)
-{
-  lastTargetDetectedFromMaster = *lastTargetDetectedPtr;
-  xchosen = lastTargetDetectedFromMaster.world_point.x;
-  ychosen = lastTargetDetectedFromMaster.world_point.y;
-  TargetDetectedFromMaster = true;
-
-  printf("target detected from master \n");
-}
-
-// This function is called when the topic of the target_detected of the secondary drone publishes
-// something. The position of the target on the real playground will be set in the x and y chosen
-// and in the x and y dectectedbyslave variables.
-
-void Strategy::targetDetectedFromSlaveCb(
-    const boris_drone::TargetDetected::ConstPtr lastTargetDetectedPtr)
-{
-  lastTargetDetectedFromSlave = *lastTargetDetectedPtr;
-  xDetectedBySlave = lastTargetDetectedFromSlave.world_point.x;
-  yDetectedBySlave = lastTargetDetectedFromSlave.world_point.y;
-  xchosen = lastTargetDetectedFromSlave.world_point.x;
-  ychosen = lastTargetDetectedFromSlave.world_point.y;
-  TargetDetectedFromSlave = true;
-  ROS_INFO("Slave detected the target");
-}
-
-// This function is executed when the multi strategy publishes something. This message contains the
-// roles (main/master, secondary/slave) of the drones.
-void Strategy::multi_strategyCb(const boris_drone::DroneRoles::ConstPtr drones_rolesPtr)
-{
-  lastDronesrolesreceived = *drones_rolesPtr;
-  StrategyCbreceived = true;
-  ROS_DEBUG("strategy received multistrategy message");
-}
-
-// This function is called when a message is published in the navdata channel. Navdata channel
-// contains a lot of information but, in this case, the intersting one is the percentage of the
-// master drone. This will allow to call the secondary drone if the latter is to low.
-void Strategy::navdataCb(const ardrone_autonomy::Navdata::ConstPtr navdataPtr)
-{
-  lastNavdataReceived = *navdataPtr;
-  batteryLeft = lastNavdataReceived.batteryPercent;
-
-  if (drone_name == "boris_drone_4" && batteryLeft != oldbatteryLeft)
+  if (TargetFound == 0)
   {
-    ROS_INFO("BatteryLeft read from drone 2 only %lf:", batteryLeft);
-    // ROS_INFO("BackupCalled is %d", backupCalled);
-    oldbatteryLeft = batteryLeft;
-  }
-  if (batteryLeft < 75)
-  {
-    backupCalled = true;
+    ROS_INFO("Target Detected!");
+    targetX = targetDetectedPtr->world_point.x;
+    targetY = targetDetectedPtr->world_point.y;
+    TargetFound = 1;
   }
 }
 
-// This function is called when the drone slave published its pose.
-void Strategy::poseFromSlaveCb(const boris_drone::Pose3D::ConstPtr posePtr)
+void Strategy::poseCb(const boris_drone::Pose3D::ConstPtr posePtr)
 {
-  lastPoseReceivedFromSlave = *posePtr;
+  pose = *posePtr;
+}
+
+void Strategy::exploreCb(const std_msgs::Empty::ConstPtr emptyPtr)
+{
+  FinishedExploring = true;
+}
+
+void Strategy::goHighCb(const std_msgs::Float32::ConstPtr goHighPtr)
+{
+  go_high = true;
+  go_high_altitude = goHighPtr->data;
+}
+
+bool Strategy::goingHigh()
+{
+  return go_high;
+}
+
+float Strategy::getHighAltitude()
+{
+  return go_high_altitude;
+}
+
+void Strategy::stopGoingHigh()
+{
+  go_high = false;
 }
 
 // This is the main function where the strategy to sent to the path_planning will be chosen as a
 // function of all above data.
 int main(int argc, char** argv)
 {
-  ROS_INFO_STREAM("strategy started");
+  double altitude;
+  ROS_INFO("Strategy started");
   ros::init(argc, argv, "strategy");
-  printf("Main de la strategy");
-
-  /*  if (ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug))
-    {
-      ros::console::notifyLoggerLevelsChanged();
-    }*/
 
   Strategy myStrategy;
   ros::Rate r(20);  // This function refreshes every 1/20 second.
-  ROS_DEBUG("Strategy started");
-  myStrategy.reset();
-  myStrategy.publish_strategy();
+  myStrategy.SetStrategy(WAIT);
+  ros::spinOnce();
+  ros::Duration(10).sleep();
+  r.sleep();
+
+  myStrategy.SetStrategy(TAKEOFF);
+  int strategy = myStrategy.GetStrategy();
   ros::spinOnce();
   r.sleep();
 
-  // while strategy hasn't receive the roles from the multi_strategy, it does nothing and keep
-  // listening.
-  while (!myStrategy.StrategyCbreceived)
+while (ros::ok())
+{
+  altitude = myStrategy.getAltitude();
+  strategy = myStrategy.GetStrategy();
+  if (myStrategy.goingHigh())
   {
-    // printf("Waiting for strategy to send me something to do");
-    ros::spinOnce();
-    r.sleep();
+    myStrategy.SetXYZChosen(myStrategy.pose.x, myStrategy.pose.y, myStrategy.getHighAltitude());
+    myStrategy.SetStrategy(GOTO);
+    ros::Duration(10).sleep();
+    myStrategy.stopGoingHigh();
   }
-
-  // If the role received is 4, that means this node belongs to the master drone. So, strategy 1
-  // (takeoff) is sent to the pathplanning.
-  // Then, the drone waits 10 seconds (time to take off and get stabilized). After that, the
-  // strategy 2 (Seek/explore) is sent to the path_planning.
-  //
-  // ros::spinOnce(); means that ros can see if it got a message from a topic.
-  if (myStrategy.FindRole() == 4)
+  else if (strategy == TAKEOFF && altitude > 0.5)
   {
-    myStrategy.Takeoff();
-    myStrategy.publish_strategy();
-    ros::spinOnce();
-    r.sleep();
     ros::Duration(10).sleep();  // Wait for 10s
-    myStrategy.Seek();
-    myStrategy.publish_strategy();
-    ros::spinOnce();
-    r.sleep();
-
-    while (ros::ok())
-    {
-      TIC(stratego);
-      // The strategy stays in Seek/exploration mode until the drones find the target. Then the
-      // strategy becomes "Follow" the target.
-      if (myStrategy.TargetDetectedFromMaster && !myStrategy.TargetDetectedFromSlave)
-      {
-        myStrategy.strategychosen = 5.0;
-        // ROS_INFO("Strategy: Follow");
-      }
-      // If the backup is called and that the secondary drone is near from the main drone, so the
-      // strategy back to base is sent to the pathplanning node.
-      if ((myStrategy.lastPoseReceivedFromSlave.x - myStrategy.xchosen) *
-                      (myStrategy.lastPoseReceivedFromSlave.x - myStrategy.xchosen) +
-                  ((myStrategy.lastPoseReceivedFromSlave.y - 0.5) - myStrategy.ychosen) *
-                      ((myStrategy.lastPoseReceivedFromSlave.y - 0.5) - myStrategy.ychosen) <
-              16 &&
-          myStrategy.strategychosen == 5.0 && myStrategy.backupCalled)
-      {
-        myStrategy.BackToBase();
-      }
-      myStrategy.publish_strategy();
-      //  }
-      ros::spinOnce();
-
-      //TOC(stratego, "stratego");
-      r.sleep();
-    }
+    myStrategy.SetStrategy(SEEK);         // Change strategy to seek
   }
-
-  // if the messages got from the multi_drone node contains role = 2, so this node belongs to the
-  // drone slave. So the strategy GOTO is selected but not yet sent to the pathplanning node.
-  else if (myStrategy.FindRole() == 2)
+  else if (strategy == SEEK && myStrategy.TargetFound)
   {
-    myStrategy.strategychosen = 3.0;
-
-    // While the backup, i.e. this drone, is not called, Ros does nothing and read its topics. So,
-    // the strategy is still not sent and nothing happen to the secondary drone.If
-    // backup is called, we go to the next loop.
-    while (ros::ok() && !myStrategy.backupCalled)
-    {
-      // Waiting for master to reach its critical battery.
-      ros::spinOnce();
-      r.sleep();
-    }
-
-    while (ros::ok())
-    {
-      // if the backup is called (previous loop) and the drone has not yest took off, the strategy
-      // take off is sent to the pathplanning. Then the drone waits 10 seconds to stabilized.
-      // Then,
-      // the strategy goto is sent to the pathplanning and the drone is considred as "intheair" so
-      // this loop will not be called anymore.
-      if (myStrategy.strategychosen == 3.0 && !myStrategy.Intheair)
-      {
-        myStrategy.Takeoff();
-        myStrategy.publish_strategy();
-        ros::spinOnce();
-        r.sleep();
-        ros::Duration(10).sleep();  // Wait for 10s
-        myStrategy.Goto();  // Goto is called and x,y from the TargetDetectedFromMaster are the
-                            // pose_ref
-        myStrategy.publish_strategy();
-        ros::spinOnce();
-        r.sleep();
-        myStrategy.Intheair = true;
-      }
-
-      // When the slave detects the target, the strategy follow is sent to the pathplanning.The
-      // coordinates from the strategy message are the position of the target read from the
-      // targetDetectedFromSlaveCb message.
-      if (myStrategy.TargetDetectedFromSlave)
-      {
-        myStrategy.strategychosen = 5.0;
-        myStrategy.publish_strategy();
-        // ROS_INFO("Slave must follow the target!");
-        ros::spinOnce();
-        r.sleep();
-      }
-
-      // If the drone must land and is still in the air, this strategy is sent to the pathplanning
-      // and the variable Intheair is reset to false. Land is never called by the IA for the
-      // secondary drone. So, this function is only true when we ask for an emergency stop.
-      if (myStrategy.strategychosen == 4.0 && myStrategy.Intheair)
-      {
-        myStrategy.publish_strategy();
-        ros::spinOnce();
-        r.sleep();
-        myStrategy.Intheair = false;
-      }
-      ros::spinOnce();
-      r.sleep();
-    }
+    myStrategy.SetStrategy(EXPLORE);
   }
+  else if (strategy == EXPLORE && myStrategy.FinishedExploring)
+  {
+    myStrategy.SetStrategy(BACKTOBASE);
+  }
+  else if (strategy == BACKTOBASE &&
+          (myStrategy.pose.x * myStrategy.pose.x + myStrategy.pose.y * myStrategy.pose.y < 0.35))
+  {
+    myStrategy.SetStrategy(LAND);
+  }
+  ros::spinOnce();
+  r.sleep();
+}
+
   return 0;
 }

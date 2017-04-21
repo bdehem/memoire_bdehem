@@ -35,8 +35,6 @@ ProcessedImage::ProcessedImage(const sensor_msgs::Image msg, const boris_drone::
   try
   {
     this->cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
-    // ROS_DEBUG("ProcessedImage::init: the size of the corrected image is: %d, %d",
-    // cv_ptr->image.rows, cv_ptr->image.cols);
   }
   catch (cv_bridge::Exception& e)
   {
@@ -132,7 +130,7 @@ ProcessedImage::ProcessedImage(const sensor_msgs::Image msg, const boris_drone::
   TIC(detect);
   detector.detect(this->cv_ptr->image, this->keypoints);
   //TOC(detect, "detect keypoints");
-  ROS_DEBUG("ProcessedImage::init this->keypoints.size()=%d", this->keypoints.size());
+  ROS_DEBUG("ProcessedImage::init this->keypoints.size()=%lu", this->keypoints.size());
   ProcessedImage::last_number_of_keypoints = this->keypoints.size();
   if (this->keypoints.size() == 0)
   {
@@ -206,7 +204,7 @@ void ProcessedImage::convertToMsg(boris_drone::ProcessedImageMsg::Ptr& msg, Targ
 
   // Remove keypoints on the target
   msg->keypoints.resize(this->keypoints.size() - idxs_to_remove.size());
-  ROS_DEBUG("ProcessedImage::init msg->keypoints.size()=%d", msg->keypoints.size());
+  ROS_DEBUG("ProcessedImage::init msg->keypoints.size()=%lu", msg->keypoints.size());
   int count = 0;
   int j = 0;
   for (unsigned i = 0; i < this->keypoints.size() && j < msg->keypoints.size() &&

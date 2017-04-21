@@ -5,7 +5,8 @@
 
 Header header
 
-float64 type
+int16 type
 
 float64 x
 float64 y
+float64 z

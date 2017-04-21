@@ -35,7 +35,7 @@ cv::Mat rotationMatrixZ(const double angle);
 cv::Mat rollPitchYawToRotationMatrix(const double roll, const double pitch, const double yaw);
 
 //! \get rotation matrix used by cv
-void getCameraPositionMatrices(const boris_drone::Pose3D& pose, cv::Mat& R, cv::Mat& T);
+void getCameraPositionMatrices(const boris_drone::Pose3D& pose, cv::Mat& R, cv::Mat& T, bool front);
 
 //! \return the transformation (rotation and transltation) matrix
 cv::Mat rTMatrix(const cv::Mat rot, const double tx, const double ty, const double tz);
@@ -45,5 +45,7 @@ void debugRTMatrix(cv::Mat Rt);
 
 //! This method converts opencv keypoint coordinates to opencv point format
 std::vector< cv::Point2f > Points(const std::vector< cv::KeyPoint >& keypoints);
+
+double getSqDist(boris_drone::Pose3D pose1, boris_drone::Pose3D pose2);
 
 #endif /* boris_drone_OPENCV_UTILS_H */

@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 
 <!-- Launch file for the starting mission for the thesis of Boris Dehem-->
-<!-- Explore in a straight line until a target is found. Then explore around it, and return to base-->
 <!-- Work In Progress -->
 <launch>
   <!-- IPv4 address of your drones -->
@@ -57,9 +56,7 @@
     <param name="draw_target" value="true" />
   </node>
 
-  <node name="boris_drone_pose_estimation" pkg="boris_drone" type="pose_estimation" output="screen">
-    <param name="drone_prefix" value=""/>
-    <param name="use_visual_pose" value="true" />
+  <node name="boris_drone_manual_pose_estimation" pkg="boris_drone" type="manual_pose_estimation" output="screen">
   </node>
 
   <!-- bottom camera -->
@@ -82,18 +79,6 @@
   <node name="boris_drone_mapping_node" pkg="boris_drone" type="mapping_node" output="screen">
     <param name="do_search" value="true" />
     <param name="stop_if_lost" value="true" />
-  </node>
-
-  <node name="boris_drone_path_planning" pkg="boris_drone" type="path_planning" output="screen">
-    <param name="drone_prefix" value=""/>
-  </node>
-
-  <node name="boris_drone_controller" pkg="boris_drone" type="controller_custom" output="screen">
-    <param name="drone_prefix" value=""/>
-  </node>
-
-  <node name="boris_drone_strategy" pkg="boris_drone" type="strategy" output="screen">
-      <param name="drone_name" value="$(arg drone_name)" />
   </node>
 
 </launch>

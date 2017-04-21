@@ -67,7 +67,7 @@ bool Target::init(const std::string relative_path)
 
   ROS_DEBUG("DESCRIPTORS DIMENSIONS: %d,%d", descriptors.cols, descriptors.rows);
   ROS_DEBUG("end Target::init");
-  ROS_DEBUG("Target: %d keypoints", keypoints.size());
+  ROS_DEBUG("Target: %lu keypoints", keypoints.size());
   return true;
 }
 
@@ -101,7 +101,6 @@ bool Target::detect(cv::Mat cam_descriptors, std::vector< cv::KeyPoint >& cam_ke
   // step 5: Draw only "good" matches
   for (int i = 0; i < descriptors.rows; i++)
   {
-    // ROS_DEBUG("Target::detect DISTANCE %d: %f", i, matches[i].distance);
     if (matches[i].distance < DIST_THRESHOLD * 0.75)  // 1.2)
     {
       good_matches.push_back(matches[i]);
@@ -117,7 +116,7 @@ bool Target::detect(cv::Mat cam_descriptors, std::vector< cv::KeyPoint >& cam_ke
   //   }
   // }
 
-  ROS_DEBUG("Target::detect matches:%d", good_matches.size());
+  ROS_DEBUG("Target::detect matches:%lu", good_matches.size());
   if (good_matches.size() > this->descriptors.rows / 6.0 && good_matches.size() > 8)
   {
     target_detected = true;
