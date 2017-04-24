@@ -18,8 +18,6 @@ ManualPoseEstimator::ManualPoseEstimator()
   pose_pub = nh.advertise< boris_drone::Pose3D >(pose_channel, 1);
 
   manual_pose_channel = nh.resolveName("manual_pose_estimation");
-  ROS_INFO("manual pose channel resolved name:");
-  ROS_INFO(manual_pose_channel.c_str());
   manual_pose_pub     = nh.advertise< boris_drone::Pose3D >(manual_pose_channel, 1);
   manual_pose_sub     = nh.subscribe(manual_pose_channel, 1, &ManualPoseEstimator::manualPoseCb, this);
 

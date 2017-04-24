@@ -237,7 +237,7 @@ void Map::doBundleAdjustment(Keyframe& kf1,
   int NPOINTS = matching_indices_1.size(); // number of 3d points
   int NCAMS   = 2; // number of cameras (viewpoints)
 
-  points3D.resize(NPOINTS);
+//  points3D.resize(NPOINTS);
 
   // fill image projections
   pointsImg.resize(NCAMS);
@@ -257,11 +257,11 @@ void Map::doBundleAdjustment(Keyframe& kf1,
   }
   for (int i=0; i<NPOINTS; i++)
   {
-    cv::Point3d point;
-    point.x = 0.0;
-    point.y = 0.0;
-    point.z = 0.0;
-    points3D[i] = point;
+//    cv::Point3d point;
+//    point.x = 0.0;
+//    point.y = 0.0;
+//    point.z = 0.0;
+//    points3D[i] = point;
     pointsImg[0][i] = kf1.unmapped_imgPoints[matching_indices_1[i]];
     pointsImg[1][i] = kf2.unmapped_imgPoints[matching_indices_2[i]];
     visibility[0][i] = 1;
