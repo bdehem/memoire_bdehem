@@ -45,6 +45,9 @@ Strategy::Strategy()
   explore_channel = nh.resolveName("finished_exploring");
   explore_sub = nh.subscribe(explore_channel,10,&Strategy::exploreCb,this);
 
+  go_high_channel = nh.resolveName("go_high");
+  go_high_sub = nh.subscribe(go_high_channel,10,&Strategy::goHighCb,this);
+
   /* ** Other group's comments: ** */
   // TODO: subscribe to channels in funtion of the role ...
   // TODO: do not use absolute path to get the target_detected channel of the current drone

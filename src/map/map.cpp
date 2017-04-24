@@ -230,7 +230,7 @@ void Map::doBundleAdjustment(Keyframe& kf1,
                              std::vector<cv::Point3d>& points3D)
 {
   /****** INPUT DATA *****************/
-  ROS_INFO("Doing bundel adjustment");
+  ROS_INFO("Doing bundle adjustment");
   std::vector<std::vector<cv::Point2d> > pointsImg;
   std::vector<std::vector<int> > visibility;
   std::vector<cv::Mat> cameraMatrix, distCoeffs, R, T;
@@ -390,17 +390,20 @@ bool Map::keyframeNeeded(boris_drone::Pose3D pose)
 {
   if (keyframes.size() == 0)
   {
+    target_altitude = keyframes[0]->pose.z + 0.6;
     return true;
   }
-  else if (keyframes.size() == 1)
+  else if ( keyframes.size() == 1 && pose.z > keyframes[0]->pose.z )
   {
-    return (pose.z > keyframes[0]->pose.z + 0.5);
+    target_altitude = -1.0;
+    return true;
   }
-  else
+  else if (keyframes.size() >= 2)
   {
     double sqDist = getSqDist(pose, keyframes[keyframes.size()-1]->pose);
     return (sqDist > 1);
   }
+  return false;
 }
 
 void cloud_debug(pcl::PointCloud< pcl::PointXYZRGBSIFT >::ConstPtr cloud)
@@ -471,8 +474,6 @@ bool Map::matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_m
   return true;
 }
 
-
-//TODO: remove descriptors for keyframe
 void Map::matchKeyframes(Keyframe& kf1, Keyframe& kf2, bool fixed_poses)
 {
   if (kf1.descriptors.rows == 0 || kf2.descriptors.rows == 0)
@@ -511,7 +512,7 @@ void Map::matchKeyframes(Keyframe& kf1, Keyframe& kf2, bool fixed_poses)
   */
 
   //add points to cloud and to mapped points of both keyframes
-  for (int i=0; i<matching_indices_1.size();i++)
+  for (int i=0; i<matching_indices_1.size(); i++)
   {
     pcl::PointXYZRGBSIFT new_point;
     new_point.x = points3D[i].x;
