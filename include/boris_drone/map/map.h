@@ -126,8 +126,6 @@ public:
 
   cv::Mat descriptors; //!< descriptors in opencv format
 
-  double target_altitude;
-
   bool processFrame(const Frame& frame,boris_drone::Pose3D& PnP_pose);
 
   void newKeyframe(const Frame& frame);

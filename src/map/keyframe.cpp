@@ -25,8 +25,8 @@ Keyframe::Keyframe(Map* p_global_map, const Frame& frame)
 {
   this->map                 = p_global_map;
   this->pose                = frame.pose;
-  this->unmapped_imgPoints = frame.imgPoints;
-  this->descriptors         = frame.descriptors;
+  this->unmapped_imgPoints  = frame.imgPoints;
+  this->descriptors         = frame.descriptors;  
 }
 
 
@@ -34,7 +34,7 @@ Keyframe::Keyframe(Map* p_global_map, const boris_drone::Pose3D& pose, const Fra
 {
   this->map                 = p_global_map;
   this->pose                = pose;
-  this->unmapped_imgPoints = frame.imgPoints;
+  this->unmapped_imgPoints  = frame.imgPoints;
   this->descriptors         = frame.descriptors;
 }
 

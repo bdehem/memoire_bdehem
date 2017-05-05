@@ -176,11 +176,11 @@ int main(int argc, char** argv)
 
   while (ros::ok())
   {
-    if (map_node.map.target_altitude>0)
-    {
-      map_node.publishGoHigh(map_node.map.target_altitude);
-      ROS_INFO_THROTTLE(10,"target altitude is %f",map_node.map.target_altitude);
-    }
+//    if (map_node.map.target_altitude>0)
+//    {
+//      map_node.publishGoHigh(map_node.map.target_altitude);
+//      ROS_INFO_THROTTLE(10,"target altitude is %f",map_node.map.target_altitude);
+//    }
     map_node.visualizer->spinOnce(10);
 
     map_node.targetDetectedPublisher();

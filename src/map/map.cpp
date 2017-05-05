@@ -23,8 +23,6 @@ Map::Map(bool do_search, bool stop_if_lost, cv::Mat camera_matrix_K) : cloud(new
   threshold_new_keyframe = 50;
   threshold_new_keyframe_percentage = 0.25;
 
-  target_altitude = -1.0;
-
   // get camera parameters in launch file
   if (!Read::CamMatrixParams("cam_matrix"))
   {
@@ -390,12 +388,10 @@ bool Map::keyframeNeeded(boris_drone::Pose3D pose)
 {
   if (keyframes.size() == 0)
   {
-    target_altitude = keyframes[0]->pose.z + 0.6;
     return true;
   }
-  else if ( keyframes.size() == 1 && pose.z > keyframes[0]->pose.z )
+  else if ( (keyframes.size() == 1) && (pose.z > keyframes[0]->pose.z + 0.5) )
   {
-    target_altitude = -1.0;
     return true;
   }
   else if (keyframes.size() >= 2)
@@ -504,7 +500,7 @@ void Map::matchKeyframes(Keyframe& kf1, Keyframe& kf2, bool fixed_poses)
                              kf2.unmapped_imgPoints[matching_indices_2[i]],
                              kf1.pose, kf2.pose);
   }
-  doBundleAdjustment(kf1, kf2, matching_indices_1, matching_indices_2, fixed_poses, points3D);
+  //doBundleAdjustment(kf1, kf2, matching_indices_1, matching_indices_2, fixed_poses, points3D);
 
   /* TODO: put code in keyframe
   kf1.designPointsAsMapped(matching_indices_1,cloud_indices);
