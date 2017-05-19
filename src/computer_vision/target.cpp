@@ -198,7 +198,6 @@ bool Target::detect(cv::Mat cam_descriptors, std::vector< cv::KeyPoint >& cam_ke
           camera_points[1] = cam_keypoints[good_matches[j].trainIdx].pt;
           std::vector< cv::Point3f > map_points(2);
           projection_2D(camera_points, pose, map_points, true);
-
           double dist2 = cv::norm(map_points[0] - map_points[1]);
 
           //   if (dist2 > 0.001)  // if two super-imposed identical descriptors in map

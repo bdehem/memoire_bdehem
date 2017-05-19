@@ -127,10 +127,12 @@ void Map::newReferenceKeyframe(const Frame& current_frame, boris_drone::Pose3D P
 
 }
 
-void Map::triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
+bool Map::triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
                       const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2)
 {
+  //Midpoint method
   //http://geomalgorithms.com/a07-_distance.html
+  double angleThresh = PI/40;
 
   /* get coordinates */
   cv::Mat world2cam1, world2cam2, origin1, origin2;
@@ -138,14 +140,21 @@ void Map::triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Poi
   getCameraPositionMatrices(pose2, world2cam2, origin2, true);
 
   /* compute point coordinates in calibrated image coordinates (=rays in camera coordinates) */
-  cv::Mat ray1_cam = (cv::Mat_< double >(3, 1) << (pt1.x - Read::img_center_x()) / Read::focal_length_x(),
-                                                  (pt1.y - Read::img_center_y()) / Read::focal_length_y(), 1);
-
-  cv::Mat ray2_cam = (cv::Mat_< double >(3, 1) << (pt2.x - Read::img_center_x()) / Read::focal_length_x(),
-                                                  (pt2.y - Read::img_center_y()) / Read::focal_length_y(), 1);
+  cv::Mat ray1_cam = (cv::Mat_<double>(3, 1) << (pt1.x - Read::img_center_x()) / Read::focal_length_x(),
+                                                (pt1.y - Read::img_center_y()) / Read::focal_length_y(), 1);
+  cv::Mat ray2_cam = (cv::Mat_<double>(3, 1) << (pt2.x - Read::img_center_x()) / Read::focal_length_x(),
+                                                (pt2.y - Read::img_center_y()) / Read::focal_length_y(), 1);
   /* convert to world coordinates */
-  cv::Mat ray1 = world2cam1.t() * ray1_cam;
-  cv::Mat ray2 = world2cam2.t() * ray2_cam;
+  cv::Mat ray1 = world2cam1 * ray1_cam;
+  cv::Mat ray2 = world2cam2 * ray2_cam;
+
+  ROS_INFO("\tray1_cam=%f,%f,%f",ray1_cam.at<double>(0,0), ray1_cam.at<double>(1,0), ray1_cam.at<double>(2,0));
+  ROS_INFO("\tray2_cam=%f,%f,%f",ray2_cam.at<double>(0,0), ray2_cam.at<double>(1,0), ray2_cam.at<double>(2,0));
+  ROS_INFO("\tray1=%f,%f,%f",ray1.at<double>(0,0), ray1.at<double>(1,0), ray1.at<double>(2,0));
+  ROS_INFO("\tray2=%f,%f,%f",ray2.at<double>(0,0), ray2.at<double>(1,0), ray2.at<double>(2,0));
+
+  //if (angleBetween(ray1,ray2) < angleThresh)
+  //  return false;
 
   /* compute closest points on both rays and take midpoint*/
   double a,b,c,d,e,k1,k2,denominator;
@@ -164,60 +173,201 @@ void Map::triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Poi
   pt_out.x = (p1.at<double>(0, 0) + p2.at<double>(0,0))/2;
   pt_out.y = (p1.at<double>(1, 0) + p2.at<double>(1,0))/2;
   pt_out.z = (p1.at<double>(2, 0) + p2.at<double>(2,0))/2;
+  return true;
 }
 
-
-
-
-/* TODO: optimal correction (see http://www.iim.cs.tut.ac.jp/~kanatani/papers/bmtriang.pdf)
-void Map::triangulate(cv::Point2d pt1, cv::Point2d pt2, boris_drone::Pose3D pose1, boris_drone::Pose3D pose2)
+bool Map::triangulate2(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
+                      const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2)
 {
-  cv::Point3D camera_center_1(pose1.x,pose1.y,pose1.z);
-  cv::Point3D camera_center_2(pose2.x,pose2.y,pose2.z);
-  cv::Mat Rx(3, 3, DataType<float>::type); //rotation matrix around x axis
-  cv::Mat Ry(3, 3, DataType<float>::type); //rotation matrix around y axis
-  cv::Mat Rz(3, 3, DataType<float>::type); //rotation matrix around z axis
-  cv::Mat R(3, 3, DataType<float>::type);  //total rotation matrix
-  cv::Mat t(3, 3, DataType<float>::type);  //translation matrix (vector expressed as cross-product matrix)
-  cv::Mat E(3, 3, DataType<float>::type);  //essential matrix
-  cv::Mat F(3, 3, DataType<float>::type);  //fundamental matrix
+  //OpenCV method
+  double angleThresh = PI/40;
 
-  double roll  = pose1.rotX - pose2.rotX;
-  double pitch = pose1.rotY - pose2.rotY;
-  double yaw   = pose1.rotZ - pose2.rotZ;
+  /* get coordinates */
+  cv::Mat world2cam1, world2cam2, origin1, origin2;
+  getCameraPositionMatrices(pose1, world2cam1, origin1, true);
+  getCameraPositionMatrices(pose2, world2cam2, origin2, true);
 
-  double dx = pose1.X - pose2.X;
-  double dy = pose1.Y - pose2.Y;
-  double dz = pose1.Z - pose2.Z;
 
-  Rx = (cv::Mat_<double>(3, 3) <<  1, 0        ,  0         ,
-                                   0, cos(roll), -sin(roll) ,
-                                   0, sin(roll),  cos(roll) );
+  cv:: Mat T1 = (cv::Mat_<double>(3, 4) << 1, 0, 0, -origin1.at<double>(0,0),
+                                           0, 1, 0, -origin1.at<double>(1,0),
+                                           0, 0, 1, -origin1.at<double>(2,0));
+  cv:: Mat T2 = (cv::Mat_<double>(3, 4) << 1, 0, 0, -origin2.at<double>(0,0),
+                                           0, 1, 0, -origin2.at<double>(1,0),
+                                           0, 0, 1, -origin2.at<double>(2,0));
 
-  Ry = (cv::Mat_<double>(3, 3) <<  cos(pitch), 0, sin(pitch) ,
-                                   0,          1, 0          ,
-                                  -sin(pitch), 0, cos(pitch) );
+  cv:: Mat K2 = (cv::Mat_<double>(3, 3) << 529.1, 0    , 350.6,
+                                           0,     529.1, 182.2,
+                                           0,     0,     1     );
+  cv:: Mat K1 = (cv::Mat_<double>(3, 3) << 529.1, 0    , 350.6,
+                                           0,     529.1, 182.2,
+                                           0,     0,     1     );
 
-  Rz = (cv::Mat_<double>(3, 3) <<  cos(yaw), -sin(yaw), 0 ,
-                                   sin(yaw),  cos(yaw), 0 ,
-                                   0       ,  0       , 1 );
 
-  R = Rx*Ry*Rz;
+  std::vector<cv::Point2d> cam0pnts;
+  std::vector<cv::Point2d> cam1pnts;
 
-  t = (cv::Mat_<double>(3, 3) <<  0 , -dz,  dy ,
-                                  dz,  0 , -dx ,
-                                 -dy,  dx,  0  );
-  t.at<double>(0,0) = pose1.x - pose2.x;
-  t.at<double>(1,0) = pose1.y - pose2.y;
-  t.at<double>(2,0) = pose1.z - pose2.z;
+  cv::Mat cam0 = K1*world2cam1.t()*T1;
+  cv::Mat cam1 = K2*world2cam2.t()*T2;
 
-  E = R*t;
+  cam0pnts.push_back(pt1);
+  cam1pnts.push_back(pt2);
 
-  F = camera_matrix_K.t()*E*camera_matrix_K;
+  cv::Mat pnts3D(4,cam0pnts.size(),CV_64F);
 
-  // see http://www.iim.cs.tut.ac.jp/~kanatani/papers/bmtriang.pdf to continue
+  cv::triangulatePoints(cam0,cam1,cam0pnts,cam1pnts,pnts3D);
+
+  pt_out.x = pnts3D.at<double>(0,0)/pnts3D.at<double>(3,0);
+  pt_out.y = pnts3D.at<double>(1,0)/pnts3D.at<double>(3,0);
+  pt_out.z = pnts3D.at<double>(2,0)/pnts3D.at<double>(3,0);
+
+  cv::Mat reproj1 = cam0*pnts3D;
+  cv::Mat reproj2 = cam1*pnts3D;
+  double pt1_rx, pt1_ry,pt2_rx, pt2_ry,d1,d2;
+  pt1_rx = reproj1.at<double>(0,0)/reproj1.at<double>(2,0);
+  pt1_ry = reproj1.at<double>(1,0)/reproj1.at<double>(2,0);
+  pt2_rx = reproj2.at<double>(0,0)/reproj2.at<double>(2,0);
+  pt2_ry = reproj2.at<double>(1,0)/reproj2.at<double>(2,0);
+  d1 = (pt1.x - pt1_rx)*(pt1.x - pt1_rx) + (pt1.y - pt1_ry)*(pt1.y - pt1_ry);
+  d2 = (pt2.x - pt2_rx)*(pt2.x - pt2_rx) + (pt2.y - pt2_ry)*(pt2.y - pt2_ry);
+  ROS_INFO("Triangulation:");
+  ROS_INFO("\t pt_in1 = %f, %f",pt1.x,pt1.y);
+  ROS_INFO("\t pt_in2 = %f, %f",pt2.x,pt2.y);
+  ROS_INFO("\t pt_rp1 = %f, %f",pt1_rx,pt1_ry);
+  ROS_INFO("\t pt_rp2 = %f, %f",pt2_rx,pt2_ry);
+  ROS_INFO("\t Dist = %f",d1+d2);
+  ROS_INFO("\t Point_out: x=%f, y=%f, z=%f",pt_out.x,pt_out.y,pt_out.z);
+
+//  if (d1+d2 > 550.0)
+//  {
+//    ROS_INFO("rejected: %f",d1+d2);
+//    return false;
+//  }
+  return true;
 }
-*/
+
+bool Map::triangulate3(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
+                      const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2)
+{
+//in matlab this is triangulate4 lol
+//http://www.iim.cs.tut.ac.jp/~kanatani/papers/sstriang.pdf
+//(iterative method for higher order aproximation)
+  /* get coordinates */
+  cv::Mat world2cam1, world2cam2, origin1, origin2;
+  getCameraPositionMatrices(pose1, world2cam1, origin1, true);
+  getCameraPositionMatrices(pose2, world2cam2, origin2, true);
+
+
+  cv:: Mat T1 = (cv::Mat_<double>(3, 4) << 1, 0, 0, -origin1.at<double>(0,0),
+                                           0, 1, 0, -origin1.at<double>(1,0),
+                                           0, 0, 1, -origin1.at<double>(2,0));
+  cv:: Mat T2 = (cv::Mat_<double>(3, 4) << 1, 0, 0, -origin2.at<double>(0,0),
+                                           0, 1, 0, -origin2.at<double>(1,0),
+                                           0, 0, 1, -origin2.at<double>(2,0));
+
+  cv:: Mat K2 = (cv::Mat_<double>(3, 3) << 529.1, 0    , 350.6,
+                                           0,     529.1, 182.2,
+                                           0,     0,     1     );
+  cv:: Mat K1 = (cv::Mat_<double>(3, 3) << 529.1, 0    , 350.6,
+                                           0,     529.1, 182.2,
+                                           0,     0,     1     );
+
+  cv::Mat cam0 = K1*world2cam1.t()*T1;
+  cv::Mat cam1 = K2*world2cam2.t()*T2;
+  cv::Mat F = (cv::Mat_<double>(3, 3)); // Fundamental Matrix3x3
+  getFundamentalMatrix(cam0,cam1,F);
+
+  cv::Mat pt1_h = (cv::Mat_<double>(3,1) << pt1.x, pt1.y, 1);
+  cv::Mat pt2_h = (cv::Mat_<double>(3,1) << pt2.x, pt2.y, 1);
+
+  cv:: Mat u = (cv::Mat_<double>(9,1) << F.at<double>(0,0),F.at<double>(0,1),F.at<double>(0,2),
+                                         F.at<double>(1,0),F.at<double>(1,1),F.at<double>(1,2),
+                                         F.at<double>(2,0),F.at<double>(2,1),F.at<double>(2,2));
+  cv::Mat P = (cv::Mat_<double>(3,3) << 1,0,0, 0,1,0, 0,0,0);
+
+  double x,y,x1,y1,f,x2,x12,y2,y12;
+
+  x  = pt1.x; y  = pt1.y;
+  x1 = pt2.x; y1 = pt2.y;
+  f = 250;
+  x2 = x*x; x12 = x1*x1;
+  y2 = y*y; y12 = y1*y1;
+  cv::Mat epsil = (cv::Mat_<double>(9,1) << x*x1,x*y1,x*f,y*x1,y*y1,y*f,x1*f,y1*f,f*f);
+  cv::Mat V = (cv::Mat_<double>(9,9) <<
+         x2+x12,x1*y1, f*x1,  x*y,   0,     0,   f*x,0,  0,
+         x1*y1, x2+y12,f*y1,  0,     x*y,   0,   0,  f*x,0,
+         f*x1,  f*y1,  f*f,   0,     0,     0,   0,  0,  0,
+         x*y,   0,     0,     y2+x12,x1*y1, f*x1,f*y,0,  0,
+         0,     x*y,   0,     x1*y1, y2+y12,f*y1,0,  f*y,0,
+         0,     0,     0,     f*x1,  f*y1,  f*f, 0  ,0,  0,
+         f*x,   0,     0,     f*y,   0,     0,   f*f,0,  0,
+         0,     f*x,   0,     0,     f*y,   0,   0,  f*f,0,
+         0,0,0,               0,0,0,             0,0,0);
+
+
+  cv::Mat x_hat  = pt1_h;
+  cv::Mat x1_hat = pt2_h;
+  //      E0 = Inf;
+  //      E = 100000000;
+
+  cv::Mat den1 = u.t()*V*u;
+  double den = den1.at<double>(0,0);
+  int k = 0;
+  //      %while(E0 - E >10^-1)
+  cv::Mat dx,dx1,temp;
+  while (k < 5)
+  {
+    k = k+1;
+    //    E0 = E;
+    temp = u.t()*epsil;
+    dx  = P*F    *x1_hat*temp.at<double>(0,0)/den;
+    dx1 = P*F.t()*x_hat *temp.at<double>(0,0)/den;
+    //E = dx'*dx+dx1'*dx1;
+    x_hat  = pt1_h - dx;
+    x1_hat = pt2_h - dx1;
+  }
+  cv::Point2d p1,p2;
+
+  p1.x = x_hat.at<double>(0,0);
+  p1.y = x_hat.at<double>(1,0);
+  p2.x = x1_hat.at<double>(0,0);
+  p2.y = x1_hat.at<double>(1,0);
+
+
+  std::vector<cv::Point2d> cam0pnts;
+  std::vector<cv::Point2d> cam1pnts;
+
+  cam0pnts.push_back(p1);
+  cam1pnts.push_back(p2);
+
+  cv::Mat pnts3D(4,cam0pnts.size(),CV_64F);
+
+  cv::triangulatePoints(cam0,cam1,cam0pnts,cam1pnts,pnts3D);
+
+  pt_out.x = pnts3D.at<double>(0,0)/pnts3D.at<double>(3,0);
+  pt_out.y = pnts3D.at<double>(1,0)/pnts3D.at<double>(3,0);
+  pt_out.z = pnts3D.at<double>(2,0)/pnts3D.at<double>(3,0);
+
+  cv::Mat reproj1 = cam0*pnts3D;
+  cv::Mat reproj2 = cam1*pnts3D;
+  double pt1_rx, pt1_ry,pt2_rx, pt2_ry,d1,d2;
+  pt1_rx = reproj1.at<double>(0,0)/reproj1.at<double>(2,0);
+  pt1_ry = reproj1.at<double>(1,0)/reproj1.at<double>(2,0);
+  pt2_rx = reproj2.at<double>(0,0)/reproj2.at<double>(2,0);
+  pt2_ry = reproj2.at<double>(1,0)/reproj2.at<double>(2,0);
+  d1 = (pt1.x - pt1_rx)*(pt1.x - pt1_rx) + (pt1.y - pt1_ry)*(pt1.y - pt1_ry);
+  d2 = (pt2.x - pt2_rx)*(pt2.x - pt2_rx) + (pt2.y - pt2_ry)*(pt2.y - pt2_ry);
+  ROS_INFO("Triangulation:");
+  ROS_INFO("\t pt_in1 = %f, %f",pt1.x,pt1.y);
+  ROS_INFO("\t pt_in2 = %f, %f",pt2.x,pt2.y);
+  ROS_INFO("\t pt_rp1 = %f, %f",pt1_rx,pt1_ry);
+  ROS_INFO("\t pt_rp2 = %f, %f",pt2_rx,pt2_ry);
+  ROS_INFO("\t Dist = %f",d1+d2);
+  ROS_INFO("\t Point_out: x=%f, y=%f, z=%f",pt_out.x,pt_out.y,pt_out.z);
+
+  return true;
+}
+
+
 
 
 void Map::doBundleAdjustment(Keyframe& kf1,
@@ -255,22 +405,20 @@ void Map::doBundleAdjustment(Keyframe& kf1,
   }
   for (int i=0; i<NPOINTS; i++)
   {
-//    cv::Point3d point;
-//    point.x = 0.0;
-//    point.y = 0.0;
-//    point.z = 0.0;
-//    points3D[i] = point;
     pointsImg[0][i] = kf1.unmapped_imgPoints[matching_indices_1[i]];
     pointsImg[1][i] = kf2.unmapped_imgPoints[matching_indices_2[i]];
     visibility[0][i] = 1;
     visibility[1][i] = 1;
-    ROS_INFO("n%d. img1=(%f,%f), on img2=(%f,%f)",i, pointsImg[0][i].x,pointsImg[0][i].y,pointsImg[1][i].x,pointsImg[1][i].y);
   }
+  cv::Mat temp1, temp2;
 
-  getCameraPositionMatrices(kf1.pose, R[0], T[0], true);
-  getCameraPositionMatrices(kf2.pose, R[1], T[1], true);
+  getCameraPositionMatrices(kf1.pose, temp1, T[0], true);
+  getCameraPositionMatrices(kf2.pose, temp2, T[1], true);
+  R[0] = temp1.t();
+  R[1] = temp2.t();
   /***********************************/
 
+  cout << "before" << endl;
   cout << "R0 = "<< endl << " "  << R[0] << endl << endl;
   cout << "R1 = "<< endl << " "  << R[1] << endl << endl;
   cout << "T0 = "<< endl << " "  << T[0] << endl << endl;
@@ -287,13 +435,19 @@ void Map::doBundleAdjustment(Keyframe& kf1,
   {
     params.type = cvsba::Sba::MOTIONSTRUCTURE;
   }
+  params.type = cvsba::Sba::MOTIONSTRUCTURE;
   params.fixedIntrinsics = 5;
   params.fixedDistortion = 5;
   params.verbose = true;
   sba.setParams(params);
-  //sba.run(points3D, pointsImg, visibility, cameraMatrix, R, T, distCoeffs);
+  sba.run(points3D, pointsImg, visibility, cameraMatrix, R, T, distCoeffs);
+  cout << "after" << endl;
+  cout << "R0 = "<< endl << " "  << R[0] << endl << endl;
+  cout << "R1 = "<< endl << " "  << R[1] << endl << endl;
+  cout << "T0 = "<< endl << " "  << T[0] << endl << endl;
+  cout << "T1 = "<< endl << " "  << T[1] << endl << endl;
   /***********************************/
-  cv::LevMarqSparse::bundleAdjust(points3D, pointsImg, visibility, cameraMatrix, R, T, distCoeffs);
+  //cv::LevMarqSparse::bundleAdjust(points3D, pointsImg, visibility, cameraMatrix, R, T, distCoeffs);
 }
 
 
@@ -354,6 +508,7 @@ bool Map::doPnP(const Frame& current_frame, boris_drone::Pose3D& PnP_pose)
 
   PnP_pose.header.stamp = current_frame.pose.header.stamp;  // needed for rqt_plot
 
+  ROS_INFO_THROTTLE(3,"Did PnP. There are %lu inliers", inliers_map_matching_points.size());
   return true;
 }
 
@@ -470,6 +625,7 @@ bool Map::matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_m
   return true;
 }
 
+
 void Map::matchKeyframes(Keyframe& kf1, Keyframe& kf2, bool fixed_poses)
 {
   if (kf1.descriptors.rows == 0 || kf2.descriptors.rows == 0)
@@ -493,14 +649,15 @@ void Map::matchKeyframes(Keyframe& kf1, Keyframe& kf2, bool fixed_poses)
            matching_indices_1.size(),matching_indices_2.size());
 
   std::vector<cv::Point3d> points3D;
-  points3D.resize(matching_indices_1.size());
   for (int i = 0; i<matching_indices_1.size();i++)
   {
-    triangulate(points3D[i], kf1.unmapped_imgPoints[matching_indices_1[i]],
-                             kf2.unmapped_imgPoints[matching_indices_2[i]],
-                             kf1.pose, kf2.pose);
+    cv::Point3d pt3d;
+    triangulate3(pt3d, kf1.unmapped_imgPoints[matching_indices_1[i]],
+                       kf2.unmapped_imgPoints[matching_indices_2[i]],
+                       kf1.pose, kf2.pose);
+    points3D.push_back(pt3d);
   }
-  //doBundleAdjustment(kf1, kf2, matching_indices_1, matching_indices_2, fixed_poses, points3D);
+  doBundleAdjustment(kf1, kf2, matching_indices_1, matching_indices_2, fixed_poses, points3D);
 
   /* TODO: put code in keyframe
   kf1.designPointsAsMapped(matching_indices_1,cloud_indices);
@@ -508,7 +665,7 @@ void Map::matchKeyframes(Keyframe& kf1, Keyframe& kf2, bool fixed_poses)
   */
 
   //add points to cloud and to mapped points of both keyframes
-  for (int i=0; i<matching_indices_1.size(); i++)
+  for (int i=0; i<points3D.size(); i++)
   {
     pcl::PointXYZRGBSIFT new_point;
     new_point.x = points3D[i].x;

@@ -12,24 +12,27 @@
 //! Rotation matrix about the X axis
 cv::Mat rotationMatrixX(const double angle)
 {
-  cv::Mat Rx = (cv::Mat_< double >(3, 3) << 1.0, 0.0, 0.0, 0.0, cos(angle), -sin(angle), 0.0,
-                sin(angle), cos(angle));
+  cv::Mat Rx = (cv::Mat_< double >(3, 3) << 1.0, 0.0,         0.0,
+                                            0.0, cos(angle), -sin(angle),
+                                            0.0, sin(angle),  cos(angle));
   return Rx;
 }
 
 //! Rotation matrix about the Y axis
 cv::Mat rotationMatrixY(const double angle)
 {
-  cv::Mat Ry = (cv::Mat_< double >(3, 3) << cos(angle), 0.0, sin(angle), 0.0, 1.0, 0.0, -sin(angle),
-                0.0, cos(angle));
+  cv::Mat Ry = (cv::Mat_< double >(3, 3) << cos(angle), 0.0, sin(angle),
+                                            0.0,        1.0, 0.0,
+                                           -sin(angle), 0.0, cos(angle));
   return Ry;
 }
 
 //! Rotation matrix about the Z axis
 cv::Mat rotationMatrixZ(const double angle)
 {
-  cv::Mat Rz = (cv::Mat_< double >(3, 3) << cos(angle), -sin(angle), 0.0, sin(angle), cos(angle),
-                0.0, 0.0, 0.0, 1.0);
+  cv::Mat Rz = (cv::Mat_< double >(3, 3) << cos(angle), -sin(angle), 0.0,
+                                            sin(angle),  cos(angle), 0.0,
+                                            0.0,         0.0,        1.0);
   return Rz;
 }
 
@@ -43,6 +46,17 @@ cv::Mat rollPitchYawToRotationMatrix(const double roll, const double pitch, cons
   return Rz * Ry * Rx;
 }
 
+//This function gives the same reslt as the transpose of the above function,
+//but it is clearer for me to have two different functions
+cv::Mat rollPitchYawToChangeBaseMatrix(const double roll, const double pitch, const double yaw)
+{
+  cv::Mat Rx = rotationMatrixX(-roll);  //-angles
+  cv::Mat Ry = rotationMatrixY(-pitch);
+  cv::Mat Rz = rotationMatrixZ(-yaw);
+
+  return Rx * Ry * Rz;//order inversed
+}
+
 void getCameraPositionMatrices(const boris_drone::Pose3D& pose, cv::Mat& R, cv::Mat& T, bool front)
 {
   double yaw   = -pose.rotZ;
@@ -54,7 +68,7 @@ void getCameraPositionMatrices(const boris_drone::Pose3D& pose, cv::Mat& R, cv::
   cv::Mat drone2cam;
   if (front)
   {
-    drone2cam = rollPitchYawToRotationMatrix(PI/2, 0, -PI / 2);
+    drone2cam = rollPitchYawToRotationMatrix(-PI/2, 0, -PI/2);
   }
   else
   {
@@ -103,4 +117,50 @@ double getSqDist(boris_drone::Pose3D pose1, boris_drone::Pose3D pose2)
   return ((pose1.x-pose2.x) * (pose1.x-pose2.x))
        + ((pose1.y-pose2.y) * (pose1.y-pose2.y))
        + ((pose1.z-pose2.z) * (pose1.z-pose2.z));
+}
+
+double angleBetween(const cv::Mat &p1, const cv::Mat &p2)
+{
+    double len1 = sqrt(  p1.at<double>(0,0)*p1.at<double>(0,0)
+                       + p1.at<double>(1,0)*p1.at<double>(1,0)
+                       + p1.at<double>(2,0)*p1.at<double>(2,0));
+
+    double len2 = sqrt(  p2.at<double>(0,0)*p2.at<double>(0,0)
+                       + p2.at<double>(1,0)*p2.at<double>(1,0)
+                       + p2.at<double>(2,0)*p2.at<double>(2,0));
+
+    double dot =  p1.at<double>(0,0)* p2.at<double>(0,0)
+                + p1.at<double>(1,0)* p2.at<double>(1,0)
+                + p1.at<double>(2,0)* p2.at<double>(2,0);
+
+    double a = dot / (len1 * len2);
+
+    if (a >= 1.0)
+        return 0.0;
+    else if (a <= -1.0)
+        return PI;
+    else
+        return acos(a);
+}
+
+
+void getFundamentalMatrix(const cv::Mat &P1, const cv::Mat &P2, cv::Mat F)
+{
+  cv::Mat_<double> X[3];
+  vconcat( P1.row(1), P1.row(2), X[0] );
+  vconcat( P1.row(2), P1.row(0), X[1] );
+  vconcat( P1.row(0), P1.row(1), X[2] );
+
+  cv::Mat_<double> Y[3];
+  vconcat( P2.row(1), P2.row(2), Y[0] );
+  vconcat( P2.row(2), P2.row(0), Y[1] );
+  vconcat( P2.row(0), P2.row(1), Y[2] );
+
+  cv::Mat_<double> XY;
+  for (int i = 0; i < 3; ++i)
+    for (int j = 0; j < 3; ++j)
+    {
+      vconcat(X[j], Y[i], XY);
+      F.at<double>(i, j) = determinant(XY);
+    }
 }

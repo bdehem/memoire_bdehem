@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(boris_drone)
 
+LIST(APPEND CMAKE_MODULE_PATH "~/cvsba-1.0.0/build") 
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages

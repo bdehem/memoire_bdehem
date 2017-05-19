@@ -11,6 +11,7 @@
 
 MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3D visualizer"))
 {
+  iter = 0;
   // Subsribers
   strategy_channel = nh.resolveName("strategy");
   strategy_sub     = nh.subscribe(strategy_channel, 10, &MappingNode::strategyCb, this);
@@ -111,6 +112,25 @@ void MappingNode::processedImageCb(const boris_drone::ProcessedImageMsg::ConstPt
       boris_drone::Pose3D frame_pose = current_frame.pose;
       this->publishPoseVisual(PnP_pose, frame_pose);
     }
+  }
+  iter++;
+//  if (iter==1 || iter==20)
+//  {
+//    showProcImg(processed_image_in);
+//  }
+}
+
+void MappingNode::showProcImg(const boris_drone::ProcessedImageMsg::ConstPtr pi)
+{
+  ROS_INFO("Processed Image:");
+  ROS_INFO("\tpose: x=%f, y=%f, z = %f",pi->pose.x,pi->pose.y,pi->pose.z);
+  ROS_INFO("\timage: height =%u, width=%u",pi->image.height,pi->image.width);
+  ROS_INFO("\tnber of keypoints = %lu",pi->keypoints.size());
+  for (unsigned i = 0; i < pi->keypoints.size(); ++i)
+  {
+    ROS_INFO("\tKeypoint %u: x=%f, y=%f, z=%f",i,pi->keypoints[i].point.x,
+                                                 pi->keypoints[i].point.y,
+                                                 pi->keypoints[i].point.z);
   }
 }
 

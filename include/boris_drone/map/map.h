@@ -132,8 +132,14 @@ public:
 
   void resetPose();
 
-  void triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
+  bool triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
                    const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2);
+
+  bool triangulate2(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
+                    const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2);
+
+  bool triangulate3(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
+                    const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2);
 
   void doBundleAdjustment(Keyframe& kf1,
                           Keyframe& kf2,

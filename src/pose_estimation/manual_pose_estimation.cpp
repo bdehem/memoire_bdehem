@@ -45,7 +45,7 @@ void ManualPoseEstimator::publish_pose()
 void ManualPoseEstimator::manualPoseCb(const boris_drone::Pose3D::ConstPtr manualPosePtr)
 {
   pose = *manualPosePtr;
-  ROS_INFO("Received manual pose. z = %f",pose.z);
+  ROS_INFO("Received manual pose.x = %f; y = %f; z = %f",pose.x, pose.y, pose.z);
 }
 
 

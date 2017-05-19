@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<!-- Launch file for the starting mission for the thesis of Boris Dehem-->
+<!-- Work In Progress -->
+<launch>
+  <!-- IPv4 address of your drones -->
+  <arg name="drone_name" default="arnold" />
+  <arg name="mb1_ip" default="192.168.1.1" />
+  <!-- Ultrasound frequency (7 or 8). -->
+  <arg name="freq" default="8" />
+
+
+  <node name="vision_gui" pkg="boris_drone" type="vision_gui" output="screen">
+    <param name="draw_keypoints" value="true" />
+    <param name="draw_target" value="true" />
+  </node>
+
+  <node name="boris_drone_manual_pose_estimation" pkg="boris_drone" type="manual_pose_estimation" output="screen">
+  </node>
+
+  <!-- front camera -->
+  <rosparam param="cam_matrix">[529.1, 0.0, 350.6, 0.0, 529.1, 182.2, 0.0, 0.0, 1.0]</rosparam>
+  <rosparam param="img_size">[735.0, 360.0]</rosparam>
+  <!-- front camera -->
+
+
+  <node name="boris_drone_mapping_node" pkg="boris_drone" type="mapping_node" output="screen">
+    <param name="do_search" value="true" />
+    <param name="stop_if_lost" value="true" />
+  </node>
+
+</launch>

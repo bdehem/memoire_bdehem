@@ -34,6 +34,10 @@ cv::Mat rotationMatrixZ(const double angle);
 //! \return the rotation matrix given the roll,pitch,yaw angles
 cv::Mat rollPitchYawToRotationMatrix(const double roll, const double pitch, const double yaw);
 
+//This function gives the same reslt as the transpose of the above function,
+//but it is clearer for me to have two different functions
+cv::Mat rollPitchYawToChangeBaseMatrix(const double roll, const double pitch, const double yaw);
+
 //! \get rotation matrix used by cv
 void getCameraPositionMatrices(const boris_drone::Pose3D& pose, cv::Mat& R, cv::Mat& T, bool front);
 
@@ -47,5 +51,9 @@ void debugRTMatrix(cv::Mat Rt);
 std::vector< cv::Point2f > Points(const std::vector< cv::KeyPoint >& keypoints);
 
 double getSqDist(boris_drone::Pose3D pose1, boris_drone::Pose3D pose2);
+
+double angleBetween(const cv::Mat &p1, const cv::Mat &p2);
+
+void getFundamentalMatrix(const cv::Mat &P1, const cv::Mat &P2, cv::Mat F);
 
 #endif /* boris_drone_OPENCV_UTILS_H */

@@ -90,6 +90,7 @@ private:
   std::string    target_channel;
   ros::Publisher go_high_pub;
   std::string    go_high_channel;
+  int iter;
 
   boris_drone::ProcessedImageMsg::ConstPtr lastProcessedImgReceived;  //!< s last message received
 
@@ -103,6 +104,9 @@ private:
   void resetPoseCb(const std_msgs::Empty& msg);
   void endResetPoseCb(const std_msgs::Empty& msg);
   void strategyCb(const boris_drone::StrategyMsg::ConstPtr strategyPtr);
+
+
+  void showProcImg(const boris_drone::ProcessedImageMsg::ConstPtr pi);
 
 public:
   Map map;
