@@ -135,9 +135,9 @@ bool Map::triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Poi
   double angleThresh = PI/40;
 
   /* get coordinates */
-  cv::Mat world2cam1, world2cam2, origin1, origin2;
-  getCameraPositionMatrices(pose1, world2cam1, origin1, true);
-  getCameraPositionMatrices(pose2, world2cam2, origin2, true);
+  cv::Mat cam2world1, cam2world2, origin1, origin2;
+  getCameraPositionMatrices(pose1, cam2world1, origin1, true);
+  getCameraPositionMatrices(pose2, cam2world1, origin2, true);
 
   /* compute point coordinates in calibrated image coordinates (=rays in camera coordinates) */
   cv::Mat ray1_cam = (cv::Mat_<double>(3, 1) << (pt1.x - Read::img_center_x()) / Read::focal_length_x(),
@@ -145,8 +145,8 @@ bool Map::triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Poi
   cv::Mat ray2_cam = (cv::Mat_<double>(3, 1) << (pt2.x - Read::img_center_x()) / Read::focal_length_x(),
                                                 (pt2.y - Read::img_center_y()) / Read::focal_length_y(), 1);
   /* convert to world coordinates */
-  cv::Mat ray1 = world2cam1 * ray1_cam;
-  cv::Mat ray2 = world2cam2 * ray2_cam;
+  cv::Mat ray1 = cam2world1 * ray1_cam;
+  cv::Mat ray2 = cam2world1 * ray2_cam;
 
   ROS_INFO("\tray1_cam=%f,%f,%f",ray1_cam.at<double>(0,0), ray1_cam.at<double>(1,0), ray1_cam.at<double>(2,0));
   ROS_INFO("\tray2_cam=%f,%f,%f",ray2_cam.at<double>(0,0), ray2_cam.at<double>(1,0), ray2_cam.at<double>(2,0));
@@ -183,9 +183,9 @@ bool Map::triangulate2(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Po
   double angleThresh = PI/40;
 
   /* get coordinates */
-  cv::Mat world2cam1, world2cam2, origin1, origin2;
-  getCameraPositionMatrices(pose1, world2cam1, origin1, true);
-  getCameraPositionMatrices(pose2, world2cam2, origin2, true);
+  cv::Mat cam2world1, cam2world2, origin1, origin2;
+  getCameraPositionMatrices(pose1, cam2world1, origin1, true);
+  getCameraPositionMatrices(pose2, cam2world2, origin2, true);
 
 
   cv:: Mat T1 = (cv::Mat_<double>(3, 4) << 1, 0, 0, -origin1.at<double>(0,0),
@@ -206,8 +206,8 @@ bool Map::triangulate2(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Po
   std::vector<cv::Point2d> cam0pnts;
   std::vector<cv::Point2d> cam1pnts;
 
-  cv::Mat cam0 = K1*world2cam1.t()*T1;
-  cv::Mat cam1 = K2*world2cam2.t()*T2;
+  cv::Mat cam0 = K1*cam2world1.t()*T1;
+  cv::Mat cam1 = K2*cam2world2.t()*T2;
 
   cam0pnts.push_back(pt1);
   cam1pnts.push_back(pt2);
@@ -252,9 +252,9 @@ bool Map::triangulate3(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Po
 //http://www.iim.cs.tut.ac.jp/~kanatani/papers/sstriang.pdf
 //(iterative method for higher order aproximation)
   /* get coordinates */
-  cv::Mat world2cam1, world2cam2, origin1, origin2;
-  getCameraPositionMatrices(pose1, world2cam1, origin1, true);
-  getCameraPositionMatrices(pose2, world2cam2, origin2, true);
+  cv::Mat cam2world1, cam2world2, origin1, origin2;
+  getCameraPositionMatrices(pose1, cam2world1, origin1, true);
+  getCameraPositionMatrices(pose2, cam2world2, origin2, true);
 
 
   cv:: Mat T1 = (cv::Mat_<double>(3, 4) << 1, 0, 0, -origin1.at<double>(0,0),
@@ -271,8 +271,11 @@ bool Map::triangulate3(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Po
                                            0,     529.1, 182.2,
                                            0,     0,     1     );
 
-  cv::Mat cam0 = K1*world2cam1.t()*T1;
-  cv::Mat cam1 = K2*world2cam2.t()*T2;
+  //These are the camera projection matrices:
+  // If p is a world point in 3D in the world coordinates,
+  // then cam0*p are the image coordinates of the world point
+  cv::Mat cam0 = K1*cam2world1.t()*T1;
+  cv::Mat cam1 = K2*cam2world2.t()*T2;
   cv::Mat F = (cv::Mat_<double>(3, 3)); // Fundamental Matrix3x3
   getFundamentalMatrix(cam0,cam1,F);
 
