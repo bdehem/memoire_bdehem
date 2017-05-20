@@ -37,6 +37,14 @@ cv::Mat rotationMatrixZ(const double angle)
 }
 
 //! Rotation matrix given RPY angles
+//If yaw angle is turned around z axis, then pitch angle around y axis, and finally roll angle around x axis,
+//the result is a rotation matrix whose columns are the coordinates of the new base expressed in the old base.
+//Example:
+// pt_world = 3D vector in world coordinates
+// A = rollPitchYawToRotationMatrix(roll,pitch,yaw)
+// pt_cam = A.t()*pt_world;
+// Where roll, pitch and yaw are the angles to rotate to obtain a coordinate system where
+// z points forward, x points right, y points down from the point of view of the camera
 cv::Mat rollPitchYawToRotationMatrix(const double roll, const double pitch, const double yaw)
 {
   cv::Mat Rx = rotationMatrixX(roll);

@@ -657,7 +657,7 @@ void Map::matchKeyframes(Keyframe& kf1, Keyframe& kf2, bool fixed_poses)
                        kf1.pose, kf2.pose);
     points3D.push_back(pt3d);
   }
-  doBundleAdjustment(kf1, kf2, matching_indices_1, matching_indices_2, fixed_poses, points3D);
+  //doBundleAdjustment(kf1, kf2, matching_indices_1, matching_indices_2, fixed_poses, points3D);
 
   /* TODO: put code in keyframe
   kf1.designPointsAsMapped(matching_indices_1,cloud_indices);
