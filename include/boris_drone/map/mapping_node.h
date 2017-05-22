@@ -53,6 +53,7 @@
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/ProcessedImageMsg.h>
 #include <boris_drone/StrategyMsg.h>
+#include <boris_drone/BundleMsg.h>
 #include <boris_drone/TargetDetected.h>
 #include <boris_drone/map/projection_2D.h>
 #include <boris_drone/opencv_utils.h>
@@ -80,6 +81,8 @@ private:
   std::string     end_reset_pose_channel;
   ros::Subscriber strategy_sub;
   std::string     strategy_channel;
+  ros::Subscriber bundled_sub;
+  std::string     bundled_channel;
 
   /* Publishers */
   ros::Publisher pose_visual_pub;
@@ -104,6 +107,7 @@ private:
   void resetPoseCb(const std_msgs::Empty& msg);
   void endResetPoseCb(const std_msgs::Empty& msg);
   void strategyCb(const boris_drone::StrategyMsg::ConstPtr strategyPtr);
+  void bundledCb(const boris_drone::BundleMsg::ConstPtr bundlePtr);
 
 
   void showProcImg(const boris_drone::ProcessedImageMsg::ConstPtr pi);

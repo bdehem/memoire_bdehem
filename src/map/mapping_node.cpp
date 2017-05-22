@@ -21,6 +21,8 @@ MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3
   reset_pose_sub     = nh.subscribe(reset_pose_channel, 1, &MappingNode::resetPoseCb, this);
   end_reset_pose_channel = nh.resolveName("end_reset_pose");
   end_reset_pose_sub     = nh.subscribe(end_reset_pose_channel, 1, &MappingNode::endResetPoseCb, this);
+  bundled_channel = nh.resolveName("bundled");
+  bundled_sub     = nh.subscribe(bundled_channel, 1, &MappingNode::bundledCb, this);
 
   // Publishers
   pose_visual_channel = nh.resolveName("pose_visual");
@@ -56,7 +58,7 @@ MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3
                                      0,                      Read::focal_length_y(), Read::img_center_y(),
                                      0,                      0,                      1                   );
 
-  map = Map(do_search, stop_if_lost, camera_matrix_K);
+  map = Map(&nh,do_search, stop_if_lost, camera_matrix_K);
 
   // initialize the map and the visualizer
   pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZRGBSIFT> single_color(map.cloud, 0, 255, 0);
@@ -70,6 +72,12 @@ MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3
 
 MappingNode::~MappingNode()
 {
+}
+
+void MappingNode::bundledCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
+{
+  ROS_INFO("BundledCB");
+  map.updateBundle(bundlePtr);
 }
 
 void MappingNode::strategyCb(const boris_drone::StrategyMsg::ConstPtr strategyPtr)
@@ -147,6 +155,8 @@ void MappingNode::publishPoseVisual(boris_drone::Pose3D PnP_pose, boris_drone::P
   pose_visual_pub.publish(PnP_pose);
   pose_correction_pub.publish(pose_correction);
 }
+
+
 
 void MappingNode::targetDetectedPublisher()
 {

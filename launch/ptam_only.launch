@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<!-- Launch file for the starting mission for the thesis of Boris Dehem-->
+<!-- Work In Progress -->
+<launch>
+  <!-- IPv4 address of your drones -->
+  <arg name="drone_name" default="arnold" />
+  <arg name="mb1_ip" default="192.168.1.1" />
+  <!-- Ultrasound frequency (7 or 8). -->
+  <arg name="freq" default="8" />
+
+
+  <node name="piper" pkg="boris_drone" type="image_piper" output="screen">
+  </node>
+
+  <node name="ptam" pkg="ptam" type="ptam" clear_params="true" output="screen">
+    <remap from="image" to="/ardrone/front/image_mono" />
+    <remap from="pose" to="pose"/>
+    <rosparam file="$(find ptam)/PtamFixParams.yaml"/>
+  </node>
+  <node name="ptam_visualizer" pkg="ptam" type="ptam_visualizer" output="screen">
+  </node>
+
+  <!--
+  <node name="remote_ptam" pkg="ptam" type="remote_ptam" output="screen">
+  </node>
+  <node name="cameracalibrator" pkg="ptam" type="cameracalibrator" output="screen">
+    <remap from="image" to="/ardrone/front/camera/image_raw" />
+  </node>
+  -->
+
+
+</launch>

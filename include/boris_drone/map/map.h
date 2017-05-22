@@ -46,6 +46,7 @@
 #include <boris_drone/PointXYZRGBSIFT.h>  // pcl::PointXYZRGBSIFT
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/ProcessedImageMsg.h>
+#include <boris_drone/BundleMsg.h>
 #include <boris_drone/TargetDetected.h>
 #include <boris_drone/map/projection_2D.h>
 #include <boris_drone/opencv_utils.h>
@@ -61,6 +62,9 @@
 class Map
 {
 private:
+  ros::Publisher bundle_pub;
+  std::string    bundle_channel;
+
   /* Tresholds for PnP */
   int threshold_lost;                        //!< min nber of matching keypoints for visual pose
   int threshold_new_keyframe;                //!< below this nber of matching keypoints => new keyframe
@@ -73,6 +77,7 @@ private:
 
   Keyframe* reference_keyframe;  //!< The reference Keyframe is the last matching keyframe
 
+  ros::NodeHandle* nh;
   void resetList();
 
   /*!
@@ -113,7 +118,7 @@ private:
 public:
   //! Contructor. Initialize an empty map
   Map();
-  Map(bool do_search, bool stop_if_lost, cv::Mat camera_matrix_K);
+  Map(ros::NodeHandle* nh, bool do_search, bool stop_if_lost, cv::Mat camera_matrix_K);
 
   //! Destructor.
   ~Map();
@@ -135,11 +140,12 @@ public:
   bool triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
                    const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2);
 
-  bool triangulate2(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
-                    const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2);
-
-  bool triangulate3(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
-                    const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2);
+  void doBundleAdjustment2(Keyframe& kf1,
+                           Keyframe& kf2,
+                           std::vector<int> matching_indices_1,
+                           std::vector<int> matching_indices_2,
+                           bool fixed_poses,
+                           std::vector<cv::Point3d>& points3D);
 
   void doBundleAdjustment(Keyframe& kf1,
                           Keyframe& kf2,
@@ -156,6 +162,8 @@ public:
                                           std::vector<cv::Point2f>& inliers_frame_matching_points);
 
   void targetDetectedPublisher();
+
+  void updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr);
 };
 
 #endif /* boris_drone_MAP_H */

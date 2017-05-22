@@ -162,3 +162,204 @@ void Map::getVisiblePoints(const boris_drone::Pose3D& pose, std::vector<int>& id
     }
   }
 }
+
+
+
+
+bool Map::triangulate1(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
+                      const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2)
+{
+  //Midpoint method
+  //http://geomalgorithms.com/a07-_distance.html
+  double angleThresh = PI/40;
+
+  /* get coordinates */
+  cv::Mat cam2world1, cam2world2, origin1, origin2;
+  getCameraPositionMatrices(pose1, cam2world1, origin1, true);
+  getCameraPositionMatrices(pose2, cam2world1, origin2, true);
+
+  /* compute point coordinates in calibrated image coordinates (=rays in camera coordinates) */
+  cv::Mat ray1_cam = (cv::Mat_<double>(3, 1) << (pt1.x - Read::img_center_x()) / Read::focal_length_x(),
+                                                (pt1.y - Read::img_center_y()) / Read::focal_length_y(), 1);
+  cv::Mat ray2_cam = (cv::Mat_<double>(3, 1) << (pt2.x - Read::img_center_x()) / Read::focal_length_x(),
+                                                (pt2.y - Read::img_center_y()) / Read::focal_length_y(), 1);
+  /* convert to world coordinates */
+  cv::Mat ray1 = cam2world1 * ray1_cam;
+  cv::Mat ray2 = cam2world1 * ray2_cam;
+
+  ROS_INFO("\tray1_cam=%f,%f,%f",ray1_cam.at<double>(0,0), ray1_cam.at<double>(1,0), ray1_cam.at<double>(2,0));
+  ROS_INFO("\tray2_cam=%f,%f,%f",ray2_cam.at<double>(0,0), ray2_cam.at<double>(1,0), ray2_cam.at<double>(2,0));
+  ROS_INFO("\tray1=%f,%f,%f",ray1.at<double>(0,0), ray1.at<double>(1,0), ray1.at<double>(2,0));
+  ROS_INFO("\tray2=%f,%f,%f",ray2.at<double>(0,0), ray2.at<double>(1,0), ray2.at<double>(2,0));
+
+  //if (angleBetween(ray1,ray2) < angleThresh)
+  //  return false;
+
+  /* compute closest points on both rays and take midpoint*/
+  double a,b,c,d,e,k1,k2,denominator;
+  cv::Mat p1, p2, temp;
+  temp = ray1.t() * ray1; a = temp.at<double>(0, 0);
+  temp = ray1.t() * ray2; b = temp.at<double>(0, 0);
+  temp = ray2.t() * ray2; c = temp.at<double>(0, 0);
+  temp = ray1.t() * (origin1 - origin2); d = temp.at<double>(0, 0);
+  temp = ray2.t() * (origin1 - origin2); e = temp.at<double>(0, 0);
+  denominator = (a*c) - (b*b);
+  k1 = ((b*e) - (c*d))/denominator;
+  k2 = ((a*e) - (b*d))/denominator;
+  p1 = origin1 + k1*ray1;
+  p2 = origin2 + k2*ray2;
+
+  pt_out.x = (p1.at<double>(0, 0) + p2.at<double>(0,0))/2;
+  pt_out.y = (p1.at<double>(1, 0) + p2.at<double>(1,0))/2;
+  pt_out.z = (p1.at<double>(2, 0) + p2.at<double>(2,0))/2;
+  return true;
+}
+
+bool Map::triangulate2(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
+                      const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2)
+{
+  //OpenCV method
+  double angleThresh = PI/40;
+
+  /* get coordinates */
+  cv::Mat cam2world1, cam2world2, origin1, origin2;
+  getCameraPositionMatrices(pose1, cam2world1, origin1, true);
+  getCameraPositionMatrices(pose2, cam2world2, origin2, true);
+
+
+  cv:: Mat T1 = (cv::Mat_<double>(3, 4) << 1, 0, 0, -origin1.at<double>(0,0),
+                                           0, 1, 0, -origin1.at<double>(1,0),
+                                           0, 0, 1, -origin1.at<double>(2,0));
+  cv:: Mat T2 = (cv::Mat_<double>(3, 4) << 1, 0, 0, -origin2.at<double>(0,0),
+                                           0, 1, 0, -origin2.at<double>(1,0),
+                                           0, 0, 1, -origin2.at<double>(2,0));
+
+  cv:: Mat K2 = (cv::Mat_<double>(3, 3) << 529.1, 0    , 350.6,
+                                           0,     529.1, 182.2,
+                                           0,     0,     1     );
+  cv:: Mat K1 = (cv::Mat_<double>(3, 3) << 529.1, 0    , 350.6,
+                                           0,     529.1, 182.2,
+                                           0,     0,     1     );
+
+
+  std::vector<cv::Point2d> cam0pnts;
+  std::vector<cv::Point2d> cam1pnts;
+
+  cv::Mat cam0 = K1*cam2world1.t()*T1;
+  cv::Mat cam1 = K2*cam2world2.t()*T2;
+
+  cam0pnts.push_back(pt1);
+  cam1pnts.push_back(pt2);
+
+  cv::Mat pnts3D(4,cam0pnts.size(),CV_64F);
+
+  cv::triangulatePoints(cam0,cam1,cam0pnts,cam1pnts,pnts3D);
+
+  pt_out.x = pnts3D.at<double>(0,0)/pnts3D.at<double>(3,0);
+  pt_out.y = pnts3D.at<double>(1,0)/pnts3D.at<double>(3,0);
+  pt_out.z = pnts3D.at<double>(2,0)/pnts3D.at<double>(3,0);
+
+  cv::Mat reproj1 = cam0*pnts3D;
+  cv::Mat reproj2 = cam1*pnts3D;
+  double pt1_rx, pt1_ry,pt2_rx, pt2_ry,d1,d2;
+  pt1_rx = reproj1.at<double>(0,0)/reproj1.at<double>(2,0);
+  pt1_ry = reproj1.at<double>(1,0)/reproj1.at<double>(2,0);
+  pt2_rx = reproj2.at<double>(0,0)/reproj2.at<double>(2,0);
+  pt2_ry = reproj2.at<double>(1,0)/reproj2.at<double>(2,0);
+  d1 = (pt1.x - pt1_rx)*(pt1.x - pt1_rx) + (pt1.y - pt1_ry)*(pt1.y - pt1_ry);
+  d2 = (pt2.x - pt2_rx)*(pt2.x - pt2_rx) + (pt2.y - pt2_ry)*(pt2.y - pt2_ry);
+  ROS_INFO("Triangulation:");
+  ROS_INFO("\t pt_in1 = %f, %f",pt1.x,pt1.y);
+  ROS_INFO("\t pt_in2 = %f, %f",pt2.x,pt2.y);
+  ROS_INFO("\t pt_rp1 = %f, %f",pt1_rx,pt1_ry);
+  ROS_INFO("\t pt_rp2 = %f, %f",pt2_rx,pt2_ry);
+  ROS_INFO("\t Dist = %f",d1+d2);
+  ROS_INFO("\t Point_out: x=%f, y=%f, z=%f",pt_out.x,pt_out.y,pt_out.z);
+
+//  if (d1+d2 > 550.0)
+//  {
+//    ROS_INFO("rejected: %f",d1+d2);
+//    return false;
+//  }
+  return true;
+}
+
+
+struct ConstCameraReprojectionError {
+  ConstCameraReprojectionError(double observed_x, double observed_y, double* camera)
+      : observed_x(observed_x), observed_y(observed_y), camera(camera) {}
+  template <typename T>
+  bool operator()(const T* const point,
+                  T* residuals) const {
+    T cam2world[9];              //rotation matrix
+    T camera_axis_angles[3];     //angle-axis rotation
+    T p_cam[3];
+    T p[3];
+    //Convert
+    ceres::EulerAnglesToRotationMatrix(camera, 3, cam2world);
+    ceres::RotationMatrixToAngleAxis(cam2world, camera_axis_angles);
+
+
+
+    // Templated pinhole camera model for used with Ceres.  The camera is
+    // constant,
+    struct ConstCameraReprojectionError {
+      ConstCameraReprojectionError(double observed_x, double observed_y, double camera_r0, double camera_r1, double camera_r2,
+                                                                         double camera_t0, double camera_t1, double camera_t2)
+          : observed_x(observed_x), observed_y(observed_y)
+          , camera_r0(camera_r0), camera_r1(camera_r1), camera_r2(camera_r2)
+          , camera_t0(camera_t0), camera_t1(camera_t1), camera_t2(camera_t2) {}
+      template <typename T>
+      bool operator()(const T* const point,
+                      T* residuals) const {
+        double camera_rot[3] = {camera_r0, camera_r1, camera_r2};
+        double camera_tra[3] = {camera_t0, camera_t1, camera_t2};
+        double cam2world[9];              //rotation matrix
+        double camera_axis_angles[3];     //angle-axis rotation
+        T      cam_axis_angles_T[3];
+        T p_cam[3];
+        T p[3];
+        //Convert
+        ceres::EulerAnglesToRotationMatrix(camera_rot, 3, cam2world);
+        ceres::RotationMatrixToAngleAxis(cam2world, camera_axis_angles);
+
+        //Translate point to get location from camera origin
+        p_cam[0] = point[0] - camera_tra[0];
+        p_cam[1] = point[1] - camera_tra[1];
+        p_cam[2] = point[2] - camera_tra[2];
+
+        cam_axis_angles_T = camera_axis_angles;
+        //Get rotated point. -1 because this is the rotation of cam2world (we need world2cam)
+        ceres::AngleAxisRotatePoint(cam_axis_angles_T, p_cam, p);
+
+        T predicted_x = 350.6 + (529.1*p[0] / p[2]);
+        T predicted_y = 182.2 + (529.1*p[1] / p[2]);
+
+        // The error is the difference between the predicted and observed position.
+        residuals[0] = predicted_x - observed_x;
+        residuals[1] = predicted_y - observed_y;
+        return true;
+      }
+      // Factory to hide the construction of the CostFunction object from
+      // the client code.
+
+      static ceres::CostFunction* Create(const double observed_x,
+                                         const double observed_y,
+                                         const double camera_r0,
+                                         const double camera_r1,
+                                         const double camera_r2,
+                                         const double camera_t0,
+                                         const double camera_t1,
+                                         const double camera_t2) {
+        return (new ceres::AutoDiffCostFunction<ConstCameraReprojectionError, 2, 3>(
+                    new ConstCameraReprojectionError(observed_x, observed_y, camera_r0, camera_r1, camera_r2, camera_t0, camera_t1, camera_t2)));
+      }
+      double observed_x;
+      double observed_y;
+      double camera_r0;
+      double camera_r1;
+      double camera_r2;
+      double camera_t0;
+      double camera_t1;
+      double camera_t2;
+    };

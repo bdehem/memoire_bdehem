@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(boris_drone)
 
-LIST(APPEND CMAKE_MODULE_PATH "~/cvsba-1.0.0/build") 
+LIST(APPEND CMAKE_MODULE_PATH "~/cvsba-1.0.0/build")
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -22,6 +22,8 @@ find_package(catkin REQUIRED COMPONENTS
 find_package( OpenCV REQUIRED core nonfree )# ocl gpu)
 
 find_package( cvsba REQUIRED )
+
+find_package( Ceres REQUIRED )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -68,6 +70,8 @@ add_message_files(
   KeyPoint.msg
   ProcessedImageMsg.msg
   cellUpdate.msg
+  BundleMsg.msg
+  ObservationMsg.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -139,7 +143,9 @@ include_directories(
 	${catkin_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
+  ${CERES_INCLUDE_DIRS}
 	)
+
 
 ## Declare a C++ library
 # add_library(boris_drone
@@ -154,6 +160,8 @@ include_directories(
 ## Declare a C++ executable
 # add_executable(boris_drone_node src/boris_drone_node.cpp)
 add_executable(controller_custom src/controller/controller_custom.cpp)
+add_executable(bundle_adjuster src/map/bundle_adjuster.cpp src/opencv_utils.cpp)
+add_executable(image_piper src/imagepiper.cpp)
 add_executable(controller src/controller/controller.cpp)
 add_executable(pose_estimation src/pose_estimation/pose_estimation.cpp)
 add_executable(manual_pose_estimation src/pose_estimation/manual_pose_estimation.cpp)
@@ -167,6 +175,8 @@ add_executable(multi_strategy src/multi_strategy/multi_strategy.cpp src/multi_st
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(controller_custom ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(bundle_adjuster ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(image_piper ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 #add_dependencies(imgproc2D ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(pose_estimation ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -184,6 +194,8 @@ add_dependencies(multi_strategy ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXP
 #   ${catkin_LIBRARIES}
 # )
 target_link_libraries(controller ${catkin_LIBRARIES})
+target_link_libraries(bundle_adjuster ${catkin_LIBRARIES} ${CERES_LIBRARIES})
+target_link_libraries(image_piper ${catkin_LIBRARIES})
 target_link_libraries(controller_custom ${catkin_LIBRARIES})
 target_link_libraries(pose_estimation ${catkin_LIBRARIES})
 target_link_libraries(manual_pose_estimation ${catkin_LIBRARIES})
