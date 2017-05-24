@@ -75,7 +75,11 @@ void Map::newKeyframe(const Frame& frame)
   ROS_INFO("Created new Keyframe. There are %d keyframes",nkeyframes);
   if (nkeyframes > 1)
   {
-    matchKeyframes(*keyframes[nkeyframes-2], *keyframes[nkeyframes-1], true);
+    //matchKeyframes(*keyframes[nkeyframes-2], *keyframes[nkeyframes-1], true);
+
+    reference_keyframe->print();
+    reference_keyframe->match(*keyframes[nkeyframes-2]);
+    reference_keyframe->print();
   }
 }
 
@@ -366,7 +370,6 @@ void Map::doBundleAdjustment2(std::vector<Keyframe*> kfs,
     msg->points[i].z = points3D[i].z;
   }
   msg->cameras.resize(2);
-//TODO: make it general
   for (int i = 0; i < 2; ++i) {
     tf::Matrix3x3 drone2world, cam2drone, cam2world;
     double roll, pitch, yaw;

@@ -32,6 +32,7 @@
 #include <boris_drone/PointXYZRGBSIFT.h>
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/opencv_utils.h>
+#include <algorithm>
 
 //forward reference to be able to have a pointer to map
 class Map;
@@ -52,8 +53,8 @@ public:
   boris_drone::Pose3D pose;           //!< pose from which the keypoints were observed
 
   int npts;
-  std::vector<int> points;   //!< indices of points in the pointcloud (the map).
   std::vector<bool> pointIsMapped;
+  std::vector<int> points;   //!< indices of points in the pointcloud (the map). -1 for points not in map
 
 
   //TODO: remove this old implementation
@@ -77,15 +78,9 @@ public:
 
   //! Destructor.
   ~Keyframe();
+  void match(Keyframe& other);
+  void print();
 
-  //! Method to compare the current Keyframe to a 2D Frame
-  //! \param[in] frame Frame to compare
-  //! \param[out] idx_matching_points Vector of pairs of indexes: (i,j) with i the map index, j the frame index
-  //! \param[out] keyframe_matching_points Vector of matching points (3D) in the Keyframe
-  //! \param[out] frame_matching_points Vector of matching points (2D) in the Frame
-  void matchWithFrame(Frame& frame, std::vector< std::vector< int > >& idx_matching_points,
-                      std::vector< cv::Point3f >& keyframe_matching_points,
-                      std::vector< cv::Point2f >& frame_matching_points);
 };
 
 #endif /* boris_drone_KEYFRAME_H */

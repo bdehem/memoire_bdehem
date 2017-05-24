@@ -1,0 +1,47 @@
+//.h
+  //! Method to compare the current Keyframe to a 2D Frame
+  //! \param[in] frame Frame to compare
+  //! \param[out] idx_matching_points Vector of pairs of indexes: (i,j) with i the map index, j the frame index
+  //! \param[out] keyframe_matching_points Vector of matching points (3D) in the Keyframe
+  //! \param[out] frame_matching_points Vector of matching points (2D) in the Frame
+  void matchWithFrame(Frame& frame, std::vector< std::vector< int > >& idx_matching_points,
+                      std::vector< cv::Point3f >& keyframe_matching_points,
+                      std::vector< cv::Point2f >& frame_matching_points);
+
+
+
+
+
+
+
+//.cpp
+void Keyframe::matchWithFrame(Frame& frame, std::vector< std::vector< int > >& idx_matching_points,
+                              std::vector< cv::Point3f >& keyframe_matching_points,
+                              std::vector< cv::Point2f >& frame_matching_points)
+{
+  if (frame.descriptors.rows == 0 || this->descriptors.rows == 0)
+    return;
+  std::vector<cv::DMatch> simple_matches;
+  map->matcher.match(frame.descriptors, this->descriptors, simple_matches);
+
+  // threshold test
+  for (unsigned k = 0; k < simple_matches.size(); k++)
+  {
+    if (simple_matches[k].distance < DIST_THRESHOLD)
+    {
+      std::vector<int> v(2);
+      v[0] = simple_matches[k].trainIdx;
+      v[1] = simple_matches[k].queryIdx;
+      idx_matching_points.push_back(v);
+
+      cv::Point3f keyframe_point;
+      //TODO attention avant c'était this->cloud (quand cette fonction etait encore utilisee et keypoint avait un cloud)
+      pcl::PointXYZRGBSIFT pcl_point = this->map->cloud->points[simple_matches[k].trainIdx];
+      keyframe_point.x = pcl_point.x;
+      keyframe_point.y = pcl_point.y;
+      keyframe_point.z = pcl_point.z;
+      keyframe_matching_points.push_back(keyframe_point);
+      frame_matching_points.push_back(frame.imgPoints[simple_matches[k].queryIdx]);
+    }
+  }
+}
