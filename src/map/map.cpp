@@ -139,7 +139,9 @@ bool Map::triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Poi
   /* get coordinates */
   cv::Mat cam2world1, cam2world2, origin1, origin2;
   cv::Mat T1, T2, K1, K2, cam0, cam1, F;
-  cv::Mat pt1_h, pt2_h, u, P, x_hat, x1_hat, temp, dx, dx1;
+  cv::Mat pt1_h, pt2_h, u, P, x_hat, x1_hat, temp, x_tilde, x1_tilde;
+  cv::Mat V, epsil, mult;
+  double E, E0, f, den ;
   getCameraPositionMatrices(pose1, cam2world1, origin1, true);
   getCameraPositionMatrices(pose2, cam2world2, origin2, true);
 
@@ -176,41 +178,31 @@ bool Map::triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Poi
                                 F.at<double>(2,0),F.at<double>(2,1),F.at<double>(2,2));
   P = (cv::Mat_<double>(3,3) << 1,0,0, 0,1,0, 0,0,0);
 
-  double x,y,x1,y1,f,x2,x12,y2,y12;
-
-  x  = pt1.x; y  = pt1.y;
-  x1 = pt2.x; y1 = pt2.y;
   f = 250;
-  x2 = x*x; x12 = x1*x1;
-  y2 = y*y; y12 = y1*y1;
-  cv::Mat epsil = (cv::Mat_<double>(9,1) << x*x1,x*y1,x*f,y*x1,y*y1,y*f,x1*f,y1*f,f*f);
-  cv::Mat V = (cv::Mat_<double>(9,9) <<
-         x2+x12, x1*y1,  f*x1, x*y,    0,      0,    f*x, 0,   0,
-         x1*y1,  x2+y12, f*y1, 0,      x*y,    0,    0,   f*x, 0,
-         f*x1,   f*y1,   f*f,  0,      0,      0,    0,   0,   0,
-         x*y,    0,      0,    y2+x12, x1*y1,  f*x1, f*y, 0,   0,
-         0,      x*y,    0,    x1*y1,  y2+y12, f*y1, 0,   f*y, 0,
-         0,      0,      0,    f*x1,   f*y1,   f*f,  0  , 0,   0,
-         f*x,    0,      0,    f*y,    0,      0,    f*f, 0,   0,
-         0,      f*x,    0,    0,      f*y,    0,    0,   f*f, 0,
-         0,      0,      0,    0,      0,      0,    0,   0,   0
-  );
+  f = 1;
 
+  x_hat  = pt1_h.clone();
+  x1_hat = pt2_h.clone();
 
-  x_hat  = pt1_h;
-  x1_hat = pt2_h;
+  x_tilde  = (cv::Mat_<double>(3,1) << 0,0,0);
+  x1_tilde = (cv::Mat_<double>(3,1) << 0,0,0);
 
-  temp = u.t()*V*u;
-  double den = temp.at<double>(0,0);
-  int k = 0;
-  while (k < 5)
+  int k = 0; E = 1; E0 = 0;
+  while (abs(E - E0)> 0.001)
   {
     k = k+1;
+    E0 = E;
+    x_hat  = pt1_h - x_tilde;
+    x1_hat = pt2_h - x1_tilde;
+    getVandEpsil(V, epsil, x_hat, x1_hat, x_tilde, x1_tilde, f);
+    temp = u.t()*V*u;
+    den  = temp.at<double>(0,0);
     temp = u.t()*epsil;
-    dx  = P*F    *x1_hat*temp.at<double>(0,0)/den;
-    dx1 = P*F.t()*x_hat *temp.at<double>(0,0)/den;
-    x_hat  = pt1_h - dx;
-    x1_hat = pt2_h - dx1;
+    mult =  P*temp.at<double>(0,0)/den;
+    x_tilde  = mult*F    *x1_hat;
+    x1_tilde = mult*F.t()*x_hat ;
+    E =  x_tilde.at<double>(0,0) *x_tilde.at<double>(0,0)  + x_tilde.at<double>(1,0) *x_tilde.at<double>(1,0)
+       + x1_tilde.at<double>(0,0)*x1_tilde.at<double>(0,0) + x1_tilde.at<double>(1,0)*x1_tilde.at<double>(1,0);
   }
   cv::Point2d p1,p2;
   p1.x = x_hat.at<double>(0,0);
@@ -230,29 +222,40 @@ bool Map::triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Poi
   pt_out.y = pnts3D.at<double>(1,0)/pnts3D.at<double>(3,0);
   pt_out.z = pnts3D.at<double>(2,0)/pnts3D.at<double>(3,0);
 
-  /*
-  //Reproject to check accuracy:
-  cv::Mat reproj1 = cam0*pnts3D;
-  cv::Mat reproj2 = cam1*pnts3D;
-  double pt1_rx, pt1_ry,pt2_rx, pt2_ry,d1,d2;
-  pt1_rx = reproj1.at<double>(0,0)/reproj1.at<double>(2,0);
-  pt1_ry = reproj1.at<double>(1,0)/reproj1.at<double>(2,0);
-  pt2_rx = reproj2.at<double>(0,0)/reproj2.at<double>(2,0);
-  pt2_ry = reproj2.at<double>(1,0)/reproj2.at<double>(2,0);
-  d1 = (pt1.x - pt1_rx)*(pt1.x - pt1_rx) + (pt1.y - pt1_ry)*(pt1.y - pt1_ry);
-  d2 = (pt2.x - pt2_rx)*(pt2.x - pt2_rx) + (pt2.y - pt2_ry)*(pt2.y - pt2_ry);
-  ROS_INFO("Triangulation:");
-  ROS_INFO("\t pt_in1 = %f, %f",pt1.x,pt1.y);
-  ROS_INFO("\t pt_in2 = %f, %f",pt2.x,pt2.y);
-  ROS_INFO("\t pt_rp1 = %f, %f",pt1_rx,pt1_ry);
-  ROS_INFO("\t pt_rp2 = %f, %f",pt2_rx,pt2_ry);
-  ROS_INFO("\t Dist = %f",d1+d2);
-  ROS_INFO("\t Point_out: x=%f, y=%f, z=%f",pt_out.x,pt_out.y,pt_out.z);
-  */
   return true;
 }
 
+inline void getVandEpsil(cv::Mat& V, cv::Mat& epsil, cv::Mat& x_hat, cv::Mat& x1_hat,
+  cv::Mat& x_tilde, cv::Mat& x1_tilde, double f)
+{
+  double x,y,x1,y1,x2,y2,x12,y12,xt,x1t,yt,y1t;
+  x   = x_hat.at<double>(0,0)   ;  y   = x_hat.at<double>(1,0)   ;
+  x1  = x1_hat.at<double>(0,0)  ;  y1  = x1_hat.at<double>(1,0)  ;
+  xt  = x_tilde.at<double>(0,0) ;  yt  = x_tilde.at<double>(1,0) ;
+  x1t = x1_tilde.at<double>(0,0);  y1t = x1_tilde.at<double>(1,0);
+  x2 = x*x; x12 = x1*x1;  y2 = y*y; y12 = y1*y1;
 
+  V=(cv::Mat_<double>(9,9) <<
+     x2+x12,x1*y1, f*x1,  x*y,   0,     0,   f*x,0,  0,
+     x1*y1, x2+y12,f*y1,  0,     x*y,   0,   0,  f*x,0,
+     f*x1,  f*y1,  f*f,   0,     0,     0,   0,  0,  0,
+     x*y,   0,     0,     y2+x12,x1*y1, f*x1,f*y,0,  0,
+     0,     x*y,   0,     x1*y1, y2+y12,f*y1,0,  f*y,0,
+     0,     0,     0,     f*x1,  f*y1,  f*f, 0  ,0,  0,
+     f*x,   0,     0,     f*y,   0,     0,   f*f,0,  0,
+     0,     f*x,   0,     0,     f*y,   0,   0,  f*f,0,
+     0,0,0,               0,0,0,             0,0,0);
+  epsil = (cv::Mat_<double>(9,1) <<
+           x*x1 + x1*xt + x*x1t,
+           x*y1 + y1*xt + x*y1t,
+           (x   + xt)*f        ,
+           y*x1 + x1*yt + y*x1t,
+           y*y1 + y1*yt + y*y1t,
+           (y   + yt)*f        ,
+           (x1  + x1t)*f       ,
+           (y1  + y1t)*f       ,
+           f*f                 );
+}
 
 
 void Map::doBundleAdjustment(Keyframe& kf1,
@@ -335,8 +338,7 @@ void Map::doBundleAdjustment(Keyframe& kf1,
   //cv::LevMarqSparse::bundleAdjust(points3D, pointsImg, visibility, cameraMatrix, R, T, distCoeffs);
 }
 
-void Map::doBundleAdjustment2(Keyframe& kf1,
-                              Keyframe& kf2,
+void Map::doBundleAdjustment2(std::vector<Keyframe*> kfs,
                               std::vector<int> matching_indices_1,
                               std::vector<int> matching_indices_2,
                               bool fixed_poses,
@@ -352,12 +354,12 @@ void Map::doBundleAdjustment2(Keyframe& kf1,
   for (int i = 0; i < npt; ++i) {
     msg->observations[2*i+0].camera_index = 0;
     msg->observations[2*i+0].point_index  = i;
-    msg->observations[2*i+0].x = kf1.unmapped_imgPoints[matching_indices_1[i]].x;
-    msg->observations[2*i+0].y = kf1.unmapped_imgPoints[matching_indices_1[i]].y;
+    msg->observations[2*i+0].x = kfs[0]->unmapped_imgPoints[matching_indices_1[i]].x;
+    msg->observations[2*i+0].y = kfs[0]->unmapped_imgPoints[matching_indices_1[i]].y;
     msg->observations[2*i+1].camera_index = 1;
     msg->observations[2*i+1].point_index  = i;
-    msg->observations[2*i+1].x = kf2.unmapped_imgPoints[matching_indices_2[i]].x;
-    msg->observations[2*i+1].y = kf2.unmapped_imgPoints[matching_indices_2[i]].y;
+    msg->observations[2*i+1].x = kfs[1]->unmapped_imgPoints[matching_indices_2[i]].x;
+    msg->observations[2*i+1].y = kfs[1]->unmapped_imgPoints[matching_indices_2[i]].y;
 
     msg->points[i].x = points3D[i].x;
     msg->points[i].y = points3D[i].y;
@@ -366,14 +368,27 @@ void Map::doBundleAdjustment2(Keyframe& kf1,
   msg->cameras.resize(2);
 //TODO: make it general
   for (int i = 0; i < 2; ++i) {
-    msg->cameras[i].rotX = -PI/2;
-    msg->cameras[i].rotY = 0.0;
-    msg->cameras[i].rotZ = -PI/2;
-    msg->cameras[i].x     = 0.0;
-    msg->cameras[i].y     = 0.0;
+    tf::Matrix3x3 drone2world, cam2drone, cam2world;
+    double roll, pitch, yaw;
+    drone2world.setRPY(kfs[i]->pose.rotX,kfs[i]->pose.rotY,kfs[i]->pose.rotZ);
+    cam2drone.setRPY(-PI/2, 0, -PI/2);
+    cam2world = drone2world*cam2drone;
+    cam2world.getRPY(roll, pitch, yaw);
+    cout << "=== Camera number " << i << " ==="<< std::endl;
+    cout << "drone2world RPY" << std::endl;
+    cout <<  kfs[i]->pose.rotX << ";  " << kfs[i]->pose.rotY << ";  " << kfs[i]->pose.rotZ  << std::endl;
+    cout << "cam2drone RPY" << std::endl;
+    cout <<  -PI/2 << ";  " << 0 << ";  " << -PI/2  << std::endl;
+    cout << "RPY" << std::endl;
+    cout <<  roll << ";  " << pitch << ";  " << yaw  << std::endl;
+    msg->cameras[i].rotX = roll;
+    msg->cameras[i].rotY = pitch;
+    msg->cameras[i].rotZ = yaw;
+    msg->cameras[i].x = kfs[i]->pose.x;
+    msg->cameras[i].y = kfs[i]->pose.y;
+    msg->cameras[i].z = kfs[i]->pose.z;
+
   }
-  msg->cameras[0].z = 0.0;
-  msg->cameras[1].z = 0.645;
   bundle_pub.publish(*msg);
 }
 
@@ -408,7 +423,7 @@ bool Map::doPnP(const Frame& current_frame, boris_drone::Pose3D& PnP_pose)
   }
 
   //front camera:
-  cv::Mat drone2cam = rollPitchYawToRotationMatrix(PI/2, 0, -PI / 2);
+  cv::Mat drone2cam = rollPitchYawToRotationMatrix(-PI/2, 0, -PI / 2);
   //bottom camera:
   //cv::Mat drone2cam = rollPitchYawToRotationMatrix(PI,   0, -PI / 2);
 
@@ -472,7 +487,8 @@ bool Map::keyframeNeeded(boris_drone::Pose3D pose)
   {
     return true;
   }
-  else if ( (keyframes.size() == 1) && (pose.z > keyframes[0]->pose.z + 0.5) )
+  else if ( (keyframes.size() == 1) &&
+            ((pose.z > keyframes[0]->pose.z + 0.5)|| (pose.y > keyframes[0]->pose.y + 0.5)) )
   {
     return true;
   }
@@ -580,11 +596,14 @@ void Map::matchKeyframes(Keyframe& kf1, Keyframe& kf2, bool fixed_poses)
   {
     cv::Point3d pt3d;
     triangulate(pt3d, kf1.unmapped_imgPoints[matching_indices_1[i]],
-                       kf2.unmapped_imgPoints[matching_indices_2[i]],
-                       kf1.pose, kf2.pose);
+                      kf2.unmapped_imgPoints[matching_indices_2[i]],
+                      kf1.pose, kf2.pose);
     points3D.push_back(pt3d);
   }
-  doBundleAdjustment2(kf1, kf2, matching_indices_1, matching_indices_2, fixed_poses, points3D);
+  std::vector<Keyframe*> kfs;
+  kfs.push_back(&kf1);
+  kfs.push_back(&kf2);
+  doBundleAdjustment2(kfs, matching_indices_1, matching_indices_2, fixed_poses, points3D);
 
   /* TODO: put code in keyframe
   kf1.designPointsAsMapped(matching_indices_1,cloud_indices);

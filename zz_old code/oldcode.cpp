@@ -363,3 +363,25 @@ struct ConstCameraReprojectionError {
       double camera_t1;
       double camera_t2;
     };
+
+
+
+    /*
+    //Reproject to check accuracy: (in triangulate)
+    cv::Mat reproj1 = cam0*pnts3D;
+    cv::Mat reproj2 = cam1*pnts3D;
+    double pt1_rx, pt1_ry,pt2_rx, pt2_ry,d1,d2;
+    pt1_rx = reproj1.at<double>(0,0)/reproj1.at<double>(2,0);
+    pt1_ry = reproj1.at<double>(1,0)/reproj1.at<double>(2,0);
+    pt2_rx = reproj2.at<double>(0,0)/reproj2.at<double>(2,0);
+    pt2_ry = reproj2.at<double>(1,0)/reproj2.at<double>(2,0);
+    d1 = (pt1.x - pt1_rx)*(pt1.x - pt1_rx) + (pt1.y - pt1_ry)*(pt1.y - pt1_ry);
+    d2 = (pt2.x - pt2_rx)*(pt2.x - pt2_rx) + (pt2.y - pt2_ry)*(pt2.y - pt2_ry);
+    ROS_INFO("Triangulation:");
+    ROS_INFO("\t pt_in1 = %f, %f",pt1.x,pt1.y);
+    ROS_INFO("\t pt_in2 = %f, %f",pt2.x,pt2.y);
+    ROS_INFO("\t pt_rp1 = %f, %f",pt1_rx,pt1_ry);
+    ROS_INFO("\t pt_rp2 = %f, %f",pt2_rx,pt2_ry);
+    ROS_INFO("\t Dist = %f",d1+d2);
+    ROS_INFO("\t Point_out: x=%f, y=%f, z=%f",pt_out.x,pt_out.y,pt_out.z);
+    */

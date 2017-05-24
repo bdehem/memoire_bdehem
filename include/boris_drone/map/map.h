@@ -140,8 +140,7 @@ public:
   bool triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
                    const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2);
 
-  void doBundleAdjustment2(Keyframe& kf1,
-                           Keyframe& kf2,
+  void doBundleAdjustment2(std::vector<Keyframe*> kfs,
                            std::vector<int> matching_indices_1,
                            std::vector<int> matching_indices_2,
                            bool fixed_poses,
@@ -165,5 +164,7 @@ public:
 
   void updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr);
 };
+inline void getVandEpsil(cv::Mat& V, cv::Mat& epsil, cv::Mat& x_hat, cv::Mat& x1_hat,
+  cv::Mat& x_tilde, cv::Mat& x1_tilde, double f);
 
 #endif /* boris_drone_MAP_H */

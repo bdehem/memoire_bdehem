@@ -10,32 +10,33 @@
 
 #include <boris_drone/map/mapping_node.h>
 
-Keyframe::Keyframe(Map* p_global_map)
-{
-  this->map = p_global_map;
-}
-
-Keyframe::Keyframe(Map* p_global_map, boris_drone::Pose3D& pose)
-{
-  this->map  = p_global_map;
-  this->pose = pose;
-}
-
 Keyframe::Keyframe(Map* p_global_map, const Frame& frame)
 {
-  this->map                 = p_global_map;
-  this->pose                = frame.pose;
+  this->map         = p_global_map;
+  this->imgPoints   = frame.imgPoints;
+  this->descriptors = frame.descriptors;
+  this->pose        = frame.pose;
+  this->npts        = frame.imgPoints.size();
+
+
+  //Old, to remove when not used anymore:
   this->unmapped_imgPoints  = frame.imgPoints;
-  this->descriptors         = frame.descriptors;  
 }
 
 
 Keyframe::Keyframe(Map* p_global_map, const boris_drone::Pose3D& pose, const Frame& frame)
 {
-  this->map                 = p_global_map;
-  this->pose                = pose;
+  this->map         = p_global_map;
+  this->imgPoints   = frame.imgPoints;
+  this->descriptors = frame.descriptors;
+  this->pose        = pose;
+  this->npts        = frame.imgPoints.size();
+  //set all pointismapped to false
+  this->pointIsMapped.resize(npts,false);
+  this->points.resize(npts,-1);
+
+  //Old, to remove when not used anymore:
   this->unmapped_imgPoints  = frame.imgPoints;
-  this->descriptors         = frame.descriptors;
 }
 
 Keyframe::~Keyframe()

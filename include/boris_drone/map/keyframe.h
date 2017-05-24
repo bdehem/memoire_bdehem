@@ -47,24 +47,22 @@ class Map;
 class Keyframe
 {
 public:
-  cv::Mat descriptors;       //!< descriptors in opencv format
+  std::vector<cv::Point2f> imgPoints; //!< 2D coordinates of keypoints in image in OpenCV format
+  cv::Mat descriptors;                //!< descriptors of keypoints in OpenCV format
+  boris_drone::Pose3D pose;           //!< pose from which the keypoints were observed
 
+  int npts;
   std::vector<int> points;   //!< indices of points in the pointcloud (the map).
-  boris_drone::Pose3D pose;  //!< pose of the drone from which the keypoints were observed
+  std::vector<bool> pointIsMapped;
 
+
+  //TODO: remove this old implementation
   std::vector<cv::Point2f> unmapped_imgPoints;  //!< 2D coordinates of unmapped keypoints in OpenCV format
   std::vector<cv::Point2f> mapped_imgPoints;    //!< 2D coordinates of mapepd keypoints in OpenCV format
+  //TODO: until here
+
 
   Map* map;
-
-  //! Constructor.
-  //! \param[in] map Pointer to the map
-  Keyframe(Map* p_global_map);
-
-  //! Constructor
-  //! \param[in] map Pointer to the map
-  //! \param[in] pose Pose of the drone from which the keypoints were observed
-  Keyframe(Map* p_global_map, boris_drone::Pose3D& pose);
 
   //! Constructor
   //! \param[in] map Pointer to the map

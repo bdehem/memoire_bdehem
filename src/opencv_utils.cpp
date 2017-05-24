@@ -68,9 +68,9 @@ cv::Mat rollPitchYawToChangeBaseMatrix(const double roll, const double pitch, co
 void getCameraPositionMatrices(const boris_drone::Pose3D& pose, cv::Mat& R, cv::Mat& T, bool front)
 {
   cv::Mat drone2world, cam2drone;
-  double yaw   = -pose.rotZ;
-  double pitch = -pose.rotY;
-  double roll  = -pose.rotX;
+  double yaw   = pose.rotZ;
+  double pitch = pose.rotY;
+  double roll  = pose.rotX;
 
   // compute the rotation matrices
   drone2world = rollPitchYawToRotationMatrix(roll, pitch, yaw);

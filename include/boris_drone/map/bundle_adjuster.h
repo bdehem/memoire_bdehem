@@ -44,12 +44,15 @@
 
 class BALProblem {
  public:
+  BALProblem();
   BALProblem(const boris_drone::BundleMsg::ConstPtr bundlePtr);
   ~BALProblem();
   int num_observations() const;
   const double* observations() const;
   double* mutable_cameras();
   double* mutable_points();
+  double* mutable_camera(int i);
+  double* mutable_point(int i);
   double* mutable_camera_for_observation(int i);
   double* mutable_point_for_observation(int i);
   //private:
