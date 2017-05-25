@@ -83,13 +83,16 @@ void Map::newKeyframe(const Frame& frame)
     std::vector<Keyframe*> kfs;
     kfs.push_back(reference_keyframe);
     kfs.push_back(keyframes[nkeyframes-2]);
-    //doBundleAdjustment(kfs, true);//false also wroks well!!
+    doBundleAdjustment(keyframes, false); //false also wroks well!!
   }
 }
+
 
 bool Map::processFrame(const Frame& frame, boris_drone::Pose3D& PnP_pose)
 {
   int PnP_result = doPnP(frame, PnP_pose);
+  if (keyframeNeeded(frame.pose))
+    newKeyframe(frame);
   switch(PnP_result){
     case 1  : //PnP successful
       if (abs(PnP_pose.z - frame.pose.z) > 0.8)
