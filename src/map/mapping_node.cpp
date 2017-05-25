@@ -61,9 +61,9 @@ MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3
   map = Map(&nh,do_search, stop_if_lost, camera_matrix_K);
 
   // initialize the map and the visualizer
-  pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZRGBSIFT> single_color(map.cloud, 0, 255, 0);
+  pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> single_color(map.cloud, 0, 255, 0);
   visualizer->setBackgroundColor(0, 0.1, 0.3);
-  visualizer->addPointCloud<pcl::PointXYZRGBSIFT>(map.cloud, single_color, "SIFT_cloud");
+  visualizer->addPointCloud<pcl::PointXYZ>(map.cloud, single_color, "SIFT_cloud");
   visualizer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3, "SIFT_cloud");
   visualizer->addCoordinateSystem(1.0);  // red: x, green: y, blue: z
 
@@ -92,7 +92,7 @@ void MappingNode::resetPoseCb(const std_msgs::Empty& msg)
   map.resetPose();
   processed_image_sub = nh.subscribe(processed_image_channel, 3, &MappingNode::processedImageCb, this);
   // update visualizer
-  this->visualizer->updatePointCloud<pcl::PointXYZRGBSIFT>(map.cloud, "SIFT_cloud");
+  this->visualizer->updatePointCloud<pcl::PointXYZ>(map.cloud, "SIFT_cloud");
 }
 
 void MappingNode::endResetPoseCb(const std_msgs::Empty& msg)
@@ -114,7 +114,7 @@ void MappingNode::processedImageCb(const boris_drone::ProcessedImageMsg::ConstPt
     Frame current_frame(processed_image_in);
     boris_drone::Pose3D PnP_pose;
     bool PnP_success = map.processFrame(current_frame,PnP_pose);
-    this->visualizer->updatePointCloud<pcl::PointXYZRGBSIFT>(map.cloud, "SIFT_cloud");
+    this->visualizer->updatePointCloud<pcl::PointXYZ>(map.cloud, "SIFT_cloud");
     if (PnP_success)
     {
       boris_drone::Pose3D frame_pose = current_frame.pose;

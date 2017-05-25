@@ -29,7 +29,6 @@
 #include <boost/shared_ptr.hpp>
 
 /* boris_drone */
-#include <boris_drone/PointXYZRGBSIFT.h>
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/opencv_utils.h>
 #include <boris_drone/map/frame.h>
@@ -67,7 +66,7 @@ public:
 
   //Map* map;
   //pointers to map objects
-  pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr cloud;
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
   cv::Mat* map_descriptors; //!< descriptors in opencv format
 
 
@@ -76,14 +75,14 @@ public:
   //! Constructor
   //! \param[in] map Pointer to the map
   //! \param[in] frame from which the Keyframe is built
-  Keyframe(pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr cloud,
+  Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
                                   cv::Mat* descriptors, const Frame& frame);
 
   //! Constructor
   //! \param[in] map Pointer to the map
   //! \param[in] pose Pose of the drone from which the keypoints were observed
   //! \param[in] frame from which the Keyframe is built
-  Keyframe(pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr cloud,
+  Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
      cv::Mat* descriptors, const boris_drone::Pose3D& pose, const Frame& frame);
 
   //! Destructor.

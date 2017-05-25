@@ -12,7 +12,7 @@
 //#include <boris_drone/map/mapping_node.h>
 
 
-Keyframe::Keyframe(pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr cloud,
+Keyframe::Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
                                 cv::Mat* map_descriptors, const Frame& frame)
 {
   this->cloud           = cloud;
@@ -31,7 +31,7 @@ Keyframe::Keyframe(pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr cloud,
 }
 
 
-Keyframe::Keyframe(pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr cloud,
+Keyframe::Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
    cv::Mat* map_descriptors, const boris_drone::Pose3D& pose, const Frame& frame)
 {
   this->cloud           = cloud;
@@ -71,7 +71,7 @@ void Keyframe::match(Keyframe& other, std::vector<cv::Point3d>& points3D,
                         pose, other.pose);
       points3D.push_back(pt3d);
       //add point to map
-      pcl::PointXYZRGBSIFT new_point;
+      pcl::PointXYZ new_point;
       new_point.x = pt3d.x;
       new_point.y = pt3d.y;
       new_point.z = pt3d.z;

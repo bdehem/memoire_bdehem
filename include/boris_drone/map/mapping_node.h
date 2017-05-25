@@ -49,7 +49,6 @@
 #include <cvsba/cvsba.h>
 
 /* boris_drone */
-#include <boris_drone/PointXYZRGBSIFT.h>  // pcl::PointXYZRGBSIFT
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/ProcessedImageMsg.h>
 #include <boris_drone/StrategyMsg.h>

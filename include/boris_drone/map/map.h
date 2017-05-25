@@ -46,7 +46,6 @@
 #include <cvsba/cvsba.h>
 
 /* boris_drone */
-#include <boris_drone/PointXYZRGBSIFT.h>  // pcl::PointXYZRGBSIFT
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/ProcessedImageMsg.h>
 #include <boris_drone/BundleMsg.h>
@@ -131,7 +130,7 @@ public:
   std::vector<Keyframe*> keyframes;
 
   //! The cloud object containing 3D points
-  pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr cloud;
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
 
   cv::Mat descriptors; //!< descriptors in opencv format
 

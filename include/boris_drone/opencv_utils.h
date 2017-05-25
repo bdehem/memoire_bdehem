@@ -20,7 +20,6 @@
 
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/boris_drone.h>
-#include <boris_drone/PointXYZRGBSIFT.h>
 
 //! \return the rotation matrix given the roll angle (around x axis)
 cv::Mat rotationMatrixX(const double angle);

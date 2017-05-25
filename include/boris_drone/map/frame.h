@@ -31,7 +31,6 @@
 #include <sensor_msgs/image_encodings.h>
 
 /* boris_drone */
-#include <boris_drone/PointXYZRGBSIFT.h>
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/ProcessedImageMsg.h>
 #include <boris_drone/map/map_utils.h>

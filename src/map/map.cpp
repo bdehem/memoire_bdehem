@@ -5,7 +5,7 @@ Map::Map()
 }
 
 Map::Map(ros::NodeHandle* nh, bool do_search, bool stop_if_lost, cv::Mat camera_matrix_K)
-                          : cloud(new pcl::PointCloud< pcl::PointXYZRGBSIFT >())
+                          : cloud(new pcl::PointCloud< pcl::PointXYZ >())
 {
   cv::initModule_nonfree();  // initialize OpenCV SIFT and SURF
 
@@ -62,7 +62,7 @@ void Map::resetPose()
 {
   this->resetList();  // remove all keyframes
   // empty the cloud
-  this->cloud = boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGBSIFT> >(new pcl::PointCloud<pcl::PointXYZRGBSIFT>);
+  this->cloud = boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >(new pcl::PointCloud<pcl::PointXYZ>);
   this->tvec = cv::Mat::zeros(3, 1, CV_64FC1);
   this->rvec = cv::Mat::zeros(3, 1, CV_64FC1);
 }
@@ -392,7 +392,7 @@ bool Map::keyframeNeeded(boris_drone::Pose3D pose)
     return (getSqDist(pose, reference_keyframe->pose) > thresh);
 }
 
-void cloud_debug(pcl::PointCloud< pcl::PointXYZRGBSIFT >::ConstPtr cloud)
+void cloud_debug(pcl::PointCloud< pcl::PointXYZ >::ConstPtr cloud)
 {
   for (size_t i = 0; i < cloud->points.size(); ++i)
   {
@@ -413,7 +413,7 @@ int Map::matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_ma
   std::vector<cv::Point3f> map_matching_points;
   std::vector<cv::Point2f> frame_matching_points;
   std::vector<int> map_indices, frame_indices, inliers;
-  pcl::PointXYZRGBSIFT pcl_point;
+  pcl::PointXYZ pcl_point;
   matchDescriptors(this->descriptors, frame.descriptors, map_indices, frame_indices);
   if (map_indices.size() < threshold_lost)
     return -3;
@@ -450,7 +450,7 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
 
   for (int i = 0; i < num_points; ++i)
   {
-    pcl::PointXYZRGBSIFT new_point;
+    pcl::PointXYZ new_point;
     new_point.x = bundlePtr->points[i].x;
     new_point.y = bundlePtr->points[i].y;
     new_point.z = bundlePtr->points[i].z;
