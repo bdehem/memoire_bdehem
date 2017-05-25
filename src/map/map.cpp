@@ -191,6 +191,8 @@ void Map::doBundleAdjustment(std::vector<Keyframe*> kfs, bool fixed_poses)
       }
     }
   }
+  /*
+  print a bunch of things
   ROS_INFO("Preparing bundle. N_ba_points = %lu", ba_points.size());
   ROS_INFO("check: %lu = %lu", ba_points.size(), kfs_point.size());
   ba_pts_it = ba_points.begin();
@@ -205,6 +207,7 @@ void Map::doBundleAdjustment(std::vector<Keyframe*> kfs, bool fixed_poses)
   }
   ROS_INFO("Done making lists of point observations. Now removing single obserations");
   ROS_INFO("Check sizes : %lu = %lu", ba_points.size(),kfs_point.size());
+  */
   //Remove points that are only seen once and count observations
   i = kfs_point.size();
   nobs = 0;
@@ -213,18 +216,18 @@ void Map::doBundleAdjustment(std::vector<Keyframe*> kfs, bool fixed_poses)
     i--;
     if(kfs_point[i].size() < 2)
     {
-      ROS_INFO("About to erase point %d",i);
+      //ROS_INFO("About to erase point %d",i);
       ba_points.erase(ba_pts_it--);
       kfs_point.erase(kfs_point.begin() + i);
       idx_point_in_kf.erase(idx_point_in_kf.begin() + i);
-      ROS_INFO("Erased point %d",i);
+      //ROS_INFO("Erased point %d",i);
     }
     else
     {
       ba_pts_it--;
-      ROS_INFO("Not erasing point %d. It was seen by %lu kfs",i,kfs_point[i].size());
+      //ROS_INFO("Not erasing point %d. It was seen by %lu kfs",i,kfs_point[i].size());
       nobs += kfs_point[i].size();
-      ROS_INFO("Total nobs = %d",nobs);
+      //ROS_INFO("Total nobs = %d",nobs);
     }
   }
   ROS_INFO("Done removing. There are %d observations", nobs);
@@ -446,8 +449,13 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
 {
   int num_points = bundlePtr->num_points;
   int num_kfs    = bundlePtr->num_cameras;
+  bool converged = bundlePtr->converged;
   ROS_INFO("Update Bundle");
-
+  if (!converged)
+  {
+    ROS_INFO("Bundle adjustment did not converge. Not updating map");
+    return;
+  }
   for (int i = 0; i < num_points; ++i)
   {
     pcl::PointXYZ new_point;

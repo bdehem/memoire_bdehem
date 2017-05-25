@@ -16,6 +16,7 @@
 
 #include "ceres/ceres.h"
 #include "ceres/rotation.h"
+#include "ceres/types.h"
 
 // vision
 #include <opencv2/calib3d/calib3d.hpp>
@@ -86,7 +87,7 @@ public:
   BundleAdjuster();
   //! Destructor.
   ~BundleAdjuster();
-  void publishBundle(const BALProblem& bal_problem);
+  void publishBundle(const BALProblem& bal_problem, bool converged);
 };
 
 

@@ -39,8 +39,8 @@
 
 /* Messages */
 #include <sensor_msgs/image_encodings.h>
-#include <std_msgs/Empty.h>
 #include <std_msgs/Int16.h>
+#include <std_msgs/Empty.h>
 
 /* Sparse Bundle Adjustment */
 #include <cvsba/cvsba.h>

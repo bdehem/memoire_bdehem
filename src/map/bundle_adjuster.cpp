@@ -110,9 +110,10 @@ BundleAdjuster::BundleAdjuster()
   bundled_pub     = nh.advertise<boris_drone::BundleMsg>(bundled_channel, 1);
 }
 
-void BundleAdjuster::publishBundle(const BALProblem& bal_problem)
+void BundleAdjuster::publishBundle(const BALProblem& bal_problem, bool converged)
 {
   boris_drone::BundleMsg msg;
+  msg.converged = converged;
   int ncam = bal_problem.num_cameras_ ;  int npt  = bal_problem.num_points_;
   msg.num_cameras = ncam              ;  msg.num_points  = npt;
   msg.cameras.resize(ncam)            ;  msg.points.resize(npt);
@@ -269,8 +270,10 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   ceres::Solver::Summary summary;
   ceres::Solve(options, &problem, &summary);
   std::cout << summary.FullReport() << "\n";
-
-  publishBundle(bal_problem);
+  ceres::TerminationType tType = summary.termination_type;
+  bool converged = (tType == ceres::CONVERGENCE);
+  ROS_INFO("tType converged is :%d",converged);
+  publishBundle(bal_problem, converged);
   /*
   More printing
 
