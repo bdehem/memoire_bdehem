@@ -32,6 +32,8 @@
 #include <boris_drone/PointXYZRGBSIFT.h>
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/opencv_utils.h>
+#include <boris_drone/map/frame.h>
+#include <boris_drone/map/map_utils.h>
 #include <algorithm>
 
 //forward reference to be able to have a pointer to map
@@ -63,22 +65,31 @@ public:
   //TODO: until here
 
 
-  Map* map;
+  //Map* map;
+  //pointers to map objects
+  pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr cloud;
+  cv::Mat* map_descriptors; //!< descriptors in opencv format
+
+
+
 
   //! Constructor
   //! \param[in] map Pointer to the map
   //! \param[in] frame from which the Keyframe is built
-  Keyframe(Map* p_global_map, const Frame& frame);
+  Keyframe(pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr cloud,
+                                  cv::Mat* descriptors, const Frame& frame);
 
   //! Constructor
   //! \param[in] map Pointer to the map
   //! \param[in] pose Pose of the drone from which the keypoints were observed
   //! \param[in] frame from which the Keyframe is built
-  Keyframe(Map* p_global_map, const boris_drone::Pose3D& pose, const Frame& frame);
+  Keyframe(pcl::PointCloud<pcl::PointXYZRGBSIFT>::Ptr cloud,
+     cv::Mat* descriptors, const boris_drone::Pose3D& pose, const Frame& frame);
 
   //! Destructor.
   ~Keyframe();
-  void match(Keyframe& other);
+  void match(Keyframe& other, std::vector<cv::Point3d>& points3D,
+       std::vector<int>& matching_indices_1, std::vector<int>& matching_indices_2);
   void print();
 
 };

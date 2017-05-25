@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(boris_drone)
 
+LIST(APPEND CMAKE_MODULE_PATH "~/cvsba-1.0.0/build")
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -18,6 +20,8 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package( OpenCV REQUIRED core nonfree )# ocl gpu)
+
+find_package( cvsba REQUIRED )
 
 find_package( Ceres REQUIRED )
 
@@ -197,7 +201,7 @@ target_link_libraries(image_piper ${catkin_LIBRARIES})
 target_link_libraries(controller_custom ${catkin_LIBRARIES})
 target_link_libraries(pose_estimation ${catkin_LIBRARIES})
 target_link_libraries(manual_pose_estimation ${catkin_LIBRARIES})
-target_link_libraries(mapping_node ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBRARIES} opencv_nonfree libvtkCommon.so libvtkFiltering.so)
+target_link_libraries(mapping_node ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBRARIES} opencv_nonfree libvtkCommon.so libvtkFiltering.so ${cvsba_LIBS})
 target_link_libraries(computer_vision ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} opencv_nonfree)
 target_link_libraries(vision_gui ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} opencv_nonfree)
 target_link_libraries(path_planning ${catkin_LIBRARIES})

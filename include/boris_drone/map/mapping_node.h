@@ -59,9 +59,9 @@
 #include <boris_drone/opencv_utils.h>
 #include <boris_drone/read_from_launch.h>
 
-#include <boris_drone/map/frame.h>
-#include <boris_drone/map/keyframe.h>
 #include <boris_drone/map/map.h>
+#include <boris_drone/map/keyframe.h>
+#include <boris_drone/map/frame.h>
 
 /*!
  * \class MappingNode

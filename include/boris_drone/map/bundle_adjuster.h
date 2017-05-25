@@ -56,6 +56,7 @@ class BALProblem {
   double* mutable_camera_for_observation(int i);
   double* mutable_point_for_observation(int i);
   //private:
+  bool fixed_poses_;
   int num_cameras_;
   int num_points_;
   int num_observations_;

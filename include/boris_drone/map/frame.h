@@ -34,6 +34,7 @@
 #include <boris_drone/PointXYZRGBSIFT.h>
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/ProcessedImageMsg.h>
+#include <boris_drone/map/map_utils.h>
 // #include <boris_drone/map/simple_map.h>
 
 // class MappingNode is defined in boris_drone/map/simple_map.h
@@ -41,7 +42,7 @@
 // is also included in boris_drone/map/simple_map.h or in mapping_node.h
 
 /** \struct Frame
- *  A Frame object stores ImageProcessed message 
+ *  A Frame object stores ImageProcessed message
  */
 struct Frame
 {

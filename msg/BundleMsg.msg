@@ -1,4 +1,5 @@
 
+bool fixed_poses
 int16 num_cameras
 int16 num_points
 int16 num_observations

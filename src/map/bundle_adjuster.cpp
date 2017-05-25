@@ -9,6 +9,7 @@
 
 BALProblem::BALProblem(const boris_drone::BundleMsg::ConstPtr bundlePtr)
 {
+  fixed_poses_      = bundlePtr->fixed_poses;
   num_cameras_      = bundlePtr->num_cameras;
   num_points_       = bundlePtr->num_points;
   num_observations_ = bundlePtr->num_observations;
@@ -31,10 +32,6 @@ BALProblem::BALProblem(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     parameters_[6*i + 3] = bundlePtr->cameras[i].x;
     parameters_[6*i + 4] = bundlePtr->cameras[i].y;
     parameters_[6*i + 5] = bundlePtr->cameras[i].z;
-    std::cout << "Camera number " << i << std::endl;
-    std::cout << "rotX = " << bundlePtr->cameras[i].rotX*180/PI << std::endl;
-    std::cout << "rotY = " << bundlePtr->cameras[i].rotY*180/PI << std::endl;
-    std::cout << "rotZ = " << bundlePtr->cameras[i].rotZ*180/PI << std::endl;
   }
   for (int i = 0; i < num_points_; ++i) {
     parameters_[6*num_cameras_ + 3*i + 0] = bundlePtr->points[i].x;
@@ -116,25 +113,23 @@ BundleAdjuster::BundleAdjuster()
 void BundleAdjuster::publishBundle(const BALProblem& bal_problem)
 {
   boris_drone::BundleMsg msg;
-  int npt  = bal_problem.num_points_;
-  int ncam = bal_problem.num_cameras_;
-  msg.num_cameras = ncam;
-  msg.num_points  = npt;
-  msg.num_observations = 2*npt;
-  msg.observations.resize(2*npt);
-  msg.points.resize(npt);
-  for (int i = 0; i < 2*npt; ++i) {
-    msg.observations[i].camera_index = bal_problem.camera_index_[i];
-    msg.observations[i].point_index  = bal_problem.point_index_[i];
-    msg.observations[i].x = bal_problem.observations_[2*i];
-    msg.observations[i].y = bal_problem.observations_[2*i+1];
+  int ncam = bal_problem.num_cameras_ ;  int npt  = bal_problem.num_points_;
+  msg.num_cameras = ncam              ;  msg.num_points  = npt;
+  msg.cameras.resize(ncam)            ;  msg.points.resize(npt);
+
+  for (int i = 0; i < ncam; ++i) {
+    msg.cameras[i].rotX = bal_problem.parameters_[6*i + 0] ;
+    msg.cameras[i].rotY = bal_problem.parameters_[6*i + 1] ;
+    msg.cameras[i].rotZ = bal_problem.parameters_[6*i + 2] ;
+    msg.cameras[i].x    = bal_problem.parameters_[6*i + 3] ;
+    msg.cameras[i].y    = bal_problem.parameters_[6*i + 4] ;
+    msg.cameras[i].z    = bal_problem.parameters_[6*i + 5] ;
   }
   for (int i = 0; i < npt; ++i) {
     msg.points[i].x = bal_problem.parameters_[6*ncam + 3*i + 0];
     msg.points[i].y = bal_problem.parameters_[6*ncam + 3*i + 1];
     msg.points[i].z = bal_problem.parameters_[6*ncam + 3*i + 2];
   }
-  //TODO: add cameras to msg
   bundled_pub.publish(msg);
 }
 
@@ -148,7 +143,8 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   //Inspired by example code for bundle adjustment of Ceres (main function)
   //google::InitGoogleLogging(argv[0]);
   BALProblem bal_problem = BALProblem(bundlePtr);
-
+  /*
+  blabla
   double* camera_print  = bal_problem.mutable_camera(0);
   double* camera_print2 = bal_problem.mutable_camera(1);
   cv::Mat K = (cv::Mat_<double>(3, 3) << 529.1, 0    , 350.6,
@@ -247,8 +243,7 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   std::cout << "reprojection_error" << std::endl;
   std::cout << reprojection_error[0] << std::endl;
   std::cout << reprojection_error[1] << std::endl;
-
-
+  */
 
   double x, y;
   double* camera;
@@ -264,7 +259,9 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     problem.AddResidualBlock(cost_function, NULL, camera, point);
   }
   problem.SetParameterBlockConstant(bal_problem.mutable_camera(0));
-  problem.SetParameterBlockConstant(bal_problem.mutable_camera(1));
+  if (bal_problem.fixed_poses_)
+    for (int i = 1; i < bal_problem.num_cameras_; ++i)
+      problem.SetParameterBlockConstant(bal_problem.mutable_camera(i));
 
   ceres::Solver::Options options;
   options.linear_solver_type = ceres::DENSE_SCHUR;
@@ -274,6 +271,8 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   std::cout << summary.FullReport() << "\n";
 
   publishBundle(bal_problem);
+  /*
+  More printing
 
   point3D_h(0) = bal_problem.parameters_[6*num_cameras_ + 0];
   point3D_h(1) = bal_problem.parameters_[6*num_cameras_ + 1];
@@ -326,7 +325,7 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   std::cout << reprojection_error_after[0] << std::endl;
   std::cout << reprojection_error_after[1] << std::endl;
 
-
+  */
 }
 
 

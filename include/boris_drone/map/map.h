@@ -13,6 +13,9 @@
 #include <ros/ros.h>
 #include <tf/transform_datatypes.h>
 
+
+#include <set>
+
 // vision
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/core/core.hpp>
@@ -52,8 +55,9 @@
 #include <boris_drone/opencv_utils.h>
 #include <boris_drone/read_from_launch.h>
 
-#include <boris_drone/map/frame.h>
 #include <boris_drone/map/keyframe.h>
+#include <boris_drone/map/frame.h>
+#include <boris_drone/map/map_utils.h>
 
 /*!
  * \class Map
@@ -87,7 +91,7 @@ private:
    * @param[out] inliers       The indexes of keypoints with a correct matching
    * @param[in]  ref_keyframe  The Keyframe used to perform the estimation
    */
-  bool doPnP(const Frame& current_frame, boris_drone::Pose3D& PnP_pose);
+  int doPnP(const Frame& current_frame, boris_drone::Pose3D& PnP_pose);
 
   cv::Mat camera_matrix_K;
 
@@ -137,34 +141,16 @@ public:
 
   void resetPose();
 
-  bool triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
-                   const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2);
-
-  void doBundleAdjustment2(std::vector<Keyframe*> kfs,
-                           std::vector<int> matching_indices_1,
-                           std::vector<int> matching_indices_2,
-                           bool fixed_poses,
-                           std::vector<cv::Point3d>& points3D);
-
-  void doBundleAdjustment(Keyframe& kf1,
-                          Keyframe& kf2,
-                          std::vector<int> matching_indices_1,
-                          std::vector<int> matching_indices_2,
-                          bool fixed_poses,
-                          std::vector<cv::Point3d>& points3D);
+  void doBundleAdjustment(std::vector<Keyframe*> kfs, bool fixed_poses);
 
   void getVisualPose();
 
-  void matchKeyframes(Keyframe& kf1, Keyframe& kf2, bool fixed_poses);
-
-  bool matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_map_matching_points,
+  int matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_map_matching_points,
                                           std::vector<cv::Point2f>& inliers_frame_matching_points);
 
   void targetDetectedPublisher();
 
   void updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr);
 };
-inline void getVandEpsil(cv::Mat& V, cv::Mat& epsil, cv::Mat& x_hat, cv::Mat& x1_hat,
-  cv::Mat& x_tilde, cv::Mat& x1_tilde, double f);
 
 #endif /* boris_drone_MAP_H */
