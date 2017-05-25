@@ -445,13 +445,29 @@ int Map::matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_ma
 void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
 {
   int num_points = bundlePtr->num_points;
+  int num_kfs    = bundlePtr->num_cameras;
   ROS_INFO("Update Bundle");
 
-  for (int i = 0; i < num_points; ++i) {
+  for (int i = 0; i < num_points; ++i)
+  {
     pcl::PointXYZRGBSIFT new_point;
     new_point.x = bundlePtr->points[i].x;
     new_point.y = bundlePtr->points[i].y;
     new_point.z = bundlePtr->points[i].z;
     cloud->points[i] = new_point;
   }
+  //for (int i = 0; i < num_kfs; ++i)
+  //{
+  //  boris_drone::Pose3D adjusted_pose;
+  //  tf::Matrix3x3 drone2world, cam2drone, cam2world;
+  //  cam2world.setRPY(bundlePtr->cameras[i].rotX, bundlePtr->cameras[i].rotY, bundlePtr->cameras[i].rotZ);
+  //  cam2drone.setRPY(-PI/2, 0, -PI/2);
+  //  drone2world = cam2world*cam2drone.transpose();
+  //  drone2world.getRPY(adjusted_pose.rotX,adjusted_pose.rotY,adjusted_pose.rotZ);
+  //  //
+  //  adjusted_pose.x = bundlePtr->cameras[i].x;
+  //  adjusted_pose.y = bundlePtr->cameras[i].y;
+  //  adjusted_pose.z = bundlePtr->cameras[i].z;
+  //  keyframes[i]->pose = adjusted_pose;
+  //}
 }
