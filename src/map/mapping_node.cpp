@@ -11,6 +11,7 @@
 
 MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3D visualizer"))
 {
+  keyframeneeded = false;
   iter = 0;
   // Subsribers
   strategy_channel = nh.resolveName("strategy");
@@ -23,6 +24,8 @@ MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3
   end_reset_pose_sub     = nh.subscribe(end_reset_pose_channel, 1, &MappingNode::endResetPoseCb, this);
   bundled_channel = nh.resolveName("bundled");
   bundled_sub     = nh.subscribe(bundled_channel, 1, &MappingNode::bundledCb, this);
+  mpe_channel = nh.resolveName("manual_pose_estimation");
+  mpe_sub     = nh.subscribe(mpe_channel, 1, &MappingNode::manualPoseCb, this);
 
   // Publishers
   pose_visual_channel = nh.resolveName("pose_visual");
@@ -68,10 +71,16 @@ MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3
   visualizer->addCoordinateSystem(1.0);  // red: x, green: y, blue: z
 
   ROS_DEBUG("mapping_node initialized");
+  keyframeneeded = true;
 }
 
 MappingNode::~MappingNode()
 {
+}
+
+void MappingNode::manualPoseCb(const boris_drone::Pose3D::ConstPtr posePtr)
+{
+  keyframeneeded = true;
 }
 
 void MappingNode::bundledCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
@@ -102,6 +111,7 @@ void MappingNode::endResetPoseCb(const std_msgs::Empty& msg)
 
 void MappingNode::processedImageCb(const boris_drone::ProcessedImageMsg::ConstPtr processed_image_in)
 {
+  bool PnP_success;
   if (pending_reset || strategy == WAIT || strategy == TAKEOFF)
     return;
   else
@@ -113,7 +123,13 @@ void MappingNode::processedImageCb(const boris_drone::ProcessedImageMsg::ConstPt
     }
     Frame current_frame(processed_image_in);
     boris_drone::Pose3D PnP_pose;
-    bool PnP_success = map.processFrame(current_frame,PnP_pose);
+    if (keyframeneeded)
+    {
+      PnP_success = map.processFrame(current_frame, PnP_pose, true);
+      keyframeneeded = false;
+    }
+    else
+      PnP_success = map.processFrame(current_frame, PnP_pose, false);
     this->visualizer->updatePointCloud<pcl::PointXYZ>(map.cloud, "SIFT_cloud");
     if (PnP_success)
     {

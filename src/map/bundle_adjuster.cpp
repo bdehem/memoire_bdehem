@@ -9,6 +9,7 @@
 
 BALProblem::BALProblem(const boris_drone::BundleMsg::ConstPtr bundlePtr)
 {
+  bundleMsgPtr_     = bundlePtr;
   fixed_poses_      = bundlePtr->fixed_poses;
   num_cameras_      = bundlePtr->num_cameras;
   num_points_       = bundlePtr->num_points;
@@ -112,19 +113,19 @@ BundleAdjuster::BundleAdjuster()
 
 void BundleAdjuster::publishBundle(const BALProblem& bal_problem, bool converged)
 {
-  boris_drone::BundleMsg msg;
+  boris_drone::BundleMsg msg = *(bal_problem.bundleMsgPtr_);
   msg.converged = converged;
   int ncam = bal_problem.num_cameras_ ;  int npt  = bal_problem.num_points_;
   msg.num_cameras = ncam              ;  msg.num_points  = npt;
   msg.cameras.resize(ncam)            ;  msg.points.resize(npt);
 
   for (int i = 0; i < ncam; ++i) {
-    msg.cameras[i].rotX = bal_problem.parameters_[6*i + 0] ;
-    msg.cameras[i].rotY = bal_problem.parameters_[6*i + 1] ;
-    msg.cameras[i].rotZ = bal_problem.parameters_[6*i + 2] ;
-    msg.cameras[i].x    = bal_problem.parameters_[6*i + 3] ;
-    msg.cameras[i].y    = bal_problem.parameters_[6*i + 4] ;
-    msg.cameras[i].z    = bal_problem.parameters_[6*i + 5] ;
+    msg.cameras[i].rotX = bal_problem.parameters_[6*i + 0]*PI/180.0;
+    msg.cameras[i].rotY = bal_problem.parameters_[6*i + 1]*PI/180.0;
+    msg.cameras[i].rotZ = bal_problem.parameters_[6*i + 2]*PI/180.0;
+    msg.cameras[i].x    = bal_problem.parameters_[6*i + 3]*PI/180.0;
+    msg.cameras[i].y    = bal_problem.parameters_[6*i + 4]*PI/180.0;
+    msg.cameras[i].z    = bal_problem.parameters_[6*i + 5]*PI/180.0;
   }
   for (int i = 0; i < npt; ++i) {
     msg.points[i].x = bal_problem.parameters_[6*ncam + 3*i + 0];
@@ -144,6 +145,21 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   //Inspired by example code for bundle adjustment of Ceres (main function)
   //google::InitGoogleLogging(argv[0]);
   BALProblem bal_problem = BALProblem(bundlePtr);
+
+  double* camera_print;
+  ROS_INFO("Before BA: cameras are:");
+  for (int i = 0; i< bal_problem.num_cameras_; i++)
+  {
+    camera_print = bal_problem.mutable_camera(i);
+    cv::Mat R1 = rollPitchYawToRotationMatrix(camera_print[0]*PI/180.0,
+                                              camera_print[1]*PI/180.0,
+                                              camera_print[2]*PI/180.0);
+
+    ROS_INFO("rotmat of camera %d",i);
+    std::cout << R1 << std::endl;
+  }
+
+
   /*
   blabla
   double* camera_print  = bal_problem.mutable_camera(0);
@@ -270,10 +286,22 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   ceres::Solver::Summary summary;
   ceres::Solve(options, &problem, &summary);
   std::cout << summary.FullReport() << "\n";
-  ceres::TerminationType tType = summary.termination_type;
-  bool converged = (tType == ceres::CONVERGENCE);
-  ROS_INFO("tType converged is :%d",converged);
+  bool converged = (summary.termination_type == ceres::CONVERGENCE);
   publishBundle(bal_problem, converged);
+
+
+  ROS_INFO("After BA: cameras are:");
+  for (int i = 0; i< bal_problem.num_cameras_; i++)
+  {
+    camera_print = bal_problem.mutable_camera(i);
+    cv::Mat R1 = rollPitchYawToRotationMatrix(camera_print[0]*PI/180.0,
+                                              camera_print[1]*PI/180.0,
+                                              camera_print[2]*PI/180.0);
+
+    ROS_INFO("rotmat of camera %d",i);
+    std::cout << R1 << std::endl;
+  }
+
   /*
   More printing
 

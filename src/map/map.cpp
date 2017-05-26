@@ -80,18 +80,15 @@ void Map::newKeyframe(const Frame& frame)
     std::vector<int> matching_indices_2;
     reference_keyframe->match(*keyframes[nkeyframes-2],points3D,matching_indices_1, matching_indices_2);
     //bundle adjustment
-    std::vector<Keyframe*> kfs;
-    kfs.push_back(reference_keyframe);
-    kfs.push_back(keyframes[nkeyframes-2]);
     doBundleAdjustment(keyframes, false); //false also wroks well!!
   }
 }
 
 
-bool Map::processFrame(const Frame& frame, boris_drone::Pose3D& PnP_pose)
+bool Map::processFrame(const Frame& frame, boris_drone::Pose3D& PnP_pose, bool keyframeneeded)
 {
   int PnP_result = doPnP(frame, PnP_pose);
-  if (keyframeNeeded(frame.pose))
+  if (keyframeneeded)
     newKeyframe(frame);
   switch(PnP_result){
     case 1  : //PnP successful
@@ -121,35 +118,6 @@ bool Map::processFrame(const Frame& frame, boris_drone::Pose3D& PnP_pose)
       ROS_INFO("ERROR: Invalid return code from doPnP");
       return false;
   }
-}
-
-
-void Map::newReferenceKeyframe(const Frame& current_frame, boris_drone::Pose3D PnP_pose, bool PnP_success)
-{
-  //b4: check amonst old KF before making new one
-  //now immediately make new KF as all KP were used
-
-  boris_drone::Pose3D pose;     // pose used locally to attach to new keyframe
-  if (!PnP_success)
-  {
-    pose = current_frame.pose;  // sensor based pose of current frame
-  }
-  else
-  {
-    pose = PnP_pose;               // PnP pose of the current frame
-    pose.z = current_frame.pose.z; // in theory, absolute (because ultrasonic sensor)
-    // and more precise than PnP, so use this one to map. In practice: Kalman filtered on board
-    // (firmware), so, good meausure (not drifted) but not absolute!!! causes bad errors in map.
-    // We want to avoid this, so if PnP available, use it!
-    pose.rotX = current_frame.pose.rotX;  // idem
-    pose.rotY = current_frame.pose.rotY;  // idem
-  }
-
-  ROS_INFO("About to make a new Keyframe");
-  this->reference_keyframe = new Keyframe(cloud,&descriptors,pose,current_frame);
-  this->keyframes.push_back(reference_keyframe);
-  ROS_INFO("Made new keyframe. There are %lu keyframes",this->keyframes.size());
-
 }
 
 
@@ -257,8 +225,9 @@ void Map::doBundleAdjustment(std::vector<Keyframe*> kfs, bool fixed_poses)
   msg->num_observations = nobs;
   msg->observations.resize(nobs);
   msg->points.resize(npt);
-  ba_pts_it = ba_points.begin();
+  msg->index_points.resize(npt);
   k = 0;
+  ba_pts_it = ba_points.begin();
   for (i = 0; i < npt; ++i) {
     for (j = 0; j < kfs_point[i].size(); ++j) {
       //ROS_INFO("recording observation %d in message",k);
@@ -272,37 +241,24 @@ void Map::doBundleAdjustment(std::vector<Keyframe*> kfs, bool fixed_poses)
     }
     //ROS_INFO("recording point %d in message",i);
 
+    msg->index_points[i] = *ba_pts_it;
     msg->points[i].x = cloud->points[*ba_pts_it].x;
     msg->points[i].y = cloud->points[*ba_pts_it].y;
     msg->points[i].z = cloud->points[*ba_pts_it].z;
     ba_pts_it++;
   }
   msg->cameras.resize(ncam);
+  msg->index_keyframes.resize(ncam);
   for (i = 0; i < ncam; ++i) {
-    //ROS_INFO("recording cam %d in message",i);
-    tf::Matrix3x3 drone2world, cam2drone, cam2world;
-    double roll, pitch, yaw;
-    drone2world.setRPY(kfs[i]->pose.rotX,kfs[i]->pose.rotY,kfs[i]->pose.rotZ);
-    cam2drone.setRPY(-PI/2, 0, -PI/2);
-    cam2world = drone2world*cam2drone;
-    cam2world.getRPY(roll, pitch, yaw);
-    /*
-    Camera info
-    cout << "=== Camera number " << i << " ==="<< std::endl;
-    cout << "drone2world RPY" << std::endl;
-    cout <<  kfs[i]->pose.rotX << ";  " << kfs[i]->pose.rotY << ";  " << kfs[i]->pose.rotZ  << std::endl;
-    cout << "cam2drone RPY" << std::endl;
-    cout <<  -PI/2 << ";  " << 0 << ";  " << -PI/2  << std::endl;
-    cout << "RPY" << std::endl;
-    cout <<  roll << ";  " << pitch << ";  " << yaw  << std::endl;
-    */
-    msg->cameras[i].rotX = roll;
-    msg->cameras[i].rotY = pitch;
-    msg->cameras[i].rotZ = yaw;
-    msg->cameras[i].x = kfs[i]->pose.x;
-    msg->cameras[i].y = kfs[i]->pose.y;
-    msg->cameras[i].z = kfs[i]->pose.z;
-
+    msg->cameras[i].x    = kfs[i]->pose.x;
+    msg->cameras[i].y    = kfs[i]->pose.y;
+    msg->cameras[i].z    = kfs[i]->pose.z;
+    msg->cameras[i].rotX = kfs[i]->pose.rotX;
+    msg->cameras[i].rotY = kfs[i]->pose.rotY;
+    msg->cameras[i].rotZ = kfs[i]->pose.rotZ;
+    msg->index_keyframes[i] = i;
+    //TODO: generalize it so it can use any set of kfs:
+    //msg->index_keyframes[i] = kf_idx[i];
   }
   bundle_pub.publish(*msg);
 }
@@ -346,9 +302,9 @@ int Map::doPnP(const Frame& current_frame, boris_drone::Pose3D& PnP_pose)
   world2drone(2, 0), world2drone(2, 1), world2drone(2, 2))
   .getRPY(PnP_pose.rotX, PnP_pose.rotY, PnP_pose.rotZ);
 
-  PnP_pose.xvel = 0.0;
-  PnP_pose.yvel = 0.0;
-  PnP_pose.zvel = 0.0;
+  PnP_pose.xvel    = 0.0;
+  PnP_pose.yvel    = 0.0;
+  PnP_pose.zvel    = 0.0;
   PnP_pose.rotXvel = 0.0;
   PnP_pose.rotYvel = 0.0;
   PnP_pose.rotZvel = 0.0;
@@ -447,8 +403,9 @@ int Map::matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_ma
 
 void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
 {
-  int num_points = bundlePtr->num_points;
-  int num_kfs    = bundlePtr->num_cameras;
+  int npt, ncam, i, kfIdx;
+  npt  = bundlePtr->num_points;
+  ncam = bundlePtr->num_cameras;
   bool converged = bundlePtr->converged;
   ROS_INFO("Update Bundle");
   if (!converged)
@@ -456,7 +413,7 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     ROS_INFO("Bundle adjustment did not converge. Not updating map");
     return;
   }
-  for (int i = 0; i < num_points; ++i)
+  for (i = 0; i < npt; ++i)
   {
     pcl::PointXYZ new_point;
     new_point.x = bundlePtr->points[i].x;
@@ -464,18 +421,16 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     new_point.z = bundlePtr->points[i].z;
     cloud->points[i] = new_point;
   }
-  //for (int i = 0; i < num_kfs; ++i)
-  //{
-  //  boris_drone::Pose3D adjusted_pose;
-  //  tf::Matrix3x3 drone2world, cam2drone, cam2world;
-  //  cam2world.setRPY(bundlePtr->cameras[i].rotX, bundlePtr->cameras[i].rotY, bundlePtr->cameras[i].rotZ);
-  //  cam2drone.setRPY(-PI/2, 0, -PI/2);
-  //  drone2world = cam2world*cam2drone.transpose();
-  //  drone2world.getRPY(adjusted_pose.rotX,adjusted_pose.rotY,adjusted_pose.rotZ);
-  //  //
-  //  adjusted_pose.x = bundlePtr->cameras[i].x;
-  //  adjusted_pose.y = bundlePtr->cameras[i].y;
-  //  adjusted_pose.z = bundlePtr->cameras[i].z;
-  //  keyframes[i]->pose = adjusted_pose;
-  //}
+  ROS_INFO("Updated points, now cams:");
+  for (i = 0; i < ncam; ++i) {
+    kfIdx = bundlePtr->index_keyframes[i];
+    ROS_INFO("Updating keyframe %d",kfIdx);
+    keyframes[kfIdx]->pose.x    = bundlePtr->cameras[i].x    ;
+    keyframes[kfIdx]->pose.y    = bundlePtr->cameras[i].y    ;
+    keyframes[kfIdx]->pose.z    = bundlePtr->cameras[i].z    ;
+    keyframes[kfIdx]->pose.rotX = bundlePtr->cameras[i].rotX ;
+    keyframes[kfIdx]->pose.rotY = bundlePtr->cameras[i].rotY ;
+    keyframes[kfIdx]->pose.rotZ = bundlePtr->cameras[i].rotZ ;
+    ROS_INFO("Done");
+  }
 }

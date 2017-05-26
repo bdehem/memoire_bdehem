@@ -7,3 +7,5 @@ int16 num_observations
 ObservationMsg[] observations
 geometry_msgs/Point[] points
 Pose3D[] cameras
+int16[] index_points
+int16[] index_keyframes

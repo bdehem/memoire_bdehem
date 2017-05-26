@@ -15,34 +15,25 @@
 Keyframe::Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
                                 cv::Mat* map_descriptors, const Frame& frame)
 {
+  tf::Matrix3x3 drone2world, cam2drone, cam2world;
+  double roll, pitch, yaw;
+  drone2world.setRPY(frame.pose.rotX, frame.pose.rotY, frame.pose.rotZ);
+  cam2drone.setRPY(-PI/2, 0, -PI/2);
+  cam2world = drone2world*cam2drone;
+  cam2world.getRPY(roll, pitch, yaw);
+  this->pose            = frame.pose; //Rotation is to camera, not to drone
+  this->pose.rotX       = roll;
+  this->pose.rotY       = pitch;
+  this->pose.rotZ       = yaw;
   this->cloud           = cloud;
   this->map_descriptors = map_descriptors;
   this->imgPoints       = frame.imgPoints;
   this->descriptors     = frame.descriptors;
-  this->pose            = frame.pose;
   this->npts            = frame.imgPoints.size();
   //set all pointismapped to false
   this->pointIsMapped.resize(npts,false);
   this->points.resize(npts,-1);
 
-
-  //Old, to remove when not used anymore:
-  this->unmapped_imgPoints  = frame.imgPoints;
-}
-
-
-Keyframe::Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
-   cv::Mat* map_descriptors, const boris_drone::Pose3D& pose, const Frame& frame)
-{
-  this->cloud           = cloud;
-  this->map_descriptors = map_descriptors;
-  this->imgPoints       = frame.imgPoints;
-  this->descriptors     = frame.descriptors;
-  this->pose            = pose;
-  this->npts            = frame.imgPoints.size();
-  //set all pointismapped to false
-  this->pointIsMapped.resize(npts,false);
-  this->points.resize(npts,-1);
 
   //Old, to remove when not used anymore:
   this->unmapped_imgPoints  = frame.imgPoints;

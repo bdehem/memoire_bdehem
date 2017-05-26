@@ -312,3 +312,38 @@ bool Map::keyframeNeeded(boris_drone::Pose3D pose)
   }
   return false;
 }
+
+
+/*!
+ * This method creates a new keyframe, sets it as the reference keyframe, and pushes it on the keyframe list
+ */
+void newReferenceKeyframe(const Frame& current_frame, boris_drone::Pose3D PnP_pose, bool PnP_success);
+
+
+void Map::newReferenceKeyframe(const Frame& current_frame, boris_drone::Pose3D PnP_pose, bool PnP_success)
+{
+  //b4: check amonst old KF before making new one
+  //now immediately make new KF as all KP were used
+
+  boris_drone::Pose3D pose;     // pose used locally to attach to new keyframe
+  if (!PnP_success)
+  {
+    pose = current_frame.pose;  // sensor based pose of current frame
+  }
+  else
+  {
+    pose = PnP_pose;               // PnP pose of the current frame
+    pose.z = current_frame.pose.z; // in theory, absolute (because ultrasonic sensor)
+    // and more precise than PnP, so use this one to map. In practice: Kalman filtered on board
+    // (firmware), so, good meausure (not drifted) but not absolute!!! causes bad errors in map.
+    // We want to avoid this, so if PnP available, use it!
+    pose.rotX = current_frame.pose.rotX;  // idem
+    pose.rotY = current_frame.pose.rotY;  // idem
+  }
+
+  ROS_INFO("About to make a new Keyframe");
+  this->reference_keyframe = new Keyframe(cloud,&descriptors,pose,current_frame);
+  this->keyframes.push_back(reference_keyframe);
+  ROS_INFO("Made new keyframe. There are %lu keyframes",this->keyframes.size());
+
+}

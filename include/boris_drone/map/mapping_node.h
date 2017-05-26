@@ -72,16 +72,18 @@ private:
   ros::NodeHandle nh;
 
   /* Subscribers */
-  ros::Subscriber processed_image_sub;
   std::string     processed_image_channel;
-  ros::Subscriber reset_pose_sub;
+  ros::Subscriber processed_image_sub;
   std::string     reset_pose_channel;
-  ros::Subscriber end_reset_pose_sub;
+  ros::Subscriber reset_pose_sub;
   std::string     end_reset_pose_channel;
-  ros::Subscriber strategy_sub;
+  ros::Subscriber end_reset_pose_sub;
   std::string     strategy_channel;
-  ros::Subscriber bundled_sub;
+  ros::Subscriber strategy_sub;
   std::string     bundled_channel;
+  ros::Subscriber bundled_sub;
+  std::string     mpe_channel;
+  ros::Subscriber mpe_sub;
 
   /* Publishers */
   ros::Publisher pose_visual_pub;
@@ -100,6 +102,7 @@ private:
   int  strategy;       //!< current strategy
   bool pending_reset;  //!< true during a reset
   bool target_detected;
+  bool keyframeneeded;
 
   //! Callbacks
   void processedImageCb(const boris_drone::ProcessedImageMsg::ConstPtr processed_image_in);
@@ -107,6 +110,7 @@ private:
   void endResetPoseCb(const std_msgs::Empty& msg);
   void strategyCb(const boris_drone::StrategyMsg::ConstPtr strategyPtr);
   void bundledCb(const boris_drone::BundleMsg::ConstPtr bundlePtr);
+  void manualPoseCb(const boris_drone::Pose3D::ConstPtr posePtr);
 
 
   void showProcImg(const boris_drone::ProcessedImageMsg::ConstPtr pi);

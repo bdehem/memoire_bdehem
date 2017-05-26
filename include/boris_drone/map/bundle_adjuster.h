@@ -66,6 +66,7 @@ class BALProblem {
   int* camera_index_;
   double* observations_;
   double* parameters_;
+  boris_drone::BundleMsg::ConstPtr bundleMsgPtr_;
 };
 
 /*!

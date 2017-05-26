@@ -12,6 +12,9 @@
 
 #include <boris_drone/boris_drone.h>
 
+
+#include <tf/transform_datatypes.h>
+
 // vision
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/core/core.hpp>
@@ -77,13 +80,6 @@ public:
   //! \param[in] frame from which the Keyframe is built
   Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
                                   cv::Mat* descriptors, const Frame& frame);
-
-  //! Constructor
-  //! \param[in] map Pointer to the map
-  //! \param[in] pose Pose of the drone from which the keypoints were observed
-  //! \param[in] frame from which the Keyframe is built
-  Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
-     cv::Mat* descriptors, const boris_drone::Pose3D& pose, const Frame& frame);
 
   //! Destructor.
   ~Keyframe();

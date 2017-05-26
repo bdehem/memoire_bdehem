@@ -113,10 +113,6 @@ private:
    */
   bool keyframeNeeded(boris_drone::Pose3D pose);
 
-  /*!
-   * This method creates a new keyframe, sets it as the reference keyframe, and pushes it on the keyframe list
-   */
-  void newReferenceKeyframe(const Frame& current_frame, boris_drone::Pose3D PnP_pose, bool PnP_success);
 
 public:
   //! Contructor. Initialize an empty map
@@ -131,10 +127,11 @@ public:
 
   //! The cloud object containing 3D points
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
-
   cv::Mat descriptors; //!< descriptors in opencv format
+  std::vector< std::vector<int> > kfs_point; //For each point, a list of keyframes seeing it
 
-  bool processFrame(const Frame& frame,boris_drone::Pose3D& PnP_pose);
+
+  bool processFrame(const Frame& frame,boris_drone::Pose3D& PnP_pose, bool keyframeneeded);
 
   void newKeyframe(const Frame& frame);
 

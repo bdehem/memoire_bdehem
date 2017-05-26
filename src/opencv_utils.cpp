@@ -67,26 +67,7 @@ cv::Mat rollPitchYawToChangeBaseMatrix(const double roll, const double pitch, co
 
 void getCameraPositionMatrices(const boris_drone::Pose3D& pose, cv::Mat& R, cv::Mat& T, bool front)
 {
-  cv::Mat drone2world, cam2drone;
-  double yaw   = pose.rotZ;
-  double pitch = pose.rotY;
-  double roll  = pose.rotX;
-
-  // compute the rotation matrices
-  drone2world = rollPitchYawToRotationMatrix(roll, pitch, yaw);
-  if (front)
-  {
-    cam2drone = rollPitchYawToRotationMatrix(-PI/2, 0, -PI/2);
-  }
-  else
-  {
-    cam2drone = rollPitchYawToRotationMatrix(PI,   0, -PI / 2);
-  }
-
-  // compute the rotation matrix from the cam to the world
-  // If this matrix multiplies coordinates of a point in camera system, result is a point in world system
-  R = drone2world * cam2drone;
-
+  R = rollPitchYawToRotationMatrix(pose.rotX, pose.rotY, pose.rotZ);
   T = (cv::Mat_< double >(3, 1) << pose.x, pose.y, pose.z);
 }
 
