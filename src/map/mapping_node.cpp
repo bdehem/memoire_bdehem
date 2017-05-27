@@ -14,31 +14,31 @@ MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3
   keyframeneeded = false;
   iter = 0;
   // Subsribers
-  strategy_channel = nh.resolveName("strategy");
-  strategy_sub     = nh.subscribe(strategy_channel, 10, &MappingNode::strategyCb, this);
+  strategy_channel        = nh.resolveName("strategy");
   processed_image_channel = nh.resolveName("processed_image");
-  processed_image_sub     = nh.subscribe(processed_image_channel, 1, &MappingNode::processedImageCb,this);
-  reset_pose_channel = nh.resolveName("reset_pose");
-  reset_pose_sub     = nh.subscribe(reset_pose_channel, 1, &MappingNode::resetPoseCb, this);
-  end_reset_pose_channel = nh.resolveName("end_reset_pose");
-  end_reset_pose_sub     = nh.subscribe(end_reset_pose_channel, 1, &MappingNode::endResetPoseCb, this);
-  bundled_channel = nh.resolveName("bundled");
-  bundled_sub     = nh.subscribe(bundled_channel, 1, &MappingNode::bundledCb, this);
-  mpe_channel = nh.resolveName("manual_pose_estimation");
-  mpe_sub     = nh.subscribe(mpe_channel, 1, &MappingNode::manualPoseCb, this);
+  reset_pose_channel      = nh.resolveName("reset_pose");
+  end_reset_pose_channel  = nh.resolveName("end_reset_pose");
+  bundled_channel         = nh.resolveName("bundled");
+  mpe_channel             = nh.resolveName("manual_pose_estimation");
+  strategy_sub        = nh.subscribe(strategy_channel,       10, &MappingNode::strategyCb,       this);
+  processed_image_sub = nh.subscribe(processed_image_channel, 1, &MappingNode::processedImageCb, this);
+  reset_pose_sub      = nh.subscribe(reset_pose_channel,      1, &MappingNode::resetPoseCb,      this);
+  end_reset_pose_sub  = nh.subscribe(end_reset_pose_channel,  1, &MappingNode::endResetPoseCb,   this);
+  bundled_sub         = nh.subscribe(bundled_channel,         1, &MappingNode::bundledCb,        this);
+  mpe_sub             = nh.subscribe(mpe_channel,             1, &MappingNode::manualPoseCb,     this);
 
   // Publishers
-  pose_visual_channel = nh.resolveName("pose_visual");
-  pose_visual_pub     = nh.advertise<boris_drone::Pose3D>(pose_visual_channel, 1);
+  pose_visual_channel     = nh.resolveName("pose_visual");
   pose_correction_channel = nh.resolveName("pose_visual_correction");
-  pose_correction_pub     = nh.advertise<boris_drone::Pose3D>(pose_correction_channel, 1);
-  target_channel = nh.resolveName("boris_drone/target_detected");
-  target_pub     = nh.advertise<boris_drone::TargetDetected>(target_channel, 1);
-  go_high_channel = nh.resolveName("go_high");
-  go_high_pub     = nh.advertise<std_msgs::Float32>(go_high_channel,1);
+  target_channel          = nh.resolveName("boris_drone/target_detected");
+  go_high_channel         = nh.resolveName("go_high");
+  pose_visual_pub     = nh.advertise<boris_drone::Pose3D>(pose_visual_channel,     1);
+  pose_correction_pub = nh.advertise<boris_drone::Pose3D>(pose_correction_channel, 1);
+  target_pub          = nh.advertise<boris_drone::TargetDetected>(target_channel,  1);
+  go_high_pub         = nh.advertise<std_msgs::Float32>(go_high_channel,           1);
 
   this->target_detected = false;
-  this->pending_reset = false;
+  this->pending_reset   = false;
 
   // get launch parameters
   bool do_search, stop_if_lost;
@@ -61,7 +61,7 @@ MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3
                                      0,                      Read::focal_length_y(), Read::img_center_y(),
                                      0,                      0,                      1                   );
 
-  map = Map(&nh,do_search, stop_if_lost, camera_matrix_K);
+  map = Map(&nh, camera_matrix_K);
 
   // initialize the map and the visualizer
   pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> single_color(map.cloud, 0, 255, 0);
@@ -72,6 +72,12 @@ MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3
 
   ROS_DEBUG("mapping_node initialized");
   keyframeneeded = true;
+  ROS_INFO("these are logger messages:");
+  ROS_DEBUG("ROS_DEBUG message");
+  ROS_INFO("ROS_INFO message");
+  ROS_WARN("ROS_WARN message");
+  ROS_ERROR("ROS_ERROR message");
+  ROS_FATAL("ROS_FATAL message");
 }
 
 MappingNode::~MappingNode()
@@ -81,6 +87,7 @@ MappingNode::~MappingNode()
 void MappingNode::manualPoseCb(const boris_drone::Pose3D::ConstPtr posePtr)
 {
   keyframeneeded = true;
+  ROS_INFO("keyframe needed");
 }
 
 void MappingNode::bundledCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
@@ -111,37 +118,32 @@ void MappingNode::endResetPoseCb(const std_msgs::Empty& msg)
 
 void MappingNode::processedImageCb(const boris_drone::ProcessedImageMsg::ConstPtr processed_image_in)
 {
+  //ROS_INFO_THROTTLE(1,"Processed image callback. Keyframe needed? %d", keyframeneeded);
+  //ROS_INFO_THROTTLE(1,"pending reset? %d, strategy? %d", pending_reset, strategy);
   bool PnP_success;
-  if (pending_reset || strategy == WAIT || strategy == TAKEOFF)
-    return;
-  else
+  //if (pending_reset || strategy == WAIT || strategy == TAKEOFF)
+  //  return;
+  target_detected = processed_image_in->target_detected;
+  if (target_detected)
+    lastProcessedImgReceived = processed_image_in;
+  Frame current_frame(processed_image_in);
+  boris_drone::Pose3D PnP_pose;
+  //ROS_INFO_THROTTLE(1,"How about now? %d", keyframeneeded);
+  if (keyframeneeded)
   {
-    target_detected = processed_image_in->target_detected;
-    if (target_detected)
-    {
-      lastProcessedImgReceived = processed_image_in;
-    }
-    Frame current_frame(processed_image_in);
-    boris_drone::Pose3D PnP_pose;
-    if (keyframeneeded)
-    {
-      PnP_success = map.processFrame(current_frame, PnP_pose, true);
-      keyframeneeded = false;
-    }
-    else
-      PnP_success = map.processFrame(current_frame, PnP_pose, false);
-    this->visualizer->updatePointCloud<pcl::PointXYZ>(map.cloud, "SIFT_cloud");
-    if (PnP_success)
-    {
-      boris_drone::Pose3D frame_pose = current_frame.pose;
-      this->publishPoseVisual(PnP_pose, frame_pose);
-    }
+    //ROS_INFO("in keyframe needed if in callback");
+    PnP_success = map.processFrame(current_frame, PnP_pose, true);
+    keyframeneeded = false;
+  }
+  else
+    PnP_success = map.processFrame(current_frame, PnP_pose, false);
+  this->visualizer->updatePointCloud<pcl::PointXYZ>(map.cloud, "SIFT_cloud");
+  if (PnP_success)
+  {
+    boris_drone::Pose3D frame_pose = current_frame.pose;
+    this->publishPoseVisual(PnP_pose, frame_pose);
   }
   iter++;
-//  if (iter==1 || iter==20)
-//  {
-//    showProcImg(processed_image_in);
-//  }
 }
 
 void MappingNode::showProcImg(const boris_drone::ProcessedImageMsg::ConstPtr pi)

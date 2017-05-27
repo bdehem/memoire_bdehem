@@ -31,8 +31,8 @@ void Map::matchKeyframes(Keyframe& kf1, Keyframe& kf2, bool fixed_poses)
   for (int i = 0; i<matching_indices_1.size();i++)
   {
     cv::Point3d pt3d;
-    triangulate(pt3d, kf1.unmapped_imgPoints[matching_indices_1[i]],
-                      kf2.unmapped_imgPoints[matching_indices_2[i]],
+    triangulate(pt3d, kf1.unmapped_img_points[matching_indices_1[i]],
+                      kf2.unmapped_img_points[matching_indices_2[i]],
                       kf1.pose, kf2.pose);
     points3D.push_back(pt3d);
   }
@@ -63,8 +63,8 @@ void Map::matchKeyframes(Keyframe& kf1, Keyframe& kf2, bool fixed_poses)
 
     this->descriptors.push_back(kf1.descriptors(row,cv::Range::all()));
 
-    kf1.mapped_imgPoints.push_back(kf1.unmapped_imgPoints[matching_indices_1[i]]);
-    kf2.mapped_imgPoints.push_back(kf2.unmapped_imgPoints[matching_indices_2[i]]);
+    kf1.mapped_img_points.push_back(kf1.unmapped_img_points[matching_indices_1[i]]);
+    kf2.mapped_img_points.push_back(kf2.unmapped_img_points[matching_indices_2[i]]);
   }
 
   //remove points from unmatched points of both keyframes
@@ -73,8 +73,8 @@ void Map::matchKeyframes(Keyframe& kf1, Keyframe& kf2, bool fixed_poses)
   std::sort(matching_indices_2.begin(), matching_indices_2.end());
   for (int i = matching_indices_1.size()-1; i>=0; i--)
   {
-    kf1.unmapped_imgPoints.erase(kf1.unmapped_imgPoints.begin() + matching_indices_1[i]);
-    kf2.unmapped_imgPoints.erase(kf2.unmapped_imgPoints.begin() + matching_indices_2[i]);
+    kf1.unmapped_img_points.erase(kf1.unmapped_img_points.begin() + matching_indices_1[i]);
+    kf2.unmapped_img_points.erase(kf2.unmapped_img_points.begin() + matching_indices_2[i]);
   }
   ROS_INFO("finished matching keyframes. Map now has %lu points",cloud->points.size());
   ROS_INFO("descriptor check: %d rows, %d cols", descriptors.rows, descriptors.cols);
@@ -125,8 +125,8 @@ void Map::doBundleAdjustment(Keyframe& kf1,
   }
   for (int i=0; i<NPOINTS; i++)
   {
-    pointsImg[0][i] = kf1.unmapped_imgPoints[matching_indices_1[i]];
-    pointsImg[1][i] = kf2.unmapped_imgPoints[matching_indices_2[i]];
+    pointsImg[0][i] = kf1.unmapped_img_points[matching_indices_1[i]];
+    pointsImg[1][i] = kf2.unmapped_img_points[matching_indices_2[i]];
     visibility[0][i] = 1;
     visibility[1][i] = 1;
   }
@@ -194,7 +194,7 @@ void Map::doBundleAdjustment(std::vector<Keyframe*> kfs,
     npt_cam = kfs[i]->npts;
     for(j = 0; j < npt_cam; j++)
     {
-      if (kfs[i]->pointIsMapped[j])
+      if (kfs[i]->point_is_mapped[j])
       {
         ptIdx = kfs[i]->points[j];
         ouputOfInsert = ba_points.insert(ptIdx);
@@ -256,12 +256,12 @@ void Map::doBundleAdjustment(std::vector<Keyframe*> kfs,
   for (int i = 0; i < npt; ++i) {
     msg->observations[2*i+0].camera_index = 0;
     msg->observations[2*i+0].point_index  = i;
-    msg->observations[2*i+0].x = kfs[0]->unmapped_imgPoints[matching_indices_1[i]].x;
-    msg->observations[2*i+0].y = kfs[0]->unmapped_imgPoints[matching_indices_1[i]].y;
+    msg->observations[2*i+0].x = kfs[0]->unmapped_img_points[matching_indices_1[i]].x;
+    msg->observations[2*i+0].y = kfs[0]->unmapped_img_points[matching_indices_1[i]].y;
     msg->observations[2*i+1].camera_index = 1;
     msg->observations[2*i+1].point_index  = i;
-    msg->observations[2*i+1].x = kfs[1]->unmapped_imgPoints[matching_indices_2[i]].x;
-    msg->observations[2*i+1].y = kfs[1]->unmapped_imgPoints[matching_indices_2[i]].y;
+    msg->observations[2*i+1].x = kfs[1]->unmapped_img_points[matching_indices_2[i]].x;
+    msg->observations[2*i+1].y = kfs[1]->unmapped_img_points[matching_indices_2[i]].y;
 
     msg->points[i].x = points3D[i].x;
     msg->points[i].y = points3D[i].y;
@@ -347,3 +347,63 @@ void Map::newReferenceKeyframe(const Frame& current_frame, boris_drone::Pose3D P
   ROS_INFO("Made new keyframe. There are %lu keyframes",this->keyframes.size());
 
 }
+
+
+
+//part of dobundleadjustment to collect indices
+
+  Keyframe* kf;
+  std::map<int, Keyframe*>::iterator iter;
+  //for (iter = keyframes.begin(); iter != keyframes.end(); ++iter)
+  for (i = 0; i < ncam; ++i)
+  {
+    kf_ID = kf_IDs[i];
+    kf    = keyframes[kf_ID];
+    npt_cam = kf->npts;
+    for(j = 0; j < npt_cam; j++)
+    {
+      if (kf->point_is_mapped[j]) //Only take points that are mapped
+      {
+        ptIdx = kf->points[j]; //This is the index of the point in the map
+        ouputOfInsert = ba_points.insert(ptIdx);
+        //pos is the position where the point was inserted,
+        //or the position where it already was
+        pos = std::distance(ba_points.begin(), ouputOfInsert.first);
+        if (ouputOfInsert.second==false) // ptIdx was already in ba_points
+        {
+          kfs_point_local[pos].push_back(i); //Add this kf's ID to the kfs seeing this pt
+          idx_point_in_kf_local[pos].push_back(j); //idx of the pt in the kf
+        }
+        else //ptIdx wasn't in ba_points before the insert
+        {
+          std::vector<int> kf_thispoint(1,i); //vector containing 1 element: i
+          std::vector<int> idx_thispt_in_thiskf(1,j); //index of this point in this kf
+          kfs_point_local.insert(kfs_point_local.begin() + pos, kf_thispoint);
+          idx_point_in_kf_local.insert(idx_point_in_kf_local.begin() + pos, idx_thispt_in_thiskf);
+        }
+      }
+    }
+  }
+
+  //Remove points that are only seen once and count observations
+  i = kfs_point_local.size();
+  nobs = 0;
+  for (ba_pts_it = ba_points.end(); ba_pts_it != ba_points.begin(); )
+  {
+    i--;
+    if(kfs_point_local[i].size() < 2)
+    {
+      //ROS_INFO("About to erase point %d",i);
+      ba_points.erase(ba_pts_it--);
+      kfs_point_local.erase(kfs_point_local.begin() + i);
+      idx_point_in_kf_local.erase(idx_point_in_kf_local.begin() + i);
+      //ROS_INFO("Erased point %d",i);
+    }
+    else
+    {
+      ba_pts_it--;
+      //ROS_INFO("Not erasing point %d. It was seen by %lu kfs",i,kfs_point_local[i].size());
+      nobs += kfs_point_local[i].size();
+      //ROS_INFO("Total nobs = %d",nobs);
+    }
+  }

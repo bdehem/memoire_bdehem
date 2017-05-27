@@ -56,7 +56,7 @@ public:
   ~Frame();
 
   // Attributes
-  std::vector<cv::Point2f> imgPoints; //!< 2D coordinates of keypoints in image in OpenCV format
+  std::vector<cv::Point2f> img_points; //!< 2D coordinates of keypoints in image in OpenCV format
   cv::Mat descriptors;                //!< descriptors of keypoints in OpenCV format
   boris_drone::Pose3D pose;           //!< pose from which frame was taken
 };

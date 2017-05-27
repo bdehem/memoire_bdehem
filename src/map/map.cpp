@@ -1,10 +1,10 @@
 #include <boris_drone/map/map.h>
 
-Map::Map()
-{
-}
+int Map::point_ID_counter = 0;
 
-Map::Map(ros::NodeHandle* nh, bool do_search, bool stop_if_lost, cv::Mat camera_matrix_K)
+Map::Map() {}
+
+Map::Map(ros::NodeHandle* nh, cv::Mat camera_matrix_K)
                           : cloud(new pcl::PointCloud< pcl::PointXYZ >())
 {
   cv::initModule_nonfree();  // initialize OpenCV SIFT and SURF
@@ -13,8 +13,6 @@ Map::Map(ros::NodeHandle* nh, bool do_search, bool stop_if_lost, cv::Mat camera_
   bundle_channel = nh->resolveName("bundle");
   bundle_pub     = nh->advertise<boris_drone::BundleMsg>(bundle_channel, 1);
     // get launch parameters
-  this->do_search = do_search;
-  this->stop_if_lost = stop_if_lost;
   this->camera_matrix_K = camera_matrix_K;
 
   // initialize default status boolean
@@ -28,13 +26,9 @@ Map::Map(ros::NodeHandle* nh, bool do_search, bool stop_if_lost, cv::Mat camera_
 
   // get camera parameters in launch file
   if (!Read::CamMatrixParams("cam_matrix"))
-  {
     ROS_ERROR("cam_matrix not properly transmitted");
-  }
   if (!Read::ImgSizeParams("img_size"))
-  {
     ROS_ERROR("img_size not properly transmitted");
-  }
 
   // initialize empty opencv vectors
   this->tvec = cv::Mat::zeros(3, 1, CV_64FC1);
@@ -51,11 +45,12 @@ Map::~Map()
 
 void Map::resetList()
 {
-  for (int i = 0; i < this->keyframes.size(); i++)
+  std::map<int, Keyframe*>::iterator iter;
+  for (iter = keyframes.begin(); iter != keyframes.end(); ++iter)
   {
-    delete this->keyframes[i];  // this line calls keyframe destructor
+    delete iter->second;  // this line calls keyframe destructor
   }
-  this->keyframes.clear();
+  keyframes.clear();
 }
 
 void Map::resetPose()
@@ -67,29 +62,140 @@ void Map::resetPose()
   this->rvec = cv::Mat::zeros(3, 1, CV_64FC1);
 }
 
+int Map::addPoint(cv::Point3d& coordinates, cv::Mat descriptor)
+{
+  int ID = point_ID_counter++;
+  pcl::PointXYZ new_point;
+  new_point.x = coordinates.x;
+  new_point.y = coordinates.y;
+  new_point.z = coordinates.z;
+  cloud->points.push_back(new_point);
+  descriptors.push_back(descriptor);
+  pt_idxes[ID] = pt_IDs.size();
+  pt_IDs.push_back(ID);
+  return ID;
+}
+
+void Map::updatePoint(int pt_ID, pcl::PointXYZ new_point)
+{
+  if (pt_idxes[pt_ID] >= pt_IDs.size())
+  {
+    ROS_INFO("Warning: point to be updated does not exist");
+    return;
+  }
+  cloud->points[pt_idxes[pt_ID]] = new_point;
+}
+
+void Map::removePoint(int ptID)
+{
+  ROS_INFO("enter removePoint");
+  int index = pt_idxes[ptID];
+  if (index >= pt_IDs.size())
+    return;
+  std::set<int> kfs = keyframes_seeing_point[ptID];
+  std::set<int>::iterator it;
+  for (it = kfs.begin();it!=kfs.end();++it)
+  {
+    keyframes[*it]->removePoint(ptID);
+    points_seen_by_keyframe[*it].erase(ptID);
+  }
+  keyframes_seeing_point.erase(ptID);
+  pt_idxes.erase(ptID);
+  pt_IDs.erase(pt_IDs.begin()+index);
+  cloud->erase(cloud->begin()+index);
+  ROS_INFO("middle removePoint");
+  // Removing a row of descriptors TODO: do something similar as in keyframe?
+  cv::Mat temp, roi;    // Matrix of which a row will be deleted.
+  if ( index > 0 ) // Copy everything above that one row.
+  {
+    cv::Rect rect( 0, 0, descriptors.cols, index );
+    roi = descriptors( rect );
+    temp = roi.clone();
+  }
+  if ( index < descriptors.rows - 1 ) // Copy everything below that one row.
+  {
+    cv::Rect rect1( 0, index+1, descriptors.cols, descriptors.rows - index - 1);
+    roi = descriptors( rect1 );
+    temp.push_back(roi);
+  }
+  descriptors = temp;
+  std::map<int,int>::iterator it2;
+  for(it2 = pt_idxes.begin();it2!=pt_idxes.end();++it2)
+    if (it2->second > index)
+      it2->second--;
+  ROS_INFO("finished removePoint");
+}
+
+void Map::setPointAsSeen(int pt_ID, int kf_ID)
+{
+  points_seen_by_keyframe[kf_ID].insert(pt_ID);
+  keyframes_seeing_point[pt_ID].insert(kf_ID);
+}
+
+void Map::matchKeyframes(Keyframe& kf0, Keyframe& kf1)
+{
+  int pt_ID, i;
+  int next_point_ID;
+  std::vector<cv::Point3d> points3D;
+  std::vector<int> idx_kf0, idx_kf1, match_ID;
+  std::vector<bool> point_is_new;
+  if (pt_IDs.empty())
+    next_point_ID = 0;
+  else
+    next_point_ID = *(--pt_IDs.end()) + 1;
+
+  match(kf0, kf1, points3D, idx_kf0, idx_kf1, match_ID, point_is_new, next_point_ID);
+  for (i = 0; i<match_ID.size(); i++)
+  {
+    if (point_is_new[i])
+    {
+      pt_ID = addPoint(points3D[i], kf0.descriptors.rowRange(idx_kf0[i],idx_kf0[i]+1));
+      ROS_INFO("check: %d = %d",pt_ID, match_ID[i]);
+    }
+    else
+      pt_ID = match_ID[i];
+    setPointAsSeen(pt_ID, kf0.ID);
+    setPointAsSeen(pt_ID, kf1.ID);
+  }
+}
+
 void Map::newKeyframe(const Frame& frame)
 {
-  reference_keyframe = new Keyframe(cloud, &descriptors, frame);
-  this->keyframes.push_back(reference_keyframe);
-  int nkeyframes = keyframes.size();
-  ROS_INFO("Created new Keyframe. There are %d keyframes",nkeyframes);
-  if (nkeyframes > 1)
+  Keyframe* old = reference_keyframe;
+  reference_keyframe = new Keyframe(cloud, frame);
+  if (keyframes.empty())
   {
-    std::vector<cv::Point3d> points3D;
-    std::vector<int> matching_indices_1;
-    std::vector<int> matching_indices_2;
-    reference_keyframe->match(*keyframes[nkeyframes-2],points3D,matching_indices_1, matching_indices_2);
-    //bundle adjustment
-    doBundleAdjustment(keyframes, false); //false also wroks well!!
+    keyframes[reference_keyframe->ID] = reference_keyframe;
+    return;
   }
+  std::vector<int> keyframes_to_adjust;
+  std::map<int,Keyframe*>::iterator it;
+  for (it = keyframes.begin(); it!=keyframes.end();it++)
+  {
+    //matchKeyframes(*reference_keyframe, *(it->second)); //Sould be better but results are not great
+    ROS_INFO("keyframes_to_adjust: %d",it->first);
+    keyframes_to_adjust.push_back(it->first); //add all kfs
+  }
+  matchKeyframes(*reference_keyframe, *old);
+  keyframes_to_adjust.push_back(reference_keyframe->ID);
+  ROS_INFO("keyframes_to_adjust: %d",reference_keyframe->ID);
+  keyframes[reference_keyframe->ID] = reference_keyframe;
+
+  ROS_INFO("\t Map now has %lu points",this->cloud->points.size());
+  ROS_INFO("\t check: %d = %lu", this->descriptors.rows, this->cloud->points.size());
+  //removePoint(3);
+  doBundleAdjustment(keyframes_to_adjust);
 }
 
 
 bool Map::processFrame(const Frame& frame, boris_drone::Pose3D& PnP_pose, bool keyframeneeded)
 {
   int PnP_result = doPnP(frame, PnP_pose);
-  if (keyframeneeded)
+  if ((keyframeneeded)||(keyframes.size() == 0))
+  {
+    ROS_INFO("About to make new keyframe");
     newKeyframe(frame);
+  }
   switch(PnP_result){
     case 1  : //PnP successful
       if (abs(PnP_pose.z - frame.pose.z) > 0.8)
@@ -97,7 +203,7 @@ bool Map::processFrame(const Frame& frame, boris_drone::Pose3D& PnP_pose, bool k
         ROS_INFO("TRACKING LOST ! (PnP found bad symmetric clone?)");
         return false;
       }
-      ROS_INFO_THROTTLE(1,"publishing pnp_pose. pnp_pose is: x = %f, y = %f, z = %f",PnP_pose.x,PnP_pose.y,PnP_pose.z);
+      ROS_INFO_THROTTLE(1,"PnP_pose is: x = %f, y = %f, z = %f",PnP_pose.x,PnP_pose.y,PnP_pose.z);
       return true;
     case -1  : //Empty frame
       ROS_INFO_THROTTLE(3,"Frame is empty");
@@ -120,146 +226,141 @@ bool Map::processFrame(const Frame& frame, boris_drone::Pose3D& PnP_pose, bool k
   }
 }
 
-
-void Map::doBundleAdjustment(std::vector<Keyframe*> kfs, bool fixed_poses)
+int Map::getPointsSeenByKeyframes(std::vector<int> kf_IDs,
+                                 std::map<int,std::map<int,int> >& points)
 {
-  ROS_INFO("entered Bundle Adjustment");
-  int ncam, npt, nobs, npt_cam, i, j, k, ptIdx, pos, kf, idx_in_kf;
-  std::set<int> ba_points;
-  std::set<int>::iterator ba_pts_it;
-  std::vector< std::vector<int> > kfs_point; //kfs (inner vec) seeing point (outer vec)
-  std::vector< std::vector<int> > idx_point_in_kf; //index of the point in corresponding keyframe
-  std::pair<std::set<int>::iterator,bool> ouputOfInsert;
+  //Output: points[ID] is a map that maps keyframe IDs of keyframes seeing it to
+  //the index of the point in the keyframe
 
-  ncam = kfs.size();
-  for(i = 0; i<ncam; i++)
+  //First take all points seen by any of the keyframes in kf_IDs
+  ROS_INFO("get_pts_start");
+  int i, nobs;
+  std::set<int> local_point_set;
+  std::set<int> kf_set;
+  std::set<int> point_set;
+  std::set<int>::iterator it1, it2;
+  int ncam = kf_IDs.size();
+  for (i = 0; i < ncam; ++i)
   {
-    npt_cam = kfs[i]->npts;
-    for(j = 0; j < npt_cam; j++)
-    {
-      if (kfs[i]->pointIsMapped[j]) //Only take points that are mapped
-      {
-        ptIdx = kfs[i]->points[j]; //This is the index of the point in the map
-        ouputOfInsert = ba_points.insert(ptIdx);
-        //pos is the position where the point was inserted,
-        //or the position where it already was
-        pos = std::distance(ba_points.begin(), ouputOfInsert.first);
-        if (ouputOfInsert.second==false) // ptIdx was already in ba_points
-        {
-          kfs_point[pos].push_back(i); //Add this kf to the kfs seeing this pt
-          idx_point_in_kf[pos].push_back(j); //idx of the pt in the kf
-        }
-        else //ptIdx wasn't in ba_points before the insert
-        {
-          std::vector<int> kf_thispoint(1,i); //vector containing 1 element: i
-          std::vector<int> idx_thispt_in_thiskf(1,j); //index of this point in this kf
-          kfs_point.insert(kfs_point.begin() + pos, kf_thispoint);
-          idx_point_in_kf.insert(idx_point_in_kf.begin() + pos, idx_thispt_in_thiskf);
-        }
-      }
-    }
+    local_point_set = points_seen_by_keyframe[kf_IDs[i]];
+    for (it1 = local_point_set.begin(); it1 != local_point_set.end(); ++it1)
+      point_set.insert(*it1);
   }
-  /*
-  print a bunch of things
-  ROS_INFO("Preparing bundle. N_ba_points = %lu", ba_points.size());
-  ROS_INFO("check: %lu = %lu", ba_points.size(), kfs_point.size());
-  ba_pts_it = ba_points.begin();
-  for(i = 0; i<ba_points.size(); i++)
-  {
-    ROS_INFO("Point %d seen by:",*ba_pts_it);
-    for (j = 0; j<kfs_point[i].size();j++)
-    {
-      ROS_INFO("%d",kfs_point[i][j]);
-    }
-    ba_pts_it++;
-  }
-  ROS_INFO("Done making lists of point observations. Now removing single obserations");
-  ROS_INFO("Check sizes : %lu = %lu", ba_points.size(),kfs_point.size());
-  */
-  //Remove points that are only seen once and count observations
-  i = kfs_point.size();
+  ROS_INFO("Added points");
+
+  //Remove points seen by only one of the keyframes in kf_IDs, and counts obs
   nobs = 0;
-  for (ba_pts_it = ba_points.end(); ba_pts_it != ba_points.begin(); )
+  for (it1 = point_set.begin(); it1 != point_set.end(); )
   {
-    i--;
-    if(kfs_point[i].size() < 2)
+    kf_set = keyframes_seeing_point[*it1];
+    std::set<int> intersection;
+    std::set_intersection(kf_set.begin(), kf_set.end(),
+                          kf_IDs.begin(), kf_IDs.end(),
+                          std::inserter(intersection, intersection.end()) );// intersection.begin());
+    if(intersection.size() < 2)
     {
-      //ROS_INFO("About to erase point %d",i);
-      ba_points.erase(ba_pts_it--);
-      kfs_point.erase(kfs_point.begin() + i);
-      idx_point_in_kf.erase(idx_point_in_kf.begin() + i);
-      //ROS_INFO("Erased point %d",i);
+      ROS_INFO("erasing point %d", *it1);
+      point_set.erase(it1++);
     }
     else
     {
-      ba_pts_it--;
-      //ROS_INFO("Not erasing point %d. It was seen by %lu kfs",i,kfs_point[i].size());
-      nobs += kfs_point[i].size();
-      //ROS_INFO("Total nobs = %d",nobs);
+      std::map<int,int> this_point;
+      for (it2 = intersection.begin();it2!=intersection.end();++it2)
+      {
+        int local_index = keyframes[*it2]->point_idx[*it1];
+        ROS_INFO("in pointseenbykeyframes. pointID = %d, keyframeID = %d, local idx = %d",*it1,*it2,local_index);
+        this_point[*it2] = keyframes[*it2]->point_idx[*it1];
+      }
+      points[*it1] = this_point;
+      it1++;
+      nobs += intersection.size();
     }
   }
-  ROS_INFO("Done removing. There are %d observations", nobs);
+  ROS_INFO("get_pts_end");
+  return nobs;
+}
 
-  /*
-  print set info
-  ROS_INFO("Preparing bundle. N_ba_points = %lu", ba_points.size());
-  ROS_INFO("check: %lu = %lu", ba_points.size(), kfs_point.size());
-  ba_pts_it = ba_points.begin();
-  for(i = 0; i<ba_points.size(); i++)
+void Map::doBundleAdjustment(std::vector<int> kf_IDs)
+{
+  ROS_INFO("entered Bundle Adjustment");
+  int ncam, npt, nobs, i, j, k;
+  std::map<int,bool> is_fixed; //true if we fix position of corresponding kf
+  std::map<int,std::map<int,int> > points;
+  std::map<int,std::map<int,int> >::iterator points_it;
+  std::map<int,int>::iterator inner_it;
+  nobs = getPointsSeenByKeyframes(kf_IDs, points);
+  ncam = kf_IDs.size();
+  npt  = points.size();
+
+  for(i = 0; i < ncam; ++i)
   {
-    ROS_INFO("Point %d seen by:",*ba_pts_it);
-    for (j = 0; j<kfs_point[i].size();j++)
-    {
-      ROS_INFO("%d",kfs_point[i][j]);
-    }
-    ba_pts_it++;
+    is_fixed[kf_IDs[i]] = (kf_IDs[i] < ncam/2);
+    ROS_INFO("Keyframe %d is fixed: %s !",kf_IDs[i], is_fixed[kf_IDs[i]] ?  "true" : "false");
   }
 
-  */
+  /*  print a bunch of things */
+  ROS_INFO("Made list of points");
+  points_it = points.begin();
+  for(i = 0; i<points.size(); i++)
+  {
+    ROS_INFO("Point %d seen by:", points_it->first);
+    inner_it = points_it->second.begin();
+    for (j = 0; j<points_it->second.size();j++)
+    {
+      ROS_INFO("Kf %d at index %d",inner_it->first, inner_it->second);
+      inner_it++;
+    }
+    points_it++;
+  }
 
+  /* End of printing */
   boris_drone::BundleMsg::Ptr msg(new boris_drone::BundleMsg);
-  npt = ba_points.size();
-  msg->fixed_poses = fixed_poses;
+
   msg->num_cameras = ncam;
   msg->num_points  = npt;
   msg->num_observations = nobs;
   msg->observations.resize(nobs);
   msg->points.resize(npt);
-  msg->index_points.resize(npt);
+  msg->points_ID.resize(npt);
   k = 0;
-  ba_pts_it = ba_points.begin();
-  for (i = 0; i < npt; ++i) {
-    for (j = 0; j < kfs_point[i].size(); ++j) {
-      //ROS_INFO("recording observation %d in message",k);
-      kf = kfs_point[i][j];
-      idx_in_kf = idx_point_in_kf[i][j];
-      msg->observations[k].camera_index = kf;
-      msg->observations[k].point_index  = i;
-      msg->observations[k].x            = kfs[kf]->imgPoints[idx_in_kf].x;
-      msg->observations[k].y            = kfs[kf]->imgPoints[idx_in_kf].y;
+  std::map<int,int> this_point;
+
+  points_it = points.begin();
+  for (i = 0; i < npt; ++i)
+  {
+    int ptID   = points_it->first;
+    this_point = points_it->second;
+    for (inner_it = this_point.begin(); inner_it != this_point.end(); ++inner_it)
+    {
+      int kfID = inner_it->first; //This is the ID
+      int local_idx = inner_it->second;
+      msg->observations[k].kf_ID = kfID;
+      msg->observations[k].pt_ID  = ptID;
+      ROS_INFO("Observation %d: Cam index = %d; Point index = %d",k,kfID,ptID);
+      msg->observations[k].x = keyframes[kfID]->img_points[local_idx].x;
+      msg->observations[k].y = keyframes[kfID]->img_points[local_idx].y;
       k++;
     }
-    //ROS_INFO("recording point %d in message",i);
-
-    msg->index_points[i] = *ba_pts_it;
-    msg->points[i].x = cloud->points[*ba_pts_it].x;
-    msg->points[i].y = cloud->points[*ba_pts_it].y;
-    msg->points[i].z = cloud->points[*ba_pts_it].z;
-    ba_pts_it++;
+    msg->points_ID[i] = ptID;
+    msg->points[i].x = cloud->points[pt_idxes[ptID]].x; //TODO: fix this
+    msg->points[i].y = cloud->points[pt_idxes[ptID]].y;
+    msg->points[i].z = cloud->points[pt_idxes[ptID]].z;
+    points_it++;
   }
   msg->cameras.resize(ncam);
-  msg->index_keyframes.resize(ncam);
+  msg->fixed_cams.resize(ncam);
+  msg->keyframes_ID.resize(ncam);
   for (i = 0; i < ncam; ++i) {
-    msg->cameras[i].x    = kfs[i]->pose.x;
-    msg->cameras[i].y    = kfs[i]->pose.y;
-    msg->cameras[i].z    = kfs[i]->pose.z;
-    msg->cameras[i].rotX = kfs[i]->pose.rotX;
-    msg->cameras[i].rotY = kfs[i]->pose.rotY;
-    msg->cameras[i].rotZ = kfs[i]->pose.rotZ;
-    msg->index_keyframes[i] = i;
-    //TODO: generalize it so it can use any set of kfs:
-    //msg->index_keyframes[i] = kf_idx[i];
+    msg->cameras[i].x    = keyframes[kf_IDs[i]]->pose.x;
+    msg->cameras[i].y    = keyframes[kf_IDs[i]]->pose.y;
+    msg->cameras[i].z    = keyframes[kf_IDs[i]]->pose.z;
+    msg->cameras[i].rotX = keyframes[kf_IDs[i]]->pose.rotX;
+    msg->cameras[i].rotY = keyframes[kf_IDs[i]]->pose.rotY;
+    msg->cameras[i].rotZ = keyframes[kf_IDs[i]]->pose.rotZ;
+    msg->keyframes_ID[i] = kf_IDs[i];
+    msg->fixed_cams[i]   = is_fixed[kf_IDs[i]];
   }
+  ROS_INFO("About to publish to bundle_pub");
   bundle_pub.publish(*msg);
 }
 
@@ -382,7 +483,7 @@ int Map::matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_ma
       pcl_point = this->cloud->points[map_indices[k]];
       cv::Point3f map_point(pcl_point.x,pcl_point.y,pcl_point.z);
       map_matching_points.push_back(map_point);
-      frame_matching_points.push_back(frame.imgPoints[frame_indices[k]]);
+      frame_matching_points.push_back(frame.img_points[frame_indices[k]]);
   }
 
   cv::Mat distCoeffs = (cv::Mat_< double >(1, 5) << 0, 0, 0, 0, 0);
@@ -403,34 +504,35 @@ int Map::matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_ma
 
 void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
 {
-  int npt, ncam, i, kfIdx;
+  int npt, ncam, i, kf_ID, pt_ID;
   npt  = bundlePtr->num_points;
   ncam = bundlePtr->num_cameras;
   bool converged = bundlePtr->converged;
   ROS_INFO("Update Bundle");
-  if (!converged)
-  {
-    ROS_INFO("Bundle adjustment did not converge. Not updating map");
-    return;
-  }
+  //if (!converged)
+  //{
+  //  ROS_INFO("Bundle adjustment did not converge. Not updating map");
+  //  return;
+  //}
   for (i = 0; i < npt; ++i)
   {
+    pt_ID = bundlePtr->points_ID[i];
     pcl::PointXYZ new_point;
     new_point.x = bundlePtr->points[i].x;
     new_point.y = bundlePtr->points[i].y;
     new_point.z = bundlePtr->points[i].z;
-    cloud->points[i] = new_point;
+    updatePoint(pt_ID,new_point);
   }
   ROS_INFO("Updated points, now cams:");
   for (i = 0; i < ncam; ++i) {
-    kfIdx = bundlePtr->index_keyframes[i];
-    ROS_INFO("Updating keyframe %d",kfIdx);
-    keyframes[kfIdx]->pose.x    = bundlePtr->cameras[i].x    ;
-    keyframes[kfIdx]->pose.y    = bundlePtr->cameras[i].y    ;
-    keyframes[kfIdx]->pose.z    = bundlePtr->cameras[i].z    ;
-    keyframes[kfIdx]->pose.rotX = bundlePtr->cameras[i].rotX ;
-    keyframes[kfIdx]->pose.rotY = bundlePtr->cameras[i].rotY ;
-    keyframes[kfIdx]->pose.rotZ = bundlePtr->cameras[i].rotZ ;
+    kf_ID = bundlePtr->keyframes_ID[i];
+    ROS_INFO("Updating keyframe %d",kf_ID);
+    keyframes[kf_ID]->pose.x    = bundlePtr->cameras[i].x    ;
+    keyframes[kf_ID]->pose.y    = bundlePtr->cameras[i].y    ;
+    keyframes[kf_ID]->pose.z    = bundlePtr->cameras[i].z    ;
+    keyframes[kf_ID]->pose.rotX = bundlePtr->cameras[i].rotX ;
+    keyframes[kf_ID]->pose.rotY = bundlePtr->cameras[i].rotY ;
+    keyframes[kf_ID]->pose.rotZ = bundlePtr->cameras[i].rotZ ;
     ROS_INFO("Done");
   }
 }

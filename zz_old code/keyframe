@@ -41,7 +41,7 @@ void Keyframe::matchWithFrame(Frame& frame, std::vector< std::vector< int > >& i
       keyframe_point.y = pcl_point.y;
       keyframe_point.z = pcl_point.z;
       keyframe_matching_points.push_back(keyframe_point);
-      frame_matching_points.push_back(frame.imgPoints[simple_matches[k].queryIdx]);
+      frame_matching_points.push_back(frame.img_points[simple_matches[k].queryIdx]);
     }
   }
 }
@@ -73,13 +73,13 @@ Keyframe::Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
   this->pose.rotZ       = yaw;
   this->cloud           = cloud;
   this->map_descriptors = map_descriptors;
-  this->imgPoints       = frame.imgPoints;
+  this->img_points       = frame.img_points;
   this->descriptors     = frame.descriptors;
-  this->npts            = frame.imgPoints.size();
-  //set all pointismapped to false
-  this->pointIsMapped.resize(npts,false);
+  this->npts            = frame.img_points.size();
+  //set all point_is_mapped to false
+  this->point_is_mapped.resize(npts,false);
   this->points.resize(npts,-1);
 
   //Old, to remove when not used anymore:
-  this->unmapped_imgPoints  = frame.imgPoints;
+  this->unmapped_img_points  = frame.img_points;
 }

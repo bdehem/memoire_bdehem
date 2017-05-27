@@ -21,7 +21,7 @@ find_package( OpenCV REQUIRED core nonfree )# ocl gpu)
 
 find_package( Ceres REQUIRED )
 
-set(CMAKE_CXX_FLAGS "-Wno-deprecated ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-Wno-deprecated -std=c++11 ${CMAKE_CXX_FLAGS}")
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -154,6 +154,27 @@ include_directories(
 ## either from message generation or dynamic reconfigure
 # add_dependencies(boris_drone ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+set(MAPPING_SOURCE_FILES
+	src/map/mapping_node.cpp
+	src/map/map.cpp
+	src/map/keyframe.cpp
+	src/map/frame.cpp
+  src/map/map_utils.cpp
+  src/map/projection_2D.cpp
+  src/opencv_utils.cpp
+  src/read_from_launch.cpp
+)
+set(MAPPING_HEADER_FILES
+	include/boris_drone/map/mapping_node.h
+	include/boris_drone/map/map.h
+	include/boris_drone/map/keyframe.h
+	include/boris_drone/map/frame.h
+  include/boris_drone/map/map_utils.h
+  include/boris_drone/map/projection_2D.h
+  include/boris_drone/opencv_utils.h
+  include/boris_drone/read_from_launch.h
+)
+
 ## Declare a C++ executable
 # add_executable(boris_drone_node src/boris_drone_node.cpp)
 add_executable(controller_custom src/controller/controller_custom.cpp)
@@ -162,7 +183,7 @@ add_executable(image_piper src/imagepiper.cpp)
 add_executable(controller src/controller/controller.cpp)
 add_executable(pose_estimation src/pose_estimation/pose_estimation.cpp)
 add_executable(manual_pose_estimation src/pose_estimation/manual_pose_estimation.cpp)
-add_executable(mapping_node src/map/mapping_node.cpp src/map/map.cpp src/map/keyframe.cpp src/map/frame.cpp src/map/map_utils.cpp src/opencv_utils.cpp src/map/projection_2D.cpp src/read_from_launch.cpp)
+add_executable(mapping_node ${MAPPING_SOURCE_FILES} ${MAPPING_HEADER_FILES})
 add_executable(computer_vision  src/computer_vision/processed_image.cpp  src/computer_vision/computer_vision.cpp src/computer_vision/target.cpp src/map/projection_2D.cpp src/opencv_utils.cpp src/read_from_launch.cpp)
 add_executable(vision_gui  src/vision_gui/vision_gui.cpp  src/vision_gui/vision_gui.cpp)
 add_executable(path_planning src/path_planning/path_planning.cpp)

@@ -10,19 +10,27 @@
 BALProblem::BALProblem(const boris_drone::BundleMsg::ConstPtr bundlePtr)
 {
   bundleMsgPtr_     = bundlePtr;
-  fixed_poses_      = bundlePtr->fixed_poses;
   num_cameras_      = bundlePtr->num_cameras;
   num_points_       = bundlePtr->num_points;
   num_observations_ = bundlePtr->num_observations;
   num_parameters_   = 6 * num_cameras_ + 3 * num_points_;
   point_index_  = new int[num_observations_];
   camera_index_ = new int[num_observations_];
+  fixed_cams_   = new bool[num_cameras_];
   observations_ = new double[2 * num_observations_];
   parameters_   = new double[num_parameters_];
 
+  //Mapping keyframe and point IDs to indices for the BA
+  std::map<int,int> kf_ID_to_idx;
+  std::map<int,int> pt_ID_to_idx;
+  for(int i = 0; i < num_cameras_; ++i)
+    kf_ID_to_idx[bundlePtr->keyframes_ID[i]] = i;
+  for(int i = 0; i < num_points_ ; ++i)
+    pt_ID_to_idx[bundlePtr->points_ID[i]] = i;
+
   for (int i = 0; i < num_observations_; ++i) {
-    camera_index_[i] = bundlePtr->observations[i].camera_index;
-    point_index_[i]  = bundlePtr->observations[i].point_index;
+    camera_index_[i]     = kf_ID_to_idx[bundlePtr->observations[i].kf_ID];
+    point_index_[i]      = pt_ID_to_idx[bundlePtr->observations[i].pt_ID];
     observations_[2*i]   = bundlePtr->observations[i].x;
     observations_[2*i+1] = bundlePtr->observations[i].y;
   }
@@ -33,6 +41,7 @@ BALProblem::BALProblem(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     parameters_[6*i + 3] = bundlePtr->cameras[i].x;
     parameters_[6*i + 4] = bundlePtr->cameras[i].y;
     parameters_[6*i + 5] = bundlePtr->cameras[i].z;
+    fixed_cams_[i] = bundlePtr->fixed_cams[i];
   }
   for (int i = 0; i < num_points_; ++i) {
     parameters_[6*num_cameras_ + 3*i + 0] = bundlePtr->points[i].x;
@@ -45,6 +54,7 @@ BALProblem::~BALProblem() {
   delete[] camera_index_;
   delete[] observations_;
   delete[] parameters_;
+  delete[] fixed_cams_;
 }
 int BALProblem::num_observations()       const { return num_observations_;               }
 const double* BALProblem::observations() const { return observations_;                   }
@@ -123,9 +133,9 @@ void BundleAdjuster::publishBundle(const BALProblem& bal_problem, bool converged
     msg.cameras[i].rotX = bal_problem.parameters_[6*i + 0]*PI/180.0;
     msg.cameras[i].rotY = bal_problem.parameters_[6*i + 1]*PI/180.0;
     msg.cameras[i].rotZ = bal_problem.parameters_[6*i + 2]*PI/180.0;
-    msg.cameras[i].x    = bal_problem.parameters_[6*i + 3]*PI/180.0;
-    msg.cameras[i].y    = bal_problem.parameters_[6*i + 4]*PI/180.0;
-    msg.cameras[i].z    = bal_problem.parameters_[6*i + 5]*PI/180.0;
+    msg.cameras[i].x    = bal_problem.parameters_[6*i + 3];
+    msg.cameras[i].y    = bal_problem.parameters_[6*i + 4];
+    msg.cameras[i].z    = bal_problem.parameters_[6*i + 5];
   }
   for (int i = 0; i < npt; ++i) {
     msg.points[i].x = bal_problem.parameters_[6*ncam + 3*i + 0];
@@ -151,12 +161,10 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   for (int i = 0; i< bal_problem.num_cameras_; i++)
   {
     camera_print = bal_problem.mutable_camera(i);
-    cv::Mat R1 = rollPitchYawToRotationMatrix(camera_print[0]*PI/180.0,
-                                              camera_print[1]*PI/180.0,
-                                              camera_print[2]*PI/180.0);
-
-    ROS_INFO("rotmat of camera %d",i);
-    std::cout << R1 << std::endl;
+    ROS_INFO("camera %d",i);
+    ROS_INFO("Rot : roll = %.2f, pitch = %.2f,yaw = %.2f",
+    camera_print[0]*PI/180.0,camera_print[1]*PI/180.0,camera_print[2]*PI/180.0);
+    ROS_INFO("T = %.2f,  %.2f, %.2f",camera_print[3],camera_print[4],camera_print[5]);
   }
 
 
@@ -275,11 +283,10 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     ceres::CostFunction* cost_function = SnavelyReprojectionError::Create(x, y);
     problem.AddResidualBlock(cost_function, NULL, camera, point);
   }
+  //for (int i = 0; i<bal_problem.num_cameras_ - 1; ++i)
+  //  if(bal_problem.fixed_cams_[i])
+  //    problem.SetParameterBlockConstant(bal_problem.mutable_camera(i));
   problem.SetParameterBlockConstant(bal_problem.mutable_camera(0));
-  if (bal_problem.fixed_poses_)
-    for (int i = 1; i < bal_problem.num_cameras_; ++i)
-      problem.SetParameterBlockConstant(bal_problem.mutable_camera(i));
-
   ceres::Solver::Options options;
   options.linear_solver_type = ceres::DENSE_SCHUR;
   options.minimizer_progress_to_stdout = true;
@@ -294,12 +301,10 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   for (int i = 0; i< bal_problem.num_cameras_; i++)
   {
     camera_print = bal_problem.mutable_camera(i);
-    cv::Mat R1 = rollPitchYawToRotationMatrix(camera_print[0]*PI/180.0,
-                                              camera_print[1]*PI/180.0,
-                                              camera_print[2]*PI/180.0);
-
-    ROS_INFO("rotmat of camera %d",i);
-    std::cout << R1 << std::endl;
+    ROS_INFO("camera %d",i);
+    ROS_INFO("Rot : roll = %.2f, pitch = %.2f,yaw = %.2f",
+    camera_print[0]*PI/180.0,camera_print[1]*PI/180.0,camera_print[2]*PI/180.0);
+    ROS_INFO("T = %.2f,  %.2f, %.2f",camera_print[3],camera_print[4],camera_print[5]);
   }
 
   /*

@@ -52,41 +52,40 @@ class Map;
 class Keyframe
 {
 public:
-  std::vector<cv::Point2f> imgPoints; //!< 2D coordinates of keypoints in image in OpenCV format
+  static int ID_counter;
+  int ID;
+
+  std::vector<cv::Point2f> img_points; //!< 2D coordinates of keypoints in image in OpenCV format
   cv::Mat descriptors;                //!< descriptors of keypoints in OpenCV format
   boris_drone::Pose3D pose;           //!< pose from which the keypoints were observed
 
   int npts;
-  std::vector<bool> pointIsMapped;
-  std::vector<int> points;   //!< indices of points in the pointcloud (the map). -1 for points not in map
+  std::vector<bool> point_is_mapped;
+  //!< ID of the points in the pointcloud (the map). -1 for points not in map, -2 for deleted points
+  std::vector<int> point_IDs;
+  std::map<int,int> point_idx; //Maps ID to index of mapped points
 
 
-  //TODO: remove this old implementation
-  std::vector<cv::Point2f> unmapped_imgPoints;  //!< 2D coordinates of unmapped keypoints in OpenCV format
-  std::vector<cv::Point2f> mapped_imgPoints;    //!< 2D coordinates of mapepd keypoints in OpenCV format
-  //TODO: until here
-
-
-  //Map* map;
-  //pointers to map objects
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
-  cv::Mat* map_descriptors; //!< descriptors in opencv format
-
-
-
 
   //! Constructor
   //! \param[in] map Pointer to the map
   //! \param[in] frame from which the Keyframe is built
-  Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
-                                  cv::Mat* descriptors, const Frame& frame);
+  Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const Frame& frame);
 
   //! Destructor.
   ~Keyframe();
-  void match(Keyframe& other, std::vector<cv::Point3d>& points3D,
-       std::vector<int>& matching_indices_1, std::vector<int>& matching_indices_2);
   void print();
+  void removePoint(int ptID);
+  void addPoint(int pt_idx, int pt_ID);
 
 };
+
+
+void match(Keyframe& kf0, Keyframe& kf1, std::vector<cv::Point3d>& points3D,
+     std::vector<int>& idx_kf0, std::vector<int>& idx_kf1,
+     std::vector<int>& match_ID, std::vector<bool>& point_is_new,
+     int& next_point_ID);
+void combine(Keyframe& kf0, Keyframe& kf1, int idx_kf0, int idx_kf1, cv::Point3d& pt3d, int& newptID);
 
 #endif /* boris_drone_KEYFRAME_H */

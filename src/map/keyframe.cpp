@@ -11,10 +11,11 @@
 #include <boris_drone/map/keyframe.h>
 //#include <boris_drone/map/mapping_node.h>
 
+int Keyframe::ID_counter = 0;
 
-Keyframe::Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
-                                cv::Mat* map_descriptors, const Frame& frame)
+Keyframe::Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const Frame& frame)
 {
+  this->ID = ID_counter++;
   tf::Matrix3x3 drone2world, cam2drone, cam2world;
   double roll, pitch, yaw;
   drone2world.setRPY(frame.pose.rotX, frame.pose.rotY, frame.pose.rotZ);
@@ -26,81 +27,71 @@ Keyframe::Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
   this->pose.rotY       = pitch;
   this->pose.rotZ       = yaw;
   this->cloud           = cloud;
-  this->map_descriptors = map_descriptors;
-  this->imgPoints       = frame.imgPoints;
+  this->img_points      = frame.img_points;
   this->descriptors     = frame.descriptors;
-  this->npts            = frame.imgPoints.size();
-  //set all pointismapped to false
-  this->pointIsMapped.resize(npts,false);
-  this->points.resize(npts,-1);
-
-
-  //Old, to remove when not used anymore:
-  this->unmapped_imgPoints  = frame.imgPoints;
+  this->npts            = frame.img_points.size();
+  //set all point_is_mapped to false
+  this->point_is_mapped.resize(npts,false);
+  this->point_IDs.resize(npts,-1);
+  ROS_INFO("Created new Keyframe. ID is %d",ID);
 }
 
 Keyframe::~Keyframe()
 {
 }
 
-void Keyframe::match(Keyframe& other, std::vector<cv::Point3d>& points3D,
-     std::vector<int>& matching_indices_1, std::vector<int>& matching_indices_2)
+void match(Keyframe& kf0, Keyframe& kf1, std::vector<cv::Point3d>& points3D,
+     std::vector<int>& idx_kf0, std::vector<int>& idx_kf1,
+     std::vector<int>& match_ID, std::vector<bool>& point_is_new,
+     int& next_point_ID)
 {
-  if (this->descriptors.rows == 0 || other.descriptors.rows == 0)
+  if (kf0.descriptors.rows == 0 || kf1.descriptors.rows == 0)
     return;
-  matchDescriptors(this->descriptors, other.descriptors, matching_indices_1, matching_indices_2);
-
-  int pointsInMap = this->cloud->points.size();
-  int newpoints = 0;
-  for (int i = 0; i<matching_indices_1.size();i++)
+  matchDescriptors(kf0.descriptors, kf1.descriptors, idx_kf0, idx_kf1);
+  int nmatch = idx_kf0.size();
+  int this_ID;
+  points3D.resize(nmatch);
+  match_ID.resize(nmatch);
+  point_is_new.resize(nmatch,false);
+  int points_in_map = kf0.cloud->points.size();
+  for (int i = 0; i<nmatch; i++)
   {
-    if (!pointIsMapped[matching_indices_1[i]] && !other.pointIsMapped[matching_indices_2[i]])
+    if (!kf0.point_is_mapped[idx_kf0[i]] && !kf1.point_is_mapped[idx_kf1[i]])
     {
-      cv::Point3d pt3d;
-      triangulate(pt3d, imgPoints[matching_indices_1[i]],
-                        other.imgPoints[matching_indices_2[i]],
-                        pose, other.pose);
-      points3D.push_back(pt3d);
-      //add point to map
-      pcl::PointXYZ new_point;
-      new_point.x = pt3d.x;
-      new_point.y = pt3d.y;
-      new_point.z = pt3d.z;
-      this->cloud->points.push_back(new_point);
-      cv::Range row = cv::Range(matching_indices_1[i],matching_indices_1[i]+1);
-      this->map_descriptors->push_back(descriptors(row,cv::Range::all()));
-
-      points[matching_indices_1[i]] = pointsInMap;
-      other.points[matching_indices_2[i]] = pointsInMap;
-      pointIsMapped[matching_indices_1[i]] = true;
-      other.pointIsMapped[matching_indices_2[i]] = true;
-      newpoints++;
-      pointsInMap++;
+      triangulate(points3D[i], kf0.img_points[idx_kf0[i]], kf1.img_points[idx_kf1[i]], kf0.pose, kf1.pose);
+      this_ID = next_point_ID++;
+      kf0.addPoint(idx_kf0[i], this_ID);
+      kf1.addPoint(idx_kf1[i], this_ID);
+      match_ID[i]     = this_ID;
+      point_is_new[i] = true;
     }
-    else if (other.pointIsMapped[matching_indices_2[i]]) //point is mapped on 2
+    else if (!kf0.point_is_mapped[idx_kf0[i]])
     {
-      points[matching_indices_1[i]] = other.points[matching_indices_2[i]];
-      pointIsMapped[matching_indices_1[i]] = true;
-      int ptIdx = other.points[matching_indices_2[i]];
-      cv::Point3d pt3d(this->cloud->points[ptIdx].x,this->cloud->points[ptIdx].y,this->cloud->points[ptIdx].z);
-      points3D.push_back(pt3d);
+      kf0.addPoint(idx_kf0[i], kf1.point_IDs[idx_kf1[i]]);
+      match_ID[i]            = kf1.point_IDs[idx_kf1[i]];
     }
-    else // if (pointIsMapped[matching_indices_1[i]]) //point is mapped on 1 but not on 2
+    else if (!kf1.point_is_mapped[idx_kf1[i]])
     {
-      other.points[matching_indices_2[i]] = points[matching_indices_1[i]];
-      other.pointIsMapped[matching_indices_2[i]] = true;
-      int ptIdx = points[matching_indices_1[i]];
-      cv::Point3d pt3d(this->cloud->points[ptIdx].x,this->cloud->points[ptIdx].y,this->cloud->points[ptIdx].z);
-      points3D.push_back(pt3d);
+      kf1.addPoint(idx_kf1[i], kf0.point_IDs[idx_kf0[i]]);
+      match_ID[i]            = kf0.point_IDs[idx_kf0[i]];
     }
   }
-  ROS_INFO("finished matching keyframes.");
-  ROS_INFO("\t %d new points",newpoints);
-  ROS_INFO("\t Map now has %lu points",this->cloud->points.size());
-  ROS_INFO("\t check: %d = %lu", this->map_descriptors->rows, this->cloud->points.size());
+  ROS_INFO("finished matching keyframe %d with keyframe %d.",kf0.ID, kf1.ID);
 }
 
+void Keyframe::addPoint(int pt_idx, int pt_ID)
+{
+  point_idx[pt_ID]  = pt_idx;
+  point_IDs[pt_idx] = pt_ID;
+  point_is_mapped[pt_idx] = true;
+}
 
+void Keyframe::removePoint(int ptID)
+{
+  int index = point_idx[ptID];
+  point_is_mapped[index] = false;
+  point_IDs[index] = -2;
+}
 
 void Keyframe::print()
 {
@@ -109,16 +100,16 @@ void Keyframe::print()
   int nmapped = 0;
   for (int i = 0; i < npts; i++)
   {
-    nmapped += pointIsMapped[i];
+    nmapped += point_is_mapped[i];
     std::cout << "Point " << i <<":"<< std::endl;
-    std::cout << "\t Is mapped?     " << pointIsMapped[i] << std::endl;
-    std::cout << "\t Index in map : " << points[i] << std::endl;
-    if (pointIsMapped[i])
+    std::cout << "\t Is mapped?     " << point_is_mapped[i] << std::endl;
+    std::cout << "\t Index in map : " << point_IDs[i] << std::endl;
+    if (point_is_mapped[i])
     {
       std::cout << "\t position in map:" << std::endl;
-      std::cout << "\t x = " << this->cloud->points[points[i]].x << std::endl;
-      std::cout << "\t y = " << this->cloud->points[points[i]].y << std::endl;
-      std::cout << "\t z = " << this->cloud->points[points[i]].z << std::endl;
+      std::cout << "\t x = " << this->cloud->points[point_IDs[i]].x << std::endl;
+      std::cout << "\t y = " << this->cloud->points[point_IDs[i]].y << std::endl;
+      std::cout << "\t z = " << this->cloud->points[point_IDs[i]].z << std::endl;
     }
   }
   std::cout << "Total points mapped : " << nmapped << std::endl << std::endl;

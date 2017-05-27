@@ -15,6 +15,7 @@
 
 
 #include <set>
+#include <map> //std::map key-value pair
 
 // vision
 #include <opencv2/calib3d/calib3d.hpp>
@@ -65,6 +66,7 @@
 class Map
 {
 private:
+  static int point_ID_counter;//
   ros::Publisher bundle_pub;
   std::string    bundle_channel;
 
@@ -116,20 +118,28 @@ private:
 
 public:
   //! Contructor. Initialize an empty map
+  Map(ros::NodeHandle* nh, cv::Mat camera_matrix_K);
+
   Map();
-  Map(ros::NodeHandle* nh, bool do_search, bool stop_if_lost, cv::Mat camera_matrix_K);
 
   //! Destructor.
   ~Map();
 
-  cv::FlannBasedMatcher matcher;  //!< object for descriptors comparison
-  std::vector<Keyframe*> keyframes;
+  std::map<int,Keyframe*> keyframes;
 
   //! The cloud object containing 3D points
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
   cv::Mat descriptors; //!< descriptors in opencv format
-  std::vector< std::vector<int> > kfs_point; //For each point, a list of keyframes seeing it
+  std::vector<int> pt_IDs;
+  std::map<int,int> pt_idxes;
+  std::map<int, std::set<int> > keyframes_seeing_point;
+  std::map<int, std::set<int> > points_seen_by_keyframe;
 
+  int addPoint(cv::Point3d& coordinates, cv::Mat descriptor);
+  void removePoint(int ptID);
+  void updatePoint(int pt_ID, pcl::PointXYZ new_point);
+
+  void setPointAsSeen(int pt_ID, int kf_ID);
 
   bool processFrame(const Frame& frame,boris_drone::Pose3D& PnP_pose, bool keyframeneeded);
 
@@ -137,12 +147,17 @@ public:
 
   void resetPose();
 
-  void doBundleAdjustment(std::vector<Keyframe*> kfs, bool fixed_poses);
+  void matchKeyframes(Keyframe& kf0, Keyframe& kf1);
+
+  int getPointsSeenByKeyframes(std::vector<int> kf_IDs,
+                                   std::map<int,std::map<int,int> >& points);
+
+  void doBundleAdjustment(std::vector<int> kf_IDs);
 
   void getVisualPose();
 
   int matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_map_matching_points,
-                                          std::vector<cv::Point2f>& inliers_frame_matching_points);
+                                         std::vector<cv::Point2f>& inliers_frame_matching_points);
 
   void targetDetectedPublisher();
 

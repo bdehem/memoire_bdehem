@@ -62,6 +62,7 @@ class BALProblem {
   int num_points_;
   int num_observations_;
   int num_parameters_;
+  bool* fixed_cams_;
   int* point_index_;
   int* camera_index_;
   double* observations_;
