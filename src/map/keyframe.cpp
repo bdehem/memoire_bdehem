@@ -56,7 +56,8 @@ void match(Keyframe& kf0, Keyframe& kf1, std::vector<cv::Point3d>& points3D,
   int points_in_map = kf0.cloud->points.size();
   for (int i = 0; i<nmatch; i++)
   {
-    if (!kf0.point_is_mapped[idx_kf0[i]] && !kf1.point_is_mapped[idx_kf1[i]])
+    if ((kf0.point_IDs[idx_kf0[i]]==-1) && (kf1.point_IDs[idx_kf0[i]]==-1))
+    //if (!kf0.point_is_mapped[idx_kf0[i]] && !kf1.point_is_mapped[idx_kf1[i]])
     {
       triangulate(points3D[i], kf0.img_points[idx_kf0[i]], kf1.img_points[idx_kf1[i]], kf0.pose, kf1.pose);
       this_ID = next_point_ID++;
@@ -65,12 +66,14 @@ void match(Keyframe& kf0, Keyframe& kf1, std::vector<cv::Point3d>& points3D,
       match_ID[i]     = this_ID;
       point_is_new[i] = true;
     }
-    else if (!kf0.point_is_mapped[idx_kf0[i]])
+    else if (kf0.point_IDs[idx_kf0[i]]==-1)
+    //else if (!kf0.point_is_mapped[idx_kf0[i]])
     {
       kf0.addPoint(idx_kf0[i], kf1.point_IDs[idx_kf1[i]]);
       match_ID[i]            = kf1.point_IDs[idx_kf1[i]];
     }
-    else if (!kf1.point_is_mapped[idx_kf1[i]])
+    else if (kf1.point_IDs[idx_kf0[i]]==-1)
+    //else if (!kf1.point_is_mapped[idx_kf1[i]])
     {
       kf1.addPoint(idx_kf1[i], kf0.point_IDs[idx_kf0[i]]);
       match_ID[i]            = kf0.point_IDs[idx_kf0[i]];

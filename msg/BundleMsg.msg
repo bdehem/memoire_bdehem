@@ -1,6 +1,7 @@
 
 bool converged
 bool[] fixed_cams
+bool[] is_outlier
 int16 num_cameras
 int16 num_points
 int16 num_observations

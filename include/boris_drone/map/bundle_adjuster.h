@@ -89,7 +89,8 @@ public:
   BundleAdjuster();
   //! Destructor.
   ~BundleAdjuster();
-  void publishBundle(const BALProblem& bal_problem, bool converged);
+  void publishBundle(const BALProblem& bal_problem, bool converged, std::vector<bool>& is_outlier);
+  void printResiduals(ceres::Problem& problem, BALProblem& bal_problem, std::vector<bool>& is_outlier);
 };
 
 

@@ -110,6 +110,35 @@ struct SnavelyReprojectionError {
   double observed_y;
 };
 
+struct SemiFixedCameraError {
+  SemiFixedCameraError(double x, double y, double z, double rotX, double rotY, double rotZ)
+      : x(x), y(y), z(z), rotX(rotX), rotY(rotY), rotZ(rotZ) {}
+  template <typename T>
+  bool operator()(const T* const camera,
+                  T* residuals) const {
+    double weight_x = 0.1  ; double weight_rotX = 15.0;
+    double weight_y = 0.1  ; double weight_rotY = 15.0;
+    double weight_z = 15.0 ; double weight_rotZ = 0.1 ;
+
+    residuals[0] = weight_x    * (camera[3] - x);
+    residuals[1] = weight_y    * (camera[4] - y);
+    residuals[2] = weight_z    * (camera[5] - z);
+    residuals[3] = weight_rotX * (camera[0] - rotX);
+    residuals[4] = weight_rotY * (camera[1] - rotY);
+    residuals[5] = weight_rotZ * (camera[2] - rotZ);
+    return true;
+  }
+  // Factory to hide the construction of the CostFunction object from
+  // the client code.
+  static ceres::CostFunction* Create(const double x, const double y, const double z,
+                    const double rotX, const double rotY, const double rotZ) {
+    return (new ceres::AutoDiffCostFunction<SemiFixedCameraError, 6, 6>(
+                new SemiFixedCameraError(x, y, z, rotX, rotY, rotZ)));
+  }
+  double x; double y; double z; double rotX; double rotY; double rotZ;
+};
+
+
 
 BundleAdjuster::BundleAdjuster()
 {
@@ -121,7 +150,7 @@ BundleAdjuster::BundleAdjuster()
   bundled_pub     = nh.advertise<boris_drone::BundleMsg>(bundled_channel, 1);
 }
 
-void BundleAdjuster::publishBundle(const BALProblem& bal_problem, bool converged)
+void BundleAdjuster::publishBundle(const BALProblem& bal_problem, bool converged, std::vector<bool>& is_outlier)
 {
   boris_drone::BundleMsg msg = *(bal_problem.bundleMsgPtr_);
   msg.converged = converged;
@@ -129,6 +158,7 @@ void BundleAdjuster::publishBundle(const BALProblem& bal_problem, bool converged
   msg.num_cameras = ncam              ;  msg.num_points  = npt;
   msg.cameras.resize(ncam)            ;  msg.points.resize(npt);
 
+  msg.is_outlier.resize(npt);
   for (int i = 0; i < ncam; ++i) {
     msg.cameras[i].rotX = bal_problem.parameters_[6*i + 0]*PI/180.0;
     msg.cameras[i].rotY = bal_problem.parameters_[6*i + 1]*PI/180.0;
@@ -141,6 +171,7 @@ void BundleAdjuster::publishBundle(const BALProblem& bal_problem, bool converged
     msg.points[i].x = bal_problem.parameters_[6*ncam + 3*i + 0];
     msg.points[i].y = bal_problem.parameters_[6*ncam + 3*i + 1];
     msg.points[i].z = bal_problem.parameters_[6*ncam + 3*i + 2];
+    msg.is_outlier[i] = is_outlier[i];
   }
   bundled_pub.publish(msg);
 }
@@ -274,27 +305,40 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   double* camera;
   double* point;
   ceres::Problem problem;
+  ceres::CostFunction* cost_function;
   for (int i = 0; i < bal_problem.num_observations(); ++i) {
     camera = bal_problem.mutable_camera_for_observation(i);
     point  = bal_problem.mutable_point_for_observation(i);
     x = bal_problem.observations()[2 * i + 0];
     y = bal_problem.observations()[2 * i + 1];
 
-    ceres::CostFunction* cost_function = SnavelyReprojectionError::Create(x, y);
-    problem.AddResidualBlock(cost_function, NULL, camera, point);
+    cost_function = SnavelyReprojectionError::Create(x, y);
+    bool robustify = true;
+    ceres::LossFunction* loss_function = robustify ? new ceres::HuberLoss(1.0) : NULL;
+    problem.AddResidualBlock(cost_function, loss_function, camera, point);
   }
   //for (int i = 0; i<bal_problem.num_cameras_ - 1; ++i)
   //  if(bal_problem.fixed_cams_[i])
   //    problem.SetParameterBlockConstant(bal_problem.mutable_camera(i));
   problem.SetParameterBlockConstant(bal_problem.mutable_camera(0));
+  //problem.SetParameterBlockConstant(bal_problem.mutable_camera(1)); //Replace it by soft constraint
+
+  //This causes drift: TODO fix
+  for (int i = 1; i < bal_problem.num_cameras_; ++i)
+  {
+    camera = bal_problem.mutable_camera_for_observation(i);
+    cost_function = SemiFixedCameraError::Create(camera[3],camera[4],camera[5],camera[0],camera[1],camera[2]);
+    problem.AddResidualBlock(cost_function, NULL, camera);
+  }
+
   ceres::Solver::Options options;
+  options.max_num_iterations = 100;
   options.linear_solver_type = ceres::DENSE_SCHUR;
   options.minimizer_progress_to_stdout = true;
   ceres::Solver::Summary summary;
   ceres::Solve(options, &problem, &summary);
   std::cout << summary.FullReport() << "\n";
   bool converged = (summary.termination_type == ceres::CONVERGENCE);
-  publishBundle(bal_problem, converged);
 
 
   ROS_INFO("After BA: cameras are:");
@@ -306,6 +350,11 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     camera_print[0]*PI/180.0,camera_print[1]*PI/180.0,camera_print[2]*PI/180.0);
     ROS_INFO("T = %.2f,  %.2f, %.2f",camera_print[3],camera_print[4],camera_print[5]);
   }
+  std::vector<bool> is_outlier;
+  printResiduals(problem, bal_problem, is_outlier);
+
+  publishBundle(bal_problem, converged, is_outlier);
+
 
   /*
   More printing
@@ -362,6 +411,36 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   std::cout << reprojection_error_after[1] << std::endl;
 
   */
+}
+
+void BundleAdjuster::printResiduals(ceres::Problem& problem, BALProblem& bal_problem,
+      std::vector<bool>& is_outlier)
+{
+  double cost;
+  std::vector<double> residuals;
+  problem.Evaluate(ceres::Problem::EvaluateOptions(), &cost, &residuals, NULL, NULL);
+  int nobs = bal_problem.num_observations_;
+  int npt  = bal_problem.num_points_;
+  std::vector<double> sqloss;
+  std::vector<double> sqloss_of_point;
+  std::vector<int> observations_of_point;
+  sqloss.resize(nobs);
+  sqloss_of_point.resize(npt,0.0);
+  observations_of_point.resize(npt,0);
+  is_outlier.resize(npt,false);
+  for (int i = 0; i<nobs; ++i)
+  {
+    sqloss[i] = residuals[2*i]*residuals[2*i] + residuals[2*i+1]*residuals[2*i+1];
+    sqloss_of_point[bal_problem.point_index_[i]] += sqloss[i];
+    observations_of_point[bal_problem.point_index_[i]]++;
+  }
+  for (int i = 0; i < npt; ++i)
+  {
+    double cost_per_observation = sqloss_of_point[i]/(double)observations_of_point[i];
+    ROS_INFO("Pt %d: cost = %f nobs = %d cost/obs = %f",
+    i,sqloss_of_point[i],observations_of_point[i],cost_per_observation);
+    is_outlier[i] = (cost_per_observation>1.0);
+  }
 }
 
 

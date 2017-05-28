@@ -89,15 +89,16 @@ void Map::updatePoint(int pt_ID, pcl::PointXYZ new_point)
 void Map::removePoint(int ptID)
 {
   ROS_INFO("enter removePoint");
-  int index = pt_idxes[ptID];
-  if (index >= pt_IDs.size())
+  std::map<int,int>::iterator idxes_it = pt_idxes.find(ptID);
+  if (idxes_it == pt_idxes.end())
     return;
+  int index = idxes_it->second;
   std::set<int> kfs = keyframes_seeing_point[ptID];
-  std::set<int>::iterator it;
-  for (it = kfs.begin();it!=kfs.end();++it)
+  std::set<int>::iterator kf_it;
+  for (kf_it = kfs.begin();kf_it!=kfs.end();++kf_it)
   {
-    keyframes[*it]->removePoint(ptID);
-    points_seen_by_keyframe[*it].erase(ptID);
+    keyframes[*kf_it]->removePoint(ptID);
+    points_seen_by_keyframe[*kf_it].erase(ptID);
   }
   keyframes_seeing_point.erase(ptID);
   pt_idxes.erase(ptID);
@@ -119,10 +120,10 @@ void Map::removePoint(int ptID)
     temp.push_back(roi);
   }
   descriptors = temp;
-  std::map<int,int>::iterator it2;
-  for(it2 = pt_idxes.begin();it2!=pt_idxes.end();++it2)
-    if (it2->second > index)
-      it2->second--;
+  //Decrement all indices that were after the one we removed
+  for(idxes_it = pt_idxes.begin();idxes_it!=pt_idxes.end();++idxes_it)
+    if (idxes_it->second > index)
+      idxes_it->second--;
   ROS_INFO("finished removePoint");
 }
 
@@ -150,12 +151,16 @@ void Map::matchKeyframes(Keyframe& kf0, Keyframe& kf1)
     if (point_is_new[i])
     {
       pt_ID = addPoint(points3D[i], kf0.descriptors.rowRange(idx_kf0[i],idx_kf0[i]+1));
-      ROS_INFO("check: %d = %d",pt_ID, match_ID[i]);
+      //ROS_INFO("check: %d = %d",pt_ID, match_ID[i]);
+      setPointAsSeen(pt_ID, kf0.ID);
+      setPointAsSeen(pt_ID, kf1.ID);
     }
-    else
+    else if(match_ID[i] >= 0)
+    {
       pt_ID = match_ID[i];
-    setPointAsSeen(pt_ID, kf0.ID);
-    setPointAsSeen(pt_ID, kf1.ID);
+      setPointAsSeen(pt_ID, kf0.ID);
+      setPointAsSeen(pt_ID, kf1.ID);
+    }
   }
 }
 
@@ -172,11 +177,11 @@ void Map::newKeyframe(const Frame& frame)
   std::map<int,Keyframe*>::iterator it;
   for (it = keyframes.begin(); it!=keyframes.end();it++)
   {
-    //matchKeyframes(*reference_keyframe, *(it->second)); //Sould be better but results are not great
+    matchKeyframes(*reference_keyframe, *(it->second)); //Sould be better but results are not great
     ROS_INFO("keyframes_to_adjust: %d",it->first);
     keyframes_to_adjust.push_back(it->first); //add all kfs
   }
-  matchKeyframes(*reference_keyframe, *old);
+  //matchKeyframes(*reference_keyframe, *old);
   keyframes_to_adjust.push_back(reference_keyframe->ID);
   ROS_INFO("keyframes_to_adjust: %d",reference_keyframe->ID);
   keyframes[reference_keyframe->ID] = reference_keyframe;
@@ -184,6 +189,8 @@ void Map::newKeyframe(const Frame& frame)
   ROS_INFO("\t Map now has %lu points",this->cloud->points.size());
   ROS_INFO("\t check: %d = %lu", this->descriptors.rows, this->cloud->points.size());
   //removePoint(3);
+  //removePoint(8);
+  //removePoint(40);
   doBundleAdjustment(keyframes_to_adjust);
 }
 
@@ -268,7 +275,7 @@ int Map::getPointsSeenByKeyframes(std::vector<int> kf_IDs,
       for (it2 = intersection.begin();it2!=intersection.end();++it2)
       {
         int local_index = keyframes[*it2]->point_idx[*it1];
-        ROS_INFO("in pointseenbykeyframes. pointID = %d, keyframeID = %d, local idx = %d",*it1,*it2,local_index);
+        //ROS_INFO("in pointseenbykeyframes. pointID = %d, keyframeID = %d, local idx = %d",*it1,*it2,local_index);
         this_point[*it2] = keyframes[*it2]->point_idx[*it1];
       }
       points[*it1] = this_point;
@@ -303,11 +310,11 @@ void Map::doBundleAdjustment(std::vector<int> kf_IDs)
   points_it = points.begin();
   for(i = 0; i<points.size(); i++)
   {
-    ROS_INFO("Point %d seen by:", points_it->first);
+    //ROS_INFO("Point %d seen by:", points_it->first);
     inner_it = points_it->second.begin();
     for (j = 0; j<points_it->second.size();j++)
     {
-      ROS_INFO("Kf %d at index %d",inner_it->first, inner_it->second);
+      //ROS_INFO("Kf %d at index %d",inner_it->first, inner_it->second);
       inner_it++;
     }
     points_it++;
@@ -336,7 +343,7 @@ void Map::doBundleAdjustment(std::vector<int> kf_IDs)
       int local_idx = inner_it->second;
       msg->observations[k].kf_ID = kfID;
       msg->observations[k].pt_ID  = ptID;
-      ROS_INFO("Observation %d: Cam index = %d; Point index = %d",k,kfID,ptID);
+      //ROS_INFO("Observation %d: Cam index = %d; Point index = %d",k,kfID,ptID);
       msg->observations[k].x = keyframes[kfID]->img_points[local_idx].x;
       msg->observations[k].y = keyframes[kfID]->img_points[local_idx].y;
       k++;
@@ -517,11 +524,16 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   for (i = 0; i < npt; ++i)
   {
     pt_ID = bundlePtr->points_ID[i];
-    pcl::PointXYZ new_point;
-    new_point.x = bundlePtr->points[i].x;
-    new_point.y = bundlePtr->points[i].y;
-    new_point.z = bundlePtr->points[i].z;
-    updatePoint(pt_ID,new_point);
+    if (bundlePtr->is_outlier[i])
+      removePoint(pt_ID);
+    else
+    {
+      pcl::PointXYZ new_point;
+      new_point.x = bundlePtr->points[i].x;
+      new_point.y = bundlePtr->points[i].y;
+      new_point.z = bundlePtr->points[i].z;
+      updatePoint(pt_ID,new_point);
+    }
   }
   ROS_INFO("Updated points, now cams:");
   for (i = 0; i < ncam; ++i) {
