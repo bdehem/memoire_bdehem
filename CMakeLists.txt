@@ -58,6 +58,7 @@ set(CMAKE_CXX_FLAGS "-Wno-deprecated -std=c++11 ${CMAKE_CXX_FLAGS}")
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
+  BenchmarkInfoMsg.msg
   Pose3D.msg
   TargetDetected.msg
   PoseRef.msg
@@ -161,6 +162,7 @@ set(MAPPING_SOURCE_FILES
 	src/map/frame.cpp
   src/map/map_utils.cpp
   src/map/projection_2D.cpp
+  src/map/camera.cpp
   src/opencv_utils.cpp
   src/read_from_launch.cpp
 )
@@ -171,6 +173,7 @@ set(MAPPING_HEADER_FILES
 	include/boris_drone/map/frame.h
   include/boris_drone/map/map_utils.h
   include/boris_drone/map/projection_2D.h
+  include/boris_drone/map/camera.h
   include/boris_drone/opencv_utils.h
   include/boris_drone/read_from_launch.h
 )

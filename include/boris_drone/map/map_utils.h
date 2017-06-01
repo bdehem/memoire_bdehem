@@ -14,12 +14,15 @@
 #include <opencv2/nonfree/nonfree.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include <boris_drone/map/camera.h>
+
 
 void matchDescriptors(const cv::Mat& descriptors1, const cv::Mat& descriptors2,
-  std::vector<int>& matching_indices_1, std::vector<int>& matching_indices_2);
+  std::vector<int>& matching_indices_1, std::vector<int>& matching_indices_2, double threshold);
 
 bool triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
-            const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2);
+            const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2,
+            Camera * cam1, Camera * cam2);
 
 inline void getVandEpsil(cv::Mat& V, cv::Mat& epsil, cv::Mat& x_hat, cv::Mat& x1_hat,
                       cv::Mat& x_tilde, cv::Mat& x1_tilde, double f);

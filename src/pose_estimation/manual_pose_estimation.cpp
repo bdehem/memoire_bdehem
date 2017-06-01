@@ -38,6 +38,7 @@ ManualPoseEstimator::~ManualPoseEstimator()
 
 void ManualPoseEstimator::publish_pose()
 {
+  pose.header.stamp = ros::Time::now();
   pose_pub.publish(pose);
 }
 

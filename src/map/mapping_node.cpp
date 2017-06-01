@@ -11,7 +11,7 @@
 
 MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3D visualizer"))
 {
-  keyframeneeded = false;
+  manual_pose_received = false;
   iter = 0;
   // Subsribers
   strategy_channel        = nh.resolveName("strategy");
@@ -55,13 +55,7 @@ MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3
     ROS_ERROR("img_size not properly transmitted");
   }
 
-  cv::Mat camera_matrix_K;
-  camera_matrix_K =
-        (cv::Mat_< double >(3, 3) << Read::focal_length_x(), 0,                      Read::img_center_x(),
-                                     0,                      Read::focal_length_y(), Read::img_center_y(),
-                                     0,                      0,                      1                   );
-
-  map = Map(&nh, camera_matrix_K);
+  map = Map(&nh);
 
   // initialize the map and the visualizer
   pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> single_color(map.cloud, 0, 255, 0);
@@ -71,7 +65,6 @@ MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3
   visualizer->addCoordinateSystem(1.0);  // red: x, green: y, blue: z
 
   ROS_DEBUG("mapping_node initialized");
-  keyframeneeded = true;
   ROS_INFO("these are logger messages:");
   ROS_DEBUG("ROS_DEBUG message");
   ROS_INFO("ROS_INFO message");
@@ -86,13 +79,11 @@ MappingNode::~MappingNode()
 
 void MappingNode::manualPoseCb(const boris_drone::Pose3D::ConstPtr posePtr)
 {
-  keyframeneeded = true;
-  ROS_INFO("keyframe needed");
+  manual_pose_received = true;
 }
 
 void MappingNode::bundledCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
 {
-  ROS_INFO("BundledCB");
   map.updateBundle(bundlePtr);
 }
 
@@ -105,7 +96,7 @@ void MappingNode::resetPoseCb(const std_msgs::Empty& msg)
 {
   pending_reset = true;
   processed_image_sub.shutdown();
-  map.resetPose();
+  map.reset();
   processed_image_sub = nh.subscribe(processed_image_channel, 3, &MappingNode::processedImageCb, this);
   // update visualizer
   this->visualizer->updatePointCloud<pcl::PointXYZ>(map.cloud, "SIFT_cloud");
@@ -118,7 +109,7 @@ void MappingNode::endResetPoseCb(const std_msgs::Empty& msg)
 
 void MappingNode::processedImageCb(const boris_drone::ProcessedImageMsg::ConstPtr processed_image_in)
 {
-  //ROS_INFO_THROTTLE(1,"Processed image callback. Keyframe needed? %d", keyframeneeded);
+  //ROS_INFO_THROTTLE(1,"Processed image callback. Keyframe needed? %d", manual_pose_received);
   //ROS_INFO_THROTTLE(1,"pending reset? %d, strategy? %d", pending_reset, strategy);
   bool PnP_success;
   //if (pending_reset || strategy == WAIT || strategy == TAKEOFF)
@@ -128,15 +119,8 @@ void MappingNode::processedImageCb(const boris_drone::ProcessedImageMsg::ConstPt
     lastProcessedImgReceived = processed_image_in;
   Frame current_frame(processed_image_in);
   boris_drone::Pose3D PnP_pose;
-  //ROS_INFO_THROTTLE(1,"How about now? %d", keyframeneeded);
-  if (keyframeneeded)
-  {
-    //ROS_INFO("in keyframe needed if in callback");
-    PnP_success = map.processFrame(current_frame, PnP_pose, true);
-    keyframeneeded = false;
-  }
-  else
-    PnP_success = map.processFrame(current_frame, PnP_pose, false);
+  PnP_success = map.processFrame(current_frame, PnP_pose, manual_pose_received);
+  manual_pose_received = false;
   this->visualizer->updatePointCloud<pcl::PointXYZ>(map.cloud, "SIFT_cloud");
   if (PnP_success)
   {
@@ -170,6 +154,7 @@ void MappingNode::publishPoseVisual(boris_drone::Pose3D PnP_pose, boris_drone::P
   pose_correction.rotX = frame_pose.rotX - PnP_pose.rotX;
   pose_correction.rotY = frame_pose.rotY - PnP_pose.rotY;
   pose_correction.rotZ = frame_pose.rotZ - PnP_pose.rotZ;
+  PnP_pose.header.stamp = ros::Time::now();
   pose_visual_pub.publish(PnP_pose);
   pose_correction_pub.publish(pose_correction);
 }
@@ -212,27 +197,16 @@ int main(int argc, char** argv)
   ROS_INFO_STREAM("simple map started!");
 
   MappingNode map_node;
-  ros::Time t = ros::Time::now() + ros::Duration(13);
+  ros::Time t = ros::Time::now() + ros::Duration(1);
   while (ros::Time::now() < t)
-  {
     map_node.visualizer->spinOnce(100);
-  }
 
   ros::Rate r(3);
 
-  int visualizer_count = 0;
-
   while (ros::ok())
   {
-//    if (map_node.map.target_altitude>0)
-//    {
-//      map_node.publishGoHigh(map_node.map.target_altitude);
-//      ROS_INFO_THROTTLE(10,"target altitude is %f",map_node.map.target_altitude);
-//    }
     map_node.visualizer->spinOnce(10);
-
     map_node.targetDetectedPublisher();
-
     ros::spinOnce();
     r.sleep();
   }

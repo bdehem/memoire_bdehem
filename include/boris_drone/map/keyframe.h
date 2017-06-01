@@ -26,9 +26,6 @@
 #include <pcl/common/common_headers.h>
 #include <pcl/point_types.h>      // pcl::PointXYZRGB
 #include <pcl_ros/point_cloud.h>  // pcl::PointCloud
-
-#include <cvsba/cvsba.h>
-
 #include <boost/shared_ptr.hpp>
 
 /* boris_drone */
@@ -36,10 +33,8 @@
 #include <boris_drone/opencv_utils.h>
 #include <boris_drone/map/frame.h>
 #include <boris_drone/map/map_utils.h>
+#include <boris_drone/map/camera.h>
 #include <algorithm>
-
-//forward reference to be able to have a pointer to map
-class Map;
 
 /**
  * \class Keyframe
@@ -55,12 +50,13 @@ public:
   static int ID_counter;
   int ID;
 
+  Camera* camera; //pointer to the camera that saw this keyframe
+
   std::vector<cv::Point2f> img_points; //!< 2D coordinates of keypoints in image in OpenCV format
   cv::Mat descriptors;                //!< descriptors of keypoints in OpenCV format
   boris_drone::Pose3D pose;           //!< pose from which the keypoints were observed
 
-  int npts;
-  std::vector<bool> point_is_mapped;
+  int npts, n_mapped_pts;
   //!< ID of the points in the pointcloud (the map). -1 for points not in map, -2 for deleted points
   std::vector<int> point_IDs;
   std::map<int,int> point_idx; //Maps ID to index of mapped points
@@ -71,7 +67,10 @@ public:
   //! Constructor
   //! \param[in] map Pointer to the map
   //! \param[in] frame from which the Keyframe is built
-  Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const Frame& frame);
+  Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const Frame& frame, Camera* cam);
+
+
+  Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const Frame& frame, Camera* cam, const boris_drone::Pose3D pose);
 
   //! Destructor.
   ~Keyframe();
@@ -85,7 +84,6 @@ public:
 void match(Keyframe& kf0, Keyframe& kf1, std::vector<cv::Point3d>& points3D,
      std::vector<int>& idx_kf0, std::vector<int>& idx_kf1,
      std::vector<int>& match_ID, std::vector<bool>& point_is_new,
-     int& next_point_ID);
-void combine(Keyframe& kf0, Keyframe& kf1, int idx_kf0, int idx_kf1, cv::Point3d& pt3d, int& newptID);
+     int& next_point_ID, double threshold);
 
 #endif /* boris_drone_KEYFRAME_H */

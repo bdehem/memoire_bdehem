@@ -43,11 +43,9 @@
 #include <std_msgs/Int16.h>
 #include <std_msgs/Empty.h>
 
-/* Sparse Bundle Adjustment */
-#include <cvsba/cvsba.h>
-
 /* boris_drone */
 #include <boris_drone/Pose3D.h>
+#include <boris_drone/BenchmarkInfoMsg.h>
 #include <boris_drone/ProcessedImageMsg.h>
 #include <boris_drone/BundleMsg.h>
 #include <boris_drone/TargetDetected.h>
@@ -58,6 +56,7 @@
 #include <boris_drone/map/keyframe.h>
 #include <boris_drone/map/frame.h>
 #include <boris_drone/map/map_utils.h>
+#include <boris_drone/map/camera.h>
 
 /*!
  * \class Map
@@ -66,24 +65,51 @@
 class Map
 {
 private:
-  static int point_ID_counter;//
-  ros::Publisher bundle_pub;
-  std::string    bundle_channel;
+  // Some static const parameters
+  static const int n_kf_for_ba = 4; //number of keyframes for bundle adjustment
+  static const int threshold_inliers_new_keyframe = 35;
+  static const int threshold_lost = 10;
+  static const int threshold_new_keyframe = 50;
+  static constexpr double threshold_new_keyframe_percentage = 0.25;
 
-  /* Tresholds for PnP */
-  int threshold_lost;                        //!< min nber of matching keypoints for visual pose
-  int threshold_new_keyframe;                //!< below this nber of matching keypoints => new keyframe
-  double threshold_new_keyframe_percentage;  //!< below this pct of matching keypoints => new keyframe
+  static int point_ID_counter;//
+  double threshold_kf_match;
+
+  //Nodehandle and publisher to communicate with bundle adjuster
+  ros::NodeHandle* nh;
+  std::string    bundle_channel;
+  ros::Publisher bundle_pub;
+  std::string    benchmark_channel;
+  ros::Publisher benchmark_pub;
 
   /* bools */
-  bool tracking_lost;  //!< true if the last visual information does not permit to estimate the drone pose
-  bool do_search;      //!< parameter: if true the previous keyframe are used to perform searches
-  bool stop_if_lost;   //!< parameter: if true the mapping stops when tracking_lost is true
+  bool is_adjusting_bundle;
+  bool second_keyframe_pending;
+  bool use_2D_noise;
+  bool use_3D_noise;
+  std::vector<double> BA_times_pass1;
+  std::vector<double> BA_times_pass2;
 
+  Camera camera;
+
+  //Attribute of the points (in addition of the cloud)
+  cv::Mat descriptors;     //!< descriptors in opencv format
+  std::vector<int> pt_IDs; //ID of each point
+  std::map<int,int> pt_idxes; //Map ID->index
+  std::map<int, std::set<int> > keyframes_seeing_point; //Set of keyframes that see it
+
+  //Attributes of the keyframes
+  std::map<int,Keyframe*> keyframes; //Map of ID to keyframe
+  int n_keyframes; //number of keyframes in the map
+  std::map<int, std::set<int> > points_seen_by_keyframe; //set of points seen by the keyframe
   Keyframe* reference_keyframe;  //!< The reference Keyframe is the last matching keyframe
+  std::map<int,Keyframe*>::iterator start_kf_for_ba;
 
-  ros::NodeHandle* nh;
-  void resetList();
+  ros::Time last_new_keyframe; //Time when we last added a keyframe
+
+  std::list<Frame> queue_of_frames; //We keep a queue of frames to add best one to map
+  int frame_counter; //number of frames in the queue
+
 
   /*!
    * This method computes the PnP estimation
@@ -92,76 +118,58 @@ private:
    * @param[out] inliers       The indexes of keypoints with a correct matching
    * @param[in]  ref_keyframe  The Keyframe used to perform the estimation
    */
-  int doPnP(const Frame& current_frame, boris_drone::Pose3D& PnP_pose);
-
-  cv::Mat camera_matrix_K;
-
+  int doPnP(const Frame& current_frame, boris_drone::Pose3D& PnP_pose, int& n_inliers);
   cv::Mat tvec;  //!< last translation vector (PnP estimation)
   cv::Mat rvec;  //!< last rotational vector (PnP estimation)
 
 
-  cv::Mat cam_plane_top;
-  cv::Mat cam_plane_bottom;
-  cv::Mat cam_plane_left;
-  cv::Mat cam_plane_right;
+  int matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_map_matching_points,
+    std::vector<cv::Point2f>& inliers_frame_matching_points);
 
-  //! This method initializes planes defining the visible area from the camera (according to camera parameters)
-  void initPlanes();
-
-  /*!
-   * This method determines if a new Keyframe is needed
-   * @param[in] number_of_common_keypoints Number of common keypoints between reference Keyframe and last Frame
+  /*!on keypoints between reference Keyframe and last Frame
    * @return true if a  new Keyframe is needed, false otherwise
    */
-  bool keyframeNeeded(boris_drone::Pose3D pose);
+  bool keyframeNeeded(bool manual_pose_received, int n_inliers);
 
-
-public:
-  //! Contructor. Initialize an empty map
-  Map(ros::NodeHandle* nh, cv::Mat camera_matrix_K);
-
-  Map();
-
-  //! Destructor.
-  ~Map();
-
-  std::map<int,Keyframe*> keyframes;
-
-  //! The cloud object containing 3D points
-  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
-  cv::Mat descriptors; //!< descriptors in opencv format
-  std::vector<int> pt_IDs;
-  std::map<int,int> pt_idxes;
-  std::map<int, std::set<int> > keyframes_seeing_point;
-  std::map<int, std::set<int> > points_seen_by_keyframe;
-
-  int addPoint(cv::Point3d& coordinates, cv::Mat descriptor);
-  void removePoint(int ptID);
-  void updatePoint(int pt_ID, pcl::PointXYZ new_point);
-
-  void setPointAsSeen(int pt_ID, int kf_ID);
-
-  bool processFrame(const Frame& frame,boris_drone::Pose3D& PnP_pose, bool keyframeneeded);
-
-  void newKeyframe(const Frame& frame);
-
-  void resetPose();
+  void newKeyframe(const Frame& frame, const boris_drone::Pose3D& pose, bool use_pose);
+  void newPairOfKeyframes(const Frame& frame, const boris_drone::Pose3D& pose, bool use_pose);
+  void newPairOfKeyframes2(const Frame& frame, const boris_drone::Pose3D& pose, bool use_pose);
 
   void matchKeyframes(Keyframe& kf0, Keyframe& kf1);
 
   int getPointsSeenByKeyframes(std::vector<int> kf_IDs,
-                                   std::map<int,std::map<int,int> >& points);
+    std::map<int,std::map<int,int> >& points);
 
-  void doBundleAdjustment(std::vector<int> kf_IDs);
-
-  void getVisualPose();
-
-  int matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_map_matching_points,
-                                         std::vector<cv::Point2f>& inliers_frame_matching_points);
+  void doBundleAdjustment(std::vector<int> kf_IDs, bool is_first_pass);
 
   void targetDetectedPublisher();
 
+
+  int addPoint(cv::Point3d& coordinates, cv::Mat descriptor);
+  void removePoint(int ptID);
+  void updatePoint(int pt_ID, pcl::PointXYZ new_point);
+  void setPointAsSeen(int pt_ID, int kf_ID);
+
+
+public:
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
+
+  //! Contructors. Initialize an empty map
+  Map();
+  Map(ros::NodeHandle* nh);
+
+  //! Destructor.
+  ~Map();
+
+  void reset();
+
+  bool processFrame(Frame& frame,boris_drone::Pose3D& PnP_pose, bool keyframeneeded);
+
+  bool isInitialized();
+
   void updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr);
+
+  void publishBenchmarkInfo();
 };
 
 #endif /* boris_drone_MAP_H */

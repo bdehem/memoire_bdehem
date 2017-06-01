@@ -1,7 +1,10 @@
 
 bool converged
+bool is_global
+bool is_first_pass
 bool[] fixed_cams
-bool[] is_outlier
+float32[] cost_of_point
+float32 time_taken
 int16 num_cameras
 int16 num_points
 int16 num_observations
