@@ -5,7 +5,7 @@
 <launch>
   <arg name="threshold" default="123.4" />
   <arg name="file" default="selection" />
-  <arg name="max_matches" default=-1/>
+  <arg name="max_matches" default="-1"/>
 
   <!-- IPv4 address of your drones -->
   <arg name="drone_name" default="arnold" />
