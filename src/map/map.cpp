@@ -461,9 +461,20 @@ void Map::doBundleAdjustment(std::vector<int> kfIDs, bool is_first_pass)
   std::map<int,std::map<int,int> > points_for_ba;
   std::map<int,std::map<int,int> >::iterator points_it;
   std::map<int,int>::iterator inner_it;
-  ROS_INFO("%lu points for BA",points_for_ba.size());
+
+  //Remove unusable keyframes
+  std::vector<int>::iterator it;
+  for (it = kfIDs.begin(); it!=kfIDs.end(); )
+    if (keyframes.find(*it) == keyframes.end())
+      kfIDs.erase(it++);
+    else if (keyframes[*it]->n_mapped_pts < 4)//arbitrary...
+      kfIDs.erase(it++);
+    else
+      ++it;
+
+  //Get points to adjust (in a map)
   nobs = getPointsForBA(kfIDs, points_for_ba);
-  ROS_INFO("%lu points for BA after getting",points_for_ba.size());
+  ROS_INFO("%lu points for BA",points_for_ba.size());
   ncam = kfIDs.size();
   npt  = points_for_ba.size();
 
@@ -580,12 +591,6 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   ROS_INFO("Removed %d points",pts_removed);
   if (is_first_pass)
   {
-    std::vector<int>::iterator it;
-    for (it = keyframes_to_adjust.begin(); it!=keyframes_to_adjust.end(); )
-      if (keyframes.find(*it) == keyframes.end())
-        keyframes_to_adjust.erase(it++);
-      else
-        ++it;
     BA_times_pass1.push_back(bundlePtr->time_taken);
     doBundleAdjustment(keyframes_to_adjust,false);
   }
