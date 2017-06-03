@@ -10,7 +10,7 @@ void matchDescriptors(const cv::Mat& descriptors1, const cv::Mat& descriptors2,
   std::vector<int>::iterator it;
   int train_idx;
   matcher.match(descriptors1, descriptors2, simple_matches);
-  nmatch = simple_matches.size();
+  int nmatch = simple_matches.size();
   std::sort(simple_matches.begin(), simple_matches.end());
 
   if((max_matches < 0)||(max_matches > nmatch))
