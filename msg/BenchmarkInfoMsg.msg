@@ -1,6 +1,6 @@
 
 int16 pts_map
-Pose3D[] keyframes
+Pose3D[] keyframes_pose
 int16[] keyframes_ID
 int16[] n_pts_keyframe
 int16[] n_mapped_pts_keyframe

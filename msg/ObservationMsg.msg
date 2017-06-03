@@ -1,5 +1,5 @@
 
-int16 kf_ID
-int16 pt_ID
+int16 kfID
+int16 ptID
 float64 x
 float64 y

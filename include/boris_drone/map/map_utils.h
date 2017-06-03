@@ -15,14 +15,14 @@
 #include <boost/shared_ptr.hpp>
 
 #include <boris_drone/map/camera.h>
+#include <boris_drone/map/keyframe.h>
+
 
 
 void matchDescriptors(const cv::Mat& descriptors1, const cv::Mat& descriptors2,
-  std::vector<int>& matching_indices_1, std::vector<int>& matching_indices_2, double threshold);
+  std::vector<int>& matching_indices_1, std::vector<int>& matching_indices_2, double threshold, int max_matches);
 
-bool triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
-            const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2,
-            Camera * cam1, Camera * cam2);
+bool triangulate(cv::Point3d& pt_out, Keyframe *kf1, Keyframe *kf2, int idx1, int idx2);
 
 inline void getVandEpsil(cv::Mat& V, cv::Mat& epsil, cv::Mat& x_hat, cv::Mat& x1_hat,
                       cv::Mat& x_tilde, cv::Mat& x1_tilde, double f);

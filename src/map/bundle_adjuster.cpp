@@ -21,16 +21,16 @@ BALProblem::BALProblem(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   parameters_   = new double[num_parameters_];
 
   //Mapping keyframe and point IDs to indices for the BA
-  std::map<int,int> kf_ID_to_idx;
-  std::map<int,int> pt_ID_to_idx;
+  std::map<int,int> kfID_to_idx;
+  std::map<int,int> ptID_to_idx;
   for(int i = 0; i < num_cameras_; ++i)
-    kf_ID_to_idx[bundlePtr->keyframes_ID[i]] = i;
+    kfID_to_idx[bundlePtr->keyframes_ID[i]] = i;
   for(int i = 0; i < num_points_ ; ++i)
-    pt_ID_to_idx[bundlePtr->points_ID[i]] = i;
+    ptID_to_idx[bundlePtr->points_ID[i]] = i;
 
   for (int i = 0; i < num_observations_; ++i) {
-    camera_index_[i]     = kf_ID_to_idx[bundlePtr->observations[i].kf_ID];
-    point_index_[i]      = pt_ID_to_idx[bundlePtr->observations[i].pt_ID];
+    camera_index_[i]     = kfID_to_idx[bundlePtr->observations[i].kfID];
+    point_index_[i]      = ptID_to_idx[bundlePtr->observations[i].ptID];
     observations_[2*i]   = bundlePtr->observations[i].x;
     observations_[2*i+1] = bundlePtr->observations[i].y;
   }

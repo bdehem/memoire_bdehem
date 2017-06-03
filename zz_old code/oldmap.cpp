@@ -54,9 +54,9 @@ void Map::matchKeyframes(Keyframe& kf1, Keyframe& kf2, bool fixed_poses)
     new_point.y = points3D[i].y;
     new_point.z = points3D[i].z;
 
-    int new_pt_idx = cloud->points.size();
-    kf1.points.push_back(new_pt_idx);
-    kf2.points.push_back(new_pt_idx);
+    int new_ptIDx = cloud->points.size();
+    kf1.points.push_back(new_ptIDx);
+    kf2.points.push_back(new_ptIDx);
     cloud->points.push_back(new_point);
 
     cv::Range row = cv::Range(matching_indices_1[i],matching_indices_1[i]+1);
@@ -357,8 +357,8 @@ void Map::newReferenceKeyframe(const Frame& current_frame, boris_drone::Pose3D P
   //for (iter = keyframes.begin(); iter != keyframes.end(); ++iter)
   for (i = 0; i < ncam; ++i)
   {
-    kf_ID = kf_IDs[i];
-    kf    = keyframes[kf_ID];
+    kfID = kfIDs[i];
+    kf    = keyframes[kfID];
     npt_cam = kf->npts;
     for(j = 0; j < npt_cam; j++)
     {

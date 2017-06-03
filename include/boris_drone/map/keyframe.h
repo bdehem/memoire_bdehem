@@ -22,17 +22,10 @@
 #include <opencv2/nonfree/features2d.hpp>
 #include <opencv2/nonfree/nonfree.hpp>
 
-/* Point Cloud library */
-#include <pcl/common/common_headers.h>
-#include <pcl/point_types.h>      // pcl::PointXYZRGB
-#include <pcl_ros/point_cloud.h>  // pcl::PointCloud
-#include <boost/shared_ptr.hpp>
-
 /* boris_drone */
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/opencv_utils.h>
 #include <boris_drone/map/frame.h>
-#include <boris_drone/map/map_utils.h>
 #include <boris_drone/map/camera.h>
 #include <algorithm>
 
@@ -59,31 +52,27 @@ public:
   int npts, n_mapped_pts;
   //!< ID of the points in the pointcloud (the map). -1 for points not in map, -2 for deleted points
   std::vector<int> point_IDs;
-  std::map<int,int> point_idx; //Maps ID to index of mapped points
+  std::map<int,int> point_indices; //Maps ID to index of mapped points
 
-
-  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
 
   //! Constructor
   //! \param[in] map Pointer to the map
   //! \param[in] frame from which the Keyframe is built
-  Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const Frame& frame, Camera* cam);
+  Keyframe(const Frame& frame, Camera* cam);
+  Keyframe();
 
 
-  Keyframe(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const Frame& frame, Camera* cam, const boris_drone::Pose3D pose);
+  Keyframe(const Frame& frame, Camera* cam, const boris_drone::Pose3D pose);
+
+
+  void setAsSeeing(int ptID, int idx_in_kf);
+
+  void getPointsSeen(std::map<int,std::map<int,int> >& points);
 
   //! Destructor.
   ~Keyframe();
   void print();
-  void removePoint(int ptID);
-  void addPoint(int pt_idx, int pt_ID);
+  bool removePoint(int ptID);
 
 };
-
-
-void match(Keyframe& kf0, Keyframe& kf1, std::vector<cv::Point3d>& points3D,
-     std::vector<int>& idx_kf0, std::vector<int>& idx_kf1,
-     std::vector<int>& match_ID, std::vector<bool>& point_is_new,
-     int& next_point_ID, double threshold);
-
 #endif /* boris_drone_KEYFRAME_H */

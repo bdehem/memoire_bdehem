@@ -3,71 +3,51 @@
 #include <boris_drone/map/map_utils.h>
 
 void matchDescriptors(const cv::Mat& descriptors1, const cv::Mat& descriptors2,
-  std::vector<int>& matching_indices_1, std::vector<int>& matching_indices_2, double threshold)
+  std::vector<int>& matching_indices_1, std::vector<int>& matching_indices_2, double threshold, int max_matches)
 {
   cv::FlannBasedMatcher matcher;
   std::vector<cv::DMatch> simple_matches;
-  //reverse order so that query (1st arg) always has less elements than train (2nd arg)
-  bool reverse_order = descriptors1.rows > descriptors2.rows;
-  if (reverse_order)
-    matcher.match(descriptors2, descriptors1, simple_matches);
-  else
-    matcher.match(descriptors1, descriptors2, simple_matches);
-  std::vector<double> match_distances;
-  match_distances.resize(simple_matches.size());
-  ROS_INFO("%lu simple matches",simple_matches.size());
-  ROS_INFO("Threshold = %f",threshold);
-  /* This is just for printing, can be removed */
-  if (threshold < 200.0)
-  {
-    for (unsigned k = 0; k < simple_matches.size(); k++)
-    {
-      match_distances[k] = simple_matches[k].distance;
-    }
-    std::sort(match_distances.begin(), match_distances.end());
-    for (unsigned k = 0; k < simple_matches.size(); k++)
-    {
-      ROS_INFO("Distance %d is %f",k,match_distances[k]);
-    }
-  }
+  std::vector<int>::iterator it;
+  int train_idx;
+  matcher.match(descriptors1, descriptors2, simple_matches);
+  nmatch = simple_matches.size();
+  std::sort(simple_matches.begin(), simple_matches.end());
 
-  // threshold test
-  for (unsigned k = 0; k < simple_matches.size(); k++)
+  if((max_matches < 0)||(max_matches > nmatch))
+    max_matches = nmatch;
+  for (unsigned k = 0; k < max_matches; k++)
   {
-    if ((simple_matches[k].distance < threshold)&&reverse_order)
-    {
-      matching_indices_1.push_back(simple_matches[k].trainIdx);
-      matching_indices_2.push_back(simple_matches[k].queryIdx);
-    }
-    else if (simple_matches[k].distance < threshold)
+    if ((simple_matches[k].distance > threshold))
+      break;
+    it = find(matching_indices_2.begin(),matching_indices_2.end(),simple_matches[k].trainIdx);
+    if (it==matching_indices_2.end())
     {
       matching_indices_1.push_back(simple_matches[k].queryIdx);
       matching_indices_2.push_back(simple_matches[k].trainIdx);
     }
   }
-  ROS_INFO("%lu matches under threshold",matching_indices_1.size());
-  ROS_INFO("%lu matches under threshold",matching_indices_2.size());
-
 }
 
-
-bool triangulate(cv::Point3d& pt_out, const cv::Point2d& pt1, const cv::Point2d& pt2,
-                      const boris_drone::Pose3D& pose1, const boris_drone::Pose3D& pose2,
-                      Camera * cam1, Camera * cam2)
+bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, int idx2)
 {
-//in matlab this is triangulate4 lol
-//http://www.iim.cs.tut.ac.jp/~kanatani/papers/sstriang.pdf
-//(iterative method for higher order aproximation)
+  //in matlab this is triangulate4 lol
+  //http://www.iim.cs.tut.ac.jp/~kanatani/papers/sstriang.pdf
+  //(iterative method for higher order aproximation)
   /* get coordinates */
   cv::Mat cam2world1, cam2world2, origin1, origin2, P0, P1;
   cv::Mat T1, T2, K1, K2, F;
   cv::Mat pt1_h, pt2_h, u, P, x_hat, x1_hat, temp, x_tilde, x1_tilde;
   cv::Mat V, epsil, mult;
+  cv::Point2d pt1, pt2;
+  boris_drone::Pose3D pose1, pose2;
+  Camera cam1, cam2;
+  pt1 = kf1->img_points[idx1];  pose1 = kf1->pose;  cam1 = kf1->camera;
+  pt2 = kf2->img_points[idx2];  pose2 = kf2->pose;  cam2 = kf2->camera;
   double E, E0, f, den ;
   getCameraPositionMatrices(pose1, cam2world1, origin1, true);
   getCameraPositionMatrices(pose2, cam2world2, origin2, true);
-  K1 = cam1->get_K();
-  K2 = cam2->get_K();
+  K1 = cam1.get_K();
+  K2 = cam2.get_K();
   T1 = (cv::Mat_<double>(3, 4) << 1, 0, 0, -origin1.at<double>(0,0),
                                   0, 1, 0, -origin1.at<double>(1,0),
                                   0, 0, 1, -origin1.at<double>(2,0)

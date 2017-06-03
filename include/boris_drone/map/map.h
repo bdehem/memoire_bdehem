@@ -55,6 +55,7 @@
 
 #include <boris_drone/map/keyframe.h>
 #include <boris_drone/map/frame.h>
+#include <boris_drone/map/landmark.h>
 #include <boris_drone/map/map_utils.h>
 #include <boris_drone/map/camera.h>
 
@@ -74,6 +75,7 @@ private:
 
   static int point_ID_counter;//
   double threshold_kf_match;
+  int    max_matches;
 
   //Nodehandle and publisher to communicate with bundle adjuster
   ros::NodeHandle* nh;
@@ -92,18 +94,9 @@ private:
 
   Camera camera;
 
-  //Attribute of the points (in addition of the cloud)
-  cv::Mat descriptors;     //!< descriptors in opencv format
-  std::vector<int> pt_IDs; //ID of each point
-  std::map<int,int> pt_idxes; //Map ID->index
-  std::map<int, std::set<int> > keyframes_seeing_point; //Set of keyframes that see it
-
-  //Attributes of the keyframes
+  std::map<int,Landmark*> landmarks;
   std::map<int,Keyframe*> keyframes; //Map of ID to keyframe
-  int n_keyframes; //number of keyframes in the map
-  std::map<int, std::set<int> > points_seen_by_keyframe; //set of points seen by the keyframe
-  Keyframe* reference_keyframe;  //!< The reference Keyframe is the last matching keyframe
-  std::map<int,Keyframe*>::iterator start_kf_for_ba;
+  cv::Mat descriptors;               //!< descriptors of landmarks in OpenCV format
 
   ros::Time last_new_keyframe; //Time when we last added a keyframe
 
@@ -135,20 +128,22 @@ private:
   void newPairOfKeyframes(const Frame& frame, const boris_drone::Pose3D& pose, bool use_pose);
   void newPairOfKeyframes2(const Frame& frame, const boris_drone::Pose3D& pose, bool use_pose);
 
-  void matchKeyframes(Keyframe& kf0, Keyframe& kf1);
+  void matchKeyframes(Keyframe* kf0, Keyframe* kf1);
 
-  int getPointsSeenByKeyframes(std::vector<int> kf_IDs,
-    std::map<int,std::map<int,int> >& points);
 
-  void doBundleAdjustment(std::vector<int> kf_IDs, bool is_first_pass);
+  int getPointsForBA(std::vector<int> &kfIDs,
+    std::map<int,std::map<int,int> > &points);
+
+  void doBundleAdjustment(std::vector<int> kfIDs, bool is_first_pass);
 
   void targetDetectedPublisher();
 
 
   int addPoint(cv::Point3d& coordinates, cv::Mat descriptor);
   void removePoint(int ptID);
-  void updatePoint(int pt_ID, pcl::PointXYZ new_point);
-  void setPointAsSeen(int pt_ID, int kf_ID);
+  void updatePoint(int ptID, cv::Point3d new_point);
+  void setPointAsSeen(int ptID, int kfID, int idx_in_kf);
+  void removeKeyframe(int kfID);
 
 
 public:
@@ -170,6 +165,10 @@ public:
   void updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr);
 
   void publishBenchmarkInfo();
+  void print_info();
+  void print_landmarks();
+  void getDescriptors(cv::Mat &map_descriptors);
+
 };
 
 #endif /* boris_drone_MAP_H */

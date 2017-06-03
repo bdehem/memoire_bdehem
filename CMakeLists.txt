@@ -160,6 +160,7 @@ set(MAPPING_SOURCE_FILES
 	src/map/map.cpp
 	src/map/keyframe.cpp
 	src/map/frame.cpp
+  src/map/landmark.cpp
   src/map/map_utils.cpp
   src/map/projection_2D.cpp
   src/map/camera.cpp
@@ -171,6 +172,7 @@ set(MAPPING_HEADER_FILES
 	include/boris_drone/map/map.h
 	include/boris_drone/map/keyframe.h
 	include/boris_drone/map/frame.h
+  include/boris_drone/map/landmark.h
   include/boris_drone/map/map_utils.h
   include/boris_drone/map/projection_2D.h
   include/boris_drone/map/camera.h
