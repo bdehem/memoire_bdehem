@@ -16,8 +16,8 @@ Map::Map(ros::NodeHandle* nh) : cloud(new pcl::PointCloud< pcl::PointXYZ >())
   benchmark_pub     = nh->advertise<boris_drone::BenchmarkInfoMsg>(benchmark_channel, 1);
 
   //Get some parameters from launch file
-  ros::param::get("~2D_noise", use_2D_noise);
-  ros::param::get("~3D_noise", use_3D_noise);
+  ros::param::get("~test_robustness", use_2D_noise);
+  ros::param::get("~test_robustness", use_3D_noise);
   ros::param::get("~threshold_kf_match", threshold_kf_match);
   ros::param::get("~max_matches", max_matches);
   ros::param::get("~no_bundle_adjustment", no_bundle_adjustment);
