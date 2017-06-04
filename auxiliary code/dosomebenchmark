@@ -1,0 +1,11 @@
+#!/bin/bash
+# My first script
+
+timeout 360s roslaunch boris_drone play_rosbag.launch threshold:=50  file:=benchmark_precision
+timeout 360s roslaunch boris_drone play_rosbag.launch threshold:=100 file:=benchmark_precision
+timeout 360s roslaunch boris_drone play_rosbag.launch threshold:=150 file:=benchmark_precision
+#timeout 360s roslaunch boris_drone play_rosbag.launch threshold:=200 file:=benchmark_precision
+#timeout 360s roslaunch boris_drone play_rosbag.launch threshold:=250 file:=benchmark_precision
+#timeout 360s roslaunch boris_drone play_rosbag.launch threshold:=300 file:=benchmark_precision
+#timeout 360s roslaunch boris_drone play_rosbag.launch threshold:=350 file:=benchmark_precision
+#timeout 360s roslaunch boris_drone play_rosbag.launch threshold:=400 file:=benchmark_precision

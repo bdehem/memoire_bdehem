@@ -1,0 +1,96 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \sortlist{entry}{none}
+    \entry{anthology}{report}{}
+      \name{labelname}{1}{}{%
+        {{hash=310e032b2601285e8f65e219416796b2}{Naughton}{N\bibinitperiod}{Russell}{R\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=310e032b2601285e8f65e219416796b2}{Naughton}{N\bibinitperiod}{Russell}{R\bibinitperiod}{}{}{}{}}%
+      }
+      \list{institution}{1}{%
+        {Monash University}%
+      }
+      \strng{namehash}{310e032b2601285e8f65e219416796b2}
+      \strng{fullhash}{310e032b2601285e8f65e219416796b2}
+      \field{sortinit}{0}
+      \field{labeltitle}{Remote Piloted Aerial Vehicles : An Anthology}
+      \field{title}{Remote Piloted Aerial Vehicles : An Anthology}
+      \field{type}{techreport}
+      \field{year}{2003}
+    \endentry
+    \entry{dronesww1}{article}{}
+      \name{labelname}{1}{}{%
+        {{hash=542143b58b79f2a676ec82b2a1339194}{Stamp}{S\bibinitperiod}{Jimmy}{J\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=542143b58b79f2a676ec82b2a1339194}{Stamp}{S\bibinitperiod}{Jimmy}{J\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{542143b58b79f2a676ec82b2a1339194}
+      \strng{fullhash}{542143b58b79f2a676ec82b2a1339194}
+      \field{sortinit}{0}
+      \field{labeltitle}{Unmanned Drones Have Been Around Since World War I}
+      \field{journaltitle}{smithsonian.com}
+      \field{title}{Unmanned Drones Have Been Around Since World War I}
+      \field{year}{2013}
+    \endentry
+    \entry{consumerdronesbythenumbers}{article}{}
+      \name{labelname}{1}{}{%
+        {{hash=5b5672799d7382cb7b4d41fbe62bdf7e}{Chavers}{C\bibinitperiod}{Marcus}{M\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=5b5672799d7382cb7b4d41fbe62bdf7e}{Chavers}{C\bibinitperiod}{Marcus}{M\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{5b5672799d7382cb7b4d41fbe62bdf7e}
+      \strng{fullhash}{5b5672799d7382cb7b4d41fbe62bdf7e}
+      \field{sortinit}{0}
+      \field{labeltitle}{Consumer Drones By the Numbers in 2017 and Beyond}
+      \field{journaltitle}{newsledge.com}
+      \field{title}{Consumer Drones By the Numbers in 2017 and Beyond}
+      \field{year}{2017}
+    \endentry
+    \entry{agriculturaldrones}{article}{}
+      \name{labelname}{1}{}{%
+        {{hash=23346c878d4afcc84c10b87ab0098261}{Anderson}{A\bibinitperiod}{Chris}{C\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=23346c878d4afcc84c10b87ab0098261}{Anderson}{A\bibinitperiod}{Chris}{C\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{23346c878d4afcc84c10b87ab0098261}
+      \strng{fullhash}{23346c878d4afcc84c10b87ab0098261}
+      \field{sortinit}{0}
+      \field{labeltitle}{Agricultural Drones}
+      \field{journaltitle}{MIT Technology Review}
+      \field{title}{Agricultural Drones}
+      \field{volume}{vol. 117 | no. 3}
+      \field{year}{2014}
+    \endentry
+    \entry{batiravecdesdrones}{article}{}
+      \field{sortinit}{0}
+      \field{labeltitle}{Bâtir avec des drones ?}
+      \field{journaltitle}{https://uclouvain.be/fr/sciencetoday/actualites/batir-avec-des-drones.html}
+      \field{title}{Bâtir avec des drones ?}
+      \field{year}{2016}
+    \endentry
+  \endsortlist
+\endrefsection
+\endinput
+

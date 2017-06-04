@@ -1,0 +1,90 @@
+\documentclass{eplmastersthesis}
+%TODO: fixing the scale: the more points, the more everything goes to the origin?
+%\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
+%\usepackage{graphicx}
+%\usepackage{fancyhdr}
+%\pagestyle{fancy}
+\usepackage[sorting=none,backend=biber]{biblatex}
+\usepackage[acronym,nomain,nonumberlist]{glossaries}
+\usepackage{float}
+\usepackage{gensymb}
+\addbibresource{references.bib}
+
+\graphicspath{ {images/} }
+
+\title{Drone Navigation in Confined Spaces}
+%\subtitle{Subtitle (optional)}			% Optional subtitle
+\author{Boris \textsc{Dehem}}
+\speciality{Mathematical Engineering}
+%\options{Option(s)}		% If required by program commission mention options
+\supervisor{Julien \textsc{Hendrickx}}
+%\cosupervisor{François \textsc{Wielant}}	% 2nd supervisor name if applicable
+\readertwo{Christophe \textsc{De Vleeschouwer}}
+\readerone{François \textsc{Wielant}}
+\years{2016-2017}
+
+
+% Generate the glossary
+\makeglossaries
+\begin{document}
+%Term definitions
+\newacronym{uav}{UAV}{Unmanned Aerial Vehicle}
+%\newglossaryentry{caca}{name=ABC, description={Allo Boris Caca}}
+
+\maketitle					% To create front cover page
+\thispagestyle{empty}		% To suppress header and footer on the back of the cover page
+
+
+\chapter*{Abstract}
+Abstract goes here
+
+\chapter*{Dedication}
+To mum and dad
+
+\chapter*{Declaration}
+I declare that..
+
+\chapter*{Acknowledgements}
+I want to thank...
+
+\tableofcontents
+
+\printglossaries
+
+\chapter{Introduction}
+\input{chapters/introduction}
+
+\chapter{State of the art}
+\input{chapters/chapter02}
+
+\chapter{Hardware and software architecture}
+\input{chapters/chapter03}
+
+\chapter{Localization}
+\input{chapters/chapter04}
+
+\chapter{Mapping}
+\input{chapters/chapter05}
+
+\chapter{Map Initialization}
+\input{chapters/chapter06}
+
+\chapter{Simultaneous Localization and Mapping}
+\input{chapters/chapter07}
+
+
+%% Alternative: contraire: 3D Slam, reconstruction, pathplanning, avec subsections implementation, performance
+
+\chapter{Conclusion}
+\input{chapters/conclusion}
+
+\printbibliography
+
+\appendix
+\chapter{Appendix Title}
+\input{chapters/appendix}
+
+% Back cover page
+\backcoverpage
+
+\end{document}

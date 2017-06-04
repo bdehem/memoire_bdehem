@@ -1,0 +1,24 @@
+%%Hardware and software architecture (chpt3)
+\section{Hardware}
+For this project I used Parrot's AR.Drone 2.0. This quadrotor was commercialized in 2012 and is an updated version of the original AR.Drone that was launched in 2010. This drone was marketed as a high tech toy, and is designed to be controlled from a smarphone application (connected to the drone via Wi-Fi). A few augmented reality games are available for the AR.Drone, in which it can recognise some predefined tags using computer vision, and interact with abject or other drones with a tag. To encourage the creation of more games for their drones, Parrot has released an open SDK that allows to effectively reprogram the drones. This early release of an open SDK has made it quite popular in the scientific community to do research on autonomous flight. The drone consists of 4 rotors, each with their own electric motor and microcontroller, an internal computer with a 1GHz ARM Cortex A8 processor and 1GB DDR2 RAM at 200MHz, and various sensors.
+
+\subsection{Sensors}
+Tha AR.drone has the following sensors:
+\begin{itemize}
+  \item 3 axis accelerometer with $\pm 50$ mg accuracy
+  \item 3 axis gyroscope with $\pm 2000\degree/s$ accuracy
+  \item Pressure sensor with $\pm 10 \texttt{Pa}$ accuracy
+  \item 3 axis magnetometer with $\pm 6\degree$ accuracy
+  \item Ultrasound sensor (facing downwards)
+  \item Frontal camera (HD 720p 30fps)
+  \item Ventral camera (QVGA, 60 fps)
+\end{itemize}
+
+
+\section{Software}
+
+\subsection{Parrot SDK}
+The SDK released by Parrot allows to send commands and receive information from the drone. However, it does not allow acces to the lowest-level parts of the drone. It is possible to send the drone commands to take off, land, emergency stop, hover, move in a certain direction, but not to directly control the command send to the motors. Similarly,
+
+
+\subsection{ROS}
