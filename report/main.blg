@@ -1,14 +1,9 @@
 [0] Config.pm:318> INFO - This is Biber 1.8
 [0] Config.pm:321> INFO - Logfile is 'main.blg'
-[115] biber:275> INFO - === Sam Jun  3, 2017, 22:53:52
-[115] Biber.pm:333> INFO - Reading 'main.bcf'
-[226] Biber.pm:630> INFO - Found 5 citekeys in bib section 0
-[250] Biber.pm:3053> INFO - Processing section 0
-[403] Biber.pm:3190> INFO - Looking for bibtex format file 'references.bib' for section 0
-[404] bibtex.pm:933> INFO - Decoding LaTeX character macros into UTF-8
-[405] bibtex.pm:808> INFO - Found BibTeX data source 'references.bib'
-[530] Biber.pm:2939> INFO - Overriding locale 'en_US.UTF-8' default tailoring 'variable = shifted' with 'variable = non-ignorable'
-[530] Biber.pm:2945> INFO - Sorting 'entry' list 'none' keys
-[530] Biber.pm:2949> INFO - No sort tailoring available for locale 'en_US.UTF-8'
-[549] bbl.pm:482> INFO - Writing 'main.bbl' with encoding 'UTF-8'
-[550] bbl.pm:555> INFO - Output to main.bbl
+[110] biber:275> INFO - === Son Jun  4, 2017, 10:32:08
+[111] Biber.pm:333> INFO - Reading 'main.bcf'
+[194] Biber.pm:630> INFO - Found 0 citekeys in bib section 0
+[195] Utils.pm:169> WARN - The file 'main.bcf' does not contain any citations!
+[217] bbl.pm:482> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[217] bbl.pm:555> INFO - Output to main.bbl
+[217] Biber.pm:105> INFO - WARNINGS: 1

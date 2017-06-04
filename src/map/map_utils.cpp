@@ -28,7 +28,7 @@ void matchDescriptors(const cv::Mat& descriptors1, const cv::Mat& descriptors2,
   }
 }
 
-bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, int idx2)
+bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, int idx2, bool use_naive_method)
 {
   //in matlab this is triangulate4 lol
   //http://www.iim.cs.tut.ac.jp/~kanatani/papers/sstriang.pdf
@@ -41,6 +41,8 @@ bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, in
   cv::Point2d pt1, pt2;
   boris_drone::Pose3D pose1, pose2;
   Camera cam1, cam2;
+  std::vector<cv::Point2d> cam0pnts,cam1pnts;
+  cv::Mat pnts3D(4,1,CV_64F);
   pt1 = kf1->img_points[idx1];  pose1 = kf1->pose;  cam1 = kf1->camera;
   pt2 = kf2->img_points[idx2];  pose2 = kf2->pose;  cam2 = kf2->camera;
   double E, E0, f, den ;
@@ -62,6 +64,18 @@ bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, in
   // then P0*p are the image coordinates of the world point
   P0 = K1*cam2world1.t()*T1;
   P1 = K2*cam2world2.t()*T2;
+
+  if(use_naive_method)
+  {
+    cam0pnts.push_back(pt1);
+    cam1pnts.push_back(pt2);
+    cv::triangulatePoints(P0,P1,cam0pnts,cam1pnts,pnts3D);
+
+    pt_out.x = pnts3D.at<double>(0,0)/pnts3D.at<double>(3,0);
+    pt_out.y = pnts3D.at<double>(1,0)/pnts3D.at<double>(3,0);
+    pt_out.z = pnts3D.at<double>(2,0)/pnts3D.at<double>(3,0);
+    return true;
+  }
   F = (cv::Mat_<double>(3, 3)); // Fundamental Matrix3x3
   getFundamentalMatrix(P0,P1,F);
 
@@ -82,9 +96,11 @@ bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, in
   x_tilde  = (cv::Mat_<double>(3,1) << 0,0,0);
   x1_tilde = (cv::Mat_<double>(3,1) << 0,0,0);
 
-  int k = 0; E = 1; E0 = 0;
-  while (abs(E - E0)> 0.001)
+  int k = 0; E = 10; E0 = 0;
+  while ((abs(E - E0)> 0.001)&&(k<10))
   {
+    if(k==9)
+      ROS_INFO("reached max iterations in triangulation");
     k = k+1;
     E0 = E;
     x_hat  = pt1_h - x_tilde;
@@ -99,18 +115,18 @@ bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, in
     E =  x_tilde.at<double>(0,0) *x_tilde.at<double>(0,0)  + x_tilde.at<double>(1,0) *x_tilde.at<double>(1,0)
        + x1_tilde.at<double>(0,0)*x1_tilde.at<double>(0,0) + x1_tilde.at<double>(1,0)*x1_tilde.at<double>(1,0);
   }
+  if ((x_hat.at<double>(2,0)!=1)||(x1_hat.at<double>(2,0)!=1))
+    ROS_WARN("x_hat and x1_hat's 3rd coordinate shoudl be 1 but they are: %f and %f",
+                                          x_hat.at<double>(2,0),x1_hat.at<double>(2,0));
   cv::Point2d p1,p2;
   p1.x = x_hat.at<double>(0,0);
   p1.y = x_hat.at<double>(1,0);
   p2.x = x1_hat.at<double>(0,0);
   p2.y = x1_hat.at<double>(1,0);
 
-  std::vector<cv::Point2d> cam0pnts;
-  std::vector<cv::Point2d> cam1pnts;
   cam0pnts.push_back(p1);
   cam1pnts.push_back(p2);
 
-  cv::Mat pnts3D(4,cam0pnts.size(),CV_64F);
   cv::triangulatePoints(P0,P1,cam0pnts,cam1pnts,pnts3D);
 
   pt_out.x = pnts3D.at<double>(0,0)/pnts3D.at<double>(3,0);

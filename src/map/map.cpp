@@ -15,11 +15,14 @@ Map::Map(ros::NodeHandle* nh) : cloud(new pcl::PointCloud< pcl::PointXYZ >())
   benchmark_channel = nh->resolveName("benchmark");
   benchmark_pub     = nh->advertise<boris_drone::BenchmarkInfoMsg>(benchmark_channel, 1);
 
-
+  //Get some parameters from launch file
   ros::param::get("~2D_noise", use_2D_noise);
   ros::param::get("~3D_noise", use_3D_noise);
   ros::param::get("~threshold_kf_match", threshold_kf_match);
   ros::param::get("~max_matches", max_matches);
+  ros::param::get("~no_bundle_adjustment", no_bundle_adjustment);
+  ros::param::get("~naive_triangulation", naive_triangulation);
+
   ROS_INFO("init map, thresh = %f",threshold_kf_match);
   // define some threshold used later
   // better if defined in the launch file
@@ -180,7 +183,7 @@ void Map::matchKeyframes(Keyframe* kf0, Keyframe* kf1)
     ROS_DEBUG("IDs of match %d are %d and %d",i,ptID_kf0,ptID_kf1);
     if ((ptID_kf0==-1) && (ptID_kf1==-1))
     {
-      triangulate(point3D, kf0, kf1, idx_kf0[i], idx_kf1[i]);
+      triangulate(point3D, kf0, kf1, idx_kf0[i], idx_kf1[i], naive_triangulation);
       ptID = addPoint(point3D, kf0->descriptors.rowRange(idx_kf0[i],idx_kf0[i]+1));
       setPointAsSeen(ptID, kf0->ID, idx_kf0[i]);
       setPointAsSeen(ptID, kf1->ID, idx_kf1[i]);
@@ -222,6 +225,8 @@ void Map::newKeyframe(const Frame& frame, const boris_drone::Pose3D& pose, bool 
   }
 
   ROS_INFO("\t Map now has %lu points",this->cloud->points.size());
+  if (no_bundle_adjustment)
+    return;
   doBundleAdjustment(keyframes_to_adjust,true);
 }
 

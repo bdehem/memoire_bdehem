@@ -89,6 +89,8 @@ private:
   bool second_keyframe_pending;
   bool use_2D_noise;
   bool use_3D_noise;
+  bool no_bundle_adjustment;
+  bool naive_triangulation;
   std::vector<double> BA_times_pass1;
   std::vector<double> BA_times_pass2;
 

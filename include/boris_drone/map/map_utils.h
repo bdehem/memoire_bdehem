@@ -22,7 +22,7 @@
 void matchDescriptors(const cv::Mat& descriptors1, const cv::Mat& descriptors2,
   std::vector<int>& matching_indices_1, std::vector<int>& matching_indices_2, double threshold, int max_matches);
 
-bool triangulate(cv::Point3d& pt_out, Keyframe *kf1, Keyframe *kf2, int idx1, int idx2);
+bool triangulate(cv::Point3d& pt_out, Keyframe *kf1, Keyframe *kf2, int idx1, int idx2, bool use_naive_method);
 
 inline void getVandEpsil(cv::Mat& V, cv::Mat& epsil, cv::Mat& x_hat, cv::Mat& x1_hat,
                       cv::Mat& x_tilde, cv::Mat& x1_tilde, double f);
