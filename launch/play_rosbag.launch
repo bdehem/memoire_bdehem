@@ -3,8 +3,8 @@
 <!-- Launch file for the starting mission for the thesis of Boris Dehem-->
 <!-- Work In Progress -->
 <launch>
-  <arg name="threshold"            default="123.4" />
-  <arg name="file_in"              default="selection" />
+  <arg name="threshold"            default="250" />
+  <arg name="file_in"              default="benchmark_precision" />
   <arg name="max_matches"          default="-1"/>
   <arg name="no_bundle_adjustment" default="false"/>
   <arg name="naive_triangulation"  default="false"/>
