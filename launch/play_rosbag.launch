@@ -8,6 +8,7 @@
   <arg name="max_matches"          default="-1"/>
   <arg name="no_bundle_adjustment" default="false"/>
   <arg name="naive_triangulation"  default="false"/>
+  <arg name="test_robustness"      default="false"/>
   <arg name="file_out"             default="result_$(arg file_in)_thresh_$(arg threshold)_maxmatches_$(arg max_matches)_noBA_$(arg no_bundle_adjustment)_naivetriang_$(arg naive_triangulation)" />
 
   <!-- IPv4 address of your drones -->
@@ -32,8 +33,8 @@
 
 
   <node name="boris_drone_mapping_node" pkg="boris_drone" type="mapping_node" output="screen">
-    <param name="2D_noise"             value="false" />
-    <param name="3D_noise"             value="false" />
+    <param name="2D_noise"             value="$(arg test_robustness)" />
+    <param name="3D_noise"             value="$(arg test_robustness)" />
     <param name="threshold_kf_match"   value="$(arg threshold)" />
     <param name="max_matches"          value="$(arg max_matches)" />
     <param name="no_bundle_adjustment" value="$(arg no_bundle_adjustment)"/>
@@ -43,8 +44,8 @@
   <node name="boris_drone_bundle_adjuster" pkg="boris_drone" type="bundle_adjuster" output="screen">
   </node>
 
-  <node pkg="rosbag" type="play" name="player" output="screen" args="-q /home/bor/bagfiles/$(arg file).bag"/>
+  <node pkg="rosbag" type="play" name="player" output="screen" args="-q /home/$(env USER)/bagfiles/$(arg file_in).bag"/>
 
-  <node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/bor/bagfiles/benchmark_point_threshold/$(arg file_out) /pose_visual /pose_estimation /benchmark"/>
+  <node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/$(env USER)/bagfiles/benchmark_point_threshold/$(arg file_out) /pose_visual /pose_estimation /benchmark"/>
 
 </launch>
