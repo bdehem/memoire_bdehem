@@ -483,7 +483,7 @@ void Map::doBundleAdjustment(std::vector<int> kfIDs, bool is_first_pass)
   ncam = kfIDs.size();
   npt  = points_for_ba.size();
 
-  /*  print a bunch of things */
+  /*  print a bunch of things 
   for(points_it=points_for_ba.begin(); points_it!=points_for_ba.end(); ++points_it)
   {
     ROS_INFO("Point %d seen by:", points_it->first);
