@@ -10,7 +10,7 @@
   <arg name="naive_triangulation"   default="false"/>
   <arg name="test_robustness"       default="false"/>
   <arg name="bundle_adjustment_tol" default="0.000001"/>
-  <arg name="file_out"              default="result_$(arg file_in)_thresh_$(arg threshold)_maxmatches_$(arg max_matches)_noBA_$(arg no_bundle_adjustment)_naivetriang_$(arg naive_triangulation)_robust_$(arg test_robustness)" />
+  <arg name="file_out"              default="result_$(arg file_in)_thresh_$(arg threshold)_maxmatches_$(arg max_matches)_noBA_$(arg no_bundle_adjustment)_naivetriang_$(arg naive_triangulation)_robust_$(arg test_robustness)_bundleadjustmenttol_$(arg bundle_adjustment_tol)" />
 
   <!-- IPv4 address of your drones -->
   <arg name="drone_name" default="arnold" />
