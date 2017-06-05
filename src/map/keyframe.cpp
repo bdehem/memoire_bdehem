@@ -107,17 +107,21 @@ bool Keyframe::removePoint(int ptID)
 
 void Keyframe::print()
 {
-  std::cout << "=== Showing Keyframe Info ===" << std::endl << std::endl;
-  std::cout << "Keyframe ID : " << ID << std::endl << std::endl;
-  std::cout << "Number of keypoints :" << npts << std::endl << std::endl;
-  int nmapped = 0;
+  ROS_INFO("Keyframe ID = %d",ID);
+  ROS_INFO("  Number of keypoints seen = %d",npts);
+  ROS_INFO("  Number of landmarks seen = %d",n_mapped_pts);
+  ROS_INFO("  Keypoints:");
   for (int i = 0; i < npts; i++)
   {
-    nmapped += (point_IDs[i]>=0);
-    std::cout << "Point " << i <<":"<< "Index in map = " << point_IDs[i] << std::endl;
+    switch (point_IDs[i]) {
+      case -2:
+        ROS_INFO("    Point %d has been removed from map",i);
+        break;
+      case -1:
+        ROS_INFO("    Point %d is not mapped",i);
+        break;
+      default:
+        ROS_INFO("    Point %d corresponds to landmark %d",i, point_IDs[i]);
+    }
   }
-  std::cout << "Total points mapped : " << nmapped << std::endl << std::endl;
-  std::cout << "=== End Keyframe Info ===" << std::endl << std::endl;
-
-
 }

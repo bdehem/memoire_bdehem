@@ -219,7 +219,9 @@ void Map::newKeyframe(const Frame& frame, const boris_drone::Pose3D& pose, bool 
     if (it->first != new_keyframe->ID)
     {
       ROS_INFO("Matching keyframes %d and %d",it->first,new_keyframe->ID);
-      matchKeyframes(new_keyframe, it->second); //Sould be better but results are not great
+      //print_landmarks();
+      matchKeyframes(new_keyframe, it->second);
+      //print_landmarks();
     }
     keyframes_to_adjust.push_back(it->first); //add all kfs
   }
@@ -483,7 +485,7 @@ void Map::doBundleAdjustment(std::vector<int> kfIDs, bool is_first_pass)
   ncam = kfIDs.size();
   npt  = points_for_ba.size();
 
-  /*  print a bunch of things 
+  /*  print a bunch of things
   for(points_it=points_for_ba.begin(); points_it!=points_for_ba.end(); ++points_it)
   {
     ROS_INFO("Point %d seen by:", points_it->first);
@@ -550,6 +552,8 @@ void Map::doBundleAdjustment(std::vector<int> kfIDs, bool is_first_pass)
 
 void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
 {
+  ROS_INFO("before update");
+  //print_info();
   int npt, ncam, i, kfID, ptID;
   int n_kf_pt;
   bool converged, is_first_pass, remove_point;
@@ -583,10 +587,11 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
         remove_point = false;
     }
     remove_point = (bundlePtr->cost_of_point[i]>1.0);
+    remove_point = false;
     if (remove_point)
     {
-      //removePoint(ptID);
-      //pts_removed++;
+      removePoint(ptID);
+      pts_removed++;
     }
     else
     {
@@ -594,6 +599,8 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     }
   }
   ROS_INFO("Removed %d points",pts_removed);
+  ROS_INFO("After update");
+  //print_info();
   if (is_first_pass)
   {
     BA_times_pass1.push_back(bundlePtr->time_taken);
@@ -641,30 +648,28 @@ void Map::publishBenchmarkInfo()
 
 void Map::print_info()
 {
-  int npts, nkf;
-  npts = landmarks.size();
-  nkf  = keyframes.size();
-  ROS_INFO("size of landmarks = %lu",landmarks.size());
-  ROS_INFO("size of keyframes = %lu",keyframes.size());
-  std::map<int,Keyframe*>::iterator it;
-  for (it = keyframes.begin(); it != keyframes.end();++it)
-  {
-    std::cout << "Keyframe ID:" << it->first << std::endl;
-    it->second->print();
-  }
+  print_landmarks();
+  print_keyframes();
 }
 
 void Map::print_landmarks()
 {
-  int npts, nkf;
-  npts = landmarks.size();
-  ROS_INFO("printing landmarks:");
-  ROS_INFO("size of landmarks = %lu",landmarks.size());
-  ROS_INFO("size of keyframes = %lu",keyframes.size());
+  int npts = landmarks.size();
+  ROS_INFO("printing all (%d) landmarks:",npts);
   std::map<int,Landmark*>::iterator it;
   for (it = landmarks.begin(); it != landmarks.end();++it)
   {
-    std::cout << "Landmark ID:" << it->first << std::endl;
+    it->second->print();
+  }
+}
+
+void Map::print_keyframes()
+{
+  int nkf = keyframes.size();
+  ROS_INFO("printing all (%d) keyframes:",nkf);
+  std::map<int,Keyframe*>::iterator it;
+  for (it = keyframes.begin(); it != keyframes.end();++it)
+  {
     it->second->print();
   }
 }

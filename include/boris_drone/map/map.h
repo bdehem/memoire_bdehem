@@ -169,6 +169,7 @@ public:
   void publishBenchmarkInfo();
   void print_info();
   void print_landmarks();
+  void print_keyframes();
   void getDescriptors(cv::Mat &map_descriptors);
 
 };

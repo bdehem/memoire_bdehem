@@ -39,12 +39,10 @@ bool Landmark::setAsUnseenBy(int kfID)
 void Landmark::print()
 {
   ROS_INFO("Landmark ID = %d",ID);
-  ROS_INFO("coordinates = %4.2f; %4.2f; %4.2f",coordinates.x,coordinates.y, coordinates.z);
-  std::cout<<"seen by:";
+  ROS_INFO("  coordinates = %6.4f; %6.4f; %6.4f",coordinates.x,coordinates.y, coordinates.z);
+  std::cout<<"                                  Seen by Keyframes: ";
   std::set<int>::iterator it;
   for(it = keyframes_seeing.begin();it!=keyframes_seeing.end();++it)
-  {
-    std::cout << *it << ", ";
-  }
+    it==keyframes_seeing.begin() ? std::cout<<*it : std::cout<<", "<<*it;
   std::cout << std::endl;
 }

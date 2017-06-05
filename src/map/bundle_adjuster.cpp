@@ -258,12 +258,14 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     //cost_function = SemiFixedCameraError2::Create(camera[5],camera[0],camera[1]);
     problem.AddResidualBlock(cost_function, NULL, camera);
   }
+  std::vector<double> cost_of_point;
+  printResiduals(problem, bal_problem, cost_of_point);
 
   ceres::Solver::Options options;
-  options.max_num_iterations = is_first_pass? 25 : 50;
+  options.max_num_iterations = is_first_pass? 75 : 50;
   options.linear_solver_type = ceres::DENSE_SCHUR;
   //TODO this is temporary
-  options.minimizer_progress_to_stdout = false;
+  options.minimizer_progress_to_stdout = true;
   options.function_tolerance = tolerance;
   ceres::Solver::Summary summary;
   ceres::Solve(options, &problem, &summary);
@@ -279,7 +281,6 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     camera_print[0]*PI/180.0,camera_print[1]*PI/180.0,camera_print[2]*PI/180.0);
     ROS_INFO("T : x    = %.2f, y     = %.2f, z   = %.2f",camera_print[3],camera_print[4],camera_print[5]);
   }
-  std::vector<double> cost_of_point;
   printResiduals(problem, bal_problem, cost_of_point);
 
   publishBundle(bal_problem, converged, cost_of_point, time_taken);
