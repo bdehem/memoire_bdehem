@@ -4,10 +4,12 @@
 %\usepackage{graphicx}
 %\usepackage{fancyhdr}
 %\pagestyle{fancy}
-\usepackage[sorting=none,backend=biber]{biblatex}
+\usepackage[backend=biber]{biblatex}
 \usepackage[acronym,nomain,nonumberlist]{glossaries}
 \usepackage{float}
-\usepackage{gensymb}
+\usepackage{textcomp,gensymb}
+\usepackage{csquotes}
+
 \addbibresource{references.bib}
 
 \graphicspath{ {images/} }
@@ -45,10 +47,10 @@
 
 %\tableofcontents
 
-%\printglossaries
+\printglossaries
 
-%\chapter{Introduction}
-%\input{chapters/introduction}
+\chapter{Introduction}
+\input{chapters/introduction}
 
 \chapter{State of the art}
 \input{chapters/chapter02}
@@ -74,7 +76,7 @@
 %\chapter{Conclusion}
 %\input{chapters/conclusion}
 
-%\printbibliography
+\printbibliography
 
 %\appendix
 %\chapter{Appendix Title}

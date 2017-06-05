@@ -585,8 +585,8 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     remove_point = (bundlePtr->cost_of_point[i]>1.0);
     if (remove_point)
     {
-      removePoint(ptID);
-      pts_removed++;
+      //removePoint(ptID);
+      //pts_removed++;
     }
     else
     {

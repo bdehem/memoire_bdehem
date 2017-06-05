@@ -171,6 +171,8 @@ BundleAdjuster::BundleAdjuster()
   // Publishers
   bundled_channel = nh.resolveName("bundled");
   bundled_pub     = nh.advertise<boris_drone::BundleMsg>(bundled_channel, 1);
+
+  ros::param::get("~bundle_adjustment_tol", tolerance);
 }
 
 void BundleAdjuster::publishBundle(const BALProblem& bal_problem, bool converged,
@@ -262,6 +264,7 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   options.linear_solver_type = ceres::DENSE_SCHUR;
   //TODO this is temporary
   options.minimizer_progress_to_stdout = false;
+  options.function_tolerance = tolerance;
   ceres::Solver::Summary summary;
   ceres::Solve(options, &problem, &summary);
   std::cout << summary.FullReport() << "\n";

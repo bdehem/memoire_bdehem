@@ -83,6 +83,9 @@ private:
   /* Publishers */
   ros::Publisher bundled_pub;
   std::string    bundled_channel;
+
+  double tolerance;
+  
   void bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr);
 public:
   //! Contructor. Initialize an empty map

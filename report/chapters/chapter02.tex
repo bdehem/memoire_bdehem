@@ -1,5 +1,15 @@
 %% State of the art (chpt2)
-\section{Multicopters}
+\section{Hardware}
+When talking about autonomous drone navigation, it is important to be aware of what the current hardware is capable of doing, and how we can expect it to evolve in the near future. We will talk about the three main aspects of this hardware: the multirotor systems themselves, with the different possible configurations, the sensors, and finally the embedded computers.
+
+\subsection{Multirotor systems}
+Multirotors, ot multicopters, are defined as rotorcrafts with three or more rotors. Having more rotors enables them to maneuver in 3D space with with fixed-pitch rotors, unlike helicopters, which have articulations at the bases of their rotors. The most common multirotors have 3, 4, 6, or 8 rotors, and are respectively called tricopters, quadcopters (or quadrotors), hexacopters, and octocopters. Having more rotors has the advantage of giving more agility, at the cost of more energy consumption, and therefore a shorter battery life. A free solid object in 3D space, such as a multicopter, has 6 degrees of freedom: 3 for translation and 3 for rotation. To be able to directly control each of there 6 degrees of freedom, it must be possible to give 6 independent controls to the drone. This means that tricopters and quadcopters are always under-actuated: they can't directly control all 6 degrees of freedom.
+For example, quadrotors whose rotors are all in the same plane (as is almost always the case), can only directly control their translational movement along the axis parallel to the rotation of their rotors, and their roll, pitch and yaw angles, so to control their position in the plane perpendicular to the direction of gravity, they have to first adapt their roll and pitch, so that the resulting force of gravity and the thurst of their motors points inside that plane. Most hexacopters also work this way, as their rotors are also often in the same plane. Some hexrotors, however, have tilted rotors, and are fully actuated \cite{dexteroushexrotor}. \\
+Octocopters on the other hand, are always over-actuated. One example, the Omnicopter, developped at ETH Zurich \cite{omnidirectionalav} can perform a 360\degree  rotation along any axis, and move in a straight line in any direction, which enables it to perform complex and precise manoeuvres. It is able to catch thrown ping-pong balls with a little net.
+
+\subsection{Sensors}
+
+\subsection{Embedded computers}
 
 \section{Computer Vision}
 
