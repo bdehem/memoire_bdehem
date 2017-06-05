@@ -262,7 +262,7 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   printResiduals(problem, bal_problem, cost_of_point);
 
   ceres::Solver::Options options;
-  options.max_num_iterations = is_first_pass? 75 : 50;
+  options.max_num_iterations = is_first_pass? 30 : 50;
   options.linear_solver_type = ceres::DENSE_SCHUR;
   //TODO this is temporary
   options.minimizer_progress_to_stdout = true;
