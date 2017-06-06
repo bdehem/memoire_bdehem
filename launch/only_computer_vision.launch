@@ -82,4 +82,5 @@
   </node>
   <node name="boris_drone_bundle_adjuster" pkg="boris_drone" type="bundle_adjuster" output="screen">
   </node>
+  <node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/$(env USER)/bagfiles/benchmark /processed_image /manual_pose_estimation"/>
 </launch>

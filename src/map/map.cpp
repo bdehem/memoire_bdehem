@@ -23,7 +23,7 @@ Map::Map(ros::NodeHandle* nh) : cloud(new pcl::PointCloud< pcl::PointXYZ >())
   ros::param::get("~no_bundle_adjustment", no_bundle_adjustment);
   ros::param::get("~naive_triangulation", naive_triangulation);
 
-  ROS_INFO("init map, thresh = %f",threshold_kf_match);
+  ROS_INFO("init map");
   // define some threshold used later
   // better if defined in the launch file
   frame_counter = 0;
@@ -94,7 +94,7 @@ void Map::updatePoint(int ptID, cv::Point3d coordinates)
 
 void Map::removePoint(int ptID)
 {
-  ROS_INFO("removing point %d",ptID);
+  //ROS_INFO("removing point %d",ptID);
   bool keyframe_is_dead;
   std::map<int,Landmark*>::iterator it = landmarks.find(ptID);
   if(it==landmarks.end())
@@ -552,7 +552,6 @@ void Map::doBundleAdjustment(std::vector<int> kfIDs, bool is_first_pass)
 
 void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
 {
-  ROS_INFO("before update");
   //print_info();
   int npt, ncam, i, kfID, ptID;
   int n_kf_pt;
@@ -599,7 +598,6 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     }
   }
   ROS_INFO("Removed %d points",pts_removed);
-  ROS_INFO("After update");
   //print_info();
   if (is_first_pass)
   {

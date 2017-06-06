@@ -173,6 +173,7 @@ BundleAdjuster::BundleAdjuster()
   bundled_pub     = nh.advertise<boris_drone::BundleMsg>(bundled_channel, 1);
 
   ros::param::get("~bundle_adjustment_tol", tolerance);
+  ros::param::get("~quiet_ba", quiet_ba);
 }
 
 void BundleAdjuster::publishBundle(const BALProblem& bal_problem, bool converged,
@@ -215,13 +216,16 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   bool is_first_pass = bundlePtr->is_first_pass;
 
   double* camera_print;
-  ROS_INFO("Cameras before BA:");
-  for (int i = 0; i< bal_problem.num_cameras_; i++)
+  if (!quiet_ba)
   {
-    camera_print = bal_problem.mutable_camera(i);
-    ROS_INFO("R : roll = %.2f, pitch = %.2f, yaw = %.2f",
-    camera_print[0]*PI/180.0,camera_print[1]*PI/180.0,camera_print[2]*PI/180.0);
-    ROS_INFO("T : x    = %.2f, y     = %.2f, z   = %.2f",camera_print[3],camera_print[4],camera_print[5]);
+    ROS_INFO("Cameras before BA:");
+    for (int i = 0; i< bal_problem.num_cameras_; i++)
+    {
+      camera_print = bal_problem.mutable_camera(i);
+      ROS_INFO("R : roll = %.2f, pitch = %.2f, yaw = %.2f",
+      camera_print[0]*PI/180.0,camera_print[1]*PI/180.0,camera_print[2]*PI/180.0);
+      ROS_INFO("T : x    = %.2f, y     = %.2f, z   = %.2f",camera_print[3],camera_print[4],camera_print[5]);
+    }
   }
 
 
@@ -265,21 +269,24 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   options.max_num_iterations = is_first_pass? 30 : 50;
   options.linear_solver_type = ceres::DENSE_SCHUR;
   //TODO this is temporary
-  options.minimizer_progress_to_stdout = true;
+  options.minimizer_progress_to_stdout = !quiet_ba;
   options.function_tolerance = tolerance;
   ceres::Solver::Summary summary;
   ceres::Solve(options, &problem, &summary);
-  std::cout << summary.FullReport() << "\n";
   bool converged = (summary.termination_type == ceres::CONVERGENCE);
   double time_taken = summary.total_time_in_seconds;
 
-  ROS_INFO("Cameras after BA:");
-  for (int i = 0; i< bal_problem.num_cameras_; i++)
+  if (!quiet_ba)
   {
-    camera_print = bal_problem.mutable_camera(i);
-    ROS_INFO("R : roll = %.2f, pitch = %.2f, yaw = %.2f",
-    camera_print[0]*PI/180.0,camera_print[1]*PI/180.0,camera_print[2]*PI/180.0);
-    ROS_INFO("T : x    = %.2f, y     = %.2f, z   = %.2f",camera_print[3],camera_print[4],camera_print[5]);
+    std::cout << summary.FullReport() << "\n";
+    ROS_INFO("Cameras after BA:");
+    for (int i = 0; i< bal_problem.num_cameras_; i++)
+    {
+      camera_print = bal_problem.mutable_camera(i);
+      ROS_INFO("R : roll = %.2f, pitch = %.2f, yaw = %.2f",
+      camera_print[0]*PI/180.0,camera_print[1]*PI/180.0,camera_print[2]*PI/180.0);
+      ROS_INFO("T : x    = %.2f, y     = %.2f, z   = %.2f",camera_print[3],camera_print[4],camera_print[5]);
+    }
   }
   printResiduals(problem, bal_problem, cost_of_point);
 

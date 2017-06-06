@@ -85,7 +85,8 @@ private:
   std::string    bundled_channel;
 
   double tolerance;
-  
+  bool   quiet_ba;
+
   void bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr);
 public:
   //! Contructor. Initialize an empty map
