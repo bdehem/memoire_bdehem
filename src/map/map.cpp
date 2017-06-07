@@ -254,19 +254,23 @@ bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose, bool manual_
   int n_keyframes = keyframes.size();
   if (keyframeNeeded(manual_pose_received, n_inliers)&&!isInitialized())
   {
+    boris_drone::Pose3D noise_pose = frame.pose;
     if (use_2D_noise)
     {
-      frame.pose.x    += 0.40*(double)(n_keyframes==1 or n_keyframes==2);
-      frame.pose.y    += 0.40*(double)(n_keyframes==2 or n_keyframes==3);
-      frame.pose.rotZ += (PI/10)*(double)(n_keyframes==3 or n_keyframes==1);
+      noise_pose.x    =  frame.pose.x    + 1.00   *(double)(n_keyframes==1 || n_keyframes==2);
+      noise_pose.y    =  frame.pose.y    + 1.00   *(double)(n_keyframes==2 || n_keyframes==3);
+      noise_pose.rotZ =  frame.pose.rotZ + (PI/8) *(double)(n_keyframes==3 || n_keyframes==1);
     }
     if (use_3D_noise)
     {
-      frame.pose.z    += 0.05*(double)(n_keyframes==1);
-      frame.pose.rotX += (PI/30)*(double)(n_keyframes==2);
-      frame.pose.rotY += (PI/30)*(double)(n_keyframes==3);
+      noise_pose.z    =  frame.pose.z    + 0.05   *(double)(n_keyframes==1);
+      noise_pose.rotX =  frame.pose.rotX + (PI/30)*(double)(n_keyframes==2);
+      noise_pose.rotY =  frame.pose.rotY + (PI/30)*(double)(n_keyframes==3);
     }
-    newKeyframe(frame, PnP_pose, (!manual_pose_received)&&(PnP_result==1));
+    if (use_2D_noise||use_3D_noise)
+      newKeyframe(frame,noise_pose,true);
+    else
+      newKeyframe(frame, PnP_pose, (!manual_pose_received)&&(PnP_result==1));
   }
   else if (isInitialized())
   {
