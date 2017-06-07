@@ -70,18 +70,20 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {5.3}Bundle Adjustment}{12}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.4}Tuning the Bundle Adjustment}{12}
+\contentsline {subsection}{\numberline {5.3.1}Convergence of the solver}{13}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.4.1}Experimental setup}{12}
+\contentsline {section}{\numberline {5.4}Tuning the Bundle Adjustment}{13}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.5}Map Initialization}{13}
+\contentsline {subsection}{\numberline {5.4.1}Experimental setup}{13}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {6}Map Initialization}{14}
+\contentsline {section}{\numberline {5.5}Map Initialization}{14}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {7}Simultaneous Localization and Mapping}{15}
+\contentsline {chapter}{\numberline {6}Map Initialization}{15}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {7.0.1}Loop Closure}{15}
+\contentsline {chapter}{\numberline {7}Simultaneous Localization and Mapping}{16}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {8}Conclusion}{16}
+\contentsline {subsection}{\numberline {7.0.1}Loop Closure}{16}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {A}Appendix Title}{18}
+\contentsline {chapter}{\numberline {8}Conclusion}{17}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {A}Appendix Title}{19}

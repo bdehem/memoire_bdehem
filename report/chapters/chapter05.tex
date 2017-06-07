@@ -20,21 +20,50 @@ There are several algorithms in the litterature that triangulate the position of
 
 \subsection{Comparison of triangulation methods}
 Using the evaluation procedure described in section \ref{evalproc}, we can compare these 3 triangulation methods.
-\begin{figure}
+\begin{figure}[H]
   \begin{center}
-    \begin{tabular}{ | l | l | l | l | }
+    \begin{tabular}{ | l | l | l | l | l | l |}
       \hline
-                 & Mean distance error (m) & Mean rotation error (rad) & Mean computation time (s)\\ \hline \hline
-      Midpoint Method              & 5  & 6  & 7  \\ \hline
-      Direct Linear Transformation & 8  & 9  & 10 \\ \hline
-      Optimal Correction           & 11 & 12 & 13 \\
+                 & MDE (m) & MRE (rad) & TCT (s) & npts & avgtime \\ \hline \hline
+      Midpoint Method              & 0.114 & 0.049 & 0.012 & 341 & $3.52\cdot10^{-5}$ \\ \hline
+      Direct Linear Transformation & 0.360 & 0.127 & 0.013 & 341 & $3.81\cdot10^{-5}$ \\ \hline
+      Optimal Correction           & 0.097 & 0.039 & 0.024 & 341 & $7.04\cdot10^{-5}$ \\
       \hline
     \end{tabular}
   \end{center}
 \end{figure}
 
 \section{Bundle Adjustment}
+Unfortunately the main source of error when mapping points is not inaccuracy of the camera, but uncertainty on the camera's position. This is bad, as a bad estimation of the camera's position will result in badly located landmarks, which in turn will result in a bad estimation of the camera position. In the long term, errors will accumulate, and the map will be completely distorted. Luckily, if we have enough point correspondences between two images, it is possible to deduce the relative displacement between the two images. This means that from a set of images, we can reconstruct a scene, without even needing an estimation of the position of the cameras that took the images. This is good news as it means that the images can give us some absolute information about the scene, not only relative to the drone. The problem of adjusting camera positions and 3D point locations in order to minimize the reprojection errors of the 3D points onto the image planes is known as bundle adjustment. As stated above, bundle adjustment has the advantage of being absolute with respect to the world, and so not having errors accumulate. Another advantage of bundle adjustment, is that it can easily take into account points that are seen by more than two cameras, which is not trivial for the triangulation techniqhes described above. The main disadvantage of bundle adjustment is that it is computationally heavy, so it is important to adapt it to be useable un real time.\\
+To show the advantages of bundle adjustment, we begin by comparing it to simple triangulation, in the case where the cameras' poses are known exactly, and in the cases where they are known approximatively, but subject to some noise.
 
+\subsection{Convergence of the solver}
+The first element we can tune is the convergence criterion of the solver that solves the bundle adjustment problem. We will stop either when the ration of the change in the objective function to the value of this function arrives below some threshold. This ensures that the criterion scales with the problem, which is important as the size of the problem can vary during operation (as the map grows, for example). The default value of the Ceres solver is $10^{-6}$, but experimentally, we find that use a less severe threshold, to significantly speed up the computations, without impactig the quality of the results so much.
+\begin{figure}[H]
+  \begin{center}
+    \begin{tabular}{ | l | l | l | l | }
+      \hline
+      Convergence Threshold &     MDE (m) & MRE (rad) & Time of Bundle Adjustment (s) \\ \hline \hline
+      10                    &     0.0975  &   0.0378  &     0.536 \\ \hline
+      5                     &     0.0967  &   0.0397  &     0.530 \\ \hline
+      1                     &     0.0989  &   0.0406  &     0.521 \\ \hline
+      0.5                   &     0.0970  &   0.0393  &     0.520 \\ \hline
+      0.1                   &     0.1065  &   0.0431  &     0.646 \\ \hline
+      0.05                  &     0.1385  &   0.0462  &     0.761 \\ \hline
+      0.04                  &     0.1380  &   0.0454  &     0.754 \\ \hline
+      0.03                  &     0.1575  &   0.0531  &     1.130 \\ \hline
+      0.02                  &     0.0793  &   0.0255  &     1.354 \\ \hline
+      0.01                  &     0.0722  &   0.0278  &     1.425 \\ \hline
+      0.005                 &     0.0765  &   0.0257  &     1.544 \\ \hline
+      0.001                 &     0.0879  &   0.0271  &     3.595 \\ \hline
+      0.0001                &     0.0978  &   0.0330  &     5.207 \\ \hline
+      0.00001               &     0.0916  &   0.0317  &     12.620 \\ \hline
+      0.000001              &     0.0789  &   0.0307  &     13.232 \\ \hline
+      0.0000001             &     0.0816  &   0.0229  &     15.453 \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{figure}
 
 
 

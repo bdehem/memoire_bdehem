@@ -7,7 +7,7 @@ import rosbag_pandas
 import sys
 import os
 
-def treat_data(file_in):
+def treat_data(file_in,do_plot):
     infile = file_in
     ref_pose_x    = 0
     ref_pose_y    = 0
@@ -42,11 +42,8 @@ def treat_data(file_in):
             errors[3,ind] += abs(errrotZ)
             counts[:,ind] += 1
         if topic == "/benchmark":
-            print(k)
-            print(msg.BA_times_pass1)
-            print(msg.BA_times_pass2)
-            batimes[k,0] = msg.BA_times_pass1[0]
-            batimes[k,1] = msg.BA_times_pass2[0]
+            batimes[k,0] = msg.BA_times_pass1[k]
+            batimes[k,1] = msg.BA_times_pass2[k]
             k+=1
     #print(batimes)
     batime  = sum(sum(batimes))
@@ -55,20 +52,35 @@ def treat_data(file_in):
     avgerr = sum(sum(errors))/sum(sum(counts))
     vis = rosbag_pandas.bag_to_dataframe(infile,include="/pose_visual")
     man = rosbag_pandas.bag_to_dataframe(infile,include="/pose_estimation")
-    #f, (axx, axy, axz, axr) = plt.subplots(4, sharex=True)
-    #axx.plot(man.index, man['pose_estimation__x'])
-    #axx.plot(vis.index, vis['pose_visual__x'])
-    #axy.plot(man.index, man['pose_estimation__y'])
-    #axy.plot(vis.index, vis['pose_visual__y'])
-    #axz.plot(man.index, man['pose_estimation__z'])
-    #axz.plot(vis.index, vis['pose_visual__z'])
-    #axr.plot(man.index, man['pose_estimation__rotZ'])
-    #axr.plot(vis.index, vis['pose_visual__rotZ'])
-    #axx.set_title('X')
-    #axy.set_title('Y')
-    #axz.set_title('Z')
-    #axr.set_title('rotZ')
-    #plt.show()
+    if do_plot:
+        f, (axx, axy, axz, axr) = plt.subplots(4, sharex=True)
+        axx.plot(man.index, man['pose_estimation__x'])
+        axx.plot(vis.index, vis['pose_visual__x'])
+        axy.plot(man.index, man['pose_estimation__y'])
+        axy.plot(vis.index, vis['pose_visual__y'])
+        axz.plot(man.index, man['pose_estimation__z'])
+        axz.plot(vis.index, vis['pose_visual__z'])
+        axr.plot(man.index, man['pose_estimation__rotZ'])
+        axr.plot(vis.index, vis['pose_visual__rotZ'])
+        axx.set_title('X')
+        axy.set_title('Y')
+        axz.set_title('Z')
+        axr.set_title('rotZ')
     return (avgerrD,avgerrR,batime)
-#fn = "__result_benchmark_precision_thresh_250_maxmatches_-1_noBA_false_naivetriang_false_robust_false_bundleadjustmenttol_0.01.bag"
-#avgerr,batime = treat_data(fn)
+
+fn = "result_benchmark_thresh_250_maxmatches_-1_noBA_false_naivetriang_false_robust_false_bundleadjustmenttol_10.bag"
+avgerrD,avgerrR,batime = treat_data('/home/bor/bagfiles/otherpcresults/' + fn,True)
+print(fn)
+print(avgerrD)
+print(avgerrR)
+print(batime)
+
+fn = "result_benchmark_thresh_250_maxmatches_-1_noBA_false_naivetriang_false_robust_false_bundleadjustmenttol_0.005.bag"
+avgerrD,avgerrR,batime = treat_data('/home/bor/bagfiles/otherpcresults/' + fn,True)
+print(fn)
+print(avgerrD)
+print(avgerrR)
+print(batime)
+
+
+plt.show()

@@ -8,14 +8,12 @@ import sys
 import os
 import treat_data as td
 
-fnames = ['result_benchmark_noBA_naivetriang','result_benchmark_noBA_optimaltriang']
-fnames = ['result_selection_thresh_250_maxmatches_-1_noBA_true_triang_falsefalse_robust_false_bundleadjustmenttol_0.000001']
+fnames = ['result_benchmark_midpointtriang','result_benchmark_dlttriang','result_benchmark_optimaltriang']
 
 
-#for fn in os.listdir('/home/bor/bagfiles/otherpcresults/'):
-for fn in fnames:
-    ffnn = '/home/bor/bagfiles/otherpcresults/' + fn + '.bag'
-    ffnn = '/home/bor/bagfiles/benchmark_point_threshold/' + fn + '.bag'
+for fn in os.listdir('/home/bor/bagfiles/otherpcresults/'):
+#for fn in fnames:
+    ffnn = '/home/bor/bagfiles/otherpcresults/' + fn
 
     avgerrD,avgerrR,batime = td.treat_data(ffnn)
     print(fn)
