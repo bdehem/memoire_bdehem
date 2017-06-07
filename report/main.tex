@@ -9,6 +9,14 @@
 \usepackage{float}
 \usepackage{textcomp,gensymb}
 \usepackage{csquotes}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
 
 \addbibresource{references.bib}
 
@@ -35,7 +43,7 @@
 
 %\maketitle					% To create front cover page
 %\thispagestyle{empty}		% To suppress header and footer on the back of the cover page
-
+\pagenumbering{roman}
 
 %\chapter*{Abstract} Abstract goes here
 
@@ -48,7 +56,8 @@
 \tableofcontents
 
 \printglossaries
-
+\newpage
+\pagenumbering{arabic}
 \chapter{Introduction}
 \input{chapters/introduction}
 

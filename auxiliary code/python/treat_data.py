@@ -54,6 +54,7 @@ def treat_data(file_in,do_plot):
     man = rosbag_pandas.bag_to_dataframe(infile,include="/pose_estimation")
     if do_plot:
         f, (axx, axy, axz, axr) = plt.subplots(4, sharex=True)
+        #f, (axx, axy, axr) = plt.subplots(3, sharex=True)
         axx.plot(man.index, man['pose_estimation__x'])
         axx.plot(vis.index, vis['pose_visual__x'])
         axy.plot(man.index, man['pose_estimation__y'])
@@ -68,19 +69,21 @@ def treat_data(file_in,do_plot):
         axr.set_title('rotZ')
     return (avgerrD,avgerrR,batime)
 
-fn = "result_benchmark_thresh_250_maxmatches_-1_noBA_false_naivetriang_false_robust_false_bundleadjustmenttol_10.bag"
-avgerrD,avgerrR,batime = treat_data('/home/bor/bagfiles/otherpcresults/' + fn,True)
-print(fn)
-print(avgerrD)
-print(avgerrR)
-print(batime)
+def main():
+    fn = "result_benchmark_noBA_false_robust_true.bag"
+    avgerrD,avgerrR,batime = treat_data('/home/bor/bagfiles/otherpcresults/' + fn,True)
+    print(fn)
+    print(avgerrD)
+    print(avgerrR)
+    print(batime)
 
-fn = "result_benchmark_thresh_250_maxmatches_-1_noBA_false_naivetriang_false_robust_false_bundleadjustmenttol_0.005.bag"
-avgerrD,avgerrR,batime = treat_data('/home/bor/bagfiles/otherpcresults/' + fn,True)
-print(fn)
-print(avgerrD)
-print(avgerrR)
-print(batime)
+    fn = "result_benchmark_noBA_true_robust_true.bag"
+    avgerrD,avgerrR,batime = treat_data('/home/bor/bagfiles/otherpcresults/' + fn,True)
+    print(fn)
+    print(avgerrD)
+    print(avgerrR)
+    print(batime)
 
 
-plt.show()
+    plt.show()
+main()

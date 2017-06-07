@@ -256,9 +256,9 @@ bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose, bool manual_
   {
     if (use_2D_noise)
     {
-      frame.pose.x    += 0.20*(double)(n_keyframes==1);
-      frame.pose.y    += 0.20*(double)(n_keyframes==2);
-      frame.pose.rotZ += (PI/10)*(double)(n_keyframes==3);
+      frame.pose.x    += 0.40*(double)(n_keyframes==1 or n_keyframes==2);
+      frame.pose.y    += 0.40*(double)(n_keyframes==2 or n_keyframes==3);
+      frame.pose.rotZ += (PI/10)*(double)(n_keyframes==3 or n_keyframes==1);
     }
     if (use_3D_noise)
     {

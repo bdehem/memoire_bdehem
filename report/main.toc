@@ -2,88 +2,88 @@
 \defcounter {refsection}{0}\relax 
 \select@language {english}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {1}Introduction}{4}
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.1}A brief history of drones}{4}
+\contentsline {section}{\numberline {1.1}A brief history of drones}{1}{section.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.2}Motivation}{5}
+\contentsline {section}{\numberline {1.2}Motivation}{2}{section.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.2.1}Ethical considerations}{5}
+\contentsline {subsection}{\numberline {1.2.1}Ethical considerations}{2}{subsection.1.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.3}Context}{5}
+\contentsline {section}{\numberline {1.3}Context}{2}{section.1.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{2012-2015: First three theses}{5}
+\contentsline {paragraph}{2012-2015: First three theses}{2}{section*.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{2015-2016: Recent work}{5}
+\contentsline {paragraph}{2015-2016: Recent work}{2}{section*.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.4}Objectives}{6}
+\contentsline {section}{\numberline {1.4}Objectives}{3}{section.1.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.5}Structure}{6}
+\contentsline {section}{\numberline {1.5}Structure}{3}{section.1.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {2}State of the art}{7}
+\contentsline {chapter}{\numberline {2}State of the art}{4}{chapter.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.1}Hardware}{7}
+\contentsline {section}{\numberline {2.1}Hardware}{4}{section.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1.1}Multirotor systems}{7}
+\contentsline {subsection}{\numberline {2.1.1}Multirotor systems}{4}{subsection.2.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1.2}Sensors}{8}
+\contentsline {subsection}{\numberline {2.1.2}Sensors}{5}{subsection.2.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1.3}Embedded computers}{8}
+\contentsline {subsection}{\numberline {2.1.3}Embedded computers}{5}{subsection.2.1.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.2}Computer Vision}{8}
+\contentsline {section}{\numberline {2.2}Computer Vision}{5}{section.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.3}Simultaneous Localization And Mapping}{8}
+\contentsline {section}{\numberline {2.3}Simultaneous Localization And Mapping}{5}{section.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.3.1}Localization}{8}
+\contentsline {subsection}{\numberline {2.3.1}Localization}{5}{subsection.2.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.3.2}Mapping}{8}
+\contentsline {subsection}{\numberline {2.3.2}Mapping}{5}{subsection.2.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.4}Bundle Adjustment}{8}
+\contentsline {section}{\numberline {2.4}Bundle Adjustment}{5}{section.2.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {3}Hardware and software architecture}{9}
+\contentsline {chapter}{\numberline {3}Hardware and software architecture}{6}{chapter.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.1}Hardware}{9}
+\contentsline {section}{\numberline {3.1}Hardware}{6}{section.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1.1}Sensors}{9}
+\contentsline {subsection}{\numberline {3.1.1}Sensors}{6}{subsection.3.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.2}Software}{9}
+\contentsline {section}{\numberline {3.2}Software}{6}{section.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.2.1}Parrot SDK}{9}
+\contentsline {subsection}{\numberline {3.2.1}Parrot SDK}{6}{subsection.3.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.2.2}ROS}{9}
+\contentsline {subsection}{\numberline {3.2.2}ROS}{6}{subsection.3.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {4}Localization}{10}
+\contentsline {chapter}{\numberline {4}Localization}{7}{chapter.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {5}Mapping}{11}
+\contentsline {chapter}{\numberline {5}Mapping}{8}{chapter.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.1}Evaluation procedure}{11}
+\contentsline {section}{\numberline {5.1}Evaluation procedure}{8}{section.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.2}Triangulation}{11}
+\contentsline {subsection}{\numberline {5.1.1}Experimental setup}{9}{subsection.5.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.2.1}Midpoint Method}{12}
+\contentsline {section}{\numberline {5.2}Triangulation}{9}{section.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.2.2}Direct Linear Transformation}{12}
+\contentsline {subsection}{\numberline {5.2.1}Midpoint Method}{10}{subsection.5.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.2.3}Optimal Correction}{12}
+\contentsline {subsection}{\numberline {5.2.2}Direct Linear Transformation}{10}{subsection.5.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.2.4}Comparison of triangulation methods}{12}
+\contentsline {subsection}{\numberline {5.2.3}Optimal Correction}{10}{subsection.5.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.3}Bundle Adjustment}{12}
+\contentsline {subsection}{\numberline {5.2.4}Comparison of triangulation methods}{10}{subsection.5.2.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.3.1}Convergence of the solver}{13}
+\contentsline {section}{\numberline {5.3}Bundle Adjustment}{10}{section.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.4}Tuning the Bundle Adjustment}{13}
+\contentsline {subsection}{\numberline {5.3.1}Convergence of the solver}{11}{subsection.5.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.4.1}Experimental setup}{13}
+\contentsline {section}{\numberline {5.4}Tuning the Bundle Adjustment}{11}{section.5.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.5}Map Initialization}{14}
+\contentsline {section}{\numberline {5.5}Map Initialization}{11}{section.5.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {6}Map Initialization}{15}
+\contentsline {chapter}{\numberline {6}Map Initialization}{13}{chapter.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {7}Simultaneous Localization and Mapping}{16}
+\contentsline {chapter}{\numberline {7}Simultaneous Localization and Mapping}{14}{chapter.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {7.0.1}Loop Closure}{16}
+\contentsline {subsection}{\numberline {7.0.1}Loop Closure}{14}{subsection.7.0.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {8}Conclusion}{17}
+\contentsline {chapter}{\numberline {8}Conclusion}{15}{chapter.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {A}Appendix Title}{19}
+\contentsline {chapter}{\numberline {A}Appendix Title}{17}{appendix.A}
