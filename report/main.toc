@@ -76,7 +76,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {5.4}Tuning the Bundle Adjustment}{11}{section.5.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.5}Map Initialization}{11}{section.5.5}
+\contentsline {section}{\numberline {5.5}Map Initialization}{12}{section.5.5}
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {6}Map Initialization}{13}{chapter.6}
 \defcounter {refsection}{0}\relax 

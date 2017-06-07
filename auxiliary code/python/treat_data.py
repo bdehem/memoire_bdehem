@@ -84,5 +84,20 @@ def main():
     print(avgerrR)
     print(batime)
 
+    fn = "result_benchmark_noBA_false_robust_false.bag"
+    avgerrD,avgerrR,batime = treat_data('/home/bor/bagfiles/otherpcresults/' + fn,True)
+    print(fn)
+    print(avgerrD)
+    print(avgerrR)
+    print(batime)
+
+    fn = "result_benchmark_noBA_true_robust_false.bag"
+    avgerrD,avgerrR,batime = treat_data('/home/bor/bagfiles/otherpcresults/' + fn,True)
+    print(fn)
+    print(avgerrD)
+    print(avgerrR)
+    print(batime)
+
 
     plt.show()
+main()

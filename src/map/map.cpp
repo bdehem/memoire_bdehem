@@ -16,14 +16,15 @@ Map::Map(ros::NodeHandle* nh) : cloud(new pcl::PointCloud< pcl::PointXYZ >())
   benchmark_pub     = nh->advertise<boris_drone::BenchmarkInfoMsg>(benchmark_channel, 1);
 
   //Get some parameters from launch file
-  ros::param::get("~test_robustness", use_2D_noise);
-  ros::param::get("~test_robustness", use_3D_noise);
+  ros::param::get("~2D_noise", use_2D_noise);
+  ros::param::get("~3D_noise", use_3D_noise);
   ros::param::get("~threshold_kf_match", threshold_kf_match);
   ros::param::get("~max_matches", max_matches);
   ros::param::get("~no_bundle_adjustment", no_bundle_adjustment);
   ros::param::get("~dlt_triangulation", dlt_triangulation);
   ros::param::get("~midpoint_triangulation", midpoint_triangulation);
   ROS_INFO("init map");
+
   // define some threshold used later
   // better if defined in the launch file
   frame_counter = 0;
@@ -257,9 +258,9 @@ bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose, bool manual_
     boris_drone::Pose3D noise_pose = frame.pose;
     if (use_2D_noise)
     {
-      noise_pose.x    =  frame.pose.x    + 1.00   *(double)(n_keyframes==1 || n_keyframes==2);
-      noise_pose.y    =  frame.pose.y    + 1.00   *(double)(n_keyframes==2 || n_keyframes==3);
-      noise_pose.rotZ =  frame.pose.rotZ + (PI/8) *(double)(n_keyframes==3 || n_keyframes==1);
+      noise_pose.x    =  frame.pose.x    + 0.30   *(double)(n_keyframes==1 || n_keyframes==2);
+      noise_pose.y    =  frame.pose.y    + 0.30   *(double)(n_keyframes==2 || n_keyframes==3);
+      noise_pose.rotZ =  frame.pose.rotZ + (PI/10)*(double)(n_keyframes==3 || n_keyframes==1);
     }
     if (use_3D_noise)
     {
@@ -267,10 +268,14 @@ bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose, bool manual_
       noise_pose.rotX =  frame.pose.rotX + (PI/30)*(double)(n_keyframes==2);
       noise_pose.rotY =  frame.pose.rotY + (PI/30)*(double)(n_keyframes==3);
     }
-    if (use_2D_noise||use_3D_noise)
+    if ((use_2D_noise||use_3D_noise)&&n_keyframes!=0)
+    {
       newKeyframe(frame,noise_pose,true);
+    }
     else
+    {
       newKeyframe(frame, PnP_pose, (!manual_pose_received)&&(PnP_result==1));
+    }
   }
   else if (isInitialized())
   {
