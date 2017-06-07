@@ -28,7 +28,7 @@ void matchDescriptors(const cv::Mat& descriptors1, const cv::Mat& descriptors2,
   }
 }
 
-bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, int idx2, bool use_naive_method)
+bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, int idx2)
 {
   //in matlab this is triangulate4 lol
   //http://www.iim.cs.tut.ac.jp/~kanatani/papers/sstriang.pdf
@@ -65,17 +65,6 @@ bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, in
   P0 = K1*cam2world1.t()*T1;
   P1 = K2*cam2world2.t()*T2;
 
-  if(use_naive_method)
-  {
-    cam0pnts.push_back(pt1);
-    cam1pnts.push_back(pt2);
-    cv::triangulatePoints(P0,P1,cam0pnts,cam1pnts,pnts3D);
-
-    pt_out.x = pnts3D.at<double>(0,0)/pnts3D.at<double>(3,0);
-    pt_out.y = pnts3D.at<double>(1,0)/pnts3D.at<double>(3,0);
-    pt_out.z = pnts3D.at<double>(2,0)/pnts3D.at<double>(3,0);
-    return true;
-  }
   F = (cv::Mat_<double>(3, 3)); // Fundamental Matrix3x3
   getFundamentalMatrix(P0,P1,F);
 
@@ -133,6 +122,85 @@ bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, in
   pt_out.y = pnts3D.at<double>(1,0)/pnts3D.at<double>(3,0);
   pt_out.z = pnts3D.at<double>(2,0)/pnts3D.at<double>(3,0);
 
+  return true;
+}
+
+bool triangulate_dlt(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, int idx2)
+{
+  cv::Mat cam2world1, cam2world2, origin1, origin2, P0, P1;
+  cv::Mat T1, T2, K1, K2, F;
+  cv::Point2d pt1, pt2;
+  boris_drone::Pose3D pose1, pose2;
+  Camera cam1, cam2;
+  std::vector<cv::Point2d> cam0pnts,cam1pnts;
+  cv::Mat pnts3D(4,1,CV_64F);
+  pt1 = kf1->img_points[idx1];  pose1 = kf1->pose;  cam1 = kf1->camera;
+  pt2 = kf2->img_points[idx2];  pose2 = kf2->pose;  cam2 = kf2->camera;
+  getCameraPositionMatrices(pose1, cam2world1, origin1, true);
+  getCameraPositionMatrices(pose2, cam2world2, origin2, true);
+  K1 = cam1.get_K();
+  K2 = cam2.get_K();
+  T1 = (cv::Mat_<double>(3, 4) << 1, 0, 0, -origin1.at<double>(0,0),
+                                  0, 1, 0, -origin1.at<double>(1,0),
+                                  0, 0, 1, -origin1.at<double>(2,0)
+  );
+  T2 = (cv::Mat_<double>(3, 4) << 1, 0, 0, -origin2.at<double>(0,0),
+                                  0, 1, 0, -origin2.at<double>(1,0),
+                                  0, 0, 1, -origin2.at<double>(2,0)
+  );
+  P0 = K1*cam2world1.t()*T1;
+  P1 = K2*cam2world2.t()*T2;
+  cam0pnts.push_back(pt1);
+  cam1pnts.push_back(pt2);
+  cv::triangulatePoints(P0,P1,cam0pnts,cam1pnts,pnts3D);
+
+  pt_out.x = pnts3D.at<double>(0,0)/pnts3D.at<double>(3,0);
+  pt_out.y = pnts3D.at<double>(1,0)/pnts3D.at<double>(3,0);
+  pt_out.z = pnts3D.at<double>(2,0)/pnts3D.at<double>(3,0);
+  return true;
+}
+
+bool triangulate_midpoint(cv::Point3d& pt_out, Keyframe *kf1, Keyframe *kf2, int idx1, int idx2)
+{
+  //Midpoint method : http://geomalgorithms.com/a07-_distance.html
+  double angleThresh = PI/40;
+
+  /* get coordinates */
+  cv::Mat cam2world1, cam2world2, origin1, origin2;
+  cv::Point2d pt1,pt2;
+  Camera cam1, cam2;
+  boris_drone::Pose3D pose1, pose2;
+  pt1 = kf1->img_points[idx1];  pose1 = kf1->pose;  cam1 = kf1->camera;
+  pt2 = kf2->img_points[idx2];  pose2 = kf2->pose;  cam2 = kf2->camera;
+  getCameraPositionMatrices(pose1, cam2world1, origin1, true);
+  getCameraPositionMatrices(pose2, cam2world2, origin2, true);
+
+  /* compute point coordinates in calibrated image coordinates (=rays in camera coordinates) */
+  cv::Mat ray1_cam = (cv::Mat_<double>(3, 1) << (pt1.x - cam1.cx) / cam1.fx,
+                                                (pt1.y - cam1.cy) / cam1.fy, 1);
+  cv::Mat ray2_cam = (cv::Mat_<double>(3, 1) << (pt2.x - cam2.cx) / cam2.fx,
+                                                (pt2.y - cam2.cy) / cam2.fy, 1);
+  /* convert to world coordinates */
+  cv::Mat ray1 = cam2world1 * ray1_cam;
+  cv::Mat ray2 = cam2world2 * ray2_cam;
+
+  /* compute closest points on both rays and take midpoint*/
+  double a,b,c,d,e,k1,k2,denominator;
+  cv::Mat p1, p2, temp;
+  temp = ray1.t() * ray1; a = temp.at<double>(0, 0);
+  temp = ray1.t() * ray2; b = temp.at<double>(0, 0);
+  temp = ray2.t() * ray2; c = temp.at<double>(0, 0);
+  temp = ray1.t() * (origin1 - origin2); d = temp.at<double>(0, 0);
+  temp = ray2.t() * (origin1 - origin2); e = temp.at<double>(0, 0);
+  denominator = (a*c) - (b*b);
+  k1 = ((b*e) - (c*d))/denominator;
+  k2 = ((a*e) - (b*d))/denominator;
+  p1 = origin1 + k1*ray1;
+  p2 = origin2 + k2*ray2;
+
+  pt_out.x = (p1.at<double>(0, 0) + p2.at<double>(0,0))/2;
+  pt_out.y = (p1.at<double>(1, 0) + p2.at<double>(1,0))/2;
+  pt_out.z = (p1.at<double>(2, 0) + p2.at<double>(2,0))/2;
   return true;
 }
 

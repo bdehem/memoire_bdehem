@@ -21,14 +21,17 @@ Map::Map(ros::NodeHandle* nh) : cloud(new pcl::PointCloud< pcl::PointXYZ >())
   ros::param::get("~threshold_kf_match", threshold_kf_match);
   ros::param::get("~max_matches", max_matches);
   ros::param::get("~no_bundle_adjustment", no_bundle_adjustment);
-  ros::param::get("~naive_triangulation", naive_triangulation);
-
+  ros::param::get("~dlt_triangulation", dlt_triangulation);
+  ros::param::get("~midpoint_triangulation", midpoint_triangulation);
   ROS_INFO("init map");
   // define some threshold used later
   // better if defined in the launch file
   frame_counter = 0;
   is_adjusting_bundle     = false;
   second_keyframe_pending = false;
+  triangtime = 0.0;
+  nptstriang =0;
+
   camera = Camera(true);
   // get camera parameters in launch file
   if (!Read::CamMatrixParams("cam_matrix"))
@@ -175,6 +178,7 @@ void Map::matchKeyframes(Keyframe* kf0, Keyframe* kf1)
   matchDescriptors(kf0->descriptors, kf1->descriptors, idx_kf0, idx_kf1, threshold_kf_match, max_matches);
   nmatch = idx_kf0.size();
   ROS_INFO("%d matches over threshold",nmatch);
+  TIC(triang)
   for (i = 0; i<nmatch; i++)
   {
     ROS_DEBUG("indices of match %d are %d and %d",i,idx_kf0[i],idx_kf1[i]);
@@ -183,7 +187,13 @@ void Map::matchKeyframes(Keyframe* kf0, Keyframe* kf1)
     ROS_DEBUG("IDs of match %d are %d and %d",i,ptID_kf0,ptID_kf1);
     if ((ptID_kf0==-1) && (ptID_kf1==-1))
     {
-      triangulate(point3D, kf0, kf1, idx_kf0[i], idx_kf1[i], naive_triangulation);
+      nptstriang++;
+      if (dlt_triangulation)
+        triangulate_dlt(point3D, kf0, kf1, idx_kf0[i], idx_kf1[i]);
+      else if (midpoint_triangulation)
+        triangulate_midpoint(point3D, kf0, kf1, idx_kf0[i], idx_kf1[i]);
+      else
+        triangulate(point3D, kf0, kf1, idx_kf0[i], idx_kf1[i]);
       ptID = addPoint(point3D, kf0->descriptors.rowRange(idx_kf0[i],idx_kf0[i]+1));
       setPointAsSeen(ptID, kf0->ID, idx_kf0[i]);
       setPointAsSeen(ptID, kf1->ID, idx_kf1[i]);
@@ -197,6 +207,7 @@ void Map::matchKeyframes(Keyframe* kf0, Keyframe* kf1)
       setPointAsSeen(ptID_kf0, kf1->ID, idx_kf1[i]);
     }
   }
+  triangtime += TOC(triang);
   ROS_INFO("finished matching keyframe %d with keyframe %d. There are %d matching points",kf0->ID, kf1->ID, nmatch);
 }
 
@@ -228,7 +239,10 @@ void Map::newKeyframe(const Frame& frame, const boris_drone::Pose3D& pose, bool 
 
   ROS_INFO("\t Map now has %lu points",this->cloud->points.size());
   if (no_bundle_adjustment)
+  {
+    ROS_INFO("total triang time = %f for %d points",triangtime,nptstriang);
     return;
+  }
   doBundleAdjustment(keyframes_to_adjust,true);
 }
 

@@ -12,14 +12,14 @@
 struct Camera
 {
 private:
-  double fx, fy, cx, cy; //focal lengths and image centers
-  double W, H; //width ad height
   //! This method initializes planes defining the visible area from the camera (according to camera parameters)
   void initPlanes();
   cv::Mat K; //Intrinsic camera matrix
   cv::Mat R; //Rotation matrix camera to drone
 
 public:
+  double fx, fy, cx, cy; //focal lengths and image centers
+  double W, H; //width ad height
 
   cv::Mat cam_plane_top;
   cv::Mat cam_plane_bottom;

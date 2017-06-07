@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.3.17)  4 JUN 2017 18:05
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.3.17)  7 JUN 2017 10:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1059,7 +1059,15 @@ Package biblatex Info: Automatic encoding selection.
 
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
-(./main.bbl)
+(./main.bbl
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                kanatani
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+)
 Package biblatex Info: Reference section=0 on input line 31.
 Package biblatex Info: Reference segment=0 on input line 31.
  (/usr/share/texlive/texmf-dist/tex/latex/glossaries/dict/glossaries-dictionary-English.dict
@@ -1075,34 +1083,118 @@ Package gensymb Info: Using text companion symbols for \degree, \celsius and \pe
 LaTeX Info: Redefining \ohm on input line 31.
 Package gensymb Info: Using \textohm for \ohm on input line 31.
 Package gensymb Info: Using \textmu for \micro on input line 31.
- (./main.acr) [1
+ (./main.toc
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 7.
+ (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
+File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 7.
+ (/usr/share/texmf/tex/latex/lm/omllmm.fd
+File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 7.
+ (/usr/share/texmf/tex/latex/lm/omslmsy.fd
+File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 7.
+ (/usr/share/texmf/tex/latex/lm/omxlmex.fd
+File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10.95> on input line 7.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 7.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 7.
+LaTeX Font Info:    Try loading font information for TS1+lmr on input line 7.
+ (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+) [1
 
 \openout4 = `main.ist'.
 
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}])
+\tf@toc=\write6
+\openout6 = `main.toc'.
+
+ (./main.acr [2]) [3
+
+]
 Chapter 1.
-(./chapters/introduction.tex <images/kettering_bug.jpg, id=9, 163.10938pt x 147.04938pt>
+(./chapters/introduction.tex <images/kettering_bug.jpg, id=15, 163.10938pt x 147.04938pt>
 File: images/kettering_bug.jpg Graphic file (type jpg)
  <use images/kettering_bug.jpg>
 Package pdftex.def Info: images/kettering_bug.jpg used on input line 6.
 (pdftex.def)             Requested size: 227.62206pt x 205.22821pt.
- [2
+ [4
 
- <./images/kettering_bug.jpg>] [3]
-LaTeX Font Info:    Try loading font information for TS1+lmr on input line 34.
- (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
-File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)) [4]
+ <./images/kettering_bug.jpg>] [5]) [6]
 Chapter 2.
-(./chapters/chapter02.tex [5
+(./chapters/chapter02.tex [7
 
-]) [6]
+]) [8]
+Chapter 3.
+(./chapters/chapter03.tex
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 10.
+ (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+Package microtype Info: Loading generic settings for font family
+(microtype)             `lmtt' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+) [9
+
+]
+Chapter 4.
+(./chapters/chapter04.tex) [10
+
+]
+Chapter 5.
+(./chapters/chapter05.tex [11
+
+]
+Overfull \hbox (32.4894pt too wide) in paragraph at lines 25--33
+ [] 
+ []
+
+Package epstopdf Info: Source file: <images/benchmark_setup.eps>
+(epstopdf)                    date: 2017-06-03 21:51:17
+(epstopdf)                    size: 24215 bytes
+(epstopdf)             Output file: <images/benchmark_setup-eps-converted-to.pdf>
+(epstopdf)                    date: 2017-06-03 21:51:48
+(epstopdf)                    size: 10979 bytes
+(epstopdf)             Command: <repstopdf --outfile=images/benchmark_setup-eps-converted-to.pdf images/benchmark_setup.eps>
+(epstopdf)             \includegraphics on input line 47.
+Package epstopdf Info: Output file is already uptodate.
+<images/benchmark_setup-eps-converted-to.pdf, id=46, 375.4025pt x 251.94125pt>
+File: images/benchmark_setup-eps-converted-to.pdf Graphic file (type pdf)
+ <use images/benchmark_setup-eps-converted-to.pdf>
+Package pdftex.def Info: images/benchmark_setup-eps-converted-to.pdf used on input line 47.
+(pdftex.def)             Requested size: 375.40158pt x 251.94063pt.
+ [12]) [13 <./images/benchmark_setup-eps-converted-to.pdf>]
+Chapter 6.
+(./chapters/chapter06.tex) [14
+
+]
+Chapter 7.
+(./chapters/chapter07.tex) [15
+
+]
+Chapter 8.
+(./chapters/conclusion.tex) [16
+
+]
 Overfull \hbox (56.74625pt too wide) in paragraph at lines 80--80
 []\T1/lmr/m/n/10.95 (-20) Richard Voyles. \T1/lmr/m/it/10.95 (-20) Dex-ter-ous Hexro-tor Re-search\T1/lmr/m/n/10.95 (-20) . http://web.ics.purdue.edu/ rvoyles/research.Hexrotor.html. 
  []
 
-[7
+[17
+
+]
+Appendix A.
+(./chapters/appendix.tex) [18
 
 ] (./main.aux)
 Package logreq Info: Writing requests to 'main.run.xml'.
@@ -1110,18 +1202,18 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 14701 strings out of 494985
- 232428 string characters out of 6180356
- 717467 words of memory out of 5000000
- 17562 multiletter control sequences out of 15000+600000
- 42368 words of font info for 62 fonts, out of 8000000 for 9000
+ 14906 strings out of 494985
+ 236298 string characters out of 6180356
+ 720513 words of memory out of 5000000
+ 17684 multiletter control sequences out of 15000+600000
+ 61901 words of font info for 89 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 46i,7n,49p,1707b,1415s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb>
-Output written on main.pdf (7 pages, 166934 bytes).
+ 46i,9n,49p,1707b,1572s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb>
+Output written on main.pdf (18 pages, 219716 bytes).
 PDF statistics:
- 49 PDF objects out of 1000 (max. 8388607)
- 34 compressed objects within 1 object stream
+ 107 PDF objects out of 1000 (max. 8388607)
+ 75 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 10758 words of extra memory for PDF output out of 12000 (max. 10000000)
+ 17419 words of extra memory for PDF output out of 20736 (max. 10000000)
 

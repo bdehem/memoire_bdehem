@@ -76,6 +76,8 @@ private:
   static int point_ID_counter;//
   double threshold_kf_match;
   int    max_matches;
+  double triangtime;
+  int    nptstriang;
 
   //Nodehandle and publisher to communicate with bundle adjuster
   ros::NodeHandle* nh;
@@ -90,7 +92,8 @@ private:
   bool use_2D_noise;
   bool use_3D_noise;
   bool no_bundle_adjustment;
-  bool naive_triangulation;
+  bool dlt_triangulation;
+  bool midpoint_triangulation;
   std::vector<double> BA_times_pass1;
   std::vector<double> BA_times_pass2;
 
