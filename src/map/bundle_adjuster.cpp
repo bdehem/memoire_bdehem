@@ -111,57 +111,33 @@ struct SnavelyReprojectionError {
 };
 
 struct SemiFixedCameraError {
-  SemiFixedCameraError(double x, double y, double z, double rotX, double rotY, double rotZ)
-      : x(x), y(y), z(z), rotX(rotX), rotY(rotY), rotZ(rotZ) {}
+  SemiFixedCameraError(double x, double y, double z, double rotX, double rotY, double rotZ, int nobs, int ncam)
+      : x(x), y(y), z(z), rotX(rotX), rotY(rotY), rotZ(rotZ), nobs(nobs), ncam(ncam) {}
   template <typename T>
   bool operator()(const T* const camera,
                   T* residuals) const {
-    double weight_x = 0.1  ; double weight_rotX = 15.0;
-    double weight_y = 0.1  ; double weight_rotY = 15.0;
-    double weight_z = 15.0 ; double weight_rotZ = 0.1 ;
+    double weight_x = 0.0  ; double weight_rotX = 0.15 ;
+    double weight_y = 0.0  ; double weight_rotY = 0.15 ;
+    double weight_z = 0.25 ; double weight_rotZ = 0.0  ;
 
-    residuals[0] = weight_x    * (camera[3] - x);
-    residuals[1] = weight_y    * (camera[4] - y);
-    residuals[2] = weight_z    * (camera[5] - z);
-    residuals[3] = weight_rotX * (camera[0] - rotX);
-    residuals[4] = weight_rotY * (camera[1] - rotY);
-    residuals[5] = weight_rotZ * (camera[2] - rotZ);
+    residuals[0] = weight_x    * ((double)nobs/(double)ncam) * (camera[3] - x);
+    residuals[1] = weight_y    * ((double)nobs/(double)ncam) * (camera[4] - y);
+    residuals[2] = weight_z    * ((double)nobs/(double)ncam) * (camera[5] - z);
+    residuals[3] = weight_rotX * ((double)nobs/(double)ncam) * (camera[0] - rotX);
+    residuals[4] = weight_rotY * ((double)nobs/(double)ncam) * (camera[1] - rotY);
+    residuals[5] = weight_rotZ * ((double)nobs/(double)ncam) * (camera[2] - rotZ);
     return true;
   }
   // Factory to hide the construction of the CostFunction object from
   // the client code.
   static ceres::CostFunction* Create(const double x, const double y, const double z,
-                    const double rotX, const double rotY, const double rotZ) {
+                    const double rotX, const double rotY, const double rotZ, const int nobs, const int ncam) {
     return (new ceres::AutoDiffCostFunction<SemiFixedCameraError, 6, 6>(
-                new SemiFixedCameraError(x, y, z, rotX, rotY, rotZ)));
+                new SemiFixedCameraError(x, y, z, rotX, rotY, rotZ, nobs, ncam)));
   }
   double x; double y; double z; double rotX; double rotY; double rotZ;
+  int nobs; int ncam;
 };
-
-
-struct SemiFixedCameraError2 {
-  SemiFixedCameraError2(double z, double rotX, double rotY)
-      : z(z), rotX(rotX), rotY(rotY) {}
-  template <typename T>
-  bool operator()(const T* const camera,
-                  T* residuals) const {
-    double weight_z    = 15.0 ;
-    double weight_rotX = 15.0;
-    double weight_rotY = 15.0;
-    residuals[0] = weight_z    * (camera[5] - z);
-    residuals[1] = weight_rotX * (camera[0] - rotX);
-    residuals[2] = weight_rotY * (camera[1] - rotY);
-    return true;
-  }
-  // Factory to hide the construction of the CostFunction object from
-  // the client code.
-  static ceres::CostFunction* Create(const double z, const double rotX, const double rotY) {
-    return (new ceres::AutoDiffCostFunction<SemiFixedCameraError2, 6, 6>(
-                new SemiFixedCameraError2(z, rotX, rotY)));
-  }
-  double z; double rotX; double rotY;
-};
-
 
 BundleAdjuster::BundleAdjuster()
 {
@@ -240,8 +216,10 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   double* camera;
   double* point;
   ceres::Problem problem;
+  int nobs = bal_problem.num_observations();
+  int ncam = bal_problem.num_cameras_;
   ceres::CostFunction* cost_function;
-  for (int i = 0; i < bal_problem.num_observations(); ++i) {
+  for (int i = 0; i < nobs; ++i) {
     camera = bal_problem.mutable_camera_for_observation(i);
     point  = bal_problem.mutable_point_for_observation(i);
     x = bal_problem.observations()[2 * i + 0];
@@ -255,11 +233,10 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   problem.SetParameterBlockConstant(bal_problem.mutable_camera(0));
 
   //This causes drift: TODO fix
-  for (int i = 1; i < bal_problem.num_cameras_; ++i)
+  for (int i = 1; i < ncam; ++i)
   {
     camera = bal_problem.mutable_camera_for_observation(i);
-    cost_function = SemiFixedCameraError::Create(camera[3],camera[4],camera[5],camera[0],camera[1],camera[2]);
-    //cost_function = SemiFixedCameraError2::Create(camera[5],camera[0],camera[1]);
+    cost_function = SemiFixedCameraError::Create(camera[3],camera[4],camera[5],camera[0],camera[1],camera[2],nobs,ncam);
     problem.AddResidualBlock(cost_function, NULL, camera);
   }
   std::vector<double> cost_of_point;

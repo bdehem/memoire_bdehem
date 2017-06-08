@@ -25,6 +25,7 @@ Map::Map(ros::NodeHandle* nh) : cloud(new pcl::PointCloud< pcl::PointXYZ >())
   ros::param::get("~midpoint_triangulation", midpoint_triangulation);
   ROS_INFO("init map");
 
+  ROS_INFO("use 2D noise ? %s. Use 3D noise? %s",use_2D_noise?"true":"false",use_3D_noise?"true":"false");
   // define some threshold used later
   // better if defined in the launch file
   frame_counter = 0;
