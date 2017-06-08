@@ -61,7 +61,7 @@ bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, in
 
   //These are the camera projection matrices:
   // If p is a world point in 3D in the world coordinates,
-  // then P0*p are the image coordinates of the world point
+  // then P0*p are the (homogenous) image coordinates of the world point
   P0 = K1*cam2world1.t()*T1;
   P1 = K2*cam2world2.t()*T2;
 
