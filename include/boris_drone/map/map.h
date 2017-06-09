@@ -94,7 +94,9 @@ private:
   bool no_bundle_adjustment;
   bool dlt_triangulation;
   bool midpoint_triangulation;
-  double remove_point_threshold;
+  double rpt2;//remove_point_threshold
+  double rpt3;
+  double rpt4;
   std::vector<double> BA_times_pass1;
   std::vector<double> BA_times_pass2;
 

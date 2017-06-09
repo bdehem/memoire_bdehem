@@ -12,10 +12,12 @@
   <arg name="test_robustness"        default="false"/>
   <arg name="bundle_adjustment_tol"  default="0.05"/>
   <arg name="quiet_ba"               default="false" />
-  <arg name="remove_point_threshold" default="1.0" />
+  <arg name="rpt2"                   default="-1" />
+  <arg name="rpt3"                   default="-1" />
+  <arg name="rpt4"                   default="-1" />
 
   <arg name="file_out"
-    default="result_$(arg file_in)_robust_$(arg test_robustness)_rpt_$(arg remove_point_threshold)"/>
+    default="result_$(arg file_in)_robust_$(arg test_robustness)_rpt2_$(arg rpt2)_rpt3_$(arg rpt3)_rpt4_$(arg rpt4)_batol_$(arg bundle_adjustment_tol)_thresh_$(arg threshold)_maxmatch_$(arg max_matches)"/>
 <!--
   <arg name="file_out"               default="result_$(arg file_in)_robust_$(arg test_robustness)_tol_$(arg bundle_adjustment_tol)_noBA_$(arg no_bundle_adjustment)_dlt_$(arg dlt_triangulation)_mid_$(arg midpoint_triangulation)" />
 -->

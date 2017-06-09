@@ -23,7 +23,9 @@ Map::Map(ros::NodeHandle* nh) : cloud(new pcl::PointCloud< pcl::PointXYZ >())
   ros::param::get("~no_bundle_adjustment", no_bundle_adjustment);
   ros::param::get("~dlt_triangulation", dlt_triangulation);
   ros::param::get("~midpoint_triangulation", midpoint_triangulation);
-  ros::param::get("~remove_point_threshold", remove_point_threshold);
+  ros::param::get("~rpt2", rpt2);
+  ros::param::get("~rpt3", rpt3);
+  ros::param::get("~rpt4", rpt4);
   ROS_INFO("init map");
 
 
@@ -601,15 +603,13 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     n_kf_pt = landmarks[ptID]->keyframes_seeing.size();
     switch(n_kf_pt){
       case 2  :
-        remove_point = (bundlePtr->cost_of_point[i]>remove_point_threshold);
+        remove_point = rpt2 < 0 ? false : (bundlePtr->cost_of_point[i]>rpt2);
         break;
       case 3  :
-        remove_point = (bundlePtr->cost_of_point[i]>1.0);
-        remove_point = false;
+        remove_point = rpt3 < 0 ? false : (bundlePtr->cost_of_point[i]>rpt3);
         break;
       case 4  :
-        remove_point = (bundlePtr->cost_of_point[i]>5.0);
-        remove_point = false;
+        remove_point = rpt4 < 0 ? false : (bundlePtr->cost_of_point[i]>rpt4);
         break;
       default :
         remove_point = false;
