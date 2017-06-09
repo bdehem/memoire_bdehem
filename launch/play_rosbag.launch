@@ -10,10 +10,15 @@
   <arg name="dlt_triangulation"      default="false"/>
   <arg name="midpoint_triangulation" default="false"/>
   <arg name="test_robustness"        default="false"/>
-  <arg name="bundle_adjustment_tol"  default="0.005"/>
+  <arg name="bundle_adjustment_tol"  default="0.05"/>
   <arg name="quiet_ba"               default="false" />
-  <arg name="file_out"               default="result_$(arg file_in)_robust_$(arg test_robustness)_tol_$(arg bundle_adjustment_tol)_noBA_$(arg no_bundle_adjustment)_dlt_$(arg dlt_triangulation)_mid_$(arg midpoint_triangulation)" />
+  <arg name="remove_point_threshold" default="1.0" />
 
+  <arg name="file_out"
+    default="result_$(arg file_in)_robust_$(arg test_robustness)_rpt_$(arg remove_point_threshold)"/>
+<!--
+  <arg name="file_out"               default="result_$(arg file_in)_robust_$(arg test_robustness)_tol_$(arg bundle_adjustment_tol)_noBA_$(arg no_bundle_adjustment)_dlt_$(arg dlt_triangulation)_mid_$(arg midpoint_triangulation)" />
+-->
   <!-- IPv4 address of your drones -->
   <arg name="drone_name" default="arnold" />
   <arg name="mb1_ip" default="192.168.1.1" />
@@ -44,6 +49,7 @@
     <param name="no_bundle_adjustment"   value="$(arg no_bundle_adjustment)"/>
     <param name="dlt_triangulation"      value="$(arg dlt_triangulation)"/>
     <param name="midpoint_triangulation" value="$(arg midpoint_triangulation)"/>
+    <param name="remove_point_threshold" value="$(arg remove_point_threshold)"/>
   </node>
 
   <node name="boris_drone_bundle_adjuster" pkg="boris_drone" type="bundle_adjuster" output="screen">

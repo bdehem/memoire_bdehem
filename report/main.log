@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.3.17)  8 JUN 2017 13:02
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.3.17)  9 JUN 2017 16:13
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1365,12 +1365,14 @@ Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 282.
 )
 \Hy@SectionHShift=\skip81
+) (/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+\bigstrutjot=\dimen198
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 21.
+Package hyperref Info: Option `colorlinks' set `true' on input line 22.
 \glo@acronym@file=\write5
 \openout5 = `main.acn'.
 
-Package glossaries Info: Writing glossary file main.acn on input line 43.
+Package glossaries Info: Writing glossary file main.acn on input line 44.
 Package biblatex Info: Trying to load language 'english'...
 Package biblatex Info: ... file 'english.lbx' found.
  (/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/english.lbx
@@ -1383,31 +1385,31 @@ Package csquotes Info: Redefining alias 'default' -> 'english'.
  (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 44.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 44.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 45.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 45.
  (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 44.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 45.
  (/usr/share/texmf/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Info: Redefining \microtypecontext on input line 44.
+LaTeX Info: Redefining \microtypecontext on input line 45.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1422,13 +1424,13 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (
 ) (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count363
-\scratchdimen=\dimen198
+\scratchdimen=\dimen199
 \scratchbox=\box57
 \nofMPsegments=\count364
 \nofMParguments=\count365
 \everyMPshowfont=\toks39
 \MPscratchCnt=\count366
-\MPscratchDim=\dimen199
+\MPscratchDim=\dimen200
 \MPnumerator=\count367
 \makeMPintoPDFobject=\count368
 \everyMPtoPDFconversion=\toks40
@@ -1493,8 +1495,8 @@ Package biblatex Warning: The following entry could not be found
 (biblatex)                LaTeX afterwards.
 
 )
-Package biblatex Info: Reference section=0 on input line 44.
-Package biblatex Info: Reference segment=0 on input line 44.
+Package biblatex Info: Reference section=0 on input line 45.
+Package biblatex Info: Reference segment=0 on input line 45.
  (/usr/share/texlive/texmf-dist/tex/latex/glossaries/dict/glossaries-dictionary-English.dict
 Dictionary: glossaries-dictionary, Language: English 
 ) (/usr/share/texmf/tex/latex/beamer/base/translator/dicts/translator-basic-dictionary/translator-basic-dictionary-English.dict
@@ -1502,19 +1504,19 @@ Dictionary: translator-basic-dictionary, Language: English
 ) (./main.glsdefs)
 \symgns@font=\mathgroup4
 LaTeX Font Info:    Overwriting symbol font `gns@font' in version `bold'
-(Font)                  TS1/lmr/m/n --> TS1/lmr/bx/n on input line 44.
-Package gensymb Info: Math companion symbols declared on input line 44.
-LaTeX Info: Redefining \degree on input line 44.
-LaTeX Info: Redefining \celsius on input line 44.
-Package gensymb Info: Using text companion symbols for \degree, \celsius and \perthousand on input line 44.
-LaTeX Info: Redefining \ohm on input line 44.
-Package gensymb Info: Using \textohm for \ohm on input line 44.
-Package gensymb Info: Using \textmu for \micro on input line 44.
+(Font)                  TS1/lmr/m/n --> TS1/lmr/bx/n on input line 45.
+Package gensymb Info: Math companion symbols declared on input line 45.
+LaTeX Info: Redefining \degree on input line 45.
+LaTeX Info: Redefining \celsius on input line 45.
+Package gensymb Info: Using text companion symbols for \degree, \celsius and \perthousand on input line 45.
+LaTeX Info: Redefining \ohm on input line 45.
+Package gensymb Info: Using \textohm for \ohm on input line 45.
+Package gensymb Info: Using \textmu for \micro on input line 45.
  (/usr/share/texlive/texmf-dist/tex/latex/siunitx/config/siunitx-abbreviations.cfg
 File: siunitx-abbreviations.cfg 2013/07/31 v2.5s siunitx: Abbreviated units
 )
 \AtBeginShipoutBox=\box58
-Package hyperref Info: Link coloring ON on input line 44.
+Package hyperref Info: Link coloring ON on input line 45.
  (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
  (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
@@ -1522,41 +1524,41 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count369
 )
-LaTeX Info: Redefining \ref on input line 44.
-LaTeX Info: Redefining \pageref on input line 44.
-LaTeX Info: Redefining \nameref on input line 44.
+LaTeX Info: Redefining \ref on input line 45.
+LaTeX Info: Redefining \pageref on input line 45.
+LaTeX Info: Redefining \nameref on input line 45.
  (./main.out) (./main.out)
 \@outlinefile=\write6
 \openout6 = `main.out'.
 
 \c__siunitx_mathsf_int=\count370
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 44.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 45.
  (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 44.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 45.
  (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 44.
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 45.
  (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 44.
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 45.
  (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 44.
+(Font)              <10.95> on input line 45.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 44.
+(Font)              <8> on input line 45.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 44.
-LaTeX Font Info:    Try loading font information for TS1+lmr on input line 44.
+(Font)              <6> on input line 45.
+LaTeX Font Info:    Try loading font information for TS1+lmr on input line 45.
  (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OT1+lmss on input line 44.
+LaTeX Font Info:    Try loading font information for OT1+lmss on input line 45.
  (/usr/share/texmf/tex/latex/lm/ot1lmss.fd
 File: ot1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -1565,7 +1567,7 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 \c__siunitx_mathtt_int=\count371
-LaTeX Font Info:    Try loading font information for OT1+lmtt on input line 44.
+LaTeX Font Info:    Try loading font information for OT1+lmtt on input line 45.
  (/usr/share/texmf/tex/latex/lm/ot1lmtt.fd
 File: ot1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -1585,7 +1587,7 @@ Package epstopdf Info: Source file: <images/benchmark_setup.eps>
 (epstopdf)             Command: <repstopdf --outfile=images/benchmark_setup-eps-converted-to.pdf images/benchmark_setup.eps>
 (epstopdf)             \includegraphics on input line 12.
 Package epstopdf Info: Output file is already uptodate.
- <images/benchmark_setup-eps-converted-to.pdf, id=70, 375.4025pt x 251.94125pt>
+ <images/benchmark_setup-eps-converted-to.pdf, id=74, 375.4025pt x 251.94125pt>
 File: images/benchmark_setup-eps-converted-to.pdf Graphic file (type pdf)
  <use images/benchmark_setup-eps-converted-to.pdf>
 Package pdftex.def Info: images/benchmark_setup-eps-converted-to.pdf used on input line 12.
@@ -1597,234 +1599,29 @@ Package pdftex.def Info: images/benchmark_setup-eps-converted-to.pdf used on inp
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2 <./images/benchmark_setup-eps-converted-to.pdf>]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 37.
+(Font)              <10> on input line 38.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 37.
+(Font)              <7> on input line 38.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 37.
+(Font)              <5> on input line 38.
 
-Overfull \hbox (44.444pt too wide) detected at line 39
- \T1/lmr/m/n/10 Computat
- []
-
-
-Overfull \hbox (10.5555pt too wide) detected at line 39
-\T1/lmr/m/n/10 on 
+Overfull \hbox (16.62169pt too wide) in paragraph at lines 40--40
+[]|\T1/lmr/m/n/10 (-20) Computation 
  []
 
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 40.
-
-Overfull \hbox (3.889pt too wide) detected at line 41
- \T1/lmr/m/n/10 t
- []
-
-
-Overfull \hbox (24.5pt too wide) detected at line 41
-\T1/lmr/m/n/10 me([]) 
- []
-
-
-Overfull \hbox (44.444pt too wide) detected at line 59
- \T1/lmr/m/n/10 Computat
- []
-
-
-Overfull \hbox (41.44447pt too wide) detected at line 59
-\T1/lmr/m/n/10 ontime([]) 
- []
-
-
-Overfull \hbox (3.889pt too wide) detected at line 61
- \T1/lmr/m/n/10 t
- []
-
-
-Overfull \hbox (24.5pt too wide) detected at line 61
-\T1/lmr/m/n/10 me([]) 
- []
-
+(Font)              <9> on input line 41.
 [3]
-Overfull \hbox (5.0pt too wide) detected at line 78
- 
+Overfull \hbox (13.64398pt too wide) in paragraph at lines 95--95
+[]|\T1/lmr/m/n/10 (-20) Convergence 
  []
 
 
-Overfull \hbox (5.0pt too wide) detected at line 78
- 
+Overfull \hbox (2.73245pt too wide) in paragraph at lines 95--95
+\T1/lmr/m/n/10 (-20) Threshold|  
  []
 
-
-Overfull \hbox (5.0pt too wide) detected at line 79
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 79
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 80
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 80
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 81
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 81
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 82
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 82
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 83
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 83
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 84
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 84
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 85
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 85
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 86
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 86
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 87
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 87
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 88
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 88
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 89
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 89
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 90
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 90
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 90
- 
- []
-
-
-Overfull \hbox (11.66663pt too wide) detected at line 91
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 91
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 91
- 
- []
-
-
-Overfull \hbox (16.66663pt too wide) detected at line 92
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 92
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 92
- 
- []
-
-
-Overfull \hbox (23.33325pt too wide) detected at line 93
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 93
- 
- []
-
-
-Overfull \hbox (5.0pt too wide) detected at line 93
- 
- []
-
-[4]) [5] [6]
+[4] [5]) [6]
 Chapter 2.
 (./chapters/chapter06.tex) [7
 
@@ -1850,33 +1647,33 @@ Appendix A.
 Package glossaries Warning: No \printglossary or \printglossaries found.
 This document will not have a glossary.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 102.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 103.
 [11
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 102.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 103.
  (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 102.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 102.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 103.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 103.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 5CA94B5916636A62C3B485587682A9E0;1034.
+(rerunfilecheck)             Checksum: 0469E0077792A60CDA115C359D124303;1106.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 26193 strings out of 494985
- 478018 string characters out of 6180356
- 946100 words of memory out of 5000000
- 28794 multiletter control sequences out of 15000+600000
- 98902 words of font info for 126 fonts, out of 8000000 for 9000
+ 26217 strings out of 494985
+ 478449 string characters out of 6180356
+ 941298 words of memory out of 5000000
+ 28806 multiletter control sequences out of 15000+600000
+ 102143 words of font info for 130 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 46i,14n,49p,10417b,1458s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb>
-Output written on main.pdf (11 pages, 173439 bytes).
+ 46i,12n,49p,10417b,1458s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb>
+Output written on main.pdf (11 pages, 209710 bytes).
 PDF statistics:
- 184 PDF objects out of 1000 (max. 8388607)
- 158 compressed objects within 2 object streams
- 34 named destinations out of 1000 (max. 500000)
- 38022 words of extra memory for PDF output out of 42996 (max. 10000000)
+ 206 PDF objects out of 1000 (max. 8388607)
+ 177 compressed objects within 2 object streams
+ 35 named destinations out of 1000 (max. 500000)
+ 38542 words of extra memory for PDF output out of 42996 (max. 10000000)
 

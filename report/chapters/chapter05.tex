@@ -34,72 +34,95 @@ Using the evaluation procedure described in section \ref{evalproc}, we can compa
   \centering
   \caption{Comparison between triangulation methods}
   \small\addtolength{\tabcolsep}{-2pt}
+  \sisetup{round-mode=places, round-precision = 3}
   \begin{tabular}{ @{} l S[table-format=2.3] S[table-format=2.3] S[table-format=2.3] S[table-format=2.3] S[table-format=2.3] @{}  }
     \toprule
-    {}                 & \multicolumn{2}{c}{Precision} &  \multicolumn{2}{c}{Robustness} & Computation  \\
+    {}                 & \multicolumn{2}{c}{Accuracy} &  \multicolumn{2}{c}{Robustness} &   \multirow{2}{4em}{Computation Time (\si{\second})} \\
     {}                 & {\footnotesize Distance (\si{\meter})} & {\footnotesize Angle (\si{\radian})}
-    & {\footnotesize Distance (\si{\meter})} & {\footnotesize Angle (\si{\radian})} & time (\si{\second}) \\ \midrule
-    Midpoint Method    & 0.114        & 0.049          &  0.827        &  0.262          &  0.012  \\
-    Optimal Correction & 0.097        & 0.039          &  0.773        &  0.213          &  0.024  \\
-    \bottomrule
+    & {\footnotesize Distance (\si{\meter})} & {\footnotesize Angle (\si{\radian})} &   \\
+    \midrule
+    Midpoint Method    & \num{0.121729436669}  & \num{0.052339119893} & \num{0.844616151792} & \num{0.27019708855} & \num{0.012}\\
+    Optimal Correction & \num{0.0988557438948} & \num{0.0406436455673}& \num{0.775954169079} & \num{0.218538344815}& \num{0.024}\\
+      \bottomrule
   \end{tabular}
   \label{fig:triangcompare}
 \end{table}
-The computations were timed during the precision test, but these timings should be the same for the robustness tests. %TODO justify this
+
+
+The computations were timed during the accuracy test, but these timings should be the same for the robustness tests. %TODO justify this
 We can see that the optimal correction method is more performant, at the cost of being computationally heavier. We will see, however, that this computation time is negligible in comparison with the time taken for bundle adjustment. Therefore, we will use the optimal correction method to triangulate points.
 
 \section{Bundle Adjustment}
 Unfortunately the main source of errors when mapping points is not inaccuracy of the camera, but uncertainty on the camera's position. This is bad, as a bad estimation of the camera's position will result in badly located landmarks, which in turn will result in a bad estimation of the camera position. In the long term, errors will accumulate, and the map will be completely distorted. Luckily, if we have enough point correspondences between two images, it is possible to deduce the relative displacement between the two images. This means that from a set of images, we can reconstruct a scene, without even needing a prior estimation of the position of the cameras that took the images. This is good news as it means that the images can give us some absolute information about the scene, not only relative to the drone. The problem of adjusting camera positions and 3D point locations in order to minimize the reprojection errors of the 3D points onto the image planes is known as bundle adjustment. As stated above, bundle adjustment has the advantage of being absolute with respect to the world, and so not having errors accumulate. Another advantage of bundle adjustment, is that it can easily take into account points that are seen by more than two cameras, which is not trivial for the triangulation techniqhes described above. The main disadvantage of bundle adjustment is that it is computationally heavy, so it is important to adapt it to be useable un real time.\\
 To show the advantages of bundle adjustment, we compare it with triangulation using the optimal correction method. When using bundle adjustment, optimal correction triangulation is also used to obtain an initial solution, from which we optimize.
+
+
 \begin{table}[H]
   \centering
   \caption{Performance of Bundle Adjustment}
   \small\addtolength{\tabcolsep}{-2pt}
-  \begin{tabular}{ @{} l S[table-format=2.3] S[table-format=2.3] S[table-format=2.3] S[table-format=2.3] S[table-format=2.3] @{}  }    \toprule
-    {}      & \multicolumn{2}{c}{Precision} &  \multicolumn{2}{c}{Robustness} & Computation time (\si{\second}) \\
-    {}      & {\footnotesize Distance (\si{\meter})} & {\footnotesize Angle (\si{\radian})}
-    & {\footnotesize Distance (\si{\meter})} & {\footnotesize Angle (\si{\radian})} & time (\si{\second}) \\ \midrule
-    No Bundle Adjustment   & 0.097        & 0.039          &  0.773        &  0.213          &  0.024  \\
-    With Bundle Adjustment & 0.091        & 0.031          &  0.592        &  0.221          &  13.232\\
+  \sisetup{round-mode=places, round-precision = 3}
+  \begin{tabular}{ @{} l S[table-format=1.3] S[table-format=1.3] S[table-format=2.3] S[table-format=1.3] S[table-format=1.3] S[table-format=2.3] @{}  }
+    \toprule
+    {}      & \multicolumn{3}{c}{Accuracy} &  \multicolumn{3}{c}{Robustness} \\
+    {}      & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})}
+            & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})} \\
+    \midrule
+    No Bundle Adjustment  &\num{0.0988557438948}&\num{0.0406436455673}&  {\textemdash}    &\num{0.775954169079}&\num{0.218538344815}&  {\textemdash}      \\
+    With Bundle Adjustment&\num{0.0897626230568}&\num{0.029930165598} &\num{15.7027562261}&\num{1.37414105299} &\num{0.492183127143}&\num{13.8024009466}  \\
     \bottomrule
   \end{tabular}
-  \label{fig:bacompare}
+  \label{fig:bacompare2}
 \end{table}
-We see that bundle adjustment gives a significant improvement to the performance of the pose estimation. However, we see that the errors in the case of the robustness test are still quite high, with an average position error of \SI{59.2}{\centi\meter}, and an average orientation error of \SI{0.221}{\radian}. More importantly, the total time taken for bundle adjustment was a bit over \SI{13}{\second}, which is a prohibitively large amount of time for real time applications. The following parts of this section will be focused on reducing this time, and increasing the robustness of the mapping (measured by the performance under noisy pose estimation).
+
+
+We see that in the accuracy test, bundle adjustment gives a significant improvement to the performance of the pose estimation. In the robusteness test, however, bundle adjustment makes the results quite worse. This is surprising, as it is just in the case where the pose of the camera is uncertain that bundle adjustment should improve de result, by adjusting the pose of the camera. But because the problem is quite non linear, it is possible to fall in local minima. We will later see that by tuning the bundle adjustment phase, we can make it perform much better, and actually improve the results in the robustness test. The other big problem of bundle adjustment is the time it takes. In both tests, this time was over \SI{13}{\second}, which is a prohibitively large amount of time for real time applications. In addition to improving the performance on the robustness test, we will try to recude the time taken by the bundle adjustment.
+
+\section{Tuning the Bundle Adjustment}
+The main drawback of Bundle Adjustment is that it requires an iterative method to be solved and can take a lot of time, which of course is a limiting factor for a robot that builds a map in real time. Therefore it is important to optimize both the speed of the computations, and their accuracy. As is often the case, there will have to be a tradeoff between these two. To measure both the speed of the Bundle Adjustment and the accuracy of the map obtained, we will conduct some experiments using different parameters to initialize the map.
 
 \subsection{Convergence of the solver}
-The first element we can tune is the convergence criterion of the solver that solves the bundle adjustment problem. We will stop either when the ration of the change in the objective function to the value of this function arrives below some threshold. This ensures that the criterion scales with the problem, which is important as the size of the problem can vary during operation (as the map grows, for example). The default value of the Ceres solver is $10^{-6}$, but experimentally, we find that use a less severe threshold, to significantly speed up the computations, without impactig the quality of the results too much.
+The first element we can tune is the convergence criterion of the solver that solves the bundle adjustment problem. We will stop when the ratio of the change in the objective function to the value of this function arrives below some threshold. This ensures that the criterion scales with the problem, which is important as the size of the problem can vary during operation (as the map grows, for example). The default value of the Ceres solver is $10^{-6}$, but experimentally, we find that we can use a softer threshold to significantly speed up the computations, without impactig the quality of the results too much (and even improving them in the robustness test).
+
 \begin{table}[H]
   \centering
   \caption{Effect of convergence criterion on Bundle Adjustment speed and performance}
   \small\addtolength{\tabcolsep}{-2pt}
-  \begin{tabular}{ @{} l S[table-format=2.3] S[table-format=2.3] S[table-format=2.3] @{}  }    \toprule
-    {Convergene Threshold}  & { Distance (\si{\meter})} & { Angle (\si{\radian})} & {Time (\si{\second})}     \\ \midrule
-    10                      &     0.0975  &   0.0378  &     0.536  \\
-    5                       &     0.0967  &   0.0397  &     0.530  \\
-    1                       &     0.0989  &   0.0406  &     0.521  \\
-    0.5                     &     0.0970  &   0.0393  &     0.520  \\
-    0.1                     &     0.1065  &   0.0431  &     0.646  \\
-    0.05                    &     0.1385  &   0.0462  &     0.761  \\
-    0.04                    &     0.1380  &   0.0454  &     0.754  \\
-    0.03                    &     0.1575  &   0.0531  &     1.130  \\
-    0.02                    &     0.0793  &   0.0255  &     1.354  \\
-    0.01                    &     0.0722  &   0.0278  &     1.425  \\
-    0.005                   &     0.0765  &   0.0257  &     1.544  \\
-    0.001                   &     0.0879  &   0.0271  &     3.595  \\
-    0.0001                  &     0.0978  &   0.0330  &     5.207  \\
-    0.00001                 &     0.0916  &   0.0317  &     12.620 \\
-    0.000001                &     0.0789  &   0.0307  &     13.232 \\
-    0.0000001               &     0.0816  &   0.0229  &     15.453 \\
+  \sisetup{round-mode=places, round-precision = 3}
+  \begin{tabular}{ @{} S[scientific-notation=true] S[table-format=1.3] S[table-format=1.3] S[table-format=2.3]
+                                                   S[table-format=1.3] S[table-format=1.3] S[table-format=2.3] @{}  }
+    \toprule
+    \multirow{2}{4em}{Convergence Threshold}  & \multicolumn{3}{c}{Accuracy} &  \multicolumn{3}{c}{Robustness} \\
+        & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})}
+        & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})} \\
+    \midrule
+    \num{10}       &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.528740555048}&\num{0.775553503184}&\num{0.219380944042} &\num{0.527468636632} \\
+    \num{5}        &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.532568186522}&\num{0.775954169079}&\num{0.218538344815} &\num{0.560289662331} \\
+    \num{1}        &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.536680459976}&\num{0.775954169079}&\num{0.218538344815} &\num{0.529257409275} \\
+    \num{0.5}      &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.532132491469}&\num{0.284057820455}&\num{0.0860006110714}&\num{0.61461224407}  \\
+    \num{0.1}      &\num{0.116334787731} &\num{0.0370860746263}&\num{0.67120449245} &\num{0.244478011775}&\num{0.0982536795903}&\num{1.17620864138}  \\
+    \num{0.05}     &\num{0.0684117396072}&\num{0.01622317801}  &\num{0.742543946952}&\num{0.291411483818}&\num{0.112600996782} &\num{2.11719946936}  \\
+    \num{0.01}     &\num{0.0895791917611}&\num{0.032296133528} &\num{1.42051474378} &\num{0.823415005012}&\num{0.316300896325} &\num{2.77009601146}  \\
+    \num{0.005}    &\num{0.0908954991063}&\num{0.0308365172421}&\num{1.53279625252} &\num{0.142093947791}&\num{0.0495629729962}&\num{4.18590991944}  \\
+    \num{0.001}    &\num{0.0849543195902}&\num{0.023134969351} &\num{3.61956872419} &\num{1.034983532}   &\num{0.397193935917} &\num{4.90690393746}  \\
+    \num{0.0001}   &\num{0.0842253035954}&\num{0.0258716997751}&\num{5.05812323838} &\num{1.36150222356} &\num{0.479872553731} &\num{10.4840388894}  \\
+    \num{0.00001}  &\num{0.0899028376206}&\num{0.0299204957695}&\num{12.4531462789} &\num{1.4834446381}  &\num{0.528430316164} &\num{13.2059885859}  \\
+    \num{0.000001} &\num{0.0897626230568}&\num{0.029930165598} &\num{15.7027562261} &\num{1.37414105299} &\num{0.492183127143} &\num{13.8024009466}  \\
+    \num{0.0000001}&\num{0.0875171189566}&\num{0.0282118025117}&\num{15.7951563597} &\num{1.55886341652} &\num{0.567309620599} &\num{12.934817493}   \\
     \bottomrule
   \end{tabular}
-  \label{fig:convergencetol}
+  \label{tab:convergencetol}
 \end{table}
 
+As we can observe on table \ref{tab:convergencetol}, the more severe the convergence threshold, the better the performance on the accuracy test. On the robusteness test, however, this is true for high convergence thresholds, but when the convergence threshold is lower than \num{0.01}, the performance starts to degrade as the convergence threshold becomes lower. In both the accuracy and robustness tests, the lower the threshold, the longer it takes. We will chose a threshold of \num{0.05}, as it is a nice compromize of performance on the accuracy test, performance on the robustness test, and speed.
 
-
-\section{Tuning the Bundle Adjustment}
-The main drawback of Bundle Adjustment is that it requires an iterative method to be solved and can take a lot of time, which of course is a limiting factor for a robot that builds a map in real time. Therefore it is important to optimize both the speed of the computations, and their precision. As is often the case, there will have to be a tradeoff between these two. To measure both the speed of the Bundle Adjustment and the accuracy of the map obtained, we will conduct some experiments using different parameters to initialize the map.
+\subsection{Rejecting outliers}
+When looking closer at the results of bundle adjustment, we find that a large part of the errors come from a small number of points. One possible explanation is that these points do not correspond to real world points, so that even if we have the correct position of all cameras exatly, the rays corresponding to these points will not intersect, or even be close to intersection. For this reason, after every bundle adjustment pass, we could look at the contribution of every mapped point to the objective function, and eliminate points whose error is too high. Before doing this we have to take some things into account that as a point is observed by an increasingly large number of cameras:
+\begin{itemize}
+  \item Its total contribution to the cost function will increase, as each observtion of a point adds a term to the objective funtion
+  \item Its contribution per observation to the cost function will also increase, because every time an observation is added, the location of the point will change a bit, and its position will become less optimal if we only consider the cameras that already saw the point before.
+\end{itemize}
+For these reasons, we will put a different threshold on the points depending on the number of cameras that see the point. If a point is seen by a large number of cameras, we will allow it to have larger errors in the objective function before removing it.
 
 
 
