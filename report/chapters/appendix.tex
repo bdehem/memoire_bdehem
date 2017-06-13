@@ -1,0 +1,114 @@
+\section{Effect of convergence criterion during bundle adjustment}
+\begin{table}[H]
+  \centering
+  \caption{Effect of convergence criterion on Bundle Adjustment speed and performance}
+  \small\addtolength{\tabcolsep}{-2pt}
+  \sisetup{round-mode=places, round-precision = 3}
+  \begin{tabular}{ @{} S[scientific-notation=true] S[table-format=1.3] S[table-format=1.3] S[table-format=2.3]
+                                                   S[table-format=1.3] S[table-format=1.3] S[table-format=2.3] @{}  }
+    \toprule
+    \multirow{2}{4em}{Convergence Threshold}  & \multicolumn{3}{c}{Accuracy} &  \multicolumn{3}{c}{Robustness} \\
+        & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})}
+        & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})} \\
+    \midrule
+    \num{10}       &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.528740555048}&\num{0.775553503184}&\num{0.219380944042} &\num{0.527468636632} \\
+    \num{5}        &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.532568186522}&\num{0.775954169079}&\num{0.218538344815} &\num{0.560289662331} \\
+    \num{1}        &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.536680459976}&\num{0.775954169079}&\num{0.218538344815} &\num{0.529257409275} \\
+    \num{0.5}      &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.532132491469}&\num{0.284057820455}&\num{0.0860006110714}&\num{0.61461224407}  \\
+    \num{0.1}      &\num{0.116334787731} &\num{0.0370860746263}&\num{0.67120449245} &\num{0.244478011775}&\num{0.0982536795903}&\num{1.17620864138}  \\
+    \num{0.05}     &\num{0.0684117396072}&\num{0.01622317801}  &\num{0.742543946952}&\num{0.291411483818}&\num{0.112600996782} &\num{2.11719946936}  \\
+    \num{0.01}     &\num{0.0895791917611}&\num{0.032296133528} &\num{1.42051474378} &\num{0.823415005012}&\num{0.316300896325} &\num{2.77009601146}  \\
+    \num{0.005}    &\num{0.0908954991063}&\num{0.0308365172421}&\num{1.53279625252} &\num{0.142093947791}&\num{0.0495629729962}&\num{4.18590991944}  \\
+    \num{0.001}    &\num{0.0849543195902}&\num{0.023134969351} &\num{3.61956872419} &\num{1.034983532}   &\num{0.397193935917} &\num{4.90690393746}  \\
+    \num{0.0001}   &\num{0.0842253035954}&\num{0.0258716997751}&\num{5.05812323838} &\num{1.36150222356} &\num{0.479872553731} &\num{10.4840388894}  \\
+    \num{0.00001}  &\num{0.0899028376206}&\num{0.0299204957695}&\num{12.4531462789} &\num{1.4834446381}  &\num{0.528430316164} &\num{13.2059885859}  \\
+    \num{0.000001} &\num{0.0897626230568}&\num{0.029930165598} &\num{15.7027562261} &\num{1.37414105299} &\num{0.492183127143} &\num{13.8024009466}  \\
+    \num{0.0000001}&\num{0.0875171189566}&\num{0.0282118025117}&\num{15.7951563597} &\num{1.55886341652} &\num{0.567309620599} &\num{12.934817493}   \\
+    \bottomrule
+  \end{tabular}
+  \label{tab:benchmarkconv}
+\end{table}
+
+\section{Effect of outlier threshold after bundle adjustment}
+\subsection{Threshold after first bundle adjustment}
+\begin{table}[H]
+  \centering
+  \caption{Effect of removing outliers (convergence tolerance = 0.05)}
+  \small\addtolength{\tabcolsep}{-2pt}
+  \sisetup{round-mode=places, round-precision = 3}
+  \begin{tabular}{ @{} S[scientific-notation=true] S[table-format=1.3] S[table-format=1.3] S[table-format=2.3]
+                                                   S[table-format=1.3] S[table-format=1.3] S[table-format=2.3] @{}  }
+    \toprule
+    \multirow{2}{4em}{Outlier Threshold}  & \multicolumn{3}{c}{Accuracy} &  \multicolumn{3}{c}{Robustness} \\
+        & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})}
+        & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})} \\
+    \midrule
+    \num{3} & \num{0.0826655852621} & \num{0.0249384279491} & \num{1.03882630542} & \num{0.213564850628} & \num{0.0605600509798} & \num{1.70525360107} \\
+    \num{4} & \num{0.0742787070577} & \num{0.0210006143879} & \num{1.01819307357} & \num{0.167974394978} & \num{0.0609144571444} & \num{1.79177670181} \\
+    \num{5} & \num{0.0747680947339} & \num{0.0210236361673} & \num{0.940520197153}& \num{0.126593986904} & \num{0.0455933260691} & \num{1.84901650995} \\
+    \num{6} & \num{0.0791089974378} & \num{0.0227854700831} & \num{0.966932557523}& \num{0.134596256509} & \num{0.0478346641589} & \num{2.0337748751} \\
+    \num{7} & \num{0.0790543494764} & \num{0.022440096234}  & \num{1.00570418686} & \num{0.134365475823} & \num{0.0476224891588} & \num{1.97867913544} \\
+    \num{8} & \num{0.0790952198435} & \num{0.0224465579021} & \num{0.959914572537}& \num{0.136684722073} & \num{0.0495452844045} & \num{2.10778333247} \\
+    \num{9} & \num{0.0777619856159} & \num{0.0225442723651} & \num{0.975161984563}& \num{0.186635620878} & \num{0.07001981747}   & \num{1.74719139934} \\
+    \bottomrule
+  \end{tabular}
+  \label{tab:benchmarkout1a}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{Effect of removing outliers (convergence tolerance = 0.005)}
+  \small\addtolength{\tabcolsep}{-2pt}
+  \sisetup{round-mode=places, round-precision = 3}
+  \begin{tabular}{ @{} S[scientific-notation=true] S[table-format=1.3] S[table-format=1.3] S[table-format=2.3]
+                                                   S[table-format=1.3] S[table-format=1.3] S[table-format=2.3] @{}  }
+    \toprule
+    \multirow{2}{4em}{Outlier Threshold}  & \multicolumn{3}{c}{Accuracy} &  \multicolumn{3}{c}{Robustness} \\
+        & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})}
+        & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})} \\
+    \midrule
+    \num{3} & \num{0.0850143534448} & \num{0.0259440884765} & \num{2.2317198813}  & \num{0.370138018456} & \num{0.136928778138}  & \num{3.59707403928} \\
+    \num{4} & \num{0.0837837400898} & \num{0.0257548327402} & \num{2.15768053383} & \num{0.346895446477} & \num{0.122368986417}  & \num{3.49427669495} \\
+    \num{5} & \num{0.0860542168511} & \num{0.0260984606312} & \num{2.04802750051} & \num{0.319219619287} & \num{0.112791612313}  & \num{4.19976580143} \\
+    \num{6} & \num{0.0860743354746} & \num{0.026828522467}  & \num{2.08733194321} & \num{0.308603304902} & \num{0.109040114506}  & \num{3.29462264478} \\
+    \num{7} & \num{0.0858542988038} & \num{0.0262894756187} & \num{2.07608556002} & \num{0.20195907152}  & \num{0.0717637912315} & \num{3.38972103596} \\
+    \num{8} & \num{0.0858443132352} & \num{0.0263779653171} & \num{2.14673183858} & \num{0.184527443384} & \num{0.064819046632}  & \num{4.52223806083} \\
+    \num{9} & \num{0.0853754612814} & \num{0.0275608682302} & \num{2.06634565443} & \num{0.213218993723} & \num{0.076177587824}  & \num{3.57767872512} \\
+    \bottomrule
+  \end{tabular}
+  \label{tab:benchmarkout1b}
+\end{table}
+
+\subsection{Threshold after second bundle adjustment}
+\begin{table}[H]
+  \centering
+  \caption{Effect of removing outliers (convergence tolerance = 0.05)}
+  \small\addtolength{\tabcolsep}{-2pt}
+  \sisetup{round-mode=places, round-precision = 3}
+  \begin{tabular}{ @{} S[scientific-notation=true] S[scientific-notation=true] S[table-format=1.3] S[table-format=1.3] S[table-format=2.3]
+                                                                               S[table-format=1.3] S[table-format=1.3] S[table-format=2.3] @{}  }
+    \toprule
+    \multicolumn{2}{c}{Outlier Threshold}  & \multicolumn{3}{c}{Accuracy} &  \multicolumn{3}{c}{Robustness} \\
+        {\scriptsize $1^{st}$ b. a.} & {\scriptsize $2^{nd}$ b. a.}
+        & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})}
+        & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})} \\
+    \midrule
+    \num{5} &\num{4}  &\num{0.0740849389932} &\num{0.024894392837}  &\num{1.05883230269} &\num{0.132885959077} &\num{0.0485195538558} &\num{1.89160712808}\\
+    \num{5} &\num{5}  &\num{0.0780978464914} &\num{0.0260264683557} &\num{1.04583831877} &\num{0.122104681576} &\num{0.0440668799324} &\num{1.86627911776}\\
+    \num{5} &\num{7}  &\num{0.0716428184972} &\num{0.0230420601093} &\num{1.06819082052} &\num{0.128243309678} &\num{0.0464250891139} &\num{1.92757773399}\\
+    \num{5} &\num{10} &\num{0.0735654130069} &\num{0.0234593175077} &\num{1.06268701702} &\num{0.136277452773} &\num{0.0489030502654} &\num{1.82170890272}\\
+    \num{5} &\num{15} &\num{0.0710361694256} &\num{0.0227650810487} &\num{1.09467591718} &\num{0.136369296443} &\num{0.0482770348473} &\num{1.89965370297}\\
+    \num{6} &\num{4}  &\num{0.07816436263}   &\num{0.0251851795607} &\num{1.09033530205} &\num{0.124162310138} &\num{0.045834942445}  &\num{1.95544551313}\\
+    \num{6} &\num{5}  &\num{0.0718376771457} &\num{0.0227224606087} &\num{1.09819271788} &\num{0.127364587439} &\num{0.0468295149861} &\num{1.95984297246}\\
+    \num{6} &\num{7}  &\num{0.0719218048498} &\num{0.0223450403465} &\num{1.06746390462} &\num{0.122596621034} &\num{0.0450389040972} &\num{1.93023753911}\\
+    \num{6} &\num{10} &\num{0.0727542852595} &\num{0.0224030679634} &\num{1.08223602176} &\num{0.120991015097} &\num{0.0445508346512} &\num{1.94370394945}\\
+    \num{6} &\num{15} &\num{0.0734551360579} &\num{0.0226715147761} &\num{1.09420191497} &\num{0.121449099318} &\num{0.0446611366813} &\num{1.93257813901}\\
+    \num{7} &\num{4}  &\num{0.0755233064391} &\num{0.0240318031474} &\num{1.08950520679} &\num{0.12261627056}  &\num{0.0452194751557} &\num{1.91514797509}\\
+    \num{7} &\num{5}  &\num{0.0739045850794} &\num{0.0233785487636} &\num{1.07105956227} &\num{0.129311927007} &\num{0.047774376611}  &\num{1.91274789721}\\
+    \num{7} &\num{7}  &\num{0.0726026375695} &\num{0.0222740037875} &\num{1.11139839888} &\num{0.123888494146} &\num{0.0457052202607} &\num{1.949747473}\\
+    \num{7} &\num{10} &\num{0.0710870830191} &\num{0.02142746005}   &\num{1.11393766478} &\num{0.121358065213} &\num{0.0445379261354} &\num{1.92318568379}\\
+    \num{7} &\num{15} &\num{0.0726026375695} &\num{0.0222740037875} &\num{1.07281094044} &\num{0.121358065213} &\num{0.0445379261354} &\num{1.95895387977}\\
+    \bottomrule
+  \end{tabular}
+  \label{tab:benchmarkout2}
+\end{table}

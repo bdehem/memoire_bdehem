@@ -16,29 +16,5 @@
   {}
 \endgroup
 
-
-\refsection{0}
-  \sortlist{entry}{nty}
-    \entry{hartleysturm}{article}{}
-      \name{labelname}{2}{}{%
-        {{hash=63c8a3ab640f9b0ad6594125b36f4e20}{Hartley}{H\bibinitperiod}{Richard\bibnamedelima I.}{R\bibinitperiod\bibinitdelim I\bibinitperiod}{}{}{}{}}%
-        {{hash=02c64dfdce9a74895fb75c7895e0a38b}{Sturm}{S\bibinitperiod}{Peter}{P\bibinitperiod}{}{}{}{}}%
-      }
-      \name{author}{2}{}{%
-        {{hash=63c8a3ab640f9b0ad6594125b36f4e20}{Hartley}{H\bibinitperiod}{Richard\bibnamedelima I.}{R\bibinitperiod\bibinitdelim I\bibinitperiod}{}{}{}{}}%
-        {{hash=02c64dfdce9a74895fb75c7895e0a38b}{Sturm}{S\bibinitperiod}{Peter}{P\bibinitperiod}{}{}{}{}}%
-      }
-      \strng{namehash}{48868cd6188592f265a348e252118a2a}
-      \strng{fullhash}{48868cd6188592f265a348e252118a2a}
-      \field{sortinit}{H}
-      \field{labeltitle}{Triangulation}
-      \field{journaltitle}{CVIU - Computer Vision and Image Understanding}
-      \field{title}{Triangulation}
-      \field{volume}{Vol. 68, No. 2}
-      \field{year}{1997}
-    \endentry
-  \endsortlist
-  \missing{kanatani}
-\endrefsection
 \endinput
 
