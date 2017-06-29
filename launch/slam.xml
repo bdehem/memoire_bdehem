@@ -1,11 +1,9 @@
 <?xml version="1.0"?>
-<!-- -->
 
 <!-- Launch file for the starting mission for the thesis of Boris Dehem-->
 <!-- Work In Progress -->
 <launch>
   <arg name="threshold"              default="250" />
-  <arg name="file_in"                default="benchmark" />
   <arg name="max_matches"            default="200"/>
   <arg name="no_bundle_adjustment"   default="false"/>
   <arg name="dlt_triangulation"      default="false"/>
@@ -17,31 +15,7 @@
   <arg name="rpt3"                   default="10" />
   <arg name="rpt4"                   default="-1" />
 
-  <arg name="file_out"
-    default="result_$(arg file_in)_robust_$(arg test_robustness)_rpt2_$(arg rpt2)_rpt3_$(arg rpt3)_rpt4_$(arg rpt4)_batol_$(arg bundle_adjustment_tol)_thresh_$(arg threshold)_maxmatch_$(arg max_matches)"/>
-<!--
-  <arg name="file_out"               default="result_$(arg file_in)_robust_$(arg test_robustness)_tol_$(arg bundle_adjustment_tol)_noBA_$(arg no_bundle_adjustment)_dlt_$(arg dlt_triangulation)_mid_$(arg midpoint_triangulation)" />
--->
-  <!-- IPv4 address of your drones -->
-  <arg name="drone_name" default="arnold" />
-  <arg name="mb1_ip" default="192.168.1.1" />
-  <!-- Ultrasound frequency (7 or 8). -->
-  <arg name="freq" default="8" />
-
-
-  <node name="vision_gui" pkg="boris_drone" type="vision_gui" output="screen">
-    <param name="draw_keypoints" value="true" />
-    <param name="draw_target" value="true" />
-  </node>
-
-  <node name="boris_drone_manual_pose_estimation" pkg="boris_drone" type="manual_pose_estimation" output="screen">
-  </node>
-
-  <!-- front camera -->
-  <rosparam param="cam_matrix">[529.1, 0.0, 350.6, 0.0, 529.1, 182.2, 0.0, 0.0, 1.0]</rosparam>
-  <rosparam param="img_size">[735.0, 360.0]</rosparam>
-  <!-- front camera -->
-
+  <node name="image_proc_front" pkg="image_proc" type="image_proc" ns="ardrone/front"/>
 
   <node name="boris_drone_mapping_node" pkg="boris_drone" type="mapping_node" output="screen">
     <param name="2D_noise"               value="$(arg test_robustness)" />
@@ -61,8 +35,4 @@
     <param name="bundle_adjustment_tol" value="$(arg bundle_adjustment_tol)" />
     <param name="quiet"                 value="$(arg quiet_ba)" />
   </node>
-
-  <node pkg="rosbag" type="play" name="player" output="screen" args="-q /home/$(env USER)/bagfiles/$(arg file_in).bag"/>
-  <node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/$(env USER)/bagfiles/benchmark_point_threshold/$(arg file_out) /pose_visual /pose_estimation /benchmark"/>
-
 </launch>

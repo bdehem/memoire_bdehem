@@ -23,6 +23,8 @@
 #include <opencv2/nonfree/nonfree.hpp>
 
 /* boris_drone */
+#include <boris_drone/computer_vision/computer_vision.h>
+
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/opencv_utils.h>
 #include <boris_drone/map/frame.h>
@@ -47,7 +49,8 @@ public:
 
   std::vector<cv::Point2f> img_points; //!< 2D coordinates of keypoints in image in OpenCV format
   cv::Mat descriptors;                //!< descriptors of keypoints in OpenCV format
-  boris_drone::Pose3D pose;           //!< pose from which the keypoints were observed
+  boris_drone::Pose3D pose;           //!< estimated pose
+  boris_drone::Pose3D ref_pose;       //!< estimated pose at keyframe creation time
 
   int npts, n_mapped_pts;
   //!< ID of the points in the pointcloud (the map). -1 for points not in map, -2 for deleted points
@@ -58,11 +61,11 @@ public:
   //! Constructor
   //! \param[in] map Pointer to the map
   //! \param[in] frame from which the Keyframe is built
-  Keyframe(const Frame& frame, Camera* cam);
   Keyframe();
-
-
+  //Keyframe(const Frame& frame, Camera* cam);
   Keyframe(const Frame& frame, Camera* cam, const boris_drone::Pose3D pose);
+
+
 
 
   void setAsSeeing(int ptID, int idx_in_kf);

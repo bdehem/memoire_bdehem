@@ -21,6 +21,7 @@ Frame::Frame(boris_drone::ProcessedImageMsg::ConstPtr msg)
   // convert msg to opencv format
   this->img_points.resize(msg->keypoints.size());
   this->descriptors = cv::Mat_<float>(msg->keypoints.size(), DESCRIPTOR_SIZE);
+  this->image = msg->image;
 
   for (unsigned i = 0; i < msg->keypoints.size(); ++i)
   {

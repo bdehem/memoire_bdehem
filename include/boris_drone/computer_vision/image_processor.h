@@ -14,6 +14,8 @@
 #define boris_drone_IMAGE_PROCESSOR_H
 
 #include <boris_drone/computer_vision/computer_vision.h>
+#include <boris_drone/read_from_launch.h>
+
 /*  \class ImageProcessor
  *  \brief Class of the image processor node for ROS.
  */

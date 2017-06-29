@@ -9,11 +9,13 @@ import os
 import treat_data as td
 
 
-for fn in os.listdir('/home/bor/bagfiles/otherpcresults/'):
-    print(fn)
-    ffnn = '/home/bor/bagfiles/otherpcresults/' + fn
+directory = '/home/bor/bagfiles/results/thresh_rpt/'
 
-    avgerrD,avgerrR,batime = td.treat_data(ffnn,False)
+for loc_fn in os.listdir(directory):
+    print(loc_fn)
+    fn = directory + loc_fn
+
+    avgerrD,avgerrR,batime = td.treat_data(fn,False)
     print(avgerrD)
     print(avgerrR)
     print(batime)

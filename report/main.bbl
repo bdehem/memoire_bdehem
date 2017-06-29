@@ -16,5 +16,131 @@
   {}
 \endgroup
 
+
+\refsection{0}
+  \sortlist{entry}{nty}
+    \entry{agriculturaldrones}{article}{}
+      \name{labelname}{1}{}{%
+        {{hash=23346c878d4afcc84c10b87ab0098261}{Anderson}{A\bibinitperiod}{Chris}{C\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=23346c878d4afcc84c10b87ab0098261}{Anderson}{A\bibinitperiod}{Chris}{C\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{23346c878d4afcc84c10b87ab0098261}
+      \strng{fullhash}{23346c878d4afcc84c10b87ab0098261}
+      \field{sortinit}{A}
+      \field{labeltitle}{Agricultural Drones}
+      \field{journaltitle}{MIT Technology Review}
+      \field{title}{Agricultural Drones}
+      \field{volume}{vol. 117 | no. 3}
+      \field{year}{2014}
+    \endentry
+    \entry{batiravecdesdrones}{article}{}
+      \field{sortinit}{B}
+      \field{labeltitle}{Bâtir avec des drones ?}
+      \field{journaltitle}{https://uclouvain.be/fr/sciencetoday/actualites/batir-avec-des-drones.html}
+      \field{title}{Bâtir avec des drones ?}
+      \field{year}{2016}
+    \endentry
+    \entry{omnidirectionalav}{article}{}
+      \name{labelname}{2}{}{%
+        {{hash=5cec9e201acadb35ef106474b6f25ffb}{Brescianini}{B\bibinitperiod}{Dario}{D\bibinitperiod}{}{}{}{}}%
+        {{hash=fee33492586f672bae66db85817010b9}{D’Andrea}{D\bibinitperiod}{Raffaello}{R\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=5cec9e201acadb35ef106474b6f25ffb}{Brescianini}{B\bibinitperiod}{Dario}{D\bibinitperiod}{}{}{}{}}%
+        {{hash=fee33492586f672bae66db85817010b9}{D’Andrea}{D\bibinitperiod}{Raffaello}{R\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{beb68c76e40620191e980da52a72b329}
+      \strng{fullhash}{beb68c76e40620191e980da52a72b329}
+      \field{sortinit}{B}
+      \field{labeltitle}{Design, Modeling and Control of an Omni-Directional Aerial Vehicle}
+      \field{journaltitle}{IEEE International Conference on Robotics and Automation}
+      \field{title}{Design, Modeling and Control of an Omni-Directional Aerial Vehicle}
+      \field{year}{2016}
+    \endentry
+    \entry{consumerdronesbythenumbers}{article}{}
+      \name{labelname}{1}{}{%
+        {{hash=5b5672799d7382cb7b4d41fbe62bdf7e}{Chavers}{C\bibinitperiod}{Marcus}{M\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=5b5672799d7382cb7b4d41fbe62bdf7e}{Chavers}{C\bibinitperiod}{Marcus}{M\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{5b5672799d7382cb7b4d41fbe62bdf7e}
+      \strng{fullhash}{5b5672799d7382cb7b4d41fbe62bdf7e}
+      \field{sortinit}{C}
+      \field{labeltitle}{Consumer Drones By the Numbers in 2017 and Beyond}
+      \field{journaltitle}{newsledge.com}
+      \field{title}{Consumer Drones By the Numbers in 2017 and Beyond}
+      \field{year}{2017}
+    \endentry
+    \entry{hartleysturm}{article}{}
+      \name{labelname}{2}{}{%
+        {{hash=63c8a3ab640f9b0ad6594125b36f4e20}{Hartley}{H\bibinitperiod}{Richard\bibnamedelima I.}{R\bibinitperiod\bibinitdelim I\bibinitperiod}{}{}{}{}}%
+        {{hash=02c64dfdce9a74895fb75c7895e0a38b}{Sturm}{S\bibinitperiod}{Peter}{P\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=63c8a3ab640f9b0ad6594125b36f4e20}{Hartley}{H\bibinitperiod}{Richard\bibnamedelima I.}{R\bibinitperiod\bibinitdelim I\bibinitperiod}{}{}{}{}}%
+        {{hash=02c64dfdce9a74895fb75c7895e0a38b}{Sturm}{S\bibinitperiod}{Peter}{P\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{48868cd6188592f265a348e252118a2a}
+      \strng{fullhash}{48868cd6188592f265a348e252118a2a}
+      \field{sortinit}{H}
+      \field{labeltitle}{Triangulation}
+      \field{journaltitle}{CVIU - Computer Vision and Image Understanding}
+      \field{title}{Triangulation}
+      \field{volume}{Vol. 68, No. 2}
+      \field{year}{1997}
+    \endentry
+    \entry{anthology}{report}{}
+      \name{labelname}{1}{}{%
+        {{hash=310e032b2601285e8f65e219416796b2}{Naughton}{N\bibinitperiod}{Russell}{R\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=310e032b2601285e8f65e219416796b2}{Naughton}{N\bibinitperiod}{Russell}{R\bibinitperiod}{}{}{}{}}%
+      }
+      \list{institution}{1}{%
+        {Monash University}%
+      }
+      \strng{namehash}{310e032b2601285e8f65e219416796b2}
+      \strng{fullhash}{310e032b2601285e8f65e219416796b2}
+      \field{sortinit}{N}
+      \field{labeltitle}{Remote Piloted Aerial Vehicles : An Anthology}
+      \field{title}{Remote Piloted Aerial Vehicles : An Anthology}
+      \field{type}{techreport}
+      \field{year}{2003}
+    \endentry
+    \entry{dronesww1}{article}{}
+      \name{labelname}{1}{}{%
+        {{hash=542143b58b79f2a676ec82b2a1339194}{Stamp}{S\bibinitperiod}{Jimmy}{J\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=542143b58b79f2a676ec82b2a1339194}{Stamp}{S\bibinitperiod}{Jimmy}{J\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{542143b58b79f2a676ec82b2a1339194}
+      \strng{fullhash}{542143b58b79f2a676ec82b2a1339194}
+      \field{sortinit}{S}
+      \field{labeltitle}{Unmanned Drones Have Been Around Since World War I}
+      \field{journaltitle}{smithsonian.com}
+      \field{title}{Unmanned Drones Have Been Around Since World War I}
+      \field{year}{2013}
+    \endentry
+    \entry{dexteroushexrotor}{misc}{}
+      \name{labelname}{1}{}{%
+        {{hash=645174914ae06840849dfd04fc676223}{Voyles}{V\bibinitperiod}{Richard}{R\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=645174914ae06840849dfd04fc676223}{Voyles}{V\bibinitperiod}{Richard}{R\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{645174914ae06840849dfd04fc676223}
+      \strng{fullhash}{645174914ae06840849dfd04fc676223}
+      \field{sortinit}{V}
+      \field{labeltitle}{Dexterous Hexrotor Research}
+      \field{howpublished}{http://web.ics.purdue.edu/~rvoyles/research.Hexrotor.html}
+      \field{title}{Dexterous Hexrotor Research}
+    \endentry
+  \endsortlist
+  \missing{kanatani}
+\endrefsection
 \endinput
 

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="file_in"   default="benchmark"/>
+  <arg name="file_out"  default="result_benchmark"/>
+
+  <include file="$(find boris_drone)/launch/slam.xml" />
+  <include file="$(find boris_drone)/launch/global_params.xml" />
+  <include file="$(find boris_drone)/launch/gui.xml" />
+  <node name="boris_drone_manual_pose_estimation" pkg="boris_drone" type="manual_pose_estimation" output="screen"></node>
+
+  <node pkg="rosbag" type="play"   name="player"   output="screen" args="-q /home/$(env USER)/bagfiles/$(arg file_in).bag"/>
+  <node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/$(env USER)/bagfiles/$(arg file_out).bag /pose_visual /pose_estimation /benchmark"/>
+</launch>

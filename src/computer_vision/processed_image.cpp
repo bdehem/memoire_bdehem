@@ -143,6 +143,49 @@ ProcessedImage::ProcessedImage(const sensor_msgs::Image msg, const boris_drone::
   ROS_DEBUG("end ProcessedImage::init");
 }
 
+// Constructor (no optical flow)
+// [in] msg: ROS Image message sent by the camera
+// [in] pose_: Pose3D message before visual estimation to be attached with the processed image
+ProcessedImage::ProcessedImage(const sensor_msgs::Image msg, const boris_drone::Pose3D pose_)
+{
+  ROS_DEBUG("ProcessedImage::init");
+  this->pose = pose_;
+
+  // convert ROS image to OpenCV image
+  try
+  {
+    this->cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
+  }
+  catch (cv_bridge::Exception& e)
+  {
+    ROS_ERROR("boris_drone::imgproc::cv_bridge exception: %s", e.what());
+    return;
+  }
+
+  // Resize the image according to the parameters in the launch file
+  cv::Size size(Read::img_width(), Read::img_height());
+  cv::resize(this->cv_ptr->image, this->cv_ptr->image, size);
+
+  // Convert opencv image to ROS Image message format
+  this->cv_ptr->toImageMsg(this->image);
+
+  // Keypoints detection for current image
+  TIC(detect);
+  detector.detect(this->cv_ptr->image, this->keypoints);
+  //TOC(detect, "detect keypoints");
+  ROS_DEBUG("ProcessedImage::init this->keypoints.size()=%lu", this->keypoints.size());
+  ProcessedImage::last_number_of_keypoints = this->keypoints.size();
+  if (this->keypoints.size() == 0)
+  {
+    return;
+  }
+  TIC(extract);
+  // Perform keypoints description
+  extractor.compute(this->cv_ptr->image, this->keypoints, this->descriptors);
+  //TOC(extract, "descriptor extrator");
+  ROS_DEBUG("end ProcessedImage::init");
+}
+
 ProcessedImage::~ProcessedImage()
 {
 }
@@ -212,6 +255,7 @@ void ProcessedImage::convertToMsg(boris_drone::ProcessedImageMsg::Ptr& msg, Targ
        i++)
   {
     // exclude target points from message to send (to avoid mapping of moving target)
+    // very degueulasse: cv::KeyPoint =/= ucl_drone::KeyPoint, but they have some same fields with different names...
     if (idxs_to_remove.size() == 0 || i != idxs_to_remove[count])
     {
       // Copy the current keypoint position

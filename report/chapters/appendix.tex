@@ -112,3 +112,30 @@
   \end{tabular}
   \label{tab:benchmarkout2}
 \end{table}
+
+\section{Effect of limiting the number of matches between keyframes}
+
+\begin{table}[H]
+  \centering
+  \caption{Effect of limiting the number of matches between keyframes}
+  \small\addtolength{\tabcolsep}{-2pt}
+  \sisetup{round-mode=places, round-precision = 3}
+  \begin{tabular}{ @{} S[scientific-notation=true] S[table-format=1.3] S[table-format=1.3] S[table-format=2.3]
+                                                   S[table-format=1.3] S[table-format=1.3] S[table-format=2.3] @{}  }
+    \toprule
+    \multirow{2}{4em}{Matches limit}  & \multicolumn{3}{c}{Accuracy} &  \multicolumn{3}{c}{Robustness} \\
+        & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})}
+        & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})} \\
+    \midrule
+    \num{25 }&\num{0.069867357182}&\num{0.019658329272}&\num{0.29340385086}&\num{0.1768627565}&\num{0.074470914188}&\num{0.41919566365}\\
+    \num{50 }&\num{0.081726202978}&\num{0.029306865350}&\num{0.42949100211}&\num{0.1726734513}&\num{0.061271695277}&\num{0.755320826545}\\
+    \num{75 }&\num{0.096571911017}&\num{0.034019596067}&\num{0.60842055268}&\num{0.1756077939}&\num{0.062666598044}&\num{0.938495507464}\\
+    \num{100}&\num{0.112906948449}&\num{0.038290927627}&\num{0.73187117651}&\num{0.1754717369}&\num{0.059213011384}&\num{1.16745197773}\\
+    \num{150}&\num{0.089718341293}&\num{0.030410432761}&\num{0.84860432148}&\num{0.1096915924}&\num{0.037947313656}&\num{1.70451701432}\\
+    \num{200}&\num{0.073842406534}&\num{0.022657114020}&\num{0.85918735712}&\num{0.1124674010}&\num{0.035254711313}&\num{1.57924966514}\\
+    \num{250}&\num{0.072979740851}&\num{0.020651183076}&\num{0.91937909647}&\num{0.1119335838}&\num{0.040092605247}&\num{1.89423641562}\\
+    \num{300}&\num{0.072754285259}&\num{0.022403067963}&\num{1.08461673558}&\num{0.1214490993}&\num{0.044661136681}&\num{2.01824434847}\\
+    \bottomrule
+  \end{tabular}
+  \label{tab:benchmarkconv}
+\end{table}

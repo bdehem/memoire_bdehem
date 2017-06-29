@@ -54,6 +54,7 @@ class BALProblem {
   double* mutable_points();
   double* mutable_camera(int i);
   double* mutable_point(int i);
+  double* ref_pose(int i);
   double* mutable_camera_for_observation(int i);
   double* mutable_point_for_observation(int i);
   //private:
@@ -67,6 +68,7 @@ class BALProblem {
   int* camera_index_;
   double* observations_;
   double* parameters_;
+  double* ref_poses_;
   boris_drone::BundleMsg::ConstPtr bundleMsgPtr_;
 };
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.3.17)  13 JUN 2017 12:27
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.3.17)  29 JUN 2017 11:05
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1384,13 +1384,7 @@ Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'english'.
  (./main.aux
 
-LaTeX Warning: Label `tab:convergencetol' multiply defined.
-
-
-LaTeX Warning: Label `tab:convergencetol' multiply defined.
-
-
-LaTeX Warning: Label `tab:convergencetol' multiply defined.
+LaTeX Warning: Label `tab:benchmarkconv' multiply defined.
 
 )
 \openout1 = `main.aux'.
@@ -1496,7 +1490,15 @@ Package biblatex Info: Automatic encoding selection.
 
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
-(./main.bbl)
+(./main.bbl
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                kanatani
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+)
 Package biblatex Info: Reference section=0 on input line 45.
 Package biblatex Info: Reference segment=0 on input line 45.
  (/usr/share/texlive/texmf-dist/tex/latex/glossaries/dict/glossaries-dictionary-English.dict
@@ -1577,16 +1579,109 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             `lmtt' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
+ (./main.toc [1
 
+\openout4 = `main.ist'.
+
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}])
+\tf@toc=\write7
+\openout7 = `main.toc'.
+
+ (./main.acr [2]) [3
+
+
+]
+Chapter 1.
+(./chapters/01_introduction.tex <images/kettering_bug.jpg, id=247, 163.10938pt x 147.04938pt>
+File: images/kettering_bug.jpg Graphic file (type jpg)
+ <use images/kettering_bug.jpg>
+Package pdftex.def Info: images/kettering_bug.jpg used on input line 6.
+(pdftex.def)             Requested size: 227.62206pt x 205.22821pt.
+ [1
+
+ <./images/kettering_bug.jpg>] [2]) [3]
+Chapter 2.
+(./chapters/02_stateoftheart.tex [4
+
+]) [5]
+Chapter 3.
+(./chapters/03_platform.tex
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 10.
+ (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+Package microtype Info: Loading generic settings for font family
+(microtype)             `lmtt' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+) [6
+
+]
+Chapter 4.
+(./chapters/04_localisation.tex) [7
+
+]
+Chapter 5.
+(./chapters/05_mapping.tex
+Package epstopdf Info: Source file: <images/benchmark_setup.eps>
+(epstopdf)                    date: 2017-06-03 21:51:17
+(epstopdf)                    size: 24215 bytes
+(epstopdf)             Output file: <images/benchmark_setup-eps-converted-to.pdf>
+(epstopdf)                    date: 2017-06-03 21:51:48
+(epstopdf)                    size: 10979 bytes
+(epstopdf)             Command: <repstopdf --outfile=images/benchmark_setup-eps-converted-to.pdf images/benchmark_setup.eps>
+(epstopdf)             \includegraphics on input line 12.
+Package epstopdf Info: Output file is already uptodate.
+ <images/benchmark_setup-eps-converted-to.pdf, id=300, 375.4025pt x 251.94125pt>
+File: images/benchmark_setup-eps-converted-to.pdf Graphic file (type pdf)
+ <use images/benchmark_setup-eps-converted-to.pdf>
+Package pdftex.def Info: images/benchmark_setup-eps-converted-to.pdf used on input line 12.
+(pdftex.def)             Requested size: 375.40158pt x 251.94063pt.
+ [8
+
+] [9 <./images/benchmark_setup-eps-converted-to.pdf>]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 38.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 38.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 38.
+
+Overfull \hbox (16.62169pt too wide) in paragraph at lines 40--40
+[]|\T1/lmr/m/n/10 (-20) Computation 
+ []
+
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <9> on input line 41.
+[10]
+Overfull \hbox (13.64398pt too wide) in paragraph at lines 95--95
+[]|\T1/lmr/m/n/10 (-20) Convergence 
+ []
+
+
+Overfull \hbox (2.73245pt too wide) in paragraph at lines 95--95
+\T1/lmr/m/n/10 (-20) Threshold|  
+ []
+
+[11] [12]) [13]
+Chapter 6.
+(./chapters/06_slam.tex) [14
+
+]
+Chapter 7.
+(./chapters/07_conclusion.tex) [15
+
+]
+Overfull \hbox (56.74625pt too wide) in paragraph at lines 89--89
+[]\T1/lmr/m/n/10.95 (-20) Richard Voyles. \T1/lmr/m/it/10.95 (-20) Dex-ter-ous Hexro-tor Re-search\T1/lmr/m/n/10.95 (-20) . http://web.ics.purdue.edu/ rvoyles/research.Hexrotor.html. 
+ []
+
+[16
+
+]
 Appendix A.
 (./chapters/appendix.tex
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 7.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 7.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 7.
-
 Overfull \hbox (13.64398pt too wide) in paragraph at lines 10--10
 []|\T1/lmr/m/n/10 (-20) Convergence 
  []
@@ -1606,24 +1701,66 @@ Overfull \hbox (2.73245pt too wide) in paragraph at lines 66--66
 \T1/lmr/m/n/10 (-20) Threshold|  
  []
 
-[1
+[17
 
-\openout4 = `main.ist'.
+]) [18]
+*geometry* verbose mode - [ newgeometry ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(35.56593pt, 526.376pt, 35.56593pt)
+* v-part:(T,H,B)=(35.56593pt, 773.91498pt, 35.56593pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=526.376pt
+* \textheight=773.91498pt
+* \oddsidemargin=-36.70406pt
+* \evensidemargin=-36.70406pt
+* \topmargin=-73.70406pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=11.0pt
+* \footskip=30.0pt
+* \marginparwidth=50.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
+LaTeX Font Info:    Try loading font information for T1+phv on input line 95.
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd
+File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
+)
+Package microtype Info: Loading generic settings for font family
+(microtype)             `phv' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <9> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 95.
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}])
+Overfull \hbox (1.90796pt too wide) in paragraph at lines 95--96
+ [][][] 
+ []
 
-Package glossaries Warning: No \printglossary or \printglossaries found.
-This document will not have a glossary.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 97.
+[19
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 103.
-[2]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 103.
+]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 97.
  (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 103.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 103.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 97.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 97.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 182C42CDCA4CD86B5B268513C8B4BE7C;439.
+(rerunfilecheck)             Checksum: F02FFA57943921C5ACAB998B5C76D41E;2966.
 
 
 LaTeX Warning: There were multiply-defined labels.
@@ -1633,18 +1770,19 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 25914 strings out of 494985
- 473801 string characters out of 6180356
- 946079 words of memory out of 5000000
- 28636 multiletter control sequences out of 15000+600000
- 78132 words of font info for 77 fonts, out of 8000000 for 9000
+ 26458 strings out of 494985
+ 481975 string characters out of 6180356
+ 950844 words of memory out of 5000000
+ 28949 multiletter control sequences out of 15000+600000
+ 112221 words of font info for 143 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 46i,12n,40p,10417b,1458s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb>
-Output written on main.pdf (2 pages, 118457 bytes).
+ 46i,12n,49p,10417b,2240s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb>
+Output written on main.pdf (22 pages, 333771 bytes).
 PDF statistics:
- 84 PDF objects out of 1000 (max. 8388607)
- 71 compressed objects within 1 object stream
- 12 named destinations out of 1000 (max. 500000)
- 28201 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 464 PDF objects out of 1000 (max. 8388607)
+ 416 compressed objects within 5 object streams
+ 91 named destinations out of 1000 (max. 500000)
+ 41835 words of extra memory for PDF output out of 42996 (max. 10000000)
 

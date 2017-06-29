@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="file_in"   default="ptitour_v2"/>
+
+  <include file="$(find boris_drone)/launch/slam.xml" />
+  <include file="$(find boris_drone)/launch/global_params.xml" />
+  <include file="$(find boris_drone)/launch/gui.xml" />
+
+  <node pkg="rosbag" type="play"   name="player"   output="screen" args="-q /home/$(env USER)/bagfiles/$(arg file_in).bag"/>
+</launch>

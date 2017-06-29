@@ -31,9 +31,12 @@ public:
   sensor_msgs::Image image;               //! video image in the ROS format after rescaling
   boris_drone::Pose3D pose;  //! estimated pose of the drone before the visual estimation
 
-  ProcessedImage();  //! Constructor
+  //constructors
+  ProcessedImage();
   ProcessedImage(const sensor_msgs::Image image, const boris_drone::Pose3D pose, ProcessedImage& prev,
-                 bool use_OpticalFlowPyrLK);  //! Constructor
+                 bool use_OpticalFlowPyrLK);
+  ProcessedImage(const sensor_msgs::Image msg, const boris_drone::Pose3D pose_); //no optical flow
+
   ~ProcessedImage();                          //! Destructor
 
   //! build a message that can be sent to other nodes

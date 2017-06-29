@@ -104,6 +104,8 @@ private:
 
   std::map<int,Landmark*> landmarks;
   std::map<int,Keyframe*> keyframes; //Map of ID to keyframe
+  std::map<int,Keyframe*>::iterator first_kf_to_adjust;
+
   cv::Mat descriptors;               //!< descriptors of landmarks in OpenCV format
 
   ros::Time last_new_keyframe; //Time when we last added a keyframe
@@ -177,6 +179,7 @@ public:
   void print_landmarks();
   void print_keyframes();
   void getDescriptors(cv::Mat &map_descriptors);
+  int  cleanMap();
 
 };
 

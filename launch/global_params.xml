@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- bottom camera --> <!--
+    <rosparam param="cam_matrix">[705.0, 0.0, 319.16, 0.0, 705.0, 219.6, 0.0, 0.0, 1.0]</rosparam>
+    <rosparam param="img_size">[640.0, 360.0]</rosparam> -->
+    <!-- bottom camera -->
+
+    <!-- front camera -->
+    <rosparam param="cam_matrix">[529.1, 0.0, 350.6, 0.0, 529.1, 182.2, 0.0, 0.0, 1.0]</rosparam>
+    <rosparam param="img_size">[735.0, 360.0]</rosparam>
+    <!-- front camera -->
+</launch>

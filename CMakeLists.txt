@@ -179,6 +179,15 @@ set(MAPPING_HEADER_FILES
   include/boris_drone/opencv_utils.h
   include/boris_drone/read_from_launch.h
 )
+set(COMPUTER_VISION_SOURCE_FILES
+  src/computer_vision/processed_image.cpp
+  src/computer_vision/target.cpp
+)
+set(COMPUTER_VISION_HEADER_FILES
+  include/boris_drone/computer_vision/computer_vision.h
+  include/boris_drone/computer_vision/processed_image.h
+  include/boris_drone/computer_vision/target.h
+)
 
 ## Declare a C++ executable
 # add_executable(boris_drone_node src/boris_drone_node.cpp)
@@ -188,8 +197,11 @@ add_executable(image_piper src/imagepiper.cpp)
 add_executable(controller src/controller/controller.cpp)
 add_executable(pose_estimation src/pose_estimation/pose_estimation.cpp)
 add_executable(manual_pose_estimation src/pose_estimation/manual_pose_estimation.cpp)
-add_executable(mapping_node ${MAPPING_SOURCE_FILES} ${MAPPING_HEADER_FILES})
-add_executable(computer_vision  src/computer_vision/processed_image.cpp  src/computer_vision/computer_vision.cpp src/computer_vision/target.cpp src/map/projection_2D.cpp src/opencv_utils.cpp src/read_from_launch.cpp)
+add_executable(mapping_node ${MAPPING_SOURCE_FILES}         ${MAPPING_HEADER_FILES}
+                            ${COMPUTER_VISION_SOURCE_FILES} ${COMPUTER_VISION_HEADER_FILES})
+add_executable(computer_vision  src/computer_vision/image_processor.cpp include/boris_drone/computer_vision/image_processor.h
+ ${COMPUTER_VISION_SOURCE_FILES} ${COMPUTER_VISION_HEADER_FILES}
+ src/map/projection_2D.cpp src/opencv_utils.cpp src/read_from_launch.cpp)
 add_executable(vision_gui  src/vision_gui/vision_gui.cpp  src/vision_gui/vision_gui.cpp)
 add_executable(path_planning src/path_planning/path_planning.cpp)
 add_executable(strategy src/strategy/strategy.cpp)

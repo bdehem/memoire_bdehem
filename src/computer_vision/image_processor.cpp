@@ -8,8 +8,7 @@
  *
  */
 
-#include <boris_drone/computer_vision/computer_vision.h>
-#include <boris_drone/read_from_launch.h>
+#include <boris_drone/computer_vision/image_processor.h>
 
 ImageProcessor::ImageProcessor()
   : it_(nh_), pose_publishing(false), video_publishing(false), pending_reset(false)

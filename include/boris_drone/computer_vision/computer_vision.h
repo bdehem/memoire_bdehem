@@ -47,6 +47,16 @@
 #include <std_srvs/Empty.h>
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/ProcessedImageMsg.h>
+#include <boris_drone/KeyPoint.h>
+
+// boris_drone
+#include <boris_drone/opencv_utils.h>
+#include <boris_drone/map/projection_2D.h>
+#include <boris_drone/computer_vision/target.h>
+#include <boris_drone/computer_vision/processed_image.h>
+
+
+
 
 // Choose one detector in function of what is defined in boris_drone.h
 
@@ -86,19 +96,8 @@ static const cv::OrbDescriptorExtractor extractor;
 
 #elif EXTRACTOR_TYPE == TYPE_FREAK
 static const cv::FREAK extractor;
-
 #endif
 
-// boris_drone
 
-#include <boris_drone/opencv_utils.h>
-
-#include <boris_drone/map/projection_2D.h>
-
-#include <boris_drone/computer_vision/target.h>
-
-#include <boris_drone/computer_vision/processed_image.h>
-
-#include <boris_drone/computer_vision/image_processor.h>
 
 #endif /* boris_drone_COMPUTER_VISION_H */

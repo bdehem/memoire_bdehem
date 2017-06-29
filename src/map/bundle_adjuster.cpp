@@ -19,6 +19,7 @@ BALProblem::BALProblem(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   fixed_cams_   = new bool[num_cameras_];
   observations_ = new double[2 * num_observations_];
   parameters_   = new double[num_parameters_];
+  ref_poses_    = new double[6 * num_cameras_];
 
   //Mapping keyframe and point IDs to indices for the BA
   std::map<int,int> kfID_to_idx;
@@ -35,12 +36,18 @@ BALProblem::BALProblem(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     observations_[2*i+1] = bundlePtr->observations[i].y;
   }
   for (int i = 0; i < num_cameras_; ++i) {
-    parameters_[6*i + 0] = bundlePtr->cameras[i].rotX*180/PI;
-    parameters_[6*i + 1] = bundlePtr->cameras[i].rotY*180/PI;
-    parameters_[6*i + 2] = bundlePtr->cameras[i].rotZ*180/PI;
-    parameters_[6*i + 3] = bundlePtr->cameras[i].x;
-    parameters_[6*i + 4] = bundlePtr->cameras[i].y;
-    parameters_[6*i + 5] = bundlePtr->cameras[i].z;
+    parameters_[6*i + 0] = bundlePtr->cameras[i].x;
+    parameters_[6*i + 1] = bundlePtr->cameras[i].y;
+    parameters_[6*i + 2] = bundlePtr->cameras[i].z;
+    parameters_[6*i + 3] = bundlePtr->cameras[i].rotX*180/PI;
+    parameters_[6*i + 4] = bundlePtr->cameras[i].rotY*180/PI;
+    parameters_[6*i + 5] = bundlePtr->cameras[i].rotZ*180/PI;
+    ref_poses_[6*i + 0]  = bundlePtr->ref_poses[i].x;
+    ref_poses_[6*i + 1]  = bundlePtr->ref_poses[i].y;
+    ref_poses_[6*i + 2]  = bundlePtr->ref_poses[i].z;
+    ref_poses_[6*i + 3]  = bundlePtr->ref_poses[i].rotX*180/PI;
+    ref_poses_[6*i + 4]  = bundlePtr->ref_poses[i].rotY*180/PI;
+    ref_poses_[6*i + 5]  = bundlePtr->ref_poses[i].rotZ*180/PI;
     fixed_cams_[i] = bundlePtr->fixed_cams[i];
   }
   for (int i = 0; i < num_points_; ++i) {
@@ -55,11 +62,13 @@ BALProblem::~BALProblem() {
   delete[] observations_;
   delete[] parameters_;
   delete[] fixed_cams_;
+  delete[] ref_poses_;
 }
 int BALProblem::num_observations()       const { return num_observations_;               }
 const double* BALProblem::observations() const { return observations_;                   }
 double* BALProblem::mutable_cameras()          { return parameters_;                     }
 double* BALProblem::mutable_points()           { return parameters_  + 6 * num_cameras_; }
+double* BALProblem::ref_pose(int i)            { return ref_poses_   + 6 * i;            }
 double* BALProblem::mutable_camera(int i)      { return mutable_cameras()  + 6 * i;      }
 double* BALProblem::mutable_point(int i)       { return mutable_points()   + 3 * i;      }
 double* BALProblem::mutable_camera_for_observation(int i) { return mutable_camera(camera_index_[i]);}
@@ -79,12 +88,12 @@ struct SnavelyReprojectionError {
     T p_cam[3];
     T p[3];
     //Convert
-    ceres::EulerAnglesToRotationMatrix(camera, 3, cam2world);
+    ceres::EulerAnglesToRotationMatrix(camera + 3, 3, cam2world);
     ceres::RotationMatrixToAngleAxis(cam2world, camera_axis_angles);
     //Translate point to get location from camera origin
-    p_cam[0] = point[0] - camera[3];
-    p_cam[1] = point[1] - camera[4];
-    p_cam[2] = point[2] - camera[5];
+    p_cam[0] = point[0] - camera[0];
+    p_cam[1] = point[1] - camera[1];
+    p_cam[2] = point[2] - camera[2];
     //Get rotated point. -1 because this is the rotation of cam2world (we need world2cam)
     ceres::AngleAxisRotatePoint(camera_axis_angles, p_cam, p);
     // TODO include fx,fy,cx,cy instead of hardcode
@@ -120,12 +129,12 @@ struct SemiFixedCameraError {
     double weight_y = 0.0  ; double weight_rotY = 0.15 ;
     double weight_z = 0.25 ; double weight_rotZ = 0.0  ;
 
-    residuals[0] = weight_x    * ((double)nobs/(double)ncam) * (camera[3] - x);
-    residuals[1] = weight_y    * ((double)nobs/(double)ncam) * (camera[4] - y);
-    residuals[2] = weight_z    * ((double)nobs/(double)ncam) * (camera[5] - z);
-    residuals[3] = weight_rotX * ((double)nobs/(double)ncam) * (camera[0] - rotX);
-    residuals[4] = weight_rotY * ((double)nobs/(double)ncam) * (camera[1] - rotY);
-    residuals[5] = weight_rotZ * ((double)nobs/(double)ncam) * (camera[2] - rotZ);
+    residuals[0] = weight_x    * ((double)nobs/(double)ncam) * (camera[0] - x);
+    residuals[1] = weight_y    * ((double)nobs/(double)ncam) * (camera[1] - y);
+    residuals[2] = weight_z    * ((double)nobs/(double)ncam) * (camera[2] - z);
+    residuals[3] = weight_rotX * ((double)nobs/(double)ncam) * (camera[3] - rotX);
+    residuals[4] = weight_rotY * ((double)nobs/(double)ncam) * (camera[4] - rotY);
+    residuals[5] = weight_rotZ * ((double)nobs/(double)ncam) * (camera[5] - rotZ);
     return true;
   }
   // Factory to hide the construction of the CostFunction object from
@@ -163,12 +172,12 @@ void BundleAdjuster::publishBundle(const BALProblem& bal_problem, bool converged
   msg.time_taken = time_taken;
   msg.cost_of_point.resize(npt);
   for (int i = 0; i < ncam; ++i) {
-    msg.cameras[i].rotX = bal_problem.parameters_[6*i + 0]*PI/180.0;
-    msg.cameras[i].rotY = bal_problem.parameters_[6*i + 1]*PI/180.0;
-    msg.cameras[i].rotZ = bal_problem.parameters_[6*i + 2]*PI/180.0;
-    msg.cameras[i].x    = bal_problem.parameters_[6*i + 3];
-    msg.cameras[i].y    = bal_problem.parameters_[6*i + 4];
-    msg.cameras[i].z    = bal_problem.parameters_[6*i + 5];
+    msg.cameras[i].x    = bal_problem.parameters_[6*i + 0];
+    msg.cameras[i].y    = bal_problem.parameters_[6*i + 1];
+    msg.cameras[i].z    = bal_problem.parameters_[6*i + 2];
+    msg.cameras[i].rotX = bal_problem.parameters_[6*i + 3]*PI/180.0;
+    msg.cameras[i].rotY = bal_problem.parameters_[6*i + 4]*PI/180.0;
+    msg.cameras[i].rotZ = bal_problem.parameters_[6*i + 5]*PI/180.0;
   }
   for (int i = 0; i < npt; ++i) {
     msg.points[i].x = bal_problem.parameters_[6*ncam + 3*i + 0];
@@ -198,46 +207,46 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     for (int i = 0; i< bal_problem.num_cameras_; i++)
     {
       camera_print = bal_problem.mutable_camera(i);
-      ROS_INFO("R : roll = %.2f, pitch = %.2f, yaw = %.2f",
-      camera_print[0]*PI/180.0,camera_print[1]*PI/180.0,camera_print[2]*PI/180.0);
-      ROS_INFO("T : x    = %.2f, y     = %.2f, z   = %.2f",camera_print[3],camera_print[4],camera_print[5]);
+      ROS_INFO("       T       |       R       ");
+      ROS_INFO("T : x  = % 5.2f | roll  = % 7.2f",camera_print[0],camera_print[3]);
+      ROS_INFO("R : y  = % 5.2f | pitch = % 7.2f",camera_print[1],camera_print[4]);
+      ROS_INFO("R : z  = % 5.2f | yaw   = % 7.2f",camera_print[2],camera_print[5]);
     }
   }
 
-
-  /*
-  double* camera_print  = bal_problem.mutable_camera(0);
-  double* camera_print2 = bal_problem.mutable_camera(1);
-
-
-  */
-
   double x, y;
+  int i, nobs, ncam, nconstcams;
   double* camera;
+  double* ref_pose;
   double* point;
   ceres::Problem problem;
-  int nobs = bal_problem.num_observations();
-  int ncam = bal_problem.num_cameras_;
+  nobs = bal_problem.num_observations();
+  ncam = bal_problem.num_cameras_;
   ceres::CostFunction* cost_function;
-  for (int i = 0; i < nobs; ++i) {
+  for ( i = 0; i < nobs; ++i) {
     camera = bal_problem.mutable_camera_for_observation(i);
     point  = bal_problem.mutable_point_for_observation(i);
     x = bal_problem.observations()[2 * i + 0];
     y = bal_problem.observations()[2 * i + 1];
-    //TODO this is temporary
-    is_first_pass = true;
     cost_function = SnavelyReprojectionError::Create(x, y);
-    ceres::LossFunction* loss_function = is_first_pass ? new ceres::HuberLoss(1.0) : NULL;
+    ceres::LossFunction* loss_function = new ceres::HuberLoss(1.0);
     problem.AddResidualBlock(cost_function, loss_function, camera, point);
   }
-  problem.SetParameterBlockConstant(bal_problem.mutable_camera(0));
+  int n_constcams = ncam>4 ? ncam / 3 : 1;
+  n_constcams = 1;
 
   //This causes drift: TODO fix
-  for (int i = 1; i < ncam; ++i)
+  for (int i = 0; i < ncam; ++i)
   {
-    camera = bal_problem.mutable_camera_for_observation(i);
-    cost_function = SemiFixedCameraError::Create(camera[3],camera[4],camera[5],camera[0],camera[1],camera[2],nobs,ncam);
-    problem.AddResidualBlock(cost_function, NULL, camera);
+    camera   = bal_problem.mutable_camera(i);
+    ref_pose = bal_problem.ref_pose(i);
+    if (i<n_constcams)
+      problem.SetParameterBlockConstant(camera);
+    else
+    {
+      cost_function = SemiFixedCameraError::Create(ref_pose[0],ref_pose[1],ref_pose[2],ref_pose[3],ref_pose[4],ref_pose[5],nobs,ncam);
+      problem.AddResidualBlock(cost_function, NULL, camera);
+    }
   }
   std::vector<double> cost_of_point;
   printResiduals(problem, bal_problem, cost_of_point);
@@ -260,11 +269,13 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     for (int i = 0; i< bal_problem.num_cameras_; i++)
     {
       camera_print = bal_problem.mutable_camera(i);
-      ROS_INFO("R : roll = %.2f, pitch = %.2f, yaw = %.2f",
-      camera_print[0]*PI/180.0,camera_print[1]*PI/180.0,camera_print[2]*PI/180.0);
-      ROS_INFO("T : x    = %.2f, y     = %.2f, z   = %.2f",camera_print[3],camera_print[4],camera_print[5]);
+      ROS_INFO("       T       |       R       ");
+      ROS_INFO("T : x  = % 5.2f | roll  = % 7.2f",camera_print[0],camera_print[3]);
+      ROS_INFO("R : y  = % 5.2f | pitch = % 7.2f",camera_print[1],camera_print[4]);
+      ROS_INFO("R : z  = % 5.2f | yaw   = % 7.2f",camera_print[2],camera_print[5]);
     }
   }
+
   printResiduals(problem, bal_problem, cost_of_point);
 
   publishBundle(bal_problem, converged, cost_of_point, time_taken);

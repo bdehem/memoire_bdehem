@@ -119,7 +119,7 @@ void Map::removePoint(int ptID)
   {
     ROS_DEBUG("removing point %d from keyframe %d",ptID,*it2);
     keyframe_is_dead = keyframes[*it2]->removePoint(ptID);
-    if (keyframe_is_dead)
+    if (keyframe_is_dead&&(keyframes.size()>1))
       removeKeyframe(*it2);
   }
   delete lm;
@@ -225,13 +225,18 @@ void Map::newKeyframe(const Frame& frame, const boris_drone::Pose3D& pose, bool 
     ROS_INFO("I want to create a new keyframe, but current frame only has %lu points",frame.img_points.size());
     return;
   }
-  Keyframe* new_keyframe = use_pose ? new Keyframe(frame,&camera,pose) : new Keyframe(frame,&camera);
+  Keyframe* new_keyframe = use_pose ? new Keyframe(frame,&camera,pose) : new Keyframe(frame,&camera,frame.pose);
   last_new_keyframe = ros::Time::now();
   keyframes[new_keyframe->ID] = new_keyframe;
-  if (keyframes.size()<2)
+  if (keyframes.size() < 5)
+    first_kf_to_adjust = keyframes.begin();
+  else
+    ++first_kf_to_adjust;
+  if (keyframes.size() < 2)
     return;
   std::vector<int> keyframes_to_adjust;
   std::map<int,Keyframe*>::iterator it;
+  //for (it = first_kf_to_adjust; it!=keyframes.end(); ++it)
   for (it = keyframes.begin(); it!=keyframes.end(); ++it)
   {
     if (it->first != new_keyframe->ID)
@@ -253,13 +258,29 @@ void Map::newKeyframe(const Frame& frame, const boris_drone::Pose3D& pose, bool 
   doBundleAdjustment(keyframes_to_adjust,true);
 }
 
+int Map::cleanMap()
+{
+  std::map<int,Landmark*>::iterator it;
+  int nptsremoved = 0;
+  for (it = landmarks.begin(); it != landmarks.end(); )
+  {
+    if((abs(it->second->coordinates.x)>10)||(abs(it->second->coordinates.y)>10)||(abs(it->second->coordinates.z)>10))
+    {
+      removePoint((it++)->first);
+      nptsremoved++;
+    }
+    else
+      ++it;
+  }
+  return nptsremoved;
+}
 
 bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose, bool manual_pose_received)
 {
   int n_inliers;
   int PnP_result = doPnP(frame, PnP_pose, n_inliers);
   int n_keyframes = keyframes.size();
-  if (keyframeNeeded(manual_pose_received, n_inliers)&&!isInitialized())
+  if (keyframeNeeded(manual_pose_received, n_inliers))
   {
     boris_drone::Pose3D noise_pose = frame.pose;
     if (use_2D_noise)
@@ -276,33 +297,22 @@ bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose, bool manual_
     }
     if ((use_2D_noise||use_3D_noise)&&n_keyframes!=0)
     {
-      newKeyframe(frame,noise_pose,true);
+      newKeyframe(frame, noise_pose, true);
     }
-    else
+    else if (!isInitialized())
     {
       newKeyframe(frame, PnP_pose, (!manual_pose_received)&&(PnP_result==1));
     }
-  }
-  else if (isInitialized())
-  {
-    if (frame_counter % 5 == 0)
-      queue_of_frames.push_back(frame);
-    if (frame_counter % 10 == 0)
-      queue_of_frames.pop_front();
-    frame_counter++;
-    if (keyframeNeeded(manual_pose_received, n_inliers))
+    else
     {
-      //TODO: add keyframes
-      //newPairOfKeyframes(frame, PnP_pose, (!manual_pose_received)&&(PnP_result==1));
-      queue_of_frames.clear();
-      frame_counter = 0;
+      newKeyframe(frame, PnP_pose, (PnP_result==1)); //TODO pairofkeyframes??
     }
   }
   switch(PnP_result){
     case 1  : //PnP successful
-      ROS_INFO_THROTTLE(4,"(%3d inliers) PnP_pose is: x = % 4.3f, rotX = % 4.3f", n_inliers, PnP_pose.x, PnP_pose.rotX);
-      ROS_INFO_THROTTLE(4,"                         : y = % 4.3f, rotY = % 4.3f", PnP_pose.y, PnP_pose.rotY);
-      ROS_INFO_THROTTLE(4,"                         : z = % 4.3f, rotZ = % 4.3f", PnP_pose.z, PnP_pose.rotZ);
+      ROS_INFO_THROTTLE(4,"(%3d inliers) PnP_pose is: x = % 4.2f, rotX = % 7.1f", n_inliers, PnP_pose.x, PnP_pose.rotX*180/PI);
+      ROS_INFO_THROTTLE(4,"                         : y = % 4.2f, rotY = % 7.1f", PnP_pose.y, PnP_pose.rotY*180/PI);
+      ROS_INFO_THROTTLE(4,"                         : z = % 4.2f, rotZ = % 7.1f", PnP_pose.z, PnP_pose.rotZ*180/PI);
       ROS_INFO_THROTTLE(4,"                                                    ");
       return true;
     case -1  : //Empty frame
@@ -338,15 +348,21 @@ int Map::getPointsForBA(std::vector<int> &kfIDs,
   //First take all points seen by any of the keyframes in kfIDs
   int i, nobs, ncam, n_kf_seeing_pt;
   std::map<int,std::map<int,int> >::iterator it;
+  std::map<int,int>::iterator it2;
   ncam = kfIDs.size();
   for (i = 0; i < ncam; ++i)
     keyframes[kfIDs[i]]->getPointsSeen(points_for_ba);
+  ROS_INFO("number of points seen = %lu",points_for_ba.size());
 
   //Remove points seen by only one of the keyframes in kfIDs, and count obs
   nobs = 0;
   for (it = points_for_ba.begin(); it != points_for_ba.end(); )
   {
     n_kf_seeing_pt = it->second.size();
+    for (it2 = it->second.begin(); it2 != it->second.end();it2++)
+    {
+      //ROS_INFO("Keyframe %d sees point %d at index %d",it2->first,it->first,it2->second);
+    }
     if (n_kf_seeing_pt < 2)
       points_for_ba.erase(it++);
     else
@@ -417,18 +433,18 @@ bool customLess(std::vector< int > a, std::vector< int > b)
 
 bool Map::keyframeNeeded(bool manual_pose_received, int n_inliers)
 {
-  if ( isInitialized())     return false; //(for benchmark of initialization only)
-  if (keyframes.size()==0) return true;
-  if (manual_pose_received) return true;
-  if (!isInitialized())     return false;
+  //if ( isInitialized())     return false; //(for benchmark of initialization only)
+  if (keyframes.size()==0)  return true;
+  if (!isInitialized())     return manual_pose_received;
+  if (isInitialized())      return manual_pose_received; //for testing (manual keyframe adding)
   if (is_adjusting_bundle)  return false;
-  if (second_keyframe_pending)
-  {
-    second_keyframe_pending = false;
-    queue_of_frames.clear();
-    frame_counter = 0;
-    return true;
-  }
+//if (second_keyframe_pending)
+//{
+////second_keyframe_pending = false;
+////queue_of_frames.clear();
+////frame_counter = 0;
+////return true;
+//}
   if (n_inliers>threshold_inliers_new_keyframe) return false;
   return (ros::Time::now() - last_new_keyframe) > ros::Duration(5.0);
 }
@@ -564,10 +580,12 @@ void Map::doBundleAdjustment(std::vector<int> kfIDs, bool is_first_pass)
     ++points_it;
   }
   msg->cameras.resize(ncam);
+  msg->ref_poses.resize(ncam);
   msg->fixed_cams.resize(ncam);
   msg->keyframes_ID.resize(ncam);
   for (i = 0; i < ncam; ++i) {
-    msg->cameras[i] = keyframes[kfIDs[i]]->pose;
+    msg->cameras[i]  = keyframes[kfIDs[i]]->pose;
+    msg->ref_poses[i] = keyframes[kfIDs[i]]->ref_pose;
     msg->keyframes_ID[i] = kfIDs[i];
   }
   if (points_for_ba.size()==0)
@@ -575,8 +593,6 @@ void Map::doBundleAdjustment(std::vector<int> kfIDs, bool is_first_pass)
   else
     bundle_pub.publish(*msg);
 }
-
-
 
 
 void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
@@ -624,7 +640,8 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
       updatePoint(ptID,cv::Point3d(bundlePtr->points[i].x,bundlePtr->points[i].y,bundlePtr->points[i].z));
     }
   }
-  ROS_INFO("Removed %d points",pts_removed);
+  int pts_removed_clean = cleanMap();
+  ROS_INFO("Removed %d + %d points",pts_removed,pts_removed_clean);
   //print_info();
   if (is_first_pass)
   {

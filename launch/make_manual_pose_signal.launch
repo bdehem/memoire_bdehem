@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-
-  <node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/$(env USER)/bagfiles/manual_poses /manual_pose_estimation"/>
-
-</launch>

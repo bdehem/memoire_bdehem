@@ -9,33 +9,10 @@
  */
 
 #include <boris_drone/map/keyframe.h>
-//#include <boris_drone/map/mapping_node.h>
 
 int Keyframe::ID_counter = 0;
 
 Keyframe::Keyframe() {}
-
-Keyframe::Keyframe(const Frame& frame, Camera* cam)
-{
-  this->camera = cam;
-  this->ID = ID_counter++;
-  tf::Matrix3x3 drone2world, cam2drone, cam2world;
-  double roll, pitch, yaw;
-  drone2world.setRPY(frame.pose.rotX, frame.pose.rotY, frame.pose.rotZ);
-  cam2drone.setRPY(-PI/2, 0, -PI/2); //TODO use camera for this
-  cam2world = drone2world*cam2drone;
-  cam2world.getRPY(roll, pitch, yaw);
-  this->pose            = frame.pose; //Rotation is to camera, not to drone
-  this->pose.rotX       = roll;
-  this->pose.rotY       = pitch;
-  this->pose.rotZ       = yaw;
-  this->img_points      = frame.img_points;
-  this->descriptors     = frame.descriptors;
-  this->npts            = frame.img_points.size();
-  this->n_mapped_pts    = 0;
-  this->point_IDs.resize(npts,-1);
-  ROS_INFO("Created keyframe %d. It has %d (unmatched) points",ID,npts);
-}
 
 Keyframe::Keyframe(const Frame& frame, Camera* cam, const boris_drone::Pose3D pose)
 {
@@ -51,17 +28,36 @@ Keyframe::Keyframe(const Frame& frame, Camera* cam, const boris_drone::Pose3D po
   this->pose.rotX       = roll;
   this->pose.rotY       = pitch;
   this->pose.rotZ       = yaw;
-  this->img_points      = frame.img_points;
-  this->descriptors     = frame.descriptors;
-  this->npts            = frame.img_points.size();
+  this->ref_pose        = this->pose;
+  bool reprocess_image = true;
+  if (reprocess_image)
+  {
+    ProcessedImage reprocessedImage = ProcessedImage(frame.image, pose); //to redetect keypoints
+    this->img_points.resize(reprocessedImage.keypoints.size());
+    this->descriptors = cv::Mat_<float>(reprocessedImage.keypoints.size(), DESCRIPTOR_SIZE);
+    for (unsigned i = 0; i < reprocessedImage.keypoints.size(); ++i)
+    {
+      this->img_points[i].x = (double)reprocessedImage.keypoints[i].pt.x;
+      this->img_points[i].y = (double)reprocessedImage.keypoints[i].pt.y;
+      for (unsigned j = 0; j < DESCRIPTOR_SIZE; ++j)
+      {
+        this->descriptors.at<float>(i, j) = reprocessedImage.descriptors.at<float>(i, j);
+      }
+    }
+    this->npts            = img_points.size();
+  }
+  else
+  {
+    this->img_points      = frame.img_points;
+    this->descriptors     = frame.descriptors;
+    this->npts            = frame.img_points.size();
+  }
   this->n_mapped_pts    = 0;
   this->point_IDs.resize(npts,-1);
   ROS_INFO("Created keyframe %d. It has %d (unmatched) points",ID,npts);
 }
 
-Keyframe::~Keyframe()
-{
-}
+Keyframe::~Keyframe() {}
 
 void Keyframe::setAsSeeing(int ptID, int idx_in_kf)
 {
@@ -73,7 +69,7 @@ void Keyframe::setAsSeeing(int ptID, int idx_in_kf)
     n_mapped_pts++;
   }
   else
-    ROS_INFO("Trying to put kf %d as seeing pt %d, but it already sees it!",ID,ptID);
+    ROS_DEBUG("Trying to put kf %d as seeing pt %d, but it already sees it!",ID,ptID);
 }
 
 //Adds to the map of points to keyframes and index within them

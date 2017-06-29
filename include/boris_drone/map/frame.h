@@ -58,6 +58,7 @@ public:
   std::vector<cv::Point2f> img_points; //!< 2D coordinates of keypoints in image in OpenCV format
   cv::Mat descriptors;                //!< descriptors of keypoints in OpenCV format
   boris_drone::Pose3D pose;           //!< pose from which frame was taken
+  sensor_msgs::Image image;               //! video image in the ROS format after rescaling
 };
 
 #endif /* boris_drone_FRAME_H */

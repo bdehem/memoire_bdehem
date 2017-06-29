@@ -11,5 +11,6 @@ int16 num_observations
 ObservationMsg[] observations
 geometry_msgs/Point[] points
 Pose3D[] cameras
+Pose3D[] ref_poses
 int16[] points_ID
 int16[] keyframes_ID
