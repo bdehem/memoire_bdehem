@@ -120,8 +120,8 @@ struct SnavelyReprojectionError {
 };
 
 struct SemiFixedCameraError {
-  SemiFixedCameraError(double x, double y, double z, double rotX, double rotY, double rotZ, int nobs, int ncam)
-      : x(x), y(y), z(z), rotX(rotX), rotY(rotY), rotZ(rotZ), nobs(nobs), ncam(ncam) {}
+  SemiFixedCameraError(const double * ref, int nobs, int ncam)
+      : x(ref[0]), y(ref[1]), z(ref[2]), rotX(ref[3]), rotY(ref[4]), rotZ(ref[5]), nobs(nobs), ncam(ncam) {}
   template <typename T>
   bool operator()(const T* const camera,
                   T* residuals) const {
@@ -137,12 +137,10 @@ struct SemiFixedCameraError {
     residuals[5] = weight_rotZ * ((double)nobs/(double)ncam) * (camera[5] - rotZ);
     return true;
   }
-  // Factory to hide the construction of the CostFunction object from
-  // the client code.
-  static ceres::CostFunction* Create(const double x, const double y, const double z,
-                    const double rotX, const double rotY, const double rotZ, const int nobs, const int ncam) {
+  // Factory to hide the construction of the CostFunction object from the client code.
+  static ceres::CostFunction* Create(const double * ref, const int nobs, const int ncam) {
     return (new ceres::AutoDiffCostFunction<SemiFixedCameraError, 6, 6>(
-                new SemiFixedCameraError(x, y, z, rotX, rotY, rotZ, nobs, ncam)));
+                new SemiFixedCameraError(ref, nobs, ncam)));
   }
   double x; double y; double z; double rotX; double rotY; double rotZ;
   int nobs; int ncam;
@@ -235,7 +233,6 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   int n_constcams = ncam>4 ? ncam / 3 : 1;
   n_constcams = 1;
 
-  //This causes drift: TODO fix
   for (int i = 0; i < ncam; ++i)
   {
     camera   = bal_problem.mutable_camera(i);
@@ -244,7 +241,7 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
       problem.SetParameterBlockConstant(camera);
     else
     {
-      cost_function = SemiFixedCameraError::Create(ref_pose[0],ref_pose[1],ref_pose[2],ref_pose[3],ref_pose[4],ref_pose[5],nobs,ncam);
+      cost_function = SemiFixedCameraError::Create(ref_pose,nobs,ncam);
       problem.AddResidualBlock(cost_function, NULL, camera);
     }
   }
@@ -275,67 +272,8 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
       ROS_INFO("R : z  = % 5.2f | yaw   = % 7.2f",camera_print[2],camera_print[5]);
     }
   }
-
   printResiduals(problem, bal_problem, cost_of_point);
-
   publishBundle(bal_problem, converged, cost_of_point, time_taken);
-
-
-  /*
-  More printing
-
-  point3D_h(0) = bal_problem.parameters_[6*num_cameras_ + 0];
-  point3D_h(1) = bal_problem.parameters_[6*num_cameras_ + 1];
-  point3D_h(2) = bal_problem.parameters_[6*num_cameras_ + 2];
-  point3D_h(3) = 1.0;
-
-  pt_out_h1 = projection_matrix1*point3D_h;
-  pt_out1   = pt_out_h1.hnormalized();
-  std::cout << "point3D_h" << std::endl;
-  std::cout << point3D_h << std::endl;
-  std::cout << "pt_out1" << std::endl;
-  std::cout << pt_out1 << std::endl;
-  std::cout << "feature2d1" << std::endl;
-  std::cout << feature2d1 << std::endl;
-
-  pt_out_h2 = projection_matrix2*point3D_h;
-  pt_out2   = pt_out_h2.hnormalized();
-  std::cout << "point3D_h" << std::endl;
-  std::cout << point3D_h << std::endl;
-  std::cout << "pt_out2" << std::endl;
-  std::cout << pt_out2 << std::endl;
-  std::cout << "feature2d2" << std::endl;
-  std::cout << feature2d2 << std::endl;
-
-
-
-
-  std::cout << "What does residual block see now?" << std::endl;
-  int j = 0;
-  double* input_point_after = bal_problem.mutable_point_for_observation(j);
-  double reprojection_error_after[2];
-  Eigen::Map<const Eigen::Matrix<double, 3, 1> > mapped_point_after(input_point_after);
-  Eigen::Matrix<double,4,1> point_h_after;
-  point_h_after(0) = mapped_point_after(0);
-  point_h_after(1) = mapped_point_after(1);
-  point_h_after(2) = mapped_point_after(2);
-  point_h_after(3) = 1.0;
-  const Eigen::Matrix<double, 2, 1> reprojected_pixel_after =
-  (projection_matrix1 * point_h_after ).hnormalized();
-
-  // Reprojection error is the distance from the reprojection to the observed
-  // feature location.
-  reprojection_error_after[0] = feature2d1[0] - reprojected_pixel_after[0];
-  reprojection_error_after[1] = feature2d1[1] - reprojected_pixel_after[1];
-  std::cout << "feature2d1" << std::endl;
-  std::cout << feature2d1 << std::endl;
-  std::cout << "reprojected_pixel_after" << std::endl;
-  std::cout << reprojected_pixel_after << std::endl;
-  std::cout << "reprojection_error_after" << std::endl;
-  std::cout << reprojection_error_after[0] << std::endl;
-  std::cout << reprojection_error_after[1] << std::endl;
-
-  */
 }
 
 void BundleAdjuster::printResiduals(ceres::Problem& problem, BALProblem& bal_problem,
@@ -371,11 +309,8 @@ void BundleAdjuster::printResiduals(ceres::Problem& problem, BALProblem& bal_pro
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "bundle_adjuster");
-
   BundleAdjuster bundler_node;
-
   ros::Rate r(3);
-
   while (ros::ok())
   {
     ros::spinOnce();

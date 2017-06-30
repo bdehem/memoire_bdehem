@@ -14,6 +14,7 @@
   <arg name="rpt2"                   default="6" />
   <arg name="rpt3"                   default="10" />
   <arg name="rpt4"                   default="-1" />
+  <arg name="only_init"              default="false" />
 
   <node name="image_proc_front" pkg="image_proc" type="image_proc" ns="ardrone/front"/>
 
@@ -26,6 +27,7 @@
     <param name="no_bundle_adjustment"   value="$(arg no_bundle_adjustment)"/>
     <param name="dlt_triangulation"      value="$(arg dlt_triangulation)"/>
     <param name="midpoint_triangulation" value="$(arg midpoint_triangulation)"/>
+    <param name="only_init"              value="$(arg only_init)"/>
     <param name="rpt2" value="$(arg rpt2)"/>
     <param name="rpt3" value="$(arg rpt3)"/>
     <param name="rpt4" value="$(arg rpt4)"/>

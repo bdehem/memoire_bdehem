@@ -23,6 +23,7 @@ Map::Map(ros::NodeHandle* nh) : cloud(new pcl::PointCloud< pcl::PointXYZ >())
   ros::param::get("~no_bundle_adjustment", no_bundle_adjustment);
   ros::param::get("~dlt_triangulation", dlt_triangulation);
   ros::param::get("~midpoint_triangulation", midpoint_triangulation);
+  ros::param::get("~only_init", only_init);
   ros::param::get("~rpt2", rpt2);
   ros::param::get("~rpt3", rpt3);
   ros::param::get("~rpt4", rpt4);
@@ -433,11 +434,11 @@ bool customLess(std::vector< int > a, std::vector< int > b)
 
 bool Map::keyframeNeeded(bool manual_pose_received, int n_inliers)
 {
-  //if ( isInitialized())     return false; //(for benchmark of initialization only)
-  if (keyframes.size()==0)  return true;
-  if (!isInitialized())     return manual_pose_received;
-  if (isInitialized())      return manual_pose_received; //for testing (manual keyframe adding)
-  if (is_adjusting_bundle)  return false;
+  if (only_init && isInitialized()) return false; //(for benchmark of initialization)
+  if (keyframes.size()==0)          return true;
+  if (!isInitialized())             return manual_pose_received;
+  if (isInitialized())              return manual_pose_received; //for testing (manual keyframe adding)
+  if (is_adjusting_bundle)          return false;
 //if (second_keyframe_pending)
 //{
 ////second_keyframe_pending = false;
