@@ -67,7 +67,20 @@ def treat_data(file_in,do_plot):
         axy.set_title('Y')
         axz.set_title('Z')
         axr.set_title('rotZ')
-    return (avgerrD,avgerrR,batime)
+    (robust,mm,batol,rpt2,rpt3) = get_params_from_fn(file_in)
+    #return (avgerrD,avgerrR,batime)
+    return (robust,mm,batol,rpt2,rpt3,avgerrD,avgerrR,batime)
+
+
+def get_params_from_fn(file_in):
+    arglist = file_in.split('_')
+    robust  = arglist[2]
+    mm      = arglist[4]
+    batol   = arglist[6]
+    rpt2    = arglist[8]
+    rpt3    = arglist[10]
+    return (robust,mm,batol,rpt2,rpt3)
+
 
 def main():
     fn = "result_benchmark_noBA_false_robust_true.bag"
