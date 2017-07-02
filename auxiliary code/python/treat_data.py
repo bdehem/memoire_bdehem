@@ -43,7 +43,10 @@ def treat_data(file_in,do_plot):
             errors[3,ind] += abs(errrotZ)
             counts[:,ind] += 1
         if topic == "/benchmark":
-            batimes[k,0] = msg.BA_times_pass1[k]
+            try :
+                batimes[k,0] = msg.BA_times_pass1[k]
+            except IndexError :
+                batimes[k,0] = 0
             batimes[k,1] = msg.BA_times_pass2[k]
             k+=1
     #print(batimes)

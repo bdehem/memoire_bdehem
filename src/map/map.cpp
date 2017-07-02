@@ -681,7 +681,7 @@ void Map::publishBenchmarkInfo()
   }
 
   if (double_ba) msg->BA_times_pass1.resize(BA_times_pass1.size());
-  msg->BA_times_pass2.resize(BA_times_pass1.size());
+  msg->BA_times_pass2.resize(BA_times_pass2.size());
   for (i = 0; i<BA_times_pass1.size(); ++i)
   {
     if (double_ba) msg->BA_times_pass1[i] = BA_times_pass1[i];
