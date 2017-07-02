@@ -11,9 +11,9 @@ import treat_data as td
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 1000)
 directory = '/home/bor/bagfiles/res/'
-directory = '/home/bor/bagfiles/results/thresh_rpt/'
 directory = '/home/bor/bagfiles/results/stable_kfs/rpt/'
 directory = '/home/bor/bagfiles/results/stable_kfs/batol/'
+directory = '/home/bor/bagfiles/results/stablekfsnorptmanybatol_double/'
 filelist  = os.listdir(directory)
 filelist.sort()  #list is now alphabetical, so nonrobust are all first
 nrow = len(filelist)/2
@@ -27,7 +27,6 @@ for i,loc_fn in enumerate(filelist):
     print(i)
 
     (robust,mm,batol,rpt2,rpt3,avgerrD,avgerrR,batime) = td.treat_data(fn,False)
-    print(robust)
     if (robust!="true"):
         dataf['mm'].iloc[[i]]    = mm
         dataf['batol'].iloc[[i]] = batol

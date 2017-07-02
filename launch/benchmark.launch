@@ -8,7 +8,7 @@
   <arg name="bundle_adjustment_tol"  default="0.05"/>
   <arg name="rpt2"                   default="6" />
   <arg name="rpt3"                   default="10" />
-  <arg name="file_out"  default="result_robust_$(arg test_robustness)_mm_$(arg max_matches)_batol_$(arg bundle_adjustment_tol)_rpt2_$(arg rpt2)_rpt3_$(arg rpt3)"/>
+  <arg name="file_out"  default="result_robust_$(arg test_robustness)_mm_$(arg max_matches)_batol_$(arg bundle_adjustment_tol)_rpt2_$(arg rpt2)_rpt3_$(arg rpt3)_double_$(arg double_ba)"/>
 
   <include file="$(find boris_drone)/launch/global_params.xml" />
   <include file="$(find boris_drone)/launch/gui.xml" />
