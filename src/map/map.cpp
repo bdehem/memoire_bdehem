@@ -680,13 +680,10 @@ void Map::publishBenchmarkInfo()
     i++;
   }
 
-  if (double_ba) msg->BA_times_pass1.resize(BA_times_pass1.size());
-  msg->BA_times_pass2.resize(BA_times_pass2.size());
-  for (i = 0; i<BA_times_pass1.size(); ++i)
-  {
-    if (double_ba) msg->BA_times_pass1[i] = BA_times_pass1[i];
-    msg->BA_times_pass2[i] = BA_times_pass2[i];
-  }
+  if (double_ba) msg->BA_times_pass1 = BA_times_pass1.back();
+  else           msg->BA_times_pass1 = 0.0;
+  msg->BA_times_pass2 = BA_times_pass2.back();
+
   benchmark_pub.publish(*msg);
 }
 
