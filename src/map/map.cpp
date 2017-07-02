@@ -21,6 +21,7 @@ Map::Map(ros::NodeHandle* nh) : cloud(new pcl::PointCloud< pcl::PointXYZ >())
   ros::param::get("~threshold_kf_match", threshold_kf_match);
   ros::param::get("~max_matches", max_matches);
   ros::param::get("~no_bundle_adjustment", no_bundle_adjustment);
+  ros::param::get("~double_ba", double_ba);
   ros::param::get("~dlt_triangulation", dlt_triangulation);
   ros::param::get("~midpoint_triangulation", midpoint_triangulation);
   ros::param::get("~only_init", only_init);
@@ -644,7 +645,7 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   int pts_removed_clean = cleanMap();
   ROS_INFO("Removed %d + %d points",pts_removed,pts_removed_clean);
   //print_info();
-  if (is_first_pass)
+  if (is_first_pass&&double_ba)
   {
     BA_times_pass1.push_back(bundlePtr->time_taken);
     doBundleAdjustment(keyframes_to_adjust,false);
@@ -679,11 +680,11 @@ void Map::publishBenchmarkInfo()
     i++;
   }
 
-  msg->BA_times_pass1.resize(BA_times_pass1.size());
+  if (double_ba) msg->BA_times_pass1.resize(BA_times_pass1.size());
   msg->BA_times_pass2.resize(BA_times_pass1.size());
   for (i = 0; i<BA_times_pass1.size(); ++i)
   {
-    msg->BA_times_pass1[i] = BA_times_pass1[i];
+    if (double_ba) msg->BA_times_pass1[i] = BA_times_pass1[i];
     msg->BA_times_pass2[i] = BA_times_pass2[i];
   }
   benchmark_pub.publish(*msg);

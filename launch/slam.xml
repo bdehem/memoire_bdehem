@@ -9,6 +9,7 @@
   <arg name="dlt_triangulation"      default="false"/>
   <arg name="midpoint_triangulation" default="false"/>
   <arg name="test_robustness"        default="false"/>
+  <arg name="double_ba"              default="false"/>
   <arg name="bundle_adjustment_tol"  default="0.05"/>
   <arg name="quiet_ba"               default="false" />
   <arg name="rpt2"                   default="6" />
@@ -22,15 +23,16 @@
     <param name="2D_noise"               value="$(arg test_robustness)" />
     <!--<param name="3D_noise"               value="$(arg test_robustness)" />-->
     <param name="3D_noise"               value="false" />
+    <param name="double_ba"              value="$(arg double_ba)"/>
     <param name="threshold_kf_match"     value="$(arg threshold)" />
     <param name="max_matches"            value="$(arg max_matches)" />
     <param name="no_bundle_adjustment"   value="$(arg no_bundle_adjustment)"/>
     <param name="dlt_triangulation"      value="$(arg dlt_triangulation)"/>
     <param name="midpoint_triangulation" value="$(arg midpoint_triangulation)"/>
     <param name="only_init"              value="$(arg only_init)"/>
-    <param name="rpt2" value="$(arg rpt2)"/>
-    <param name="rpt3" value="$(arg rpt3)"/>
-    <param name="rpt4" value="$(arg rpt4)"/>
+    <param name="rpt2"                   value="$(arg rpt2)"/>
+    <param name="rpt3"                   value="$(arg rpt3)"/>
+    <param name="rpt4"                   value="$(arg rpt4)"/>
   </node>
 
   <node name="boris_drone_bundle_adjuster" pkg="boris_drone" type="bundle_adjuster" output="screen">

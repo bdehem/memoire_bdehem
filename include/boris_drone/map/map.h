@@ -95,6 +95,7 @@ private:
   bool dlt_triangulation;
   bool midpoint_triangulation;
   bool only_init;
+  bool double_ba;
   double rpt2;//remove_point_threshold
   double rpt3;
   double rpt4;

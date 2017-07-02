@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import rosbag
+import math
 import subprocess, yaml
 import rosbag_pandas
 import sys
@@ -47,8 +48,8 @@ def treat_data(file_in,do_plot):
             k+=1
     #print(batimes)
     batime  = sum(sum(batimes))
-    avgerrD = sum(errors[2,])/sum(counts[2,])
-    avgerrR = sum(errors[3,])/sum(counts[3,])
+    avgerrD = (sum(errors[2,])/sum(counts[2,]))
+    avgerrR = (sum(errors[3,])/sum(counts[3,]))*180/math.pi
     avgerr = sum(sum(errors))/sum(sum(counts))
     vis = rosbag_pandas.bag_to_dataframe(infile,include="/pose_visual")
     man = rosbag_pandas.bag_to_dataframe(infile,include="/pose_estimation")
@@ -73,7 +74,9 @@ def treat_data(file_in,do_plot):
 
 
 def get_params_from_fn(file_in):
-    arglist = file_in.split('_')
+    arglist1 = file_in.split('/')
+    file_loc = arglist1[-1]
+    arglist = file_loc.replace('.ba','_').split('_')
     robust  = arglist[2]
     mm      = arglist[4]
     batol   = arglist[6]

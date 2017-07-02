@@ -4,6 +4,7 @@
   <arg name="file_in"   default="benchmark"/>
   <arg name="max_matches"            default="200"/>
   <arg name="test_robustness"        default="false"/>
+  <arg name="double_ba"              default="false"/>
   <arg name="bundle_adjustment_tol"  default="0.05"/>
   <arg name="rpt2"                   default="6" />
   <arg name="rpt3"                   default="10" />
@@ -14,6 +15,7 @@
   <include file="$(find boris_drone)/launch/slam.xml" >
     <arg name="max_matches"            value="$(arg max_matches)"/>
     <arg name="test_robustness"        value="$(arg test_robustness)"/>
+    <arg name="double_ba"              value="$(arg double_ba)"/>
     <arg name="bundle_adjustment_tol"  value="$(arg bundle_adjustment_tol)"/>
     <arg name="rpt2"                   value="$(arg rpt2)"/>
     <arg name="rpt3"                   value="$(arg rpt3)"/>
