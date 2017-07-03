@@ -246,7 +246,7 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     }
   }
   std::vector<double> cost_of_point;
-  printResiduals(problem, bal_problem, cost_of_point);
+  computeResiduals(problem, bal_problem, cost_of_point);
 
   ceres::Solver::Options options;
   options.max_num_iterations = is_first_pass? 30 : 50;
@@ -272,11 +272,11 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
       ROS_INFO("R : z  = % 5.2f | yaw   = % 7.2f",camera_print[2],camera_print[5]);
     }
   }
-  printResiduals(problem, bal_problem, cost_of_point);
+  computeResiduals(problem, bal_problem, cost_of_point);
   publishBundle(bal_problem, converged, cost_of_point, time_taken);
 }
 
-void BundleAdjuster::printResiduals(ceres::Problem& problem, BALProblem& bal_problem,
+void BundleAdjuster::computeResiduals(ceres::Problem& problem, BALProblem& bal_problem,
       std::vector<double>& cost_of_point)
 {
   double cost;
@@ -284,17 +284,16 @@ void BundleAdjuster::printResiduals(ceres::Problem& problem, BALProblem& bal_pro
   problem.Evaluate(ceres::Problem::EvaluateOptions(), &cost, &residuals, NULL, NULL);
   int nobs = bal_problem.num_observations_;
   int npt  = bal_problem.num_points_;
-  std::vector<double> sqloss;
+  double sqloss;
   std::vector<double> sqloss_of_point;
   std::vector<int> observations_of_point;
-  sqloss.resize(nobs);
   sqloss_of_point.resize(npt,0.0);
   observations_of_point.resize(npt,0);
   cost_of_point.resize(npt);
   for (int i = 0; i<nobs; ++i)
   {
-    sqloss[i] = residuals[2*i]*residuals[2*i] + residuals[2*i+1]*residuals[2*i+1];
-    sqloss_of_point[bal_problem.point_index_[i]] += sqloss[i];
+    sqloss = residuals[2*i]*residuals[2*i] + residuals[2*i+1]*residuals[2*i+1];
+    sqloss_of_point[bal_problem.point_index_[i]] += sqloss;
     observations_of_point[bal_problem.point_index_[i]]++;
   }
   for (int i = 0; i < npt; ++i)

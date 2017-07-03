@@ -16,6 +16,8 @@
   <arg name="rpt3"                   default="10" />
   <arg name="rpt4"                   default="-1" />
   <arg name="only_init"              default="false" />
+  <arg name="remove_cst"             default="0" />
+  <arg name="remove_coeff"           default="-1" />
 
   <node name="image_proc_front" pkg="image_proc" type="image_proc" ns="ardrone/front"/>
 
@@ -33,6 +35,8 @@
     <param name="rpt2"                   value="$(arg rpt2)"/>
     <param name="rpt3"                   value="$(arg rpt3)"/>
     <param name="rpt4"                   value="$(arg rpt4)"/>
+    <param name="remove_cst"             value="$(arg remove_cst)"/>
+    <param name="remove_coeff"           value="$(arg remove_coeff)"/>
   </node>
 
   <node name="boris_drone_bundle_adjuster" pkg="boris_drone" type="bundle_adjuster" output="screen">

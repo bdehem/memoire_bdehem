@@ -12,6 +12,9 @@ Landmark::Landmark(cv::Point3d& coordinates, cv::Mat& descriptor)
   this->ID = ID_counter++;
   this->coordinates = coordinates;
   this->descriptor  = descriptor;
+  this->times_inlier  = 0;
+  this->times_outlier = 0;
+  this->creation_time = ros::Time::now();
 }
 
 void Landmark::updateCoords(cv::Point3d& coordinates)
@@ -40,6 +43,9 @@ void Landmark::print()
 {
   ROS_INFO("Landmark ID = %d",ID);
   ROS_INFO("  coordinates = %6.4f; %6.4f; %6.4f",coordinates.x,coordinates.y, coordinates.z);
+  ROS_INFO("  times_inlier  = %d",times_inlier);
+  ROS_INFO("  times_outlier = %d",times_outlier);
+  ROS_INFO("  created %f seconds ago", (ros::Time::now() - creation_time).toSec());
   std::cout<<"                                  Seen by Keyframes: ";
   std::set<int>::iterator it;
   for(it = keyframes_seeing.begin();it!=keyframes_seeing.end();++it)

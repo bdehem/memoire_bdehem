@@ -85,8 +85,11 @@ private:
   ros::Publisher bundle_pub;
   std::string    benchmark_channel;
   ros::Publisher benchmark_pub;
+  ros::Time tStart;
+  ros::Time last_removal;
 
   /* bools */
+  bool init;
   bool is_adjusting_bundle;
   bool second_keyframe_pending;
   bool use_2D_noise;
@@ -99,12 +102,15 @@ private:
   double rpt2;//remove_point_threshold
   double rpt3;
   double rpt4;
+  double remove_cst;
+  double remove_coeff;
   std::vector<double> BA_times_pass1;
   std::vector<double> BA_times_pass2;
 
   Camera camera;
 
   std::map<int,Landmark*> landmarks;
+  std::map<int,int> landmark_indices;
   std::map<int,Keyframe*> keyframes; //Map of ID to keyframe
   std::map<int,Keyframe*>::iterator first_kf_to_adjust;
 
@@ -171,6 +177,8 @@ public:
   void reset();
 
   bool processFrame(Frame& frame,boris_drone::Pose3D& PnP_pose, bool keyframeneeded);
+
+  void removeUnusedPoints();
 
   bool isInitialized();
 

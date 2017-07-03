@@ -3,6 +3,7 @@
 
 #include <opencv2/core/core.hpp>
 #include <set>
+#include <time.h>
 #include <ros/ros.h>
 
 
@@ -15,6 +16,9 @@ public:
   cv::Point3d coordinates;
   cv::Mat descriptor;
   int ID;
+  int times_inlier;
+  int times_outlier;
+  ros::Time creation_time;
   Landmark(cv::Point3d& coordinates, cv::Mat& descriptor);
   Landmark();
 

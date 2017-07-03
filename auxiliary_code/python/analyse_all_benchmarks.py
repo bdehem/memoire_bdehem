@@ -13,7 +13,7 @@ pd.set_option('display.width', 1000)
 directory = '/home/bor/bagfiles/res/'
 directory = '/home/bor/bagfiles/results/stable_kfs/rpt/'
 directory = '/home/bor/bagfiles/results/stable_kfs/batol/'
-directory = '/home/bor/bagfiles/results/batol_simple/'
+directory = '/home/bor/bagfiles/results/stable_kfs_rpt_single_ba_batol_is_0.01/'
 filelist  = os.listdir(directory)
 filelist.sort()  #list is now alphabetical, so nonrobust are all first
 nrow = len(filelist)/2
@@ -46,5 +46,5 @@ for i,loc_fn in enumerate(filelist):
     print(avgerrD)
     print(avgerrR)
     print(batime)
-dataf.to_csv("/home/bor/bagfiles/batol_simple.csv")
+dataf.to_csv("/home/bor/bagfiles/stable_kfs_rpt_single_ba_batol_is_0.01.csv")
 print(dataf)
