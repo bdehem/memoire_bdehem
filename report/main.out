@@ -10,3 +10,9 @@
 \BOOKMARK [2][-]{subsection.1.4.1}{Convergence of the solver}{section.1.4}% 10
 \BOOKMARK [2][-]{subsection.1.4.2}{Rejecting outliers}{section.1.4}% 11
 \BOOKMARK [1][-]{section.1.5}{Map Initialization}{chapter.1}% 12
+\BOOKMARK [0][-]{appendix.A}{Benchmark results}{}% 13
+\BOOKMARK [1][-]{section.A.1}{Effect of convergence criterion during bundle adjustment}{appendix.A}% 14
+\BOOKMARK [1][-]{section.A.2}{Effect of outlier threshold after bundle adjustment}{appendix.A}% 15
+\BOOKMARK [2][-]{subsection.A.2.1}{Threshold after first bundle adjustment}{section.A.2}% 16
+\BOOKMARK [2][-]{subsection.A.2.2}{Threshold after second bundle adjustment}{section.A.2}% 17
+\BOOKMARK [1][-]{section.A.3}{Effect of limiting the number of matches between keyframes}{appendix.A}% 18

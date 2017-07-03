@@ -88,6 +88,7 @@ private:
 
   double tolerance;
   bool   quiet_ba;
+  double huber_delta;
 
   void bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr);
 public:

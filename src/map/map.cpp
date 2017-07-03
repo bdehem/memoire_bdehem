@@ -30,6 +30,7 @@ Map::Map(ros::NodeHandle* nh) : cloud(new pcl::PointCloud< pcl::PointXYZ >())
   ros::param::get("~rpt4", rpt4);
   ros::param::get("~remove_cst", remove_cst);
   ros::param::get("~remove_coeff", remove_coeff);
+  ros::param::get("~manual_keyframes", manual_keyframes);
   ROS_INFO("init map");
 
 
@@ -56,7 +57,7 @@ Map::Map(ros::NodeHandle* nh) : cloud(new pcl::PointCloud< pcl::PointXYZ >())
   this->tvec = cv::Mat::zeros(3, 1, CV_64FC1);
   this->rvec = cv::Mat::zeros(3, 1, CV_64FC1);
 
-  ROS_DEBUG("map initialized");
+  ROS_DEBUG("map started");
 }
 
 Map::~Map() {reset();}
@@ -293,7 +294,7 @@ bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose, bool manual_
   else if (ros::Time::now() - tStart > five_minutes)
   {
     tStart = ros::Time::now();
-    print_landmarks();
+    //print_landmarks();
   }
 
   int n_inliers;
@@ -452,10 +453,10 @@ bool customLess(std::vector< int > a, std::vector< int > b)
 
 bool Map::keyframeNeeded(bool manual_pose_received, int n_inliers)
 {
-  if (only_init && isInitialized()) return false; //(for benchmark of initialization)
   if (keyframes.size()==0)          return true;
+  if (manual_keyframes)             return manual_pose_received;
+  if (only_init && isInitialized()) return false; //(for benchmark of initialization)
   if (!isInitialized())             return manual_pose_received;
-  if (isInitialized())              return manual_pose_received; //for testing (manual keyframe adding)
   if (is_adjusting_bundle)          return false;
 //if (second_keyframe_pending)
 //{
@@ -709,7 +710,7 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     is_adjusting_bundle = false;
     last_new_keyframe   = ros::Time::now();
     publishBenchmarkInfo();
-    print_landmarks();
+    //print_landmarks();
   }
 }
 

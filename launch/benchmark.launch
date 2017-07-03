@@ -1,16 +1,20 @@
 <?xml version="1.0"?>
 
+<!-- roslaunch boris_drone benchmark.launch rpt2:=-1 rpt3:=-1 -->
+
+
 <launch>
   <arg name="file_in"                default="benchmark"/>
   <arg name="max_matches"            default="200"/>
   <arg name="test_robustness"        default="false"/>
   <arg name="double_ba"              default="false"/>
   <arg name="bundle_adjustment_tol"  default="0.05"/>
-  <arg name="rpt2"                   default="6" />
-  <arg name="rpt3"                   default="10" />
+  <arg name="rpt2"                   default="6.0" />
+  <arg name="rpt3"                   default="-1" />
   <arg name="remove_cst"             default="0" />
   <arg name="remove_coeff"           default="-1" />
-  <arg name="file_out"  default="result_robust_$(arg test_robustness)_mm_$(arg max_matches)_batol_$(arg bundle_adjustment_tol)_rpt2_$(arg rpt2)_rpt3_$(arg rpt3)_double_$(arg double_ba)_rmvcst_$(arg remove_cst)_rmvcoeff_$(arg remove_coeff)"/>
+  <arg name="huber_delta"            default="1.0" />
+  <arg name="file_out"  default="result_robust_$(arg test_robustness)_mm_$(arg max_matches)_batol_$(arg bundle_adjustment_tol)_rpt2_$(arg rpt2)_rpt3_$(arg rpt3)_double_$(arg double_ba)_rmvcst_$(arg remove_cst)_rmvcoeff_$(arg remove_coeff)_huberdelta_$(arg huber_delta)"/>
 
   <include file="$(find boris_drone)/launch/global_params.xml" />
   <include file="$(find boris_drone)/launch/gui.xml" />
@@ -24,6 +28,7 @@
     <arg name="remove_cst"             value="$(arg remove_cst)"/>
     <arg name="remove_coeff"           value="$(arg remove_coeff)"/>
     <arg name="only_init"              value="true" />
+    <arg name="huber_delta"            value="$(arg huber_delta)"/>
   </include>
 
   <node name="boris_drone_manual_pose_estimation" pkg="boris_drone" type="manual_pose_estimation" output="screen"></node>

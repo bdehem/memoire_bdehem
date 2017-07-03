@@ -157,6 +157,7 @@ BundleAdjuster::BundleAdjuster()
 
   ros::param::get("~bundle_adjustment_tol", tolerance);
   ros::param::get("~quiet_ba", quiet_ba);
+  ros::param::get("~huber_delta", huber_delta);
 }
 
 void BundleAdjuster::publishBundle(const BALProblem& bal_problem, bool converged,
@@ -227,7 +228,7 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     x = bal_problem.observations()[2 * i + 0];
     y = bal_problem.observations()[2 * i + 1];
     cost_function = SnavelyReprojectionError::Create(x, y);
-    ceres::LossFunction* loss_function = new ceres::HuberLoss(1.0);
+    ceres::LossFunction* loss_function = new ceres::HuberLoss(huber_delta);
     problem.AddResidualBlock(cost_function, loss_function, camera, point);
   }
   int n_constcams = ncam>4 ? ncam / 3 : 1;
@@ -299,8 +300,7 @@ void BundleAdjuster::computeResiduals(ceres::Problem& problem, BALProblem& bal_p
   for (int i = 0; i < npt; ++i)
   {
     cost_of_point[i] = sqloss_of_point[i]/(double)observations_of_point[i];
-    //ROS_INFO("Pt %d: cost = %f nobs = %d cost/obs = %f",
-    //i,sqloss_of_point[i],observations_of_point[i],cost_of_point[i]);
+    ROS_INFO("Pt %d: cost = %f nobs = %d cost/obs = %f", i,sqloss_of_point[i],observations_of_point[i],cost_of_point[i]);
   }
 }
 
