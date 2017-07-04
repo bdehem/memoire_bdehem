@@ -145,7 +145,7 @@ private:
    */
   bool keyframeNeeded(bool manual_pose_received, int n_inliers);
 
-  void newKeyframe(const Frame& frame, const boris_drone::Pose3D& pose, bool use_pose);
+  void newKeyframe(const Frame& frame, const boris_drone::Pose3D& pose);
   void newPairOfKeyframes(const Frame& frame, const boris_drone::Pose3D& pose, bool use_pose);
   void newPairOfKeyframes2(const Frame& frame, const boris_drone::Pose3D& pose, bool use_pose);
 

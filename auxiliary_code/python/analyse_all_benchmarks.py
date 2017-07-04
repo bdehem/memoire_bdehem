@@ -14,7 +14,7 @@ pd.set_option('display.max_rows', 1000)
 directory = '/home/bor/bagfiles/res/'
 directory = '/home/bor/bagfiles/results/stable_kfs/rpt/'
 directory = '/home/bor/bagfiles/results/stable_kfs/batol/'
-directory = '/home/bor/bagfiles/results/rmvcoeffcst/'
+directory = '/home/bor/bagfiles/results/triangulation_and_ba/'
 filelist  = os.listdir(directory)
 filelist.sort()  #list is now alphabetical, so nonrobust are all first
 nrow = len(filelist)/2
@@ -53,5 +53,5 @@ for i,loc_fn in enumerate(filelist):
     print(avgerrD)
     print(avgerrR)
     print(batime)
-dataf.to_csv("/home/bor/bagfiles/rmvcoeffcst.csv")
+dataf.to_csv("/home/bor/bagfiles/triangulation_and_ba.csv")
 print(dataf)

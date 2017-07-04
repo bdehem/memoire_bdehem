@@ -225,14 +225,14 @@ void Map::matchKeyframes(Keyframe* kf0, Keyframe* kf1)
   ROS_INFO("finished matching keyframe %d with keyframe %d. There are %d matching points",kf0->ID, kf1->ID, nmatch);
 }
 
-void Map::newKeyframe(const Frame& frame, const boris_drone::Pose3D& pose, bool use_pose)
+void Map::newKeyframe(const Frame& frame, const boris_drone::Pose3D& pose)
 {
   if (frame.img_points.size() <= 10)
   {
     ROS_INFO("I want to create a new keyframe, but current frame only has %lu points",frame.img_points.size());
     return;
   }
-  Keyframe* new_keyframe = use_pose ? new Keyframe(frame,&camera,pose) : new Keyframe(frame,&camera,frame.pose);
+  Keyframe* new_keyframe = new Keyframe(frame,&camera,pose);
   last_new_keyframe = ros::Time::now();
   keyframes[new_keyframe->ID] = new_keyframe;
   if (keyframes.size() < 5)
@@ -294,7 +294,6 @@ bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose, bool manual_
   else if (ros::Time::now() - tStart > five_minutes)
   {
     tStart = ros::Time::now();
-    //print_landmarks();
   }
 
   int n_inliers;
@@ -302,31 +301,18 @@ bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose, bool manual_
   int n_keyframes = keyframes.size();
   if (keyframeNeeded(manual_pose_received, n_inliers))
   {
-    boris_drone::Pose3D noise_pose = frame.pose;
-    if (use_2D_noise)
-    {
-      noise_pose.x    =  frame.pose.x    + 0.30         *(double)(n_keyframes==1 || n_keyframes==2);
-      noise_pose.y    =  frame.pose.y    + 0.30         *(double)(n_keyframes==2 || n_keyframes==3);
-      noise_pose.rotZ =  frame.pose.rotZ + 18.0*(PI/180)*(double)(n_keyframes==3 || n_keyframes==1);
-    }
-    if (use_3D_noise)
-    {
-      noise_pose.z    =  frame.pose.z    + 0.05   *(double)(n_keyframes==1);
-      noise_pose.rotX =  frame.pose.rotX + (PI/30)*(double)(n_keyframes==2);
-      noise_pose.rotY =  frame.pose.rotY + (PI/30)*(double)(n_keyframes==3);
-    }
     if ((use_2D_noise||use_3D_noise)&&n_keyframes!=0)
     {
-      newKeyframe(frame, noise_pose, true);
+      boris_drone::Pose3D noise_pose = frame.pose;
+      noise_pose.x    =  frame.pose.x    + (0.300)*(double)(n_keyframes==1||n_keyframes==2)*use_2D_noise;
+      noise_pose.y    =  frame.pose.y    + (0.300)*(double)(n_keyframes==2||n_keyframes==3)*use_2D_noise;
+      noise_pose.rotZ =  frame.pose.rotZ + (PI/10)*(double)(n_keyframes==3||n_keyframes==1)*use_2D_noise;
+      noise_pose.z    =  frame.pose.z    + (0.050)*(double)(n_keyframes==1)*use_3D_noise;
+      noise_pose.rotX =  frame.pose.rotX + (PI/30)*(double)(n_keyframes==2)*use_3D_noise;
+      noise_pose.rotY =  frame.pose.rotY + (PI/30)*(double)(n_keyframes==3)*use_3D_noise;
+      newKeyframe(frame, noise_pose);
     }
-    else if (!isInitialized())
-    {
-      newKeyframe(frame, PnP_pose, (!manual_pose_received)&&(PnP_result==1));
-    }
-    else
-    {
-      newKeyframe(frame, PnP_pose, (PnP_result==1)); //TODO pairofkeyframes??
-    }
+    else newKeyframe(frame, frame.pose);
   }
   switch(PnP_result){
     case 1  : //PnP successful
@@ -362,7 +348,7 @@ bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose, bool manual_
 int Map::getPointsForBA(std::vector<int> &kfIDs,
                         std::map<int,std::map<int,int> > &points_for_ba)
 {
-  //Output: points[ID] is a map that maps keyframe IDs of keyframes seeing it to
+  //Output: points_for_ba[ID] is a map that maps keyframe IDs of keyframes seeing it to
   //the index of the point in the keyframe
 
   //First take all points seen by any of the keyframes in kfIDs
@@ -742,7 +728,7 @@ void Map::publishBenchmarkInfo()
   if (double_ba) msg->num_iter_pass1 = num_iter_pass1.back();
   else           msg->num_iter_pass1   = 0;
   msg->BA_times_pass2 = BA_times_pass2.back();
-  msg->num_iter_pass1 = num_iter_pass1.back();
+  msg->num_iter_pass2 = num_iter_pass2.back();
 
   benchmark_pub.publish(*msg);
 }

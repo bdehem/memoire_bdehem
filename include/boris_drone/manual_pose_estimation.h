@@ -51,11 +51,15 @@ private:
   ros::Publisher  manual_pose_pub;            //!< Publisher of fused pose estimation
   std::string     manual_pose_channel;
   ros::Subscriber manual_pose_sub;
+  std::string     visual_pose_channel;
+  ros::Subscriber visual_pose_sub;
 
   void manualPoseCb(const boris_drone::Pose3D::ConstPtr manualPosePtr);
+  void visualPoseCb(const boris_drone::Pose3D::ConstPtr manualPosePtr);
 
   //! Copy of the last visual pose computed in map node
   boris_drone::Pose3D pose;
+  bool has_received_visual_pose;
 
 public:
   //! Constructor
