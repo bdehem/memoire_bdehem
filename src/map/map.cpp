@@ -305,9 +305,9 @@ bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose, bool manual_
     boris_drone::Pose3D noise_pose = frame.pose;
     if (use_2D_noise)
     {
-      noise_pose.x    =  frame.pose.x    + 0.30   *(double)(n_keyframes==1 || n_keyframes==2);
-      noise_pose.y    =  frame.pose.y    + 0.30   *(double)(n_keyframes==2 || n_keyframes==3);
-      noise_pose.rotZ =  frame.pose.rotZ + (PI/10)*(double)(n_keyframes==3 || n_keyframes==1);
+      noise_pose.x    =  frame.pose.x    + 0.30         *(double)(n_keyframes==1 || n_keyframes==2);
+      noise_pose.y    =  frame.pose.y    + 0.30         *(double)(n_keyframes==2 || n_keyframes==3);
+      noise_pose.rotZ =  frame.pose.rotZ + 18.0*(PI/180)*(double)(n_keyframes==3 || n_keyframes==1);
     }
     if (use_3D_noise)
     {
@@ -702,11 +702,13 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   if (is_first_pass&&double_ba)
   {
     BA_times_pass1.push_back(bundlePtr->time_taken);
+    num_iter_pass1.push_back(bundlePtr->num_iter);
     doBundleAdjustment(keyframes_to_adjust,false);
   }
   else
   {
     BA_times_pass2.push_back(bundlePtr->time_taken);
+    num_iter_pass2.push_back(bundlePtr->num_iter);
     is_adjusting_bundle = false;
     last_new_keyframe   = ros::Time::now();
     publishBenchmarkInfo();
@@ -737,7 +739,10 @@ void Map::publishBenchmarkInfo()
 
   if (double_ba) msg->BA_times_pass1 = BA_times_pass1.back();
   else           msg->BA_times_pass1 = 0.0;
+  if (double_ba) msg->num_iter_pass1 = num_iter_pass1.back();
+  else           msg->num_iter_pass1   = 0;
   msg->BA_times_pass2 = BA_times_pass2.back();
+  msg->num_iter_pass1 = num_iter_pass1.back();
 
   benchmark_pub.publish(*msg);
 }

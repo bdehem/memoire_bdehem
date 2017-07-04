@@ -8,6 +8,7 @@ float32 time_taken
 int16 num_cameras
 int16 num_points
 int16 num_observations
+int16 num_iter
 ObservationMsg[] observations
 geometry_msgs/Point[] points
 Pose3D[] cameras

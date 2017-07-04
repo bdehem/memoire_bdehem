@@ -17,6 +17,7 @@ def treat_data(file_in,do_plot):
     errors = np.zeros((4,5))
     counts = np.zeros((4,5))
     batimes = np.zeros((3,2))
+    pts_map = np.zeros((3))
     ind = -1
     starttime = -1
     k = 0
@@ -43,8 +44,10 @@ def treat_data(file_in,do_plot):
             errors[3,ind] += abs(errrotZ)
             counts[:,ind] += 1
         if topic == "/benchmark":
+
             batimes[k,0] = msg.BA_times_pass1
             batimes[k,1] = msg.BA_times_pass2
+            pts_map[k] = msg.pts_map
             k+=1
     #print(batimes)
     batime  = sum(sum(batimes))
@@ -68,9 +71,9 @@ def treat_data(file_in,do_plot):
         axy.set_title('Y')
         axz.set_title('Z')
         axr.set_title('rotZ')
-    (robust,mm,batol,rpt2,rpt3) = get_params_from_fn(file_in)
+    (robust,mm,batol,rpt2,rpt3,huber,rmvcoeff,rmvcst) = get_params_from_fn(file_in)
     #return (avgerrD,avgerrR,batime)
-    return (robust,mm,batol,rpt2,rpt3,avgerrD,avgerrR,batime)
+    return (robust,mm,batol,rpt2,rpt3,huber,rmvcoeff,rmvcst,avgerrD,avgerrR,batime,pts_map[-1])
 
 
 def get_params_from_fn(file_in):
@@ -82,7 +85,11 @@ def get_params_from_fn(file_in):
     batol   = arglist[6]
     rpt2    = arglist[8]
     rpt3    = arglist[10]
-    return (robust,mm,batol,rpt2,rpt3)
+    print(len(arglist))
+    rmvcst   = arglist[14] if len(arglist) > 14 else 0
+    rmvcoeff = arglist[16] if len(arglist) > 16 else -1
+    huber    = arglist[18] if len(arglist) > 18 else "1.0"
+    return (robust,mm,batol,rpt2,rpt3,huber,rmvcoeff,rmvcst)
 
 
 def main():

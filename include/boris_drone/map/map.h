@@ -107,6 +107,8 @@ private:
   double remove_coeff;
   std::vector<double> BA_times_pass1;
   std::vector<double> BA_times_pass2;
+  std::vector<int>    num_iter_pass1;
+  std::vector<int>    num_iter_pass2;
 
   Camera camera;
 

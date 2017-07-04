@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<!-- roslaunch boris_drone benchmark.launch rpt2:=-1 rpt3:=-1 -->
+
+
+<launch>
+
+  <include file="$(find boris_drone)/launch/global_params.xml" />
+  <include file="$(find boris_drone)/launch/driver.xml" />
+  <node name="boris_drone_bundle_adjuster" pkg="boris_drone" type="controller_custom" output="screen"/>
+</launch>

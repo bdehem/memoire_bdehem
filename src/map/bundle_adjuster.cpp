@@ -161,7 +161,7 @@ BundleAdjuster::BundleAdjuster()
 }
 
 void BundleAdjuster::publishBundle(const BALProblem& bal_problem, bool converged,
-            std::vector<double>& cost_of_point, double time_taken)
+            std::vector<double>& cost_of_point, double time_taken, int n_iter)
 {
   boris_drone::BundleMsg msg = *(bal_problem.bundleMsgPtr_);
   int ncam = bal_problem.num_cameras_ ;  int npt  = bal_problem.num_points_;
@@ -169,6 +169,7 @@ void BundleAdjuster::publishBundle(const BALProblem& bal_problem, bool converged
   msg.cameras.resize(ncam)            ;  msg.points.resize(npt);
   msg.converged = converged;
   msg.time_taken = time_taken;
+  msg.num_iter = n_iter;
   msg.cost_of_point.resize(npt);
   for (int i = 0; i < ncam; ++i) {
     msg.cameras[i].x    = bal_problem.parameters_[6*i + 0];
@@ -250,7 +251,7 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   computeResiduals(problem, bal_problem, cost_of_point);
 
   ceres::Solver::Options options;
-  options.max_num_iterations = is_first_pass? 30 : 50;
+  options.max_num_iterations = is_first_pass? 100 : 100;
   options.linear_solver_type = ceres::DENSE_SCHUR;
   //TODO this is temporary
   options.minimizer_progress_to_stdout = !quiet_ba;
@@ -259,6 +260,7 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   ceres::Solve(options, &problem, &summary);
   bool converged = (summary.termination_type == ceres::CONVERGENCE);
   double time_taken = summary.total_time_in_seconds;
+  int n_iter = summary.num_successful_steps;
 
   if (!quiet_ba)
   {
@@ -274,7 +276,7 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     }
   }
   computeResiduals(problem, bal_problem, cost_of_point);
-  publishBundle(bal_problem, converged, cost_of_point, time_taken);
+  publishBundle(bal_problem, converged, cost_of_point, time_taken,n_iter);
 }
 
 void BundleAdjuster::computeResiduals(ceres::Problem& problem, BALProblem& bal_problem,

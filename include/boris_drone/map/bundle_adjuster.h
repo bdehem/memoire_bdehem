@@ -96,7 +96,8 @@ public:
   BundleAdjuster();
   //! Destructor.
   ~BundleAdjuster();
-  void publishBundle(const BALProblem& bal_problem, bool converged, std::vector<double>& cost_of_point, double time_taken);
+  void publishBundle(const BALProblem& bal_problem, bool converged, std::vector<double>& cost_of_point, double time_taken, int n_iter);
+
   void computeResiduals(ceres::Problem& problem, BALProblem& bal_problem, std::vector<double>& cost_of_point);
 };
 
