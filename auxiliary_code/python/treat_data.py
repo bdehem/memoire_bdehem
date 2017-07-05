@@ -25,7 +25,8 @@ def treat_data(file_in,do_plot):
         if starttime == -1:
             starttime = t.secs
         if topic == "/pose_estimation":
-            new_interval  = (ref_pose_x != msg.x and msg.x != 0)
+            at_a_ref_pose = msg.x==0 or msg.x==-0.09 or msg.x==1.12 or msg.x==0.80 or msg.x==0.57
+            new_interval  = (ref_pose_x != msg.x and at_a_ref_pose and msg.x != 0)
             #if new_interval:
                 #print(t.secs - starttime)
             ind += new_interval
@@ -85,7 +86,6 @@ def get_params_from_fn(file_in):
     batol   = arglist[6]
     rpt2    = arglist[8]
     rpt3    = arglist[10]
-    print(len(arglist))
     rmvcst   = arglist[14] if len(arglist) > 14 else 0
     rmvcoeff = arglist[16] if len(arglist) > 16 else -1
     huber    = arglist[18] if len(arglist) > 18 else "1.0"

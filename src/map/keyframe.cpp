@@ -14,17 +14,17 @@ int Keyframe::ID_counter = 0;
 
 Keyframe::Keyframe() {}
 
-Keyframe::Keyframe(const Frame& frame, Camera* cam, const boris_drone::Pose3D pose)
+Keyframe::Keyframe(const Frame& frame, Camera* cam)
 {
   this->camera = cam;
-  this->ID = ID_counter++;
+  this->ID     = ID_counter++;
+  this->pose   = frame.pose; //Rotation is to drone, later changed to camera
   tf::Matrix3x3 drone2world, cam2drone, cam2world;
   double roll, pitch, yaw;
   drone2world.setRPY(pose.rotX, pose.rotY, pose.rotZ);
   cam2drone.setRPY(-PI/2, 0, -PI/2);
   cam2world = drone2world*cam2drone;
   cam2world.getRPY(roll, pitch, yaw);
-  this->pose            = pose; //Rotation is to camera, not to drone
   this->pose.rotX       = roll;
   this->pose.rotY       = pitch;
   this->pose.rotZ       = yaw;

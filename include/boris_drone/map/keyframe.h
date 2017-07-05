@@ -63,7 +63,7 @@ public:
   //! \param[in] frame from which the Keyframe is built
   Keyframe();
   //Keyframe(const Frame& frame, Camera* cam);
-  Keyframe(const Frame& frame, Camera* cam, const boris_drone::Pose3D pose);
+  Keyframe(const Frame& frame, Camera* cam);
 
 
 

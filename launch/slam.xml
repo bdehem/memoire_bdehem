@@ -20,6 +20,7 @@
   <arg name="remove_coeff"           default="1.5" />
   <arg name="huber_delta"            default="1.0" />
   <arg name="manual_keyframes"       default="false" />
+  <arg name="benchmark"              default="false" />
 
   <node name="image_proc_front" pkg="image_proc" type="image_proc" ns="ardrone/front"/>
 

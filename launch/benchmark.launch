@@ -35,6 +35,7 @@
     <arg name="remove_coeff"           value="$(arg remove_coeff)"/>
     <arg name="only_init"              value="true" />
     <arg name="huber_delta"            value="$(arg huber_delta)"/>
+    <arg name="benchmark"              value="true" />
   </include>
 
   <node name="boris_drone_manual_pose_estimation" pkg="boris_drone" type="manual_pose_estimation" output="screen"></node>

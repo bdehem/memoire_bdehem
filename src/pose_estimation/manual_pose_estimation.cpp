@@ -32,6 +32,9 @@ ManualPoseEstimator::ManualPoseEstimator()
   pose.x = 0;
   pose.y = 0;
   pose.z = 0;
+  pose.rotX = 0;
+  pose.rotY = 0;
+  pose.rotZ = 0;
 }
 
 // Destructor
@@ -62,6 +65,7 @@ void ManualPoseEstimator::manualPoseCb(const boris_drone::Pose3D::ConstPtr manua
 
 void ManualPoseEstimator::visualPoseCb(const boris_drone::Pose3D::ConstPtr visualPosePtr)
 {
+  return;
   has_received_visual_pose = true;
   pose.x = visualPosePtr->x;
   pose.y = visualPosePtr->y;

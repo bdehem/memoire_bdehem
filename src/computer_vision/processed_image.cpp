@@ -199,9 +199,7 @@ void ProcessedImage::convertToMsg(boris_drone::ProcessedImageMsg::Ptr& msg, Targ
   msg->image = this->image;
 
   if (this->keypoints.size() == 0)
-  {
     return;
-  }
 
   TIC(target);
   // Prepare structures for target detection

@@ -100,6 +100,7 @@ private:
   bool only_init;
   bool double_ba;
   bool manual_keyframes;
+  bool benchmark;
   double rpt2;//remove_point_threshold
   double rpt3;
   double rpt4;
@@ -145,7 +146,7 @@ private:
    */
   bool keyframeNeeded(bool manual_pose_received, int n_inliers);
 
-  void newKeyframe(const Frame& frame, const boris_drone::Pose3D& pose);
+  void newKeyframe(const Frame& frame);
   void newPairOfKeyframes(const Frame& frame, const boris_drone::Pose3D& pose, bool use_pose);
   void newPairOfKeyframes2(const Frame& frame, const boris_drone::Pose3D& pose, bool use_pose);
 

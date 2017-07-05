@@ -32,12 +32,19 @@ Unfortunately, those lines never intersect in practice, due to various errors (m
 \subsection{Midpoint Method}
 The simplest and most obvious solution is to take the midpoint of the common perpendicular of the two rays. This method is intuitive to understand geometrically, and is quite easy to compute. In practice, however its results are not very good, as there is no theoretical reason for this point to be the best.
 
+\subsection{Linear least squares}
+A more advanced method for finding the coordinates of a point from a correspondence is called Linear Least squares, and is described in Hartley & Zisserman's \textit{Multiple view geometry in computer vision} \cite{multipleviewgeometry}.
+This method also has the advantage that it is already implemented in the OpenCV library.
+
+
 \subsection{Optimal Correction}
 If we assume that the error on observed points is random and follows a Gaussian distribution with zero mean, then the optimal solution would be to displace the pixels on both images until the resulting rays meet, keeping the displacement of the pixels as small as possible in the least squared sense. Such a solution would give the maximum likelihood estimator of the position of the 3D points, under those assumptions.
 There are several algorithms in the litterature that triangulate the position of a point using optimal correction. The most popular one, proposed by Hartley and Sturm \cite{hartleysturm}, computes the solution directly but requires finding the root of a 6th degree polynomial. Kanantani et. al.'s method \cite{kanatani} finds a solution iteratively, but requires very few iterations to have an accurate solution, and in practice, is faster than the Hartley Sturm method. It also has better numerical properties, as unlike the Hartley-Sturm method, it does not have singularities at the epipoles.
 
 \subsection{Comparison of triangulation methods}
 Using the evaluation procedure described in section \ref{evalproc}, we can compare these 2 triangulation methods.
+
+%TODO put new csv here
 
 \begin{table}[H]
   \centering
