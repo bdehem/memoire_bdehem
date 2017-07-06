@@ -30,11 +30,10 @@ void matchDescriptors(const cv::Mat& descriptors1, const cv::Mat& descriptors2,
 
 bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, int idx2)
 {
-  //in matlab this is triangulate4 lol
   //http://www.iim.cs.tut.ac.jp/~kanatani/papers/sstriang.pdf
   //(iterative method for higher order aproximation)
   /* get coordinates */
-  cv::Mat cam2world1, cam2world2, origin1, origin2, P0, P1;
+  cv::Mat drone2world1, drone2world2, cam2world1, cam2world2, origin1, origin2, P0, P1;
   cv::Mat T1, T2, K1, K2, F;
   cv::Mat pt1_h, pt2_h, u, P, x_hat, x1_hat, temp, x_tilde, x1_tilde;
   cv::Mat V, epsil, mult;
@@ -46,8 +45,12 @@ bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, in
   pt1 = kf1->img_points[idx1];  pose1 = kf1->pose;  cam1 = kf1->camera;
   pt2 = kf2->img_points[idx2];  pose2 = kf2->pose;  cam2 = kf2->camera;
   double E, E0, f, den ;
-  getCameraPositionMatrices(pose1, cam2world1, origin1, true);
-  getCameraPositionMatrices(pose2, cam2world2, origin2, true);
+  //getCameraPositionMatrices(pose1, cam2world1, origin1, true);
+  //getCameraPositionMatrices(pose2, cam2world2, origin2, true);
+  getCameraPositionMatrices(pose1, drone2world1, origin1, true);
+  getCameraPositionMatrices(pose2, drone2world2, origin2, true);
+  cam2world1 = drone2world1*cam1.get_R();
+  cam2world2 = drone2world2*cam2.get_R();
   K1 = cam1.get_K();
   K2 = cam2.get_K();
   T1 = (cv::Mat_<double>(3, 4) << 1, 0, 0, -origin1.at<double>(0,0),
@@ -127,7 +130,7 @@ bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, in
 
 bool triangulate_dlt(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, int idx2)
 {
-  cv::Mat cam2world1, cam2world2, origin1, origin2, P0, P1;
+  cv::Mat drone2world1,drone2world2,cam2world1, cam2world2, origin1, origin2, P0, P1;
   cv::Mat T1, T2, K1, K2, F;
   cv::Point2d pt1, pt2;
   boris_drone::Pose3D pose1, pose2;
@@ -136,8 +139,12 @@ bool triangulate_dlt(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1
   cv::Mat pnts3D(4,1,CV_64F);
   pt1 = kf1->img_points[idx1];  pose1 = kf1->pose;  cam1 = kf1->camera;
   pt2 = kf2->img_points[idx2];  pose2 = kf2->pose;  cam2 = kf2->camera;
-  getCameraPositionMatrices(pose1, cam2world1, origin1, true);
-  getCameraPositionMatrices(pose2, cam2world2, origin2, true);
+  //getCameraPositionMatrices(pose1, cam2world1, origin1, true);
+  //getCameraPositionMatrices(pose2, cam2world2, origin2, true);
+  getCameraPositionMatrices(pose1, drone2world1, origin1, true);
+  getCameraPositionMatrices(pose2, drone2world2, origin2, true);
+  cam2world1 = drone2world1*cam1.get_R();
+  cam2world2 = drone2world2*cam2.get_R();
   K1 = cam1.get_K();
   K2 = cam2.get_K();
   T1 = (cv::Mat_<double>(3, 4) << 1, 0, 0, -origin1.at<double>(0,0),
@@ -166,14 +173,18 @@ bool triangulate_midpoint(cv::Point3d& pt_out, Keyframe *kf1, Keyframe *kf2, int
   double angleThresh = PI/40;
 
   /* get coordinates */
-  cv::Mat cam2world1, cam2world2, origin1, origin2;
+  cv::Mat drone2world1,drone2world2,cam2world1, cam2world2, origin1, origin2;
   cv::Point2d pt1,pt2;
   Camera cam1, cam2;
   boris_drone::Pose3D pose1, pose2;
   pt1 = kf1->img_points[idx1];  pose1 = kf1->pose;  cam1 = kf1->camera;
   pt2 = kf2->img_points[idx2];  pose2 = kf2->pose;  cam2 = kf2->camera;
-  getCameraPositionMatrices(pose1, cam2world1, origin1, true);
-  getCameraPositionMatrices(pose2, cam2world2, origin2, true);
+  //getCameraPositionMatrices(pose1, cam2world1, origin1, true);
+  //getCameraPositionMatrices(pose2, cam2world2, origin2, true);
+  getCameraPositionMatrices(pose1, drone2world1, origin1, true);
+  getCameraPositionMatrices(pose2, drone2world2, origin2, true);
+  cam2world1 = drone2world1*cam1.get_R();
+  cam2world2 = drone2world2*cam2.get_R();
 
   /* compute point coordinates in calibrated image coordinates (=rays in camera coordinates) */
   cv::Mat ray1_cam = (cv::Mat_<double>(3, 1) << (pt1.x - cam1.cx) / cam1.fx,

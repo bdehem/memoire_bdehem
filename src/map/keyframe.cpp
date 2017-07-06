@@ -19,39 +19,39 @@ Keyframe::Keyframe(const Frame& frame, Camera* cam)
   this->camera = cam;
   this->ID     = ID_counter++;
   this->pose   = frame.pose; //Rotation is to drone, later changed to camera
-  tf::Matrix3x3 drone2world, cam2drone, cam2world;
-  double roll, pitch, yaw;
-  drone2world.setRPY(pose.rotX, pose.rotY, pose.rotZ);
-  cam2drone.setRPY(-PI/2, 0, -PI/2);
-  cam2world = drone2world*cam2drone;
-  cam2world.getRPY(roll, pitch, yaw);
-  this->pose.rotX       = roll;
-  this->pose.rotY       = pitch;
-  this->pose.rotZ       = yaw;
+  //tf::Matrix3x3 drone2world, cam2drone, cam2world;
+  //double roll, pitch, yaw;
+  //drone2world.setRPY(pose.rotX, pose.rotY, pose.rotZ);
+  //cam2drone.setRPY(-PI/2, 0, -PI/2);
+  //cam2world = drone2world*cam2drone;
+  //cam2world.getRPY(roll, pitch, yaw);
+  //this->pose.rotX       = roll;
+  //this->pose.rotY       = pitch;
+  //this->pose.rotZ       = yaw;
   this->ref_pose        = this->pose;
-  bool reprocess_image = true;
-  if (reprocess_image)
-  {
-    ProcessedImage reprocessedImage = ProcessedImage(frame.image, pose); //to redetect keypoints
-    this->img_points.resize(reprocessedImage.keypoints.size());
-    this->descriptors = cv::Mat_<float>(reprocessedImage.keypoints.size(), DESCRIPTOR_SIZE);
-    for (unsigned i = 0; i < reprocessedImage.keypoints.size(); ++i)
-    {
-      this->img_points[i].x = (double)reprocessedImage.keypoints[i].pt.x;
-      this->img_points[i].y = (double)reprocessedImage.keypoints[i].pt.y;
-      for (unsigned j = 0; j < DESCRIPTOR_SIZE; ++j)
-      {
-        this->descriptors.at<float>(i, j) = reprocessedImage.descriptors.at<float>(i, j);
-      }
-    }
-    this->npts            = img_points.size();
-  }
-  else
-  {
+  //bool reprocess_image = false;
+  //if (reprocess_image)
+  //{
+    //ProcessedImage reprocessedImage = ProcessedImage(frame.image, pose); //to redetect keypoints
+    //this->img_points.resize(reprocessedImage.keypoints.size());
+    //this->descriptors = cv::Mat_<float>(reprocessedImage.keypoints.size(), DESCRIPTOR_SIZE);
+    //for (unsigned i = 0; i < reprocessedImage.keypoints.size(); ++i)
+    //{
+      //this->img_points[i].x = (double)reprocessedImage.keypoints[i].pt.x;
+      //this->img_points[i].y = (double)reprocessedImage.keypoints[i].pt.y;
+      //for (unsigned j = 0; j < DESCRIPTOR_SIZE; ++j)
+      //{
+        //this->descriptors.at<float>(i, j) = reprocessedImage.descriptors.at<float>(i, j);
+      //}
+    //}
+    //this->npts            = img_points.size();
+  //}
+  //else
+  //{
     this->img_points      = frame.img_points;
     this->descriptors     = frame.descriptors;
     this->npts            = frame.img_points.size();
-  }
+  //}
   this->n_mapped_pts    = 0;
   this->point_IDs.resize(npts,-1);
   ROS_INFO("Created keyframe %d. It has %d (unmatched) points",ID,npts);

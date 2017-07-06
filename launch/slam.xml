@@ -10,14 +10,14 @@
   <arg name="midpoint_triangulation" default="false"/>
   <arg name="test_robustness"        default="false"/>
   <arg name="double_ba"              default="false"/>
-  <arg name="bundle_adjustment_tol"  default="0.05"/>
+  <arg name="bundle_adjustment_tol"  default="0.5"/>
   <arg name="quiet_ba"               default="false" />
   <arg name="rpt2"                   default="6" />
   <arg name="rpt3"                   default="-1" />
   <arg name="rpt4"                   default="-1" />
   <arg name="only_init"              default="false" />
-  <arg name="remove_cst"             default="0" />
-  <arg name="remove_coeff"           default="1.5" />
+  <arg name="remove_cst"             default="1" />
+  <arg name="remove_coeff"           default="3" />
   <arg name="huber_delta"            default="1.0" />
   <arg name="manual_keyframes"       default="false" />
   <arg name="benchmark"              default="false" />
@@ -41,6 +41,7 @@
     <param name="remove_cst"             value="$(arg remove_cst)"/>
     <param name="remove_coeff"           value="$(arg remove_coeff)"/>
     <param name="manual_keyframes"       value="$(arg manual_keyframes)"/>
+    <param name="benchmark"              value="$(arg benchmark)" />
   </node>
 
   <node name="boris_drone_bundle_adjuster" pkg="boris_drone" type="bundle_adjuster" output="screen">

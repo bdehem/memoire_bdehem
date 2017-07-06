@@ -149,8 +149,8 @@ void ImageProcessor::imageCb(const sensor_msgs::Image::ConstPtr& msg)
   if (pending_reset)
     return;
   ROS_DEBUG("ImageProcessor::imageCb");
-  this->lastImageReceived = msg;
-  this->video_publishing = true;
+  lastImageReceived = msg;
+  video_publishing = true;
 }
 
 /* This function is called every time a new pose is published */
@@ -171,9 +171,9 @@ void ImageProcessor::publishProcessedImg()
   ROS_DEBUG("ImageProcessor::publishProcessedImg");
 
   TIC(processed_image);
-  // give all data to process the last image received (keypoints an target detection)
-  ProcessedImage cam_img(*lastImageReceived, *lastPoseReceived, *prev_cam_img,
-                         this->use_OpticalFlowPyrLK);
+  // give all data to process the last image received (keypoints and target detection)
+  //ProcessedImage cam_img(*lastImageReceived, *lastPoseReceived, *prev_cam_img, use_OpticalFlowPyrLK);
+  ProcessedImage cam_img(*lastImageReceived, *lastPoseReceived, *prev_cam_img);
   // initialize the message to send
   boris_drone::ProcessedImageMsg::Ptr msg(new boris_drone::ProcessedImageMsg);
   // build the message to send

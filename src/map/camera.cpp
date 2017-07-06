@@ -12,6 +12,9 @@ Camera::Camera(bool is_front)
   fx = 529.1; fy = 529.1;
   cx = 350.6; cy = 182.2;
   W  = 720  ; H = 360;
+  roll  = -PI/2;
+  pitch = 0;
+  yaw   = -PI/2;
 
   K = (cv::Mat_<double>(3, 3) << fx, 0, cx, 0, fy, cy, 0,  0, 1);
   R = (cv::Mat_<double>(3, 3) << 0,  0, 1, -1,  0, 0,  0, -1, 0);
@@ -19,7 +22,9 @@ Camera::Camera(bool is_front)
 }
 
 cv::Mat Camera::get_K() {return K;}
-cv::Mat Camera::get_R() {return R;}
+
+//cv::Mat Camera::get_R() {return R;}
+cv::Mat Camera::get_R() { return rollPitchYawToRotationMatrix(roll, pitch, yaw);}
 
 void Camera::initPlanes()
 {

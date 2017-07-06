@@ -3,6 +3,7 @@
 #define boris_drone_CAMERA_H
 
 #include <boris_drone/boris_drone.h>
+#include <boris_drone/opencv_utils.h>
 
 #include <ros/package.h>
 #include <ros/ros.h>
@@ -20,6 +21,7 @@ private:
 public:
   double fx, fy, cx, cy; //focal lengths and image centers
   double W, H; //width ad height
+  double roll, pitch, yaw;
 
   cv::Mat cam_plane_top;
   cv::Mat cam_plane_bottom;

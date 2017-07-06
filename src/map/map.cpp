@@ -227,6 +227,7 @@ void Map::matchKeyframes(Keyframe* kf0, Keyframe* kf1)
 
 void Map::newKeyframe(const Frame& frame)
 {
+  ROS_INFO("new keyframe start pose = %f, %f, %f",frame.pose.x,frame.pose.y,frame.pose.z);
   if (frame.img_points.size() <= 10)
   {
     ROS_INFO("I want to create a new keyframe, but current frame only has %lu points",frame.img_points.size());
@@ -312,6 +313,7 @@ bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose, bool manual_
     }
     else if ((PnP_result==1)&&(!benchmark))
     {
+      ROS_INFO("new keyframe with pnp");
       frame.pose.x    = PnP_pose.x;
       frame.pose.y    = PnP_pose.y;
       frame.pose.rotZ = PnP_pose.rotZ;
@@ -576,21 +578,10 @@ void Map::doBundleAdjustment(std::vector<int> kfIDs, bool is_first_pass)
   ncam = kfIDs.size();
   npt  = points_for_ba.size();
 
-  /*  print a bunch of things
-  for(points_it=points_for_ba.begin(); points_it!=points_for_ba.end(); ++points_it)
-  {
-    ROS_INFO("Point %d seen by:", points_it->first);
-    for (inner_it=points_it->second.begin(); inner_it!=points_it->second.end();++inner_it)
-    {
-      ROS_INFO("Kf %d at index %d",inner_it->first, inner_it->second);
-    }
-  }
-
-  /* End of printing */
   boris_drone::BundleMsg::Ptr msg(new boris_drone::BundleMsg);
 
   msg->is_first_pass    = is_first_pass;
-  msg->num_cameras      = ncam;
+  msg->num_keyframes    = ncam;
   msg->num_points       = npt;
   msg->num_observations = nobs;
   msg->observations.resize(nobs);
@@ -625,13 +616,17 @@ void Map::doBundleAdjustment(std::vector<int> kfIDs, bool is_first_pass)
     ROS_DEBUG("done with point %d",ptID);
     ++points_it;
   }
-  msg->cameras.resize(ncam);
+  msg->cameras.resize(3*ncam);
+  msg->poses.resize(ncam);
   msg->ref_poses.resize(ncam);
   msg->fixed_cams.resize(ncam);
   msg->keyframes_ID.resize(ncam);
   for (i = 0; i < ncam; ++i) {
-    msg->cameras[i]  = keyframes[kfIDs[i]]->pose;
-    msg->ref_poses[i] = keyframes[kfIDs[i]]->ref_pose;
+    msg->cameras[3*i+0] = keyframes[kfIDs[i]]->camera->roll;
+    msg->cameras[3*i+1] = keyframes[kfIDs[i]]->camera->pitch;
+    msg->cameras[3*i+2] = keyframes[kfIDs[i]]->camera->yaw;
+    msg->poses[i]       = keyframes[kfIDs[i]]->pose;
+    msg->ref_poses[i]   = keyframes[kfIDs[i]]->ref_pose;
     msg->keyframes_ID[i] = kfIDs[i];
   }
   if (points_for_ba.size()==0)
@@ -651,12 +646,12 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   converged     = bundlePtr->converged;
   is_first_pass = bundlePtr->is_first_pass;
   npt           = bundlePtr->num_points;
-  ncam          = bundlePtr->num_cameras;
+  ncam          = bundlePtr->num_keyframes;
   for (i = 0; i < ncam; ++i) {
     kfID = bundlePtr->keyframes_ID[i];
     keyframes_to_adjust.push_back(kfID);
     ROS_INFO("Updating keyframe %d",kfID);
-    keyframes[kfID]->pose = bundlePtr->cameras[i];
+    keyframes[kfID]->pose = bundlePtr->poses[i];
   }
   int pts_removed = 0;
   for (i = 0; i < npt; ++i)

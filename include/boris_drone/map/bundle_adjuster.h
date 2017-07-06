@@ -50,25 +50,26 @@ class BALProblem {
   ~BALProblem();
   int num_observations() const;
   const double* observations() const;
-  double* mutable_cameras();
+  double* mutable_keyframes();
   double* mutable_points();
-  double* mutable_camera(int i);
+  double* mutable_keyframe(int i);
   double* mutable_point(int i);
   double* ref_pose(int i);
-  double* mutable_camera_for_observation(int i);
+  double* mutable_keyframe_for_observation(int i);
   double* mutable_point_for_observation(int i);
   //private:
   bool fixed_poses_;
-  int num_cameras_;
+  int num_keyframes_;
   int num_points_;
   int num_observations_;
   int num_parameters_;
-  bool* fixed_cams_;
+  bool* fixed_kfs_;
   int* point_index_;
-  int* camera_index_;
+  int* keyframe_index_;
   double* observations_;
   double* parameters_;
   double* ref_poses_;
+  double* cam_rotations_;
   boris_drone::BundleMsg::ConstPtr bundleMsgPtr_;
 };
 

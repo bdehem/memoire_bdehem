@@ -10,91 +10,109 @@
 BALProblem::BALProblem(const boris_drone::BundleMsg::ConstPtr bundlePtr)
 {
   bundleMsgPtr_     = bundlePtr;
-  num_cameras_      = bundlePtr->num_cameras;
+  num_keyframes_    = bundlePtr->num_keyframes;
   num_points_       = bundlePtr->num_points;
   num_observations_ = bundlePtr->num_observations;
-  num_parameters_   = 6 * num_cameras_ + 3 * num_points_;
-  point_index_  = new int[num_observations_];
-  camera_index_ = new int[num_observations_];
-  fixed_cams_   = new bool[num_cameras_];
-  observations_ = new double[2 * num_observations_];
-  parameters_   = new double[num_parameters_];
-  ref_poses_    = new double[6 * num_cameras_];
+  num_parameters_   = 6 * num_keyframes_ + 3 * num_points_;
+  point_index_    = new int[num_observations_];
+  keyframe_index_ = new int[num_observations_];
+  fixed_kfs_     = new bool[num_keyframes_];
+  observations_   = new double[2 * num_observations_];
+  parameters_     = new double[num_parameters_];
+  ref_poses_      = new double[6 * num_keyframes_];
+  cam_rotations_  = new double[3 * num_keyframes_];
 
   //Mapping keyframe and point IDs to indices for the BA
   std::map<int,int> kfID_to_idx;
   std::map<int,int> ptID_to_idx;
-  for(int i = 0; i < num_cameras_; ++i)
+  for(int i = 0; i < num_keyframes_; ++i)
     kfID_to_idx[bundlePtr->keyframes_ID[i]] = i;
   for(int i = 0; i < num_points_ ; ++i)
     ptID_to_idx[bundlePtr->points_ID[i]] = i;
 
   for (int i = 0; i < num_observations_; ++i) {
-    camera_index_[i]     = kfID_to_idx[bundlePtr->observations[i].kfID];
+    keyframe_index_[i]     = kfID_to_idx[bundlePtr->observations[i].kfID];
     point_index_[i]      = ptID_to_idx[bundlePtr->observations[i].ptID];
     observations_[2*i]   = bundlePtr->observations[i].x;
     observations_[2*i+1] = bundlePtr->observations[i].y;
   }
-  for (int i = 0; i < num_cameras_; ++i) {
-    parameters_[6*i + 0] = bundlePtr->cameras[i].x;
-    parameters_[6*i + 1] = bundlePtr->cameras[i].y;
-    parameters_[6*i + 2] = bundlePtr->cameras[i].z;
-    parameters_[6*i + 3] = bundlePtr->cameras[i].rotX*180/PI;
-    parameters_[6*i + 4] = bundlePtr->cameras[i].rotY*180/PI;
-    parameters_[6*i + 5] = bundlePtr->cameras[i].rotZ*180/PI;
+  for (int i = 0; i < num_keyframes_; ++i) {
+    parameters_[6*i + 0] = bundlePtr->poses[i].x;
+    parameters_[6*i + 1] = bundlePtr->poses[i].y;
+    parameters_[6*i + 2] = bundlePtr->poses[i].z;
+    parameters_[6*i + 3] = bundlePtr->poses[i].rotX*180/PI;
+    parameters_[6*i + 4] = bundlePtr->poses[i].rotY*180/PI;
+    parameters_[6*i + 5] = bundlePtr->poses[i].rotZ*180/PI;
     ref_poses_[6*i + 0]  = bundlePtr->ref_poses[i].x;
     ref_poses_[6*i + 1]  = bundlePtr->ref_poses[i].y;
     ref_poses_[6*i + 2]  = bundlePtr->ref_poses[i].z;
     ref_poses_[6*i + 3]  = bundlePtr->ref_poses[i].rotX*180/PI;
     ref_poses_[6*i + 4]  = bundlePtr->ref_poses[i].rotY*180/PI;
     ref_poses_[6*i + 5]  = bundlePtr->ref_poses[i].rotZ*180/PI;
-    fixed_cams_[i] = bundlePtr->fixed_cams[i];
+    cam_rotations_[3*i+0] = bundlePtr->cameras[3*i+0]*180/PI;
+    cam_rotations_[3*i+1] = bundlePtr->cameras[3*i+1]*180/PI;
+    cam_rotations_[3*i+2] = bundlePtr->cameras[3*i+2]*180/PI;
+    fixed_kfs_[i] = bundlePtr->fixed_cams[i];
   }
   for (int i = 0; i < num_points_; ++i) {
-    parameters_[6*num_cameras_ + 3*i + 0] = bundlePtr->points[i].x;
-    parameters_[6*num_cameras_ + 3*i + 1] = bundlePtr->points[i].y;
-    parameters_[6*num_cameras_ + 3*i + 2] = bundlePtr->points[i].z;
+    parameters_[6*num_keyframes_ + 3*i + 0] = bundlePtr->points[i].x;
+    parameters_[6*num_keyframes_ + 3*i + 1] = bundlePtr->points[i].y;
+    parameters_[6*num_keyframes_ + 3*i + 2] = bundlePtr->points[i].z;
   }
 }
 BALProblem::~BALProblem() {
   delete[] point_index_;
-  delete[] camera_index_;
+  delete[] keyframe_index_;
   delete[] observations_;
   delete[] parameters_;
-  delete[] fixed_cams_;
+  delete[] fixed_kfs_;
   delete[] ref_poses_;
+  delete[] cam_rotations_;
 }
-int BALProblem::num_observations()       const { return num_observations_;               }
-const double* BALProblem::observations() const { return observations_;                   }
-double* BALProblem::mutable_cameras()          { return parameters_;                     }
-double* BALProblem::mutable_points()           { return parameters_  + 6 * num_cameras_; }
-double* BALProblem::ref_pose(int i)            { return ref_poses_   + 6 * i;            }
-double* BALProblem::mutable_camera(int i)      { return mutable_cameras()  + 6 * i;      }
-double* BALProblem::mutable_point(int i)       { return mutable_points()   + 3 * i;      }
-double* BALProblem::mutable_camera_for_observation(int i) { return mutable_camera(camera_index_[i]);}
-double* BALProblem::mutable_point_for_observation(int i)  { return mutable_point(point_index_[i]);  }
+int BALProblem::num_observations()       const { return num_observations_;                }
+const double* BALProblem::observations() const { return observations_;                    }
+double* BALProblem::mutable_keyframes()        { return parameters_;                      }
+double* BALProblem::mutable_points()           { return parameters_  + 6 * num_keyframes_;}
+double* BALProblem::ref_pose(int i)            { return ref_poses_   + 6 * i;             }
+double* BALProblem::mutable_keyframe(int i)    { return mutable_keyframes()  + 6 * i;     }
+double* BALProblem::mutable_point(int i)       { return mutable_points()   + 3 * i;       }
+double* BALProblem::mutable_keyframe_for_observation(int i) { return mutable_keyframe(keyframe_index_[i]);}
+double* BALProblem::mutable_point_for_observation(int i)    { return mutable_point(point_index_[i]);      }
 
 // Templated pinhole camera model for used with Ceres.  The camera is
 // parameterized using 6 parameters: 3 for rotation, 3 for translation,
 struct SnavelyReprojectionError {
-  SnavelyReprojectionError(double observed_x, double observed_y)
-      : observed_x(observed_x), observed_y(observed_y) {}
+  SnavelyReprojectionError(double observed_x, double observed_y, const double* const cam_rot)
+   : observed_x(observed_x), observed_y(observed_y), cam_rot(cam_rot) {}
   template <typename T>
   bool operator()(const T* const camera,
                   const T* const point,
                   T* residuals) const {
-    T cam2world[9];              //rotation matrix
-    T camera_axis_angles[3];     //angle-axis rotation
-    T p_cam[3];
-    T p[3];
+    T      d2w[9];            //drone to world
+    T      c2w[9];            //camera to world
+    double c2d[9];            //camera to drone
+    T camera_axis_angles[3];  //angle-axis camera to drone rotation
+    T p_cam[3];               //coordinates of points in world coordinates translated to bring camera at origin
+    T p[3];                   //coordinates of points in camera coordinates
     //Convert
-    ceres::EulerAnglesToRotationMatrix(camera + 3, 3, cam2world);
-    ceres::RotationMatrixToAngleAxis(cam2world, camera_axis_angles);
+    ceres::EulerAnglesToRotationMatrix(camera + 3, 3, d2w);
+    ceres::EulerAnglesToRotationMatrix(cam_rot   , 3, c2d);
+    //manual matrix multiplication
+    c2w[0] = d2w[0]*c2d[0] + d2w[1]*c2d[3] + d2w[2]*c2d[6];
+    c2w[1] = d2w[0]*c2d[1] + d2w[1]*c2d[4] + d2w[2]*c2d[7];
+    c2w[2] = d2w[0]*c2d[2] + d2w[1]*c2d[5] + d2w[2]*c2d[8];
+    c2w[3] = d2w[3]*c2d[0] + d2w[4]*c2d[3] + d2w[5]*c2d[6];
+    c2w[4] = d2w[3]*c2d[1] + d2w[4]*c2d[4] + d2w[5]*c2d[7];
+    c2w[5] = d2w[3]*c2d[2] + d2w[4]*c2d[5] + d2w[5]*c2d[8];
+    c2w[6] = d2w[6]*c2d[0] + d2w[7]*c2d[3] + d2w[8]*c2d[6];
+    c2w[7] = d2w[6]*c2d[1] + d2w[7]*c2d[4] + d2w[8]*c2d[7];
+    c2w[8] = d2w[6]*c2d[2] + d2w[7]*c2d[5] + d2w[8]*c2d[8];
+    ceres::RotationMatrixToAngleAxis(c2w, camera_axis_angles);
     //Translate point to get location from camera origin
     p_cam[0] = point[0] - camera[0];
     p_cam[1] = point[1] - camera[1];
     p_cam[2] = point[2] - camera[2];
-    //Get rotated point. -1 because this is the rotation of cam2world (we need world2cam)
+    //Get rotated point.
     ceres::AngleAxisRotatePoint(camera_axis_angles, p_cam, p);
     // TODO include fx,fy,cx,cy instead of hardcode
     //Remider:
@@ -110,13 +128,20 @@ struct SnavelyReprojectionError {
   }
   // Factory to hide the construction of the CostFunction object from
   // the client code.
-  static ceres::CostFunction* Create(const double observed_x,
-                                     const double observed_y) {
+  static ceres::CostFunction* Create(const BALProblem& bal_pb, int i)
+  {
+    double x = bal_pb.observations()[2 * i + 0];
+    double y = bal_pb.observations()[2 * i + 1];
+    const double* const cam_rot = bal_pb.cam_rotations_ + 3*bal_pb.keyframe_index_[i];
+    double roll  = bal_pb.cam_rotations_[3*bal_pb.keyframe_index_[i]+0];
+    double pitch = bal_pb.cam_rotations_[3*bal_pb.keyframe_index_[i]+1];
+    double yaw   = bal_pb.cam_rotations_[3*bal_pb.keyframe_index_[i]+2];
+
     return (new ceres::AutoDiffCostFunction<SnavelyReprojectionError, 2, 6, 3>(
-                new SnavelyReprojectionError(observed_x, observed_y)));
+      new SnavelyReprojectionError(x, y, cam_rot)));
   }
-  double observed_x;
-  double observed_y;
+  double observed_x, observed_y;
+  const double* const cam_rot;
 };
 
 struct SemiFixedCameraError {
@@ -164,20 +189,20 @@ void BundleAdjuster::publishBundle(const BALProblem& bal_problem, bool converged
             std::vector<double>& cost_of_point, double time_taken, int n_iter)
 {
   boris_drone::BundleMsg msg = *(bal_problem.bundleMsgPtr_);
-  int ncam = bal_problem.num_cameras_ ;  int npt  = bal_problem.num_points_;
-  msg.num_cameras = ncam              ;  msg.num_points  = npt;
-  msg.cameras.resize(ncam)            ;  msg.points.resize(npt);
+  int ncam = bal_problem.num_keyframes_ ;  int npt  = bal_problem.num_points_;
+  msg.num_keyframes = ncam              ;  msg.num_points  = npt;
+  msg.poses.resize(ncam)                ;  msg.points.resize(npt);
   msg.converged = converged;
   msg.time_taken = time_taken;
   msg.num_iter = n_iter;
   msg.cost_of_point.resize(npt);
   for (int i = 0; i < ncam; ++i) {
-    msg.cameras[i].x    = bal_problem.parameters_[6*i + 0];
-    msg.cameras[i].y    = bal_problem.parameters_[6*i + 1];
-    msg.cameras[i].z    = bal_problem.parameters_[6*i + 2];
-    msg.cameras[i].rotX = bal_problem.parameters_[6*i + 3]*PI/180.0;
-    msg.cameras[i].rotY = bal_problem.parameters_[6*i + 4]*PI/180.0;
-    msg.cameras[i].rotZ = bal_problem.parameters_[6*i + 5]*PI/180.0;
+    msg.poses[i].x    = bal_problem.parameters_[6*i + 0];
+    msg.poses[i].y    = bal_problem.parameters_[6*i + 1];
+    msg.poses[i].z    = bal_problem.parameters_[6*i + 2];
+    msg.poses[i].rotX = bal_problem.parameters_[6*i + 3]*PI/180.0;
+    msg.poses[i].rotY = bal_problem.parameters_[6*i + 4]*PI/180.0;
+    msg.poses[i].rotZ = bal_problem.parameters_[6*i + 5]*PI/180.0;
   }
   for (int i = 0; i < npt; ++i) {
     msg.points[i].x = bal_problem.parameters_[6*ncam + 3*i + 0];
@@ -204,9 +229,9 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   if (!quiet_ba)
   {
     ROS_INFO("Cameras before BA:");
-    for (int i = 0; i< bal_problem.num_cameras_; i++)
+    for (int i = 0; i< bal_problem.num_keyframes_; i++)
     {
-      camera_print = bal_problem.mutable_camera(i);
+      camera_print = bal_problem.mutable_keyframe(i);
       ROS_INFO("       T       |       R       ");
       ROS_INFO("T : x  = % 5.2f | roll  = % 7.2f",camera_print[0],camera_print[3]);
       ROS_INFO("R : y  = % 5.2f | pitch = % 7.2f",camera_print[1],camera_print[4]);
@@ -221,14 +246,12 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   double* point;
   ceres::Problem problem;
   nobs = bal_problem.num_observations();
-  ncam = bal_problem.num_cameras_;
+  ncam = bal_problem.num_keyframes_;
   ceres::CostFunction* cost_function;
   for ( i = 0; i < nobs; ++i) {
-    camera = bal_problem.mutable_camera_for_observation(i);
+    camera = bal_problem.mutable_keyframe_for_observation(i);
     point  = bal_problem.mutable_point_for_observation(i);
-    x = bal_problem.observations()[2 * i + 0];
-    y = bal_problem.observations()[2 * i + 1];
-    cost_function = SnavelyReprojectionError::Create(x, y);
+    cost_function = SnavelyReprojectionError::Create(bal_problem,i);
     ceres::LossFunction* loss_function = new ceres::HuberLoss(huber_delta);
     problem.AddResidualBlock(cost_function, loss_function, camera, point);
   }
@@ -237,7 +260,7 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
 
   for (int i = 0; i < ncam; ++i)
   {
-    camera   = bal_problem.mutable_camera(i);
+    camera   = bal_problem.mutable_keyframe(i);
     ref_pose = bal_problem.ref_pose(i);
     if (i<n_constcams)
       problem.SetParameterBlockConstant(camera);
@@ -266,9 +289,9 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   {
     std::cout << summary.FullReport() << "\n";
     ROS_INFO("Cameras after BA:");
-    for (int i = 0; i< bal_problem.num_cameras_; i++)
+    for (int i = 0; i< bal_problem.num_keyframes_; i++)
     {
-      camera_print = bal_problem.mutable_camera(i);
+      camera_print = bal_problem.mutable_keyframe(i);
       ROS_INFO("       T       |       R       ");
       ROS_INFO("T : x  = % 5.2f | roll  = % 7.2f",camera_print[0],camera_print[3]);
       ROS_INFO("R : y  = % 5.2f | pitch = % 7.2f",camera_print[1],camera_print[4]);
@@ -302,7 +325,7 @@ void BundleAdjuster::computeResiduals(ceres::Problem& problem, BALProblem& bal_p
   for (int i = 0; i < npt; ++i)
   {
     cost_of_point[i] = sqloss_of_point[i]/(double)observations_of_point[i];
-    ROS_INFO("Pt %d: cost = %f nobs = %d cost/obs = %f", i,sqloss_of_point[i],observations_of_point[i],cost_of_point[i]);
+    //ROS_INFO("Pt %d: cost = %f nobs = %d cost/obs = %f", i,sqloss_of_point[i],observations_of_point[i],cost_of_point[i]);
   }
 }
 
