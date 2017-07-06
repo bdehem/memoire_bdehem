@@ -13,7 +13,47 @@
 #ifndef boris_drone_IMAGE_PROCESSOR_H
 #define boris_drone_IMAGE_PROCESSOR_H
 
-#include <boris_drone/computer_vision/computer_vision.h>
+#include <boris_drone/profiling.h>
+
+#include <boost/shared_ptr.hpp>
+
+// ROS Header files
+#include <ros/package.h>
+#include <ros/ros.h>
+
+#include <boris_drone/boris_drone.h>
+
+// vision
+#include <cv_bridge/cv_bridge.h>
+#include <image_transport/image_transport.h>
+#include <opencv2/calib3d/calib3d.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/nonfree/features2d.hpp>
+#include <opencv2/nonfree/gpu.hpp>
+#include <opencv2/nonfree/nonfree.hpp>
+#include <opencv2/nonfree/ocl.hpp>
+#include <opencv2/ocl/ocl.hpp>
+#include <opencv2/video/tracking.hpp>
+
+// messages
+#include <ardrone_autonomy/CamSelect.h>
+#include <ardrone_autonomy/Navdata.h>
+#include <sensor_msgs/image_encodings.h>
+#include <std_msgs/Empty.h>
+#include <std_srvs/Empty.h>
+#include <boris_drone/Pose3D.h>
+#include <boris_drone/ProcessedImageMsg.h>
+#include <boris_drone/KeyPoint.h>
+
+// boris_drone
+#include <boris_drone/opencv_utils.h>
+#include <boris_drone/map/projection_2D.h>
+#include <boris_drone/computer_vision/target.h>
+#include <boris_drone/computer_vision/processed_image.h>
+#include <boris_drone/constants/feature_types.h>
+
 #include <boris_drone/read_from_launch.h>
 
 /*  \class ImageProcessor

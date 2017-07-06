@@ -31,6 +31,8 @@
 
 // boris_drone
 #include <boris_drone/boris_drone.h>
+#include <boris_drone/constants/strategy_constants.h>
+
 
 class Strategy
 {

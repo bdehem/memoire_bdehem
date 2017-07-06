@@ -492,7 +492,7 @@ int Map::matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_ma
   std::vector<int> map_indices, frame_indices, inliers;
   std::map<int,Landmark*>::iterator it;
   pcl::PointXYZ pcl_point;
-  matchDescriptors(descriptors, frame.descriptors, map_indices, frame_indices, 250.0,-1);
+  matchDescriptors(descriptors, frame.descriptors, map_indices, frame_indices, DIST_THRESHOLD,-1);
   if (map_indices.size() < threshold_lost)
     return -3;
 

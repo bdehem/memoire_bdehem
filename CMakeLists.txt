@@ -184,7 +184,7 @@ set(COMPUTER_VISION_SOURCE_FILES
   src/computer_vision/target.cpp
 )
 set(COMPUTER_VISION_HEADER_FILES
-  include/boris_drone/computer_vision/computer_vision.h
+  include/boris_drone/constants/feature_types.h
   include/boris_drone/computer_vision/processed_image.h
   include/boris_drone/computer_vision/target.h
 )

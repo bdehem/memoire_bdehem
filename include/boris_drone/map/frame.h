@@ -33,7 +33,7 @@
 /* boris_drone */
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/ProcessedImageMsg.h>
-// #include <boris_drone/map/simple_map.h>
+#include <boris_drone/constants/feature_types.h>
 
 // class MappingNode is defined in boris_drone/map/simple_map.h
 // not declared here because boris_drone/map/frame.h (current file)

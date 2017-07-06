@@ -30,6 +30,7 @@
 
 // boris_drone
 #include <boris_drone/drone_role.h>
+#include <boris_drone/constants/strategy_constants.h>
 #include <boris_drone/boris_drone.h>
 
 /*!

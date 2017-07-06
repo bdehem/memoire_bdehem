@@ -29,6 +29,7 @@
 #include <boris_drone/StrategyMsg.h>
 #include <boris_drone/boris_drone.h>
 #include <boris_drone/cellUpdate.h>
+#include <boris_drone/constants/strategy_constants.h>
 
 #define UNEXPLORED 0
 #define BORDER 1

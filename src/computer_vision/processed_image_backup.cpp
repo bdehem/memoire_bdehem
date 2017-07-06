@@ -12,6 +12,8 @@
 
 #include <boris_drone/computer_vision/processed_image.h>
 
+int ProcessedImage::last_number_of_keypoints = 0;
+
 // Contructor for the empty object
 ProcessedImage::ProcessedImage()
 {
@@ -19,9 +21,14 @@ ProcessedImage::ProcessedImage()
   n_pts = 0;
 }
 
-ProcessedImage::ProcessedImage(const sensor_msgs::Image msg, const boris_drone::Pose3D pose, ProcessedImage& prev, bool use_optical_flow)
+
+
+ProcessedImage::ProcessedImage(const sensor_msgs::Image msg, const boris_drone::Pose3D pose_,
+                               ProcessedImage& prev, bool use_OpticalFlowPyrLK)
 {
-  this->pose = pose;
+  ROS_DEBUG("ProcessedImage::init");
+  this->pose = pose_;
+  ROS_INFO("proc_image");
   n_pts = 0;
 
   // convert ROS image to OpenCV image
@@ -43,61 +50,153 @@ ProcessedImage::ProcessedImage(const sensor_msgs::Image msg, const boris_drone::
   cv_img->toImageMsg(this->image);
 
   // Use keypoints tracking between the previous and the current image processed
-  ROS_INFO("use OF = %d; prev_cv_img = %s; n_pts = %d",use_optical_flow, prev.cv_img?"true":"false", prev.n_pts);
-  if (use_optical_flow && prev.cv_img && prev.n_pts > 0)
+  //ROS_INFO("use of = %d; prev_cv_img = %s; prevkpts size = %lu; lnok = %d",use_OpticalFlowPyrLK, prev.cv_img?"true":"false", prev.keypoints.size(), last_number_of_keypoints);
+  if (use_OpticalFlowPyrLK && prev.cv_img && prev.keypoints.size() > 0 && prev.n_pts > 0)  // performs only if the previous image
+                                                      // processed is not empty and if keypoints
+                                                      // were detected
   {
-    int min_x, max_x, min_y, max_y;
-    int nrow = cv_img->image.rows;
-    int ncol = cv_img->image.cols;
-    int thresh_x = (int)ncol*border_detec_frac;
-    int thresh_y = (int)nrow*border_detec_frac;
-    trackKeypoints(this->descriptors,this->keypoints, prev, min_x, max_x, min_y, max_y);
-    if(min_x>max_x||min_y>max_y)
+    ROS_DEBUG("use_OpticalFlowPyrLK");
+    TIC(optical_flow);
+    bool OF_success = false;  // flag which indicates the success of keypoints tracking
+
+    // If the picture is in colours, convert it to grayscale
+    cv::Mat prevgray, gray;
+    if (cv_img->image.channels() == 3)
     {
-      ROS_WARN("No tracked keypoints?");
-      n_pts = this->keypoints.size();
+      cv::cvtColor(cv_img->image, gray, CV_RGB2GRAY);
+      cv::cvtColor(prev.cv_img->image, prevgray, CV_RGB2GRAY);
+    }
+    else
+    {
+      prevgray = prev.cv_img->image;
+      gray = cv_img->image;
+    }
+
+    // Prepare structures to receive keypoints tracking results
+    std::vector< uchar > vstatus(prev.keypoints.size());
+    std::vector< float > verror(prev.keypoints.size());
+
+    std::vector< cv::Point2f > found;
+    std::vector< cv::Point2f > to_find = Points(prev.keypoints);
+
+    // Perform keypoints tracking
+    cv::calcOpticalFlowPyrLK(prevgray, gray, to_find, found, vstatus, verror);
+
+    // Copy all keypoints tracked with success
+    double thres = 12.0;
+
+    for (int i = 0; i < prev.keypoints.size(); i++)
+    {
+      if (vstatus[i] && verror[i] < thres)
+      {
+        cv::KeyPoint newKeyPoint = prev.keypoints[i];
+        newKeyPoint.pt.x = found[i].x;
+        newKeyPoint.pt.y = found[i].y;
+        this->keypoints.push_back(newKeyPoint);
+      }
+    }
+
+    // Determine if enough keypoints were detected or if new keypoints detection is needed
+    OF_success = this->keypoints.size() > last_number_of_keypoints * 0.75 &&
+                 this->keypoints.size() > 80;
+    //TOC(optical_flow, "optical flow tracking");
+
+    if (OF_success)  // then simply copy all descriptors previously computed
+    {
+      this->descriptors = cv::Mat::zeros(this->keypoints.size(), DESCRIPTOR_SIZE, CV_32F);
+      int j = 0;
+      for (int i = 0; i < prev.keypoints.size(); i++)
+      {
+        if (vstatus[i] && verror[i] < thres)
+        {
+          for (unsigned k = 0; k < DESCRIPTOR_SIZE; k++)
+          {
+            this->descriptors.at< float >(j, k) = prev.descriptors.at< float >(i, k);
+          }
+          j++;
+        }
+      }
+      // KEYPOINTS TRACKING SUCCESS, no more computation needed
+      n_pts = j;
       return;
     }
-    if (min_x>thresh_x||max_x<ncol-thresh_x||min_y>thresh_y||max_y<nrow-thresh_y)
+    else
     {
-      ROS_INFO("additional detection");
-      cv::Mat mask = cv::Mat::zeros(nrow,ncol,CV_8UC1);
-      if (min_x>thresh_x)
-      {
-        cv::Mat roi(mask,cv::Rect(0, min_y, min_x, max_y-min_y));
-        roi = cv::Scalar(1);
-      }
-      if (max_x<ncol-thresh_x)
-      {
-        cv::Mat roi(mask,cv::Rect(max_x, min_y, ncol-max_x, max_y-min_y));
-        roi = cv::Scalar(1);
-      }
-      if (min_y>thresh_y)
-      {
-        cv::Mat roi(mask,cv::Rect(min_x, 0, max_x-min_x, min_y));
-        roi = cv::Scalar(1);
-      }
-      if (max_y<nrow-thresh_y)
-      {
-        cv::Mat roi(mask,cv::Rect(min_x, max_y, max_x-min_x, nrow-max_y));
-        roi = cv::Scalar(1);
-      }
-      ROS_INFO("maxx = %d; minx = %d; maxy = %d; miny = %d;",max_x,min_x,max_y,min_y);
+      this->keypoints.clear();
+    }
+  }
+
+  ROS_DEBUG("=== OPTICAL FLOW NOT SUCCESSFUL ===");
+  // Keypoints detection for current image
+  TIC(detect);
+  detector.detect(cv_img->image, this->keypoints);
+  //TOC(detect, "detect keypoints");
+  ROS_DEBUG("ProcessedImage::init this->keypoints.size()=%lu", this->keypoints.size());
+  ProcessedImage::last_number_of_keypoints = this->keypoints.size();
+  n_pts = this->keypoints.size();
+  if (n_pts == 0)
+  {
+    return;
+  }
+  TIC(extract);
+  // Perform keypoints description
+  extractor.compute(cv_img->image, this->keypoints, this->descriptors);
+  //TOC(extract, "descriptor extrator");
+  ROS_DEBUG("end ProcessedImage::init");
+}
+
+
+
+
+
+// Constructor
+// [in] msg: ROS Image message sent by the camera
+// [in] pose_: Pose3D message before visual estimation to be attached with the processed image
+// [in] prev: previous processed image used for keypoints tracking
+// [in] use_OpticalFlowPyrLK: flag to enable keypoints tracking
+ProcessedImage::ProcessedImage(const sensor_msgs::Image msg, const boris_drone::Pose3D pose_, ProcessedImage& prev)
+{
+  n_pts = 0;
+  this->pose = pose_;
+  try
+  {
+    cv_img = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
+  }
+  catch (cv_bridge::Exception& e)
+  {
+    ROS_ERROR("boris_drone::imgproc::cv_bridge exception: %s", e.what());
+    return;
+  }
+  // Resize the image according to the parameters in the launch file
+  cv::Size size(Read::img_width(), Read::img_height());
+  cv::resize(cv_img->image, cv_img->image, size);
+  // Convert opencv image to ROS Image message format
+  cv_img->toImageMsg(this->image);
+
+  cv::Mat tracked_descriptors;
+  std::vector<cv::KeyPoint> tracked_keypoints;
+  // Use keypoints tracking between the previous and the current image processed
+  if (prev.cv_img && prev.keypoints.size()>0 && prev.n_pts > 0)
+  {
+    trackKeypoints(tracked_descriptors, tracked_keypoints, prev);
+    //ROS_INFO("tracking: %lu points",tracked_keypoints.size());
+    if (tracked_keypoints.size()<80)
+    {
+      //ROS_INFO("full detection (not enough tracked)");
+      detectKeypoints(this->descriptors, this->keypoints,true);
+    }
+    else
+    {
       cv::Mat detected_descriptors;
       std::vector<cv::KeyPoint> detected_keypoints;
-      detectKeypoints(detected_descriptors, detected_keypoints, false, mask);
-      int n_new = detected_keypoints.size();
-      keypoints.insert(keypoints.end(), detected_keypoints.begin(), detected_keypoints.end());
-      descriptors.push_back(detected_descriptors);
-
+      detectKeypoints(detected_descriptors, detected_keypoints,false);
+      combineKeypoints(tracked_descriptors, tracked_keypoints, detected_descriptors, detected_keypoints);
     }
-    n_pts = this->keypoints.size();
-    return;
   }
   else
   {
-    cv::Mat trash;
-    detectKeypoints(this->descriptors, this->keypoints, true, trash);
+    //ROS_INFO("full detection (prev is empty)");
+    detectKeypoints(this->descriptors, this->keypoints, true);
   }
   n_pts = this->keypoints.size();
 }
@@ -106,13 +205,9 @@ ProcessedImage::~ProcessedImage()
 {
 }
 
-
-bool ProcessedImage::trackKeypoints(cv::Mat& tracked_descriptors,
-std::vector<cv::KeyPoint>& tracked_keypoints, ProcessedImage& prev,
-int& min_x, int& max_x, int& min_y, int& max_y)
+void ProcessedImage::trackKeypoints(cv::Mat& tracked_descriptors,
+std::vector<cv::KeyPoint>& tracked_keypoints, ProcessedImage& prev)
 {
-  min_x = cv_img->image.cols + 1;  max_x = -1;
-  min_y = cv_img->image.rows + 1;  max_y = -1;
   TIC(optical_flow);
   cv::Mat prevgray, gray; // If the picture is in colours, convert it to grayscale
   if (cv_img->image.channels() == 3)
@@ -127,59 +222,53 @@ int& min_x, int& max_x, int& min_y, int& max_y)
   }
 
   // Prepare structures to receive keypoints tracking results
-  std::vector<uchar> vstatus(prev.n_pts);
-  std::vector<float> verror(prev.n_pts);
+  std::vector<uchar> vstatus(prev.keypoints.size());
+  std::vector<float> verror(prev.keypoints.size());
   std::vector<cv::Point2f> found;
   std::vector<cv::Point2f> to_find = Points(prev.keypoints);
 
   // Perform keypoints tracking
   cv::calcOpticalFlowPyrLK(prevgray, gray, to_find, found, vstatus, verror);
   // Copy all keypoints tracked with success
+  tracked_descriptors = cv::Mat::zeros(prev.keypoints.size(), DESCRIPTOR_SIZE, CV_32F);
+  int j = 0;
   double thresh = 12.0;
-  for (int i = 0; i < prev.n_pts; i++)
+  for (int i = 0; i < prev.keypoints.size(); i++)
   {
     if (vstatus[i] && verror[i] < thresh)
     {
       cv::KeyPoint newKeyPoint = prev.keypoints[i];
       newKeyPoint.pt.x = found[i].x;
       newKeyPoint.pt.y = found[i].y;
-      if      (found[i].x<min_x) min_x = (int)floor(found[i].x);
-      else if (found[i].x>max_x) max_x = (int)floor(found[i].x);
-      if      (found[i].y<min_y) min_y = (int)floor(found[i].y);
-      else if (found[i].y>max_y) max_y = (int)floor(found[i].y);
       tracked_keypoints.push_back(newKeyPoint);
-    }
-  }
-  if (min_x < 0) min_x = 0;
-  if (min_y < 0) min_y = 0;
-  if (max_x >= cv_img->image.cols) max_x = cv_img->image.cols - 1;
-  if (max_y >= cv_img->image.rows) max_y = cv_img->image.rows - 1;
-  if (tracked_keypoints.size() < prev.n_pts * 0.75 || tracked_keypoints.size() < 80)
-  {
-    tracked_keypoints.clear();
-    return false;
-  }
-  int j = 0;
-  tracked_descriptors = cv::Mat::zeros(tracked_keypoints.size(), DESCRIPTOR_SIZE, CV_32F);
-  for (int i = 0; i < prev.n_pts; i++)
-  {
-    if (vstatus[i] && verror[i] < thresh)
-    {
       for (unsigned k = 0; k < DESCRIPTOR_SIZE; k++)
         tracked_descriptors.at<float>(j, k) = prev.descriptors.at<float>(i, k);
       j++;
     }
   }
-  return true;
+  //ROS_INFO("%d points tracked",j);
 }
 
 void ProcessedImage::detectKeypoints(cv::Mat& detected_descriptors,
-std::vector<cv::KeyPoint>& detected_keypoints, bool full_detection, cv::Mat& mask)
+std::vector<cv::KeyPoint>& detected_keypoints, bool full_detection)
 {
   TIC(detect);
-
-  if (full_detection) detector.detect(cv_img->image, detected_keypoints);
-  else                detector.detect(cv_img->image, detected_keypoints, mask);
+  int nrow = cv_img->image.rows;
+  int ncol = cv_img->image.cols;
+  int x1 = (int)ncol*border_detec_frac;
+  int y1 = (int)nrow*border_detec_frac;
+  cv::Mat mask = cv::Mat::ones(nrow,ncol,CV_8UC1);
+  //this rectangle leaves 1 tenth of the width left and right, same for height
+  if (full_detection)
+  {
+    detector.detect(cv_img->image,detected_keypoints);
+  }
+  else
+  {
+    cv::Mat roi(mask,cv::Rect(x1, y1, ncol-2*x1, nrow-2*y1));
+    roi = cv::Scalar(0);
+    detector.detect(cv_img->image, detected_keypoints, mask);
+  }
   //TOC(detect, "detect detected_keypoints");
   if (detected_keypoints.size() == 0) return;
   TIC(extract);

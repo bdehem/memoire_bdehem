@@ -10,11 +10,43 @@
 #ifndef boris_drone_TARGET_H
 #define boris_drone_TARGET_H
 
-// #define DEBUG_TARGET // if defined a window with target matches is displayed
+// #define USE_PROFILING
+#include <boris_drone/profiling.h>
 
-// #define DEBUG_PROJECTION  // if defined print relative errors of projection for the target
+#include <boost/shared_ptr.hpp>
 
-#include <boris_drone/computer_vision/computer_vision.h>
+// ROS Header files
+#include <ros/package.h>
+#include <ros/ros.h>
+
+#include <boris_drone/boris_drone.h>
+
+// vision
+#include <cv_bridge/cv_bridge.h>
+#include <image_transport/image_transport.h>
+#include <opencv2/calib3d/calib3d.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/nonfree/features2d.hpp>
+#include <opencv2/nonfree/gpu.hpp>
+#include <opencv2/nonfree/nonfree.hpp>
+#include <opencv2/nonfree/ocl.hpp>
+#include <opencv2/ocl/ocl.hpp>
+#include <opencv2/video/tracking.hpp>
+
+//messages
+#include <ardrone_autonomy/CamSelect.h>
+#include <ardrone_autonomy/Navdata.h>
+#include <sensor_msgs/image_encodings.h>
+#include <std_msgs/Empty.h>
+#include <std_srvs/Empty.h>
+#include <boris_drone/Pose3D.h>
+#include <boris_drone/ProcessedImageMsg.h>
+#include <boris_drone/KeyPoint.h>
+
+#include <boris_drone/constants/feature_types.h>
+
 
 //! Filename to the target from within the package
 static const std::string TARGET_RELPATH = "/target/target_bottom.png";
@@ -23,6 +55,10 @@ static const std::string TARGET_RELPATH = "/target/target_bottom.png";
 static const std::string OPENCV_WINDOW = "Object matches";
 #endif
 
+// #define DEBUG_TARGET // if defined a window with target matches is displayed
+
+// #define DEBUG_PROJECTION  // if defined print relative errors of projection for the target
+
 /*!
  *  \class Target
  *  \brief Provide tools to track the presence of a target
@@ -30,11 +66,11 @@ static const std::string OPENCV_WINDOW = "Object matches";
 class Target
 {
 private:
-  cv::Mat image;                          //! Picture of the target as read at $TARGET_RELPATH$
-  std::vector< cv::KeyPoint > keypoints;  //! keypoints detected on the target picture
-  cv::Mat descriptors;                    //! target keypoints descriptors
-  std::vector< cv::Point2f > centerAndCorners;  //! position of the center and the corners of the
-                                                //! target
+  cv::Mat image;                         //! Picture of the target as read at $TARGET_RELPATH$
+  std::vector<cv::KeyPoint> keypoints;   //! keypoints detected on the target picture
+  cv::Mat descriptors;                   //! target keypoints descriptors
+  std::vector<cv::Point2f> centerAndCorners;  //! position of the center and the corners of the
+                                              //! target
   cv::FlannBasedMatcher matcher;  //! wrapper object to the FLANN library to perform matching with
                                   //! the video pictures
 

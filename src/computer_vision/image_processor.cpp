@@ -173,7 +173,8 @@ void ImageProcessor::publishProcessedImg()
   TIC(processed_image);
   // give all data to process the last image received (keypoints and target detection)
   //ProcessedImage cam_img(*lastImageReceived, *lastPoseReceived, *prev_cam_img, use_OpticalFlowPyrLK);
-  ProcessedImage cam_img(*lastImageReceived, *lastPoseReceived, *prev_cam_img);
+  bool useless = 0;
+  ProcessedImage cam_img(*lastImageReceived, *lastPoseReceived, *prev_cam_img, use_OpticalFlowPyrLK);
   // initialize the message to send
   boris_drone::ProcessedImageMsg::Ptr msg(new boris_drone::ProcessedImageMsg);
   // build the message to send

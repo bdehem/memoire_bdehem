@@ -23,7 +23,7 @@
 #include <opencv2/nonfree/nonfree.hpp>
 
 /* boris_drone */
-#include <boris_drone/computer_vision/computer_vision.h>
+#include <boris_drone/constants/feature_types.h>
 
 #include <boris_drone/Pose3D.h>
 #include <boris_drone/opencv_utils.h>

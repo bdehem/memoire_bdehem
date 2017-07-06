@@ -10,7 +10,7 @@
  * http://docs.opencv.org/2.4/doc/tutorials/features2d/feature_homography/feature_homography.html
  */
 
-#include <boris_drone/computer_vision/computer_vision.h>
+#include <boris_drone/computer_vision/target.h>
 
 //! Absolute path to the package
 static const std::string PKG_DIR = ros::package::getPath("boris_drone");
