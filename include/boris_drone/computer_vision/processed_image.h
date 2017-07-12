@@ -64,7 +64,6 @@ class ProcessedImage
 private:
   static constexpr double border_detec_frac = 0.15;
   static int last_number_of_keypoints;
-  int n_pts;    //! the number of keypoints detected in the last image
   boris_drone::ProcessedImageMsg::Ptr msg;  //! the message to be sent
 
 public:
@@ -74,10 +73,11 @@ public:
   sensor_msgs::Image image;               //! video image in the ROS format after rescaling
   boris_drone::Pose3D pose;  //! estimated pose of the drone before the visual estimation
 
+  int n_pts;    //! the number of keypoints detected in the last image
   bool testing;
   //constructors
   ProcessedImage();
-  ProcessedImage(const sensor_msgs::Image msg, const boris_drone::Pose3D pose, ProcessedImage& prev, bool use_optical_flow);
+  ProcessedImage(const sensor_msgs::Image& msg, const boris_drone::Pose3D& pose, ProcessedImage& prev, int OF_mode, bool& made_full_detection);
 
 
   bool trackKeypoints(cv::Mat& tracked_descriptors, std::vector<cv::KeyPoint>& tracked_keypoints,

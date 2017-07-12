@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="file_out"  default="benchmarkfile"/>
+
+  <include file="$(find boris_drone)/launch/slam.xml" />
+  <include file="$(find boris_drone)/launch/global_params.xml" />
+  <include file="$(find boris_drone)/launch/gui.xml" />
+  <include file="$(find boris_drone)/launch/driver.xml" />
+  <node name="boris_drone_manual_pose_estimation" pkg="boris_drone" type="manual_pose_estimation" output="screen"></node>
+
+  <node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/$(env USER)/bagfiles/$(arg file_out).bag /ardrone/front/image_rect_color /manual_pose_estimation"/>
+</launch>

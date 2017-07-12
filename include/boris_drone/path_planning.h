@@ -16,7 +16,6 @@
 #include <ros/ros.h>
 #include <signal.h>
 
-// #define USE_PROFILING
 #include <boris_drone/profiling.h>
 
 // messages
@@ -31,74 +30,43 @@
 #include <boris_drone/cellUpdate.h>
 #include <boris_drone/constants/strategy_constants.h>
 
-#define UNEXPLORED 0
-#define BORDER 1
-#define EXPLORED 2
 
 class PathPlanning
 {
 private:
   ros::NodeHandle nh;
 
-  ros::Publisher explore_pub;
-  ros::Publisher poseref_pub;
-  ros::Subscriber pose_sub;
-  ros::Subscriber strategy_sub;
-
-  std::string explore_channel;
-  std::string poseref_channel;
+  // Subscribers
   std::string pose_channel;
   std::string strategy_channel;
+  std::string destination_channel;
+  ros::Subscriber pose_sub;
+  ros::Subscriber strategy_sub;
+  ros::Subscriber destination_sub;
 
-  //! Callback when pose is received
+  // Publishers
+  std::string poseref_channel;
+  ros::Publisher poseref_pub;
+
+  //! Callbacks
   void poseCb(const boris_drone::Pose3D::ConstPtr posePtr);
   void strategyCb(const boris_drone::StrategyMsg::ConstPtr strategyPtr);
+  void destinationCb(const boris_drone::Pose3D::ConstPtr destinationPtr);
 
-  int strategy;
-
-  double grid_origin_x;
-  double grid_origin_y;
-  double height_of_flight;
-
-  int myGrid[SIDE * 10][SIDE * 10];
-  int gridSize;
-  int nExploredCell;
-
-  float destination_x;
-  float destination_y;
-  float destination_z;
-
-  boris_drone::Pose3D pose;
-
-  bool gridInitialized;
-
-  double XMax;
-  double YMax;
 public:
-  //! Constructor
+  //! Constructor & Destructor
   PathPlanning();
-  //! Destructor
   ~PathPlanning();
-  void publish_poseref(double x_ref, double y_ref, double z_ref, double rotZ_ref, bool takeoff, bool land);
-  void publish_poseref(double x_ref, double y_ref, double z_ref, double rotZ_ref);
-  void publish_poseref(bool takeoff, bool land);
-  void reset();
-  void InitializeGrid();
-  void UpdateMap(double x, double y);
-  void GetFieldOfView(double x, double y, int* iMin, int* iMax, int* jMin, int* jMax);
-  int inGrid(int i);
-  void advanced_xy_desired(double* x, double* y);
-  void CellToXY(int i, int j, double* xfromcell, double* yfromcell);
-  void XYToCell(double x, double y, int* i, int* j);
-  int sqdistance(int i, int j, int k, int l);
-  int getStrategy();
-  void wait();
-  void takeOff();
-  void seek();
-  void explore();
-  void backToBase();
-  void go_to();
-  void land();
+
+  //Public fields (more convenient to keep them public)
+  int strategy;
+  boris_drone::Pose3D pose;
+  boris_drone::Pose3D destination;
+
+  void publishPoseRef();
+  void publishPoseRef(double x_ref, double y_ref, double z_ref, double rotZ_ref);
+
+  void initPose(boris_drone::Pose3D& pose_to_init);
 };
 
 #endif /*boris_drone_PATH_PLANNING_H */

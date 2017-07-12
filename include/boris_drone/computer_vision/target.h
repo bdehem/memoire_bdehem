@@ -10,7 +10,6 @@
 #ifndef boris_drone_TARGET_H
 #define boris_drone_TARGET_H
 
-// #define USE_PROFILING
 #include <boris_drone/profiling.h>
 
 #include <boost/shared_ptr.hpp>

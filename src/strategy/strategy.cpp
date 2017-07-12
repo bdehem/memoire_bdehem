@@ -18,58 +18,41 @@
 // Constructor
 Strategy::Strategy()
 {
-  // drone prefix and name from the launch file.
-  std::string drone_prefix;
-  ros::param::get("~drone_prefix", drone_prefix);
-
-  ros::param::get("~drone_name", drone_name);
-
-  // List of subscribers and publishers. This node subscribes to target detection from drone 4,
-  // drone 5 and from the drone to which it belongs. This allows this node to always know wich drone
-  // sees the target. It is also subscribed to the Multi_drone in order to know which drone is the
-  // master and which one is the slave. This gives information of what strategy to chose. The
-  // subscription to the master drone navdata gives the information about its battery. This is the
-  // only way for the secondary drone to know when it has to start. The subscription to the pose
-  // estimation to the secondary drone tells to the main drone when it may go back to the base
-  // because the secondary drone is close enough to replace it.
-  //
-  // This node only publish in the topic strategy that is read from the path_planning.
-
   // Subscribers
-  target_channel = nh.resolveName("boris_drone/target_detected");
-  target_sub = nh.subscribe(target_channel, 10, &Strategy::targetDetectedCb, this);
-
   pose_channel = nh.resolveName("pose_estimation");
-  pose_sub = nh.subscribe(pose_channel, 10, &Strategy::poseCb, this);
+  pose_sub     = nh.subscribe(pose_channel, 10, &Strategy::poseCb, this);
 
-  explore_channel = nh.resolveName("finished_exploring");
-  explore_sub = nh.subscribe(explore_channel,10,&Strategy::exploreCb,this);
+  navdata_channel = nh.resolveName("navdata");
+  navdata_sub     = nh.subscribe(navdata_channel, 1, &Strategy::navdataCb, this);
 
-  go_high_channel = nh.resolveName("go_high");
-  go_high_sub = nh.subscribe(go_high_channel,10,&Strategy::goHighCb,this);
-
-  /* ** Other group's comments: ** */
-  // TODO: subscribe to channels in funtion of the role ...
-  // TODO: do not use absolute path to get the target_detected channel of the current drone
-  // TODO: get the other drone name from the DroneRoles message sent by swarm_initialization
+  manual_destination_channel = nh.resolveName("manual_destination");
+  manual_destination_sub     = nh.subscribe(manual_destination_channel,1,&Strategy::manualDestinationCb,this);
 
   // Publishers
   strategy_channel = nh.resolveName("strategy");
   strategy_pub = nh.advertise<boris_drone::StrategyMsg>(strategy_channel, 1);
 
-  /* ** Other group's comments: ** */
-  // TODO: Publisher to send a "ready state" message with the drone_name
-  // to the swarm_initialization (multistrategy)
-  // the topic name is "ready"
-  // the message type is boris_drone::DroneRole
-  // fill the drone_name only
+  destination_channel = nh.resolveName("destination");
+  destination_pub     = nh.advertise<boris_drone::Pose3D>(destination_channel, 1);
 
-  // Initialization of some parameters.
+  takeoff_channel = nh.resolveName("ardrone/takeoff");
+  takeoff_pub     = nh.advertise<std_msgs::Empty>(takeoff_channel, 1, true);
 
-  TargetFound = false;
-  FinishedExploring = false;
-  go_high = false;
+  land_channel = nh.resolveName("ardrone/land");
+  land_pub     = nh.advertise<std_msgs::Empty>(land_channel, 1);
+
+  make_keyframe_channel = nh.resolveName("make_keyframe");
+  make_keyframe_pub     = nh.advertise<std_msgs::Empty>(make_keyframe_channel, 1);
+
+  destination.x = 0.0;
+  destination.y = 0.0;
+  destination.z = 0.0;
+  destination.rotX = 0.0;
+  destination.rotY = 0.0;
+  destination.rotZ = 0.0;
   strategy = WAIT;
+  state = 2;
+  emergency_stop = false;
 }
 
 // Destructor
@@ -77,60 +60,38 @@ Strategy::~Strategy()
 {
 }
 
+void Strategy::publishTakeoff() {  takeoff_pub.publish(std_msgs::Empty()); }
+void Strategy::publishLand()    {  land_pub.publish(std_msgs::Empty());    }
 
-// This function gives the position chosen to the object of this function.
-void Strategy::SetXYZChosen(float xchosen, float ychosen, float zchosen)
+void Strategy::publishDestination()
 {
-  this->xchosen = xchosen;
-  this->ychosen = ychosen;
-  this->zchosen = zchosen;
+  destination_pub.publish(destination);
 }
 
-void Strategy::SetStrategy(int strategy)
+void Strategy::publishStrategy(int strat_type)
 {
-  this->strategy = strategy;
-  this->publish_strategy();
-  ROS_INFO("strategy set to %d",strategy);
+  boris_drone::StrategyMsg strat;
+  strat.type = strat_type;
+  strategy_pub.publish(strat);
 }
 
-int Strategy::GetStrategy()
+void Strategy::publishMakeKeyframe()
 {
-  return strategy;
+    make_keyframe_pub.publish(std_msgs::Empty());
 }
 
-double Strategy::getAltitude()
-{
-  return pose.z;
-}
-
-// This function sends the strategy number and the position chosen to the path_planning.
-void Strategy::publish_strategy()
-{
-  // instantiate the strategy message
-  boris_drone::StrategyMsg strategy_msg;
-
-  strategy_msg.type = strategy;
-  if (strategy == GOTO)
-  {
-    strategy_msg.x = xchosen;
-    strategy_msg.y = ychosen;
-    strategy_msg.z = zchosen;
-  }
-
-  // publish
-  strategy_pub.publish(strategy_msg);
-}
 
 // This function is called when the topic of the target_detected of this drone publishes something.
-void Strategy::targetDetectedCb(const boris_drone::TargetDetected::ConstPtr targetDetectedPtr)
+void Strategy::manualDestinationCb(const boris_drone::Pose3D::ConstPtr manualDestinationPtr)
 {
-  if (TargetFound == 0)
-  {
-    ROS_INFO("Target Detected!");
-    targetX = targetDetectedPtr->world_point.x;
-    targetY = targetDetectedPtr->world_point.y;
-    TargetFound = 1;
-  }
+  ROS_INFO("received manual destination: x=%f; y=%f; z=%f; rotZ=%f", manualDestinationPtr->x, manualDestinationPtr->y, manualDestinationPtr->z, manualDestinationPtr->rotZ);
+  destination = *manualDestinationPtr;
+  publishDestination();
+}
+
+void Strategy::navdataCb(const ardrone_autonomy::Navdata::ConstPtr navdataPtr)
+{
+  state = navdataPtr->state;
 }
 
 void Strategy::poseCb(const boris_drone::Pose3D::ConstPtr posePtr)
@@ -138,84 +99,69 @@ void Strategy::poseCb(const boris_drone::Pose3D::ConstPtr posePtr)
   pose = *posePtr;
 }
 
-void Strategy::exploreCb(const std_msgs::Empty::ConstPtr emptyPtr)
+void Strategy::setDestination(double x, double y, double z, double rotZ)
 {
-  FinishedExploring = true;
+  destination.x = x;
+  destination.y = y;
+  destination.z = z;
+  destination.rotX = 0.0;
+  destination.rotY = 0.0;
+  destination.rotZ = rotZ;
 }
 
-void Strategy::goHighCb(const std_msgs::Float32::ConstPtr goHighPtr)
+
+void waitSomeSeconds(double secs, ros::Rate r)
 {
-  go_high = true;
-  go_high_altitude = goHighPtr->data;
+  ros::Time t_ref = ros::Time::now();
+  while(ros::Time::now()-t_ref<ros::Duration(secs)||secs<0)
+  {
+    ros::spinOnce();
+    r.sleep();
+  }
 }
 
-bool Strategy::goingHigh()
-{
-  return go_high;
-}
-
-float Strategy::getHighAltitude()
-{
-  return go_high_altitude;
-}
-
-void Strategy::stopGoingHigh()
-{
-  go_high = false;
-}
-
-// This is the main function where the strategy to sent to the path_planning will be chosen as a
-// function of all above data.
 int main(int argc, char** argv)
 {
   double altitude;
   ROS_INFO("Strategy started");
+  //ros::init(argc, argv, "strategy",ros::init_options::NoSigintHandler);
   ros::init(argc, argv, "strategy");
+  //signal(SIGINT, basicSigintHandler);
+  const int HOVER = 69;
+  const int DESTINATION = 42;
 
   Strategy myStrategy;
-  ros::Rate r(20);  // This function refreshes every 1/20 second.
-  myStrategy.SetStrategy(WAIT);
-  ros::spinOnce();
-  ros::Duration(10).sleep();
-  r.sleep();
+  ros::Rate r(20);  // This function refreshes 20 times per second.
+  waitSomeSeconds(15.0,r);
+  ROS_INFO("taking off");
+  myStrategy.setDestination(-1.0, -1.0, -1.0, -1.0);
+  myStrategy.publishDestination();
+  myStrategy.publishStrategy(HOVER);
+  myStrategy.publishTakeoff();
+  waitSomeSeconds(5.0,r);
+  myStrategy.setDestination(0.0,0.0,0.7,0.0);
+  myStrategy.publishDestination();
+  myStrategy.publishStrategy(DESTINATION);
+  waitSomeSeconds(2.0,r);
+  myStrategy.publishMakeKeyframe();
+  waitSomeSeconds(1.0,r);
+  myStrategy.setDestination(0.0,0.0,1.3,0.0);
+  myStrategy.publishDestination();
+  while (ros::ok()&&myStrategy.pose.z <  myStrategy.destination.z - 0.05)
+  {
+    ros::spinOnce();
+    r.sleep();
+  }
+  waitSomeSeconds(2.0,r);
+  myStrategy.publishMakeKeyframe();
+  waitSomeSeconds(2.0,r);
+  myStrategy.setDestination(0.0,0.0,0.7,0.0);
+  myStrategy.publishDestination();
+  ROS_INFO("entering infinite loop");
+  waitSomeSeconds(-1,r);
 
-  myStrategy.SetStrategy(TAKEOFF);
-  int strategy = myStrategy.GetStrategy();
-  ros::spinOnce();
-  r.sleep();
 
-while (ros::ok())
-{
-  altitude = myStrategy.getAltitude();
-  strategy = myStrategy.GetStrategy();
-  if (myStrategy.goingHigh())
-  {
-    myStrategy.SetXYZChosen(myStrategy.pose.x, myStrategy.pose.y, myStrategy.getHighAltitude());
-    myStrategy.SetStrategy(GOTO);
-    ros::Duration(10).sleep();
-    myStrategy.stopGoingHigh();
-  }
-  else if (strategy == TAKEOFF && altitude > 0.5)
-  {
-    ros::Duration(10).sleep();  // Wait for 10s
-    myStrategy.SetStrategy(SEEK);         // Change strategy to seek
-  }
-  else if (strategy == SEEK && myStrategy.TargetFound)
-  {
-    myStrategy.SetStrategy(EXPLORE);
-  }
-  else if (strategy == EXPLORE && myStrategy.FinishedExploring)
-  {
-    myStrategy.SetStrategy(BACKTOBASE);
-  }
-  else if (strategy == BACKTOBASE &&
-          (myStrategy.pose.x * myStrategy.pose.x + myStrategy.pose.y * myStrategy.pose.y < 0.35))
-  {
-    myStrategy.SetStrategy(LAND);
-  }
-  ros::spinOnce();
-  r.sleep();
-}
+  myStrategy.publishLand();
 
   return 0;
 }

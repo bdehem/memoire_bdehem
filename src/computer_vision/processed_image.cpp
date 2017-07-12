@@ -19,9 +19,13 @@ ProcessedImage::ProcessedImage()
   n_pts = 0;
 }
 
-ProcessedImage::ProcessedImage(const sensor_msgs::Image msg, const boris_drone::Pose3D pose, ProcessedImage& prev, bool use_optical_flow)
+//OF_mode = 1: use only optical flow
+//OF_mode =-1: use only detection
+//OF_mode = 0: use OF and detection hybrid
+ProcessedImage::ProcessedImage(const sensor_msgs::Image& msg, const boris_drone::Pose3D& pose, ProcessedImage& prev, int OF_mode, bool& made_full_detection)
 {
   this->pose = pose;
+  this->pose.header.stamp = msg.header.stamp;
   n_pts = 0;
 
   // convert ROS image to OpenCV image
@@ -42,64 +46,50 @@ ProcessedImage::ProcessedImage(const sensor_msgs::Image msg, const boris_drone::
   // Convert opencv image to ROS Image message format
   cv_img->toImageMsg(this->image);
 
-  // Use keypoints tracking between the previous and the current image processed
-  ROS_INFO("use OF = %d; prev_cv_img = %s; n_pts = %d",use_optical_flow, prev.cv_img?"true":"false", prev.n_pts);
-  if (use_optical_flow && prev.cv_img && prev.n_pts > 0)
-  {
-    int min_x, max_x, min_y, max_y;
-    int nrow = cv_img->image.rows;
-    int ncol = cv_img->image.cols;
-    int thresh_x = (int)ncol*border_detec_frac;
-    int thresh_y = (int)nrow*border_detec_frac;
-    trackKeypoints(this->descriptors,this->keypoints, prev, min_x, max_x, min_y, max_y);
-    if(min_x>max_x||min_y>max_y)
-    {
-      ROS_WARN("No tracked keypoints?");
+  int min_x, max_x, min_y, max_y;
+  int nrow = cv_img->image.rows;
+  int ncol = cv_img->image.cols;
+  cv::Mat detected_descriptors;
+  cv::Mat roi, mask;
+  std::vector<cv::KeyPoint> detected_keypoints;
+  switch (OF_mode) {
+    case 1:
+      trackKeypoints(this->descriptors,this->keypoints, prev, min_x, max_x, min_y, max_y);
+      if(min_x>max_x||min_y>max_y)
+      {
+        ROS_WARN("No tracked keypoints?");
+        this->keypoints.clear();
+        this->descriptors = cv::Mat();
+        detectKeypoints(this->descriptors, this->keypoints, true, mask);
+        made_full_detection = true;
+      }
       n_pts = this->keypoints.size();
       return;
-    }
-    if (min_x>thresh_x||max_x<ncol-thresh_x||min_y>thresh_y||max_y<nrow-thresh_y)
-    {
-      ROS_INFO("additional detection");
-      cv::Mat mask = cv::Mat::zeros(nrow,ncol,CV_8UC1);
-      if (min_x>thresh_x)
+    case 0:
+      trackKeypoints(this->descriptors,this->keypoints, prev, min_x, max_x, min_y, max_y);
+      if(min_x>max_x||min_y>max_y)
       {
-        cv::Mat roi(mask,cv::Rect(0, min_y, min_x, max_y-min_y));
-        roi = cv::Scalar(1);
+        ROS_WARN("No tracked keypoints?");
+        this->keypoints.clear();
+        this->descriptors = cv::Mat();
+        detectKeypoints(this->descriptors, this->keypoints, true, mask);
+        n_pts = this->keypoints.size();
+        made_full_detection = true;
+        return;
       }
-      if (max_x<ncol-thresh_x)
-      {
-        cv::Mat roi(mask,cv::Rect(max_x, min_y, ncol-max_x, max_y-min_y));
-        roi = cv::Scalar(1);
-      }
-      if (min_y>thresh_y)
-      {
-        cv::Mat roi(mask,cv::Rect(min_x, 0, max_x-min_x, min_y));
-        roi = cv::Scalar(1);
-      }
-      if (max_y<nrow-thresh_y)
-      {
-        cv::Mat roi(mask,cv::Rect(min_x, max_y, max_x-min_x, nrow-max_y));
-        roi = cv::Scalar(1);
-      }
-      ROS_INFO("maxx = %d; minx = %d; maxy = %d; miny = %d;",max_x,min_x,max_y,min_y);
-      cv::Mat detected_descriptors;
-      std::vector<cv::KeyPoint> detected_keypoints;
+      mask = cv::Mat::ones(nrow,ncol,CV_8UC1);
+      roi = mask(cv::Rect(min_x,min_y,max_x-min_x,max_y-min_y));
+      roi = cv::Scalar(0);
       detectKeypoints(detected_descriptors, detected_keypoints, false, mask);
-      int n_new = detected_keypoints.size();
       keypoints.insert(keypoints.end(), detected_keypoints.begin(), detected_keypoints.end());
       descriptors.push_back(detected_descriptors);
-
-    }
-    n_pts = this->keypoints.size();
-    return;
+      n_pts = this->keypoints.size();
+      return;
+    case -1:
+      detectKeypoints(this->descriptors, this->keypoints, true, mask);
+      made_full_detection = true;
+      n_pts = this->keypoints.size();
   }
-  else
-  {
-    cv::Mat trash;
-    detectKeypoints(this->descriptors, this->keypoints, true, trash);
-  }
-  n_pts = this->keypoints.size();
 }
 
 ProcessedImage::~ProcessedImage()

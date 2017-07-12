@@ -10,42 +10,21 @@
 
 #include <boris_drone/computer_vision/image_processor.h>
 
-ImageProcessor::ImageProcessor()
-  : it_(nh_), pose_publishing(false), video_publishing(false), pending_reset(false)
+ImageProcessor::ImageProcessor() : it(nh)
 {
+  std::string cam_type;       // bottom or front
+  std::string video_channel_;  // path to the undistorted video channel
+
   cv::initModule_nonfree();  // initialize the opencv module which contains SIFT and SURF
 
   // Get all parameters from the launch file
-
-  // use_OpticalFlowPyrLK: determine if keypoints tracking is used
+  bool autonomy_unavailable = false;  // true if the ardrone_autonomy node is not launched
+  ros::param::get("~autonomy_unavailable", autonomy_unavailable);
   ros::param::get("~use_OpticalFlowPyrLK", this->use_OpticalFlowPyrLK);
-
-  // autonomy_unavailable: set it to true if the ardrone_autonomy node is not launched
-  // useful when a rosbag is played
-  bool autonomy_unavailable = false;  // default value
-  bool flag_autonomy_unavailable = ros::param::get("~autonomy_unavailable", autonomy_unavailable);
-
-  // drone_prefix: relative path to the ardrone_autonomy node
-  std::string drone_prefix = "/";  // default value
-  bool flag_drone_prefix = ros::param::get("~drone_prefix", drone_prefix);
-
-  // Prepare the subscription to input video
-  std::string cam_type;  // bottom or front
-  bool flag_cam_type = ros::param::get("~cam_type", cam_type);
-  std::string video_channel;  // path to the undistorted video channel
-  bool flag_video_channel = ros::param::get("~video_channel", video_channel);
-  if (!flag_video_channel)
-  {
-    if (cam_type == "front")
-    {
-      video_channel = drone_prefix + "ardrone/front/image_raw";
-    }
-    else
-    {
-      cam_type = "bottom";
-      video_channel = drone_prefix + "ardrone/bottom/image_raw";
-    }
-  }
+  ros::param::get("~cam_type", cam_type);
+  if      (cam_type == "front")  video_channel_ = "ardrone/front/image_raw";
+  else if (cam_type == "bottom") video_channel_ = "ardrone/bottom/image_raw";
+  ros::param::get("~video_channel", video_channel_);
 
   // Read camera calibration coefficients in the launch file
   if (!Read::CamMatrixParams("cam_matrix"))
@@ -57,71 +36,64 @@ ImageProcessor::ImageProcessor()
     ROS_ERROR("img_size not properly transmitted");
   }
 
-  video_channel_ = nh_.resolveName(drone_prefix + video_channel);
+  // Subscribers
+  video_channel          = nh.resolveName(video_channel_);
+  pose_channel           = nh.resolveName("pose_estimation");
+  reset_pose_channel     = nh.resolveName("reset_pose");
+  end_reset_pose_channel = nh.resolveName("end_reset_pose");
+  image_sub_         = it.subscribe(video_channel,          1, &ImageProcessor::imageCb,        this);
+  pose_sub           = nh.subscribe(pose_channel,           1, &ImageProcessor::poseCb,         this);
+  reset_pose_sub     = nh.subscribe(reset_pose_channel,     1, &ImageProcessor::resetPoseCb,    this);
+  end_reset_pose_sub = nh.subscribe(end_reset_pose_channel, 1, &ImageProcessor::endResetPoseCb, this);
+
+  // Initialize publisher of processed_image
+  processed_image_channel_out = nh.resolveName("processed_image");
+  processed_image_pub = nh.advertise<boris_drone::ProcessedImageMsg>(processed_image_channel_out, 1);
 
   if (!autonomy_unavailable)  // then set the drone to the selected camera
   {
-    ros::ServiceClient client =
-        nh_.serviceClient< ardrone_autonomy::CamSelect >(drone_prefix + "ardrone/setcamchannel");
-    ardrone_autonomy::CamSelect srv;
-    if (cam_type == "bottom")
-    {
-      srv.request.channel = 1;
-    }
-    else
-    {
-      srv.request.channel = 0;
-    }
-    int counter_call_success = 0;
-    ros::Rate r(1 / 2.0);
-    while (counter_call_success < 2)
-    {
-      ros::spinOnce();
-      r.sleep();
-      if (client.call(srv))
-      {
-        ROS_INFO("Camera toggled ?");
-        if (srv.response.result)
-          counter_call_success += 1;
-      }
-      else
-      {
-        ROS_INFO("Failed to call service setcamchannel, try it again in 1sec...");
-      }
-    }
+
   }
 
-  // Subscribe to input video
-  image_sub_ =
-      it_.subscribe(video_channel_, 1, &ImageProcessor::imageCb, this);  // second param: queue size
-
-  // Subscribe to pose
-  pose_channel = nh_.resolveName("pose_estimation");
-  pose_sub = nh_.subscribe(pose_channel, 1, &ImageProcessor::poseCb, this);
-
-  // Subscribe to reset
-  reset_pose_channel = nh_.resolveName("reset_pose");
-  reset_pose_sub = nh_.subscribe(reset_pose_channel, 1, &ImageProcessor::resetPoseCb, this);
-
-  // Subscribe to end reset
-  end_reset_pose_channel = nh_.resolveName("end_reset_pose");
-  end_reset_pose_sub =
-      nh_.subscribe(end_reset_pose_channel, 1, &ImageProcessor::endResetPoseCb, this);
-
-  // Initialize publisher of processed_image
-  processed_image_channel_out = nh_.resolveName("processed_image");
-  processed_image_pub =
-      nh_.advertise< boris_drone::ProcessedImageMsg >(processed_image_channel_out, 1);
 
   // Initialize an empty processed_image
   this->prev_cam_img = new ProcessedImage();
-
-#ifdef DEBUG_TARGET
-  cv::namedWindow(OPENCV_WINDOW);
-#endif /* DEBUG_TARGET */
+  #ifdef DEBUG_TARGET
+    cv::namedWindow(OPENCV_WINDOW);
+  #endif /* DEBUG_TARGET */
 
   // Load and initialize the target object
   target_loaded = target.init(TARGET_RELPATH);
+
+  pose_publishing  = false;
+  video_publishing = false;
+  pending_reset    = false;
+  last_full_detection   = ros::Time::now() - ros::Duration(100.0);
+  last_hybrid_detection = ros::Time::now() - ros::Duration(100.0);
+}
+
+void ImageProcessor::setCamChannel(std::string cam_type)
+{
+  ros::ServiceClient client = nh.serviceClient<ardrone_autonomy::CamSelect>("ardrone/setcamchannel");
+  ardrone_autonomy::CamSelect srv;
+  if      (cam_type == "bottom") srv.request.channel = 1;
+  else if (cam_type == "front")  srv.request.channel = 0;
+  else ROS_ERROR("invalid cam type");
+  int counter_call_success = 0;
+  ros::Rate r(1);
+  while (counter_call_success < 2)
+  {
+    r.sleep();
+    if (client.call(srv))
+    {
+      ROS_INFO("Camera toggled ?");
+      if (srv.response.result) counter_call_success += 1;
+    }
+    else
+    {
+      ROS_INFO("Failed to call service setcamchannel, try it again in 1sec...");
+    }
+  }
 }
 
 ImageProcessor::~ImageProcessor()
@@ -166,15 +138,30 @@ void ImageProcessor::poseCb(const boris_drone::Pose3D::ConstPtr& posePtr)
 /* This function is called at every loop of the current node */
 void ImageProcessor::publishProcessedImg()
 {
+  TIC(imageprocessor);
   if (pending_reset)
     return;
   ROS_DEBUG("ImageProcessor::publishProcessedImg");
 
-  TIC(processed_image);
   // give all data to process the last image received (keypoints and target detection)
   //ProcessedImage cam_img(*lastImageReceived, *lastPoseReceived, *prev_cam_img, use_OpticalFlowPyrLK);
-  bool useless = 0;
-  ProcessedImage cam_img(*lastImageReceived, *lastPoseReceived, *prev_cam_img, use_OpticalFlowPyrLK);
+  int OF_mode;
+  if (ros::Time::now() - last_full_detection > ros::Duration(9.0)||!prev_cam_img->cv_img||prev_cam_img->n_pts < 20)
+  {
+    OF_mode = -1;
+    last_full_detection   = ros::Time::now();
+    last_hybrid_detection = ros::Time::now();
+  }
+  else if (ros::Time::now() - last_hybrid_detection > ros::Duration(3.0))
+  {
+    OF_mode = 0;
+    last_hybrid_detection = ros::Time::now();
+  }
+  else OF_mode = 1;
+  bool test = false;
+  ProcessedImage cam_img(*lastImageReceived, *lastPoseReceived, *prev_cam_img, OF_mode, test);
+  if (test&&OF_mode!=-1) ROS_WARN("anomaly");
+
   // initialize the message to send
   boris_drone::ProcessedImageMsg::Ptr msg(new boris_drone::ProcessedImageMsg);
   // build the message to send
@@ -189,6 +176,12 @@ void ImageProcessor::publishProcessedImg()
   // replace the previous image processed
   delete this->prev_cam_img;
   this->prev_cam_img = new ProcessedImage(cam_img);
+  //if (OF_mode == -1)
+    //TOC_DISPLAY(imageprocessor,"detection");
+  //if (OF_mode == 0)
+    //TOC_DISPLAY(imageprocessor,"hybrid   ");
+  //if (OF_mode == 1)
+    //TOC_DISPLAY(imageprocessor,"tracking ");
 }
 
 int main(int argc, char** argv)
@@ -204,7 +197,9 @@ int main(int argc, char** argv)
   ImageProcessor ic;
 
   // rate of this node
-  ros::Rate r(6);  // 12Hz =  average frequency at which we receive images
+  //ros::Rate r(6);  // 12Hz =  average frequency at which we receive images
+  //ros::Rate r(15);  // 12Hz =  average frequency at which we receive images
+  ros::Rate r(20);
 
   // wait until pose and video are available
   while ((!ic.pose_publishing || !ic.video_publishing) && ros::ok())

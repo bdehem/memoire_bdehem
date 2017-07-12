@@ -18,7 +18,6 @@
 
 #include <std_msgs/Float32.h>
 
-// #define USE_PROFILING
 #include <boris_drone/profiling.h>
 
 // Messages
@@ -37,58 +36,55 @@
 class Strategy
 {
 private:
-  std::string drone_name;
-
   ros::NodeHandle nh;
 
-  ros::Publisher strategy_pub;
-  ros::Subscriber target_sub;
-  ros::Subscriber pose_sub;
-  ros::Subscriber explore_sub;
-  ros::Subscriber go_high_sub;
-
-  std::string strategy_channel;
-  std::string target_channel;
+  //Subscribers
   std::string pose_channel;
-  std::string explore_channel;
-  std::string go_high_channel;
+  std::string navdata_channel;
+  std::string manual_destination_channel;
+  ros::Subscriber pose_sub;
+  ros::Subscriber navdata_sub;
+  ros::Subscriber manual_destination_sub;
 
-  boris_drone::TargetDetected lastTargetDetected;
-  //! Callback when TargetDetected is received
+  //Publishers
+  std::string strategy_channel;
+  std::string destination_channel;
+  std::string takeoff_channel;
+  std::string land_channel;
+  std::string make_keyframe_channel;
+  ros::Publisher strategy_pub;
+  ros::Publisher destination_pub;
+  ros::Publisher takeoff_pub;
+  ros::Publisher land_pub;
+  ros::Publisher make_keyframe_pub;
 
-  void targetDetectedCb(const boris_drone::TargetDetected::ConstPtr targetDetectedPtr);
-  void exploreCb(const std_msgs::Empty::ConstPtr emptyPtr);
+
+  //Callbacks
+  void manualDestinationCb(const boris_drone::Pose3D::ConstPtr manualDestinationPtr);
+  void navdataCb(const ardrone_autonomy::Navdata::ConstPtr navdataPtr);
   void poseCb(const boris_drone::Pose3D::ConstPtr posePtr);
-  void goHighCb(const std_msgs::Float32::ConstPtr goHighPtr);
 
-  int strategy;
-  bool go_high;
-  float go_high_altitude;
-
-  float xchosen;
-  float ychosen;
-  float zchosen;
-
-  float targetX;
-  float targetY;
 public:
-  //! Constructor
+  //! Constructor & Destructor
   Strategy();
-  //! Destructor
   ~Strategy();
 
-  bool goingHigh();
-  float getHighAltitude();
-  void stopGoingHigh();
+  //Public fields (more convenient to keep them public)
+  int strategy;
+  int state;
+  bool emergency_stop;
   boris_drone::Pose3D pose;
-  bool TargetFound;
-  bool FinishedExploring;
-  void init();
-  void publish_strategy();
-  void SetStrategy(int strategy);
-  int GetStrategy();
-  double getAltitude();
-  void SetXYZChosen(float xchosen, float ychosen, float zchosen);
+  boris_drone::Pose3D destination;
+
+  //Publish
+  void publishTakeoff();
+  void publishLand();
+  void publishDestination();
+  void publishStrategy(int strat_type);
+  void publishMakeKeyframe();
+
+  void setDestination(double x, double y, double z, double rotZ);
+
 };
 
 #endif /*boris_drone_STRATEGY_H */

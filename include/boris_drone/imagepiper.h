@@ -8,7 +8,6 @@
 
 #include <std_msgs/Float32.h>
 
-// #define USE_PROFILING
 #include <boris_drone/profiling.h>
 
 // Messages

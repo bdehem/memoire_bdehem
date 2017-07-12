@@ -10,7 +10,7 @@
   <arg name="midpoint_triangulation" default="false"/>
   <arg name="test_robustness"        default="false"/>
   <arg name="double_ba"              default="false"/>
-  <arg name="bundle_adjustment_tol"  default="0.5"/>
+  <arg name="bundle_adjustment_tol"  default="0.005"/>
   <arg name="quiet_ba"               default="false" />
   <arg name="rpt2"                   default="6" />
   <arg name="rpt3"                   default="-1" />
@@ -21,6 +21,13 @@
   <arg name="huber_delta"            default="1.0" />
   <arg name="manual_keyframes"       default="false" />
   <arg name="benchmark"              default="false" />
+
+  <arg name="min_dist"        default="0.3" />
+  <arg name="min_time"        default="2" />
+  <arg name="time_thresh"     default="5" />
+  <arg name="inliers_thresh"  default="40" />
+  <arg name="n_kf_local_ba"   default="6" />
+  <arg name="freq_global_ba"  default="5" />
 
   <node name="image_proc_front" pkg="image_proc" type="image_proc" ns="ardrone/front"/>
 
@@ -42,6 +49,14 @@
     <param name="remove_coeff"           value="$(arg remove_coeff)"/>
     <param name="manual_keyframes"       value="$(arg manual_keyframes)"/>
     <param name="benchmark"              value="$(arg benchmark)" />
+    <param name="only_init"              value="true" />
+
+    <param name="min_dist"        value="$(arg min_dist)" />
+    <param name="min_time"        value="$(arg min_time)" />
+    <param name="time_thresh"     value="$(arg time_thresh)" />
+    <param name="inliers_thresh"  value="$(arg inliers_thresh)" />
+    <param name="n_kf_local_ba"   value="$(arg n_kf_local_ba)" />
+    <param name="freq_global_ba"  value="$(arg freq_global_ba)" />
   </node>
 
   <node name="boris_drone_bundle_adjuster" pkg="boris_drone" type="bundle_adjuster" output="screen">

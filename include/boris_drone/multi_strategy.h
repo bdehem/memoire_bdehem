@@ -20,7 +20,6 @@
 #include <ros/package.h>
 #include <ros/ros.h>
 
-// #define USE_PROFILING  // Uncomment this line to display timing print in the standard output
 #include <boris_drone/profiling.h>
 
 // messages

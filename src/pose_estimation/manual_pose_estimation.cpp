@@ -52,7 +52,7 @@ void ManualPoseEstimator::publish_pose()
 
 void ManualPoseEstimator::manualPoseCb(const boris_drone::Pose3D::ConstPtr manualPosePtr)
 {
-  if (has_received_visual_pose)
+  if (!has_received_visual_pose)
     pose = *manualPosePtr;
   else
   {
@@ -65,7 +65,7 @@ void ManualPoseEstimator::manualPoseCb(const boris_drone::Pose3D::ConstPtr manua
 
 void ManualPoseEstimator::visualPoseCb(const boris_drone::Pose3D::ConstPtr visualPosePtr)
 {
-  return;
+  //return;
   has_received_visual_pose = true;
   pose.x = visualPosePtr->x;
   pose.y = visualPosePtr->y;

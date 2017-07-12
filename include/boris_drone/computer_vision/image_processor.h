@@ -62,18 +62,22 @@
 class ImageProcessor
 {
 private:
-  ros::NodeHandle nh_;
+  ros::NodeHandle nh;
+  image_transport::ImageTransport it;
 
   // Subscribers
-  image_transport::ImageTransport it_;
   image_transport::Subscriber image_sub_;
-  std::string video_channel_;
+  std::string video_channel;
   ros::Subscriber pose_sub;
   std::string pose_channel;
   ros::Subscriber reset_pose_sub;
   std::string reset_pose_channel;
   ros::Subscriber end_reset_pose_sub;
   std::string end_reset_pose_channel;
+
+  ros::Time last_full_detection; //Time when we last added a keyframe
+  ros::Time last_hybrid_detection; //Time when we last added a keyframe
+
 
   // Publishers
   ros::Publisher processed_image_pub;
@@ -93,6 +97,9 @@ private:
 
   //! the target to detect (this object wraps all needed procedures)
   Target target;
+
+  void setCamChannel(std::string cam_type);
+
 
   //! \brief Callback when image is received
   void imageCb(const sensor_msgs::Image::ConstPtr& msg);
@@ -122,7 +129,8 @@ public:
 
   void publishProcessedImg();  //! function to build and send messages with all computed keypoints
                                //! and target detected
-
+  int count;
+  ros::Time starttime;
   bool pose_publishing;   //! true after receiving the first pose3D message from pose_estimation
   bool video_publishing;  //! true after receiving the first Image message from ardrone_autonomy
 };

@@ -38,5 +38,49 @@ For my own thesis, my goal is to continue the work of last year's second group, 
 \item Obstacle Avoidance
 \end{itemize}
 
-\section{Structure}
-%TODO after the rest is done
+\section{Ressources}
+
+%%Hardware and software architecture (chpt3)
+\subsection{Hardware}
+For the practical implementation of this project, a Parrot AR.Drone 2.0 was used. This quadrotor was commercialized in 2012 and is an updated version of the original AR.Drone that was launched in 2010. This drone was marketed as a high tech toy, and is designed to be controlled from a smarphone application (connected to the drone via Wi-Fi). A few augmented reality games are available for the AR.Drone, in which it can visually recognise some predefined tags using its cameras, and interact with objects or other drones with a tag. To encourage the creation of more games for their drones, Parrot has released an open SDK that allows to effectively reprogram the drones. This early release of an open SDK has made it quite popular in the scientific community to do research on autonomous flight. The drone consists of 4 rotors, each with their own electric motor and microcontroller, an internal computer with a 1GHz ARM Cortex A8 processor and 1GB DDR2 RAM at 200MHz, and various sensors.
+
+\subsubsection{Sensors}
+The AR.drone has the following sensors:
+\begin{itemize}
+  \item 3 axis accelerometer with $\pm 50$ mg accuracy
+  \item 3 axis gyroscope with $\pm 2000\degree/s$ accuracy
+  \item Pressure sensor with $\pm 10 \texttt{Pa}$ accuracy
+  \item 3 axis magnetometer with $\pm 6\degree$ accuracy
+  \item Ultrasound sensor (facing downwards)
+  \item Frontal camera (HD 720p 30fps)
+  \item Ventral camera (QVGA, 60 fps)
+\end{itemize}
+
+The accelerometer and gyroscope together form the IMU.
+
+\paragraph{Internal sensor fusion}
+When remote-controlled during normal use, the internat controller needs a pose estimation to be able to stabilize itself. For safety reasons, it needs a reliable estimate of its altitude, and speeds, so that it can stop and hover. For convenience, it also needs a somewhat reliable estimation of its position, to cancel drifts when hovering. For these estimations, the internal controller fuses data from three sources: its IMU, its ultrasound sensor, and Odometry integrated from the optical flow observed by the bottom camera. Unfortunately, the values of these three sources ara available to be read from the drone, but not the internally fused pose, which is used directly by the controller.
+
+\subsection{Software}
+
+\subsubsection{Parrot SDK}
+The SDK released by Parrot allows to send commands and receive information from the drone. However, it does not allow acces to code running in the drone during normal operation. It is possible to send the drone commands to take off, land, emergency stop, hover, move in a certain direction, but not to directly control the command send to the motors. Similarly, it is possible to read the IMU, ultrasound, odometry and video data from the drone, but not to access its own internal data fusion.
+
+\subsubsection{ROS}
+For the practical programming of the drone, the ROS (robot operating system) toolbox was used. This toolbox provides useful abstraction to program robots: the program is decomposed into "nodes", each node running simultaneously in a separate thread. Each node implements part of the drone's task, and the nodes can communicate between them by sending structured messages. The objective is to make the code modular, to be able to use existing nodes uploaded by other developpers. One such node, called "ardrone autonomy" created by %TODO
+handles communication with a physical AR.Drone, so by using this node, we can completely disregard Parrot's specific SDK, and send all commands in ROS format. This way, we hope to make it easy to reuse code when changing hardware. ROS also provides a number of convenient tools for developping software to be used on robots: it provides ways to record and replay data, to easily set and change parameters, to run only specific parts of the program for testing.
+
+\subsubsection{OpenCV}
+OpenCV is an open-source computer vision library. It provides functions and data structures to manipulate images, and implements many state-of-the-art computer vision algorithms.
+
+\subsubsection{PCL}
+PCL stands for Point Cloud Library and is an open-source library for 3D point cloud processing. Currently is is only used to visualize the map created by the drone, but in the future, it can be used for higher-level functions on this map like combining maps created by multiple robots, or reconstructing a dense representation of the map from a point cloud.
+
+\subsubsection{Ceres Solver}
+Ceres solver is an open-source library for modeling and solving non-linear least squares problems. It will be used in this thesis to solve Bundle Adjustment problems.
+
+
+
+\section{Outline}
+First, the state of the art of %TODO
+will be explored in chapter 2. Chapters 3 through 5 will present the main subject of this work: computer vision (Chapter 2), localisation (Chapter 3), Mapping (Chapter 5). The results will then be presented in chapters 6: Simultaneous Localisation and Mapping. Finally, we will conclude in chapter 7.

@@ -28,6 +28,41 @@ void matchDescriptors(const cv::Mat& descriptors1, const cv::Mat& descriptors2,
   }
 }
 
+double poseDistance(boris_drone::Pose3D pose0, boris_drone::Pose3D pose1)
+{
+  return sqrt((pose0.x-pose1.x)*(pose0.x-pose1.x) +
+              (pose0.y-pose1.y)*(pose0.y-pose1.y) +
+              (pose0.z-pose1.z)*(pose0.z-pose1.z));
+}
+
+void matchDescriptors(const cv::Mat& descriptors1, const cv::Mat& descriptors2,
+  const std::vector<int>& ptIDs1, const std::vector<int>& ptIDs2,
+  std::vector<int>& matching_indices_1, std::vector<int>& matching_indices_2, double threshold, int max_matches)
+{
+  cv::FlannBasedMatcher matcher;
+  std::vector<cv::DMatch> simple_matches;
+  std::vector<int>::iterator it;
+  int train_idx;
+  matcher.match(descriptors1, descriptors2, simple_matches);
+  int nmatch = simple_matches.size();
+  std::sort(simple_matches.begin(), simple_matches.end());
+
+  if((max_matches < 0)||(max_matches > nmatch))
+    max_matches = nmatch;
+  for (unsigned k = 0; k < max_matches; k++)
+  {
+    if ((simple_matches[k].distance > threshold))
+      break;
+    it = find(matching_indices_2.begin(),matching_indices_2.end(),simple_matches[k].trainIdx);
+    if (it==matching_indices_2.end()&&ptIDs1[simple_matches[k].queryIdx]<0&&ptIDs2[simple_matches[k].trainIdx]<0)
+    {
+      matching_indices_1.push_back(simple_matches[k].queryIdx);
+      matching_indices_2.push_back(simple_matches[k].trainIdx);
+    }
+  }
+}
+
+
 bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, int idx2)
 {
   //http://www.iim.cs.tut.ac.jp/~kanatani/papers/sstriang.pdf

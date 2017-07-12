@@ -16,7 +16,6 @@
 
 #include <boris_drone/boris_drone.h>
 
-// #define USE_PROFILING  // Uncomment this line to display timing print in the standard output
 #include <boris_drone/profiling.h>
 
 // Header files
@@ -27,6 +26,7 @@
 #include <tf/transform_datatypes.h>
 #include <tf/transform_listener.h>
 #include <queue>
+#include <math.h> /* isfinite*/
 
 // messages
 #include <nav_msgs/Odometry.h>
@@ -74,14 +74,14 @@ private:
   boris_drone::Pose3D lastposeVisualReceived;
 
   ros::Time odom_time;
-  double odometry_x;  //!< Accumulator for the x direction
-  std::queue< std::vector< double > > queue_dx;
-  double odometry_y;  //!< Accumulator for the y direction
-  std::queue< std::vector< double > > queue_dy;
+  std::queue< std::pair<ros::Time, double> > queue_dx;
+  std::queue< std::pair<ros::Time, double> > queue_dy;
+  std::queue< std::pair<ros::Time, double> > queue_drotZ;
+  double odometry_x;     //!< Accumulator for the x direction
+  double odometry_y;     //!< Accumulator for the y direction
   double odometry_rotX;  //!< Accumulator for the rotX angle
   double odometry_rotY;
   double odometry_rotZ;
-  std::queue< std::vector< double > > queue_drotZ;
   double rot_Z_offset;   //!< Offset of rotZ from ardrone_autonomy at reset
   double lastRotX;       //!< Copy of the last rotX received in Odometry
   double lastRotY;       //!< Copy of the last rotY received in Odometry
@@ -106,10 +106,10 @@ private:
   bool queuePoseFusion(boris_drone::Pose3D& pose_msg);
 
   //! Sum all the values contained in myqueue (used in queuePoseFusion)
-  void processQueue(std::queue< std::vector< double > >& myqueue, double& result);
+  void processQueue(std::queue< std::pair<ros::Time, double> >& myqueue, double& result);
 
   //! Add item to myqueue (used in queuePoseFusion)
-  void pushQueue(std::queue< std::vector< double > >& myqueue, double item);
+  void pushQueue(std::queue< std::pair<ros::Time, double> >& myqueue, double item);
 
   //! Simple copy of Odometry
   bool poseCopy(boris_drone::Pose3D& pose_msg);

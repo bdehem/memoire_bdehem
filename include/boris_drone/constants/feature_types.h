@@ -1,9 +1,9 @@
 #ifndef FEATURE_TYPES_H
 #define FEATURE_TYPES_H
 
-//#define EXTRACTOR_TYPE TYPE_SIFT
 #define DETECTOR_TYPE TYPE_SURF   //!< Keypoint detector used in computer_vision
 #define EXTRACTOR_TYPE TYPE_SIFT  //!< Keypoint descriptor used in computer_vision and mapping
+//#define EXTRACTOR_TYPE TYPE_SIFT
 
 #define TYPE_SIFT 1
 #define TYPE_FAST 2
@@ -26,7 +26,7 @@
 
 // DIST_THRESHOLD depends in the descriptor type
 #if EXTRACTOR_TYPE == TYPE_SIFT
-#define DIST_THRESHOLD 250.0  //!< Max distance s.t. two features descriptions are similar
+#define DIST_THRESHOLD 200.0  //!< (250) Max distance s.t. two features descriptions are similar
 #elif EXTRACTOR_TYPE == TYPE_SURF
 #define DIST_THRESHOLD 0.25  //!< Max distance s.t. two features descriptions are similar
 #elif EXTRACTOR_TYPE == TYPE_ORB

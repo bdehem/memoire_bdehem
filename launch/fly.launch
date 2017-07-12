@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<launch>
+  <include file="$(find boris_drone)/launch/global_params.xml" />
+  <include file="$(find boris_drone)/launch/slam.xml" >
+    <arg name="manual_keyframes" value="true" />
+  </include>
+
+  <include file="$(find boris_drone)/launch/gui.xml" />
+  <include file="$(find boris_drone)/launch/driver.xml" />
+  <include file="$(find boris_drone)/launch/controller.xml" />
+  <node name="boris_drone_pose_estimation" pkg="boris_drone" type="pose_estimation" output="screen"></node>
+</launch>

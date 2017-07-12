@@ -3,7 +3,6 @@
 #define boris_drone_MAP_H
 #define PCL_NO_PRECOMPILE
 
-#define USE_PROFILING
 #include <boris_drone/profiling.h>
 
 /* Header files */
@@ -68,7 +67,6 @@ class Map
 private:
   // Some static const parameters
   static const int n_kf_for_ba = 4; //number of keyframes for bundle adjustment
-  static const int threshold_inliers_new_keyframe = 35;
   static const int threshold_lost = 10;
   static const int threshold_new_keyframe = 50;
   static constexpr double threshold_new_keyframe_percentage = 0.25;
@@ -106,6 +104,16 @@ private:
   double rpt4;
   double remove_cst;
   double remove_coeff;
+
+
+  double min_dist;
+  double min_time;
+  double inliers_thresh;
+  double time_thresh;
+  int n_kf_local_ba;
+  int freq_global_ba;
+  int n_inliers_moving_avg;
+
   std::vector<double> BA_times_pass1;
   std::vector<double> BA_times_pass2;
   std::vector<int>    num_iter_pass1;
@@ -114,7 +122,8 @@ private:
   Camera camera;
 
   std::map<int,Landmark*> landmarks;
-  std::map<int,int> landmark_indices;
+  std::map<int,int> landmark_indices; //TODO unused? remove
+  std::vector<int> landmark_IDs;
   std::map<int,Keyframe*> keyframes; //Map of ID to keyframe
   std::map<int,Keyframe*>::iterator first_kf_to_adjust;
 
@@ -133,24 +142,25 @@ private:
    * @param[out] inliers       The indexes of keypoints with a correct matching
    * @param[in]  ref_keyframe  The Keyframe used to perform the estimation
    */
-  int doPnP(const Frame& current_frame, boris_drone::Pose3D& PnP_pose, int& n_inliers);
+  int doPnP(const Frame& current_frame, boris_drone::Pose3D& PnP_pose, int& n_inliers, double& inlier_coverage);
   cv::Mat tvec;  //!< last translation vector (PnP estimation)
   cv::Mat rvec;  //!< last rotational vector (PnP estimation)
 
 
   int matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_map_matching_points,
-    std::vector<cv::Point2f>& inliers_frame_matching_points);
+    std::vector<cv::Point2f>& inliers_frame_matching_points, double& inlier_coverage);
 
   /*!on keypoints between reference Keyframe and last Frame
    * @return true if a  new Keyframe is needed, false otherwise
    */
-  bool keyframeNeeded(bool manual_pose_received, int n_inliers);
+  bool keyframeNeeded(bool manual_pose_received, int n_inliers, double inlier_coverage, boris_drone::Pose3D& current_pose);
 
   void newKeyframe(const Frame& frame);
   void newPairOfKeyframes(const Frame& frame, const boris_drone::Pose3D& pose, bool use_pose);
   void newPairOfKeyframes2(const Frame& frame, const boris_drone::Pose3D& pose, bool use_pose);
 
   void matchKeyframes(Keyframe* kf0, Keyframe* kf1);
+  void matchKeyframeWithMap(Keyframe* kf);
 
 
   int getPointsForBA(std::vector<int> &kfIDs,
@@ -161,7 +171,7 @@ private:
   void targetDetectedPublisher();
 
 
-  int addPoint(cv::Point3d& coordinates, cv::Mat descriptor);
+  int addPoint(cv::Point3d& coordinates, cv::Mat& descriptor);
   void removePoint(int ptID);
   void updatePoint(int ptID, cv::Point3d new_point);
   void setPointAsSeen(int ptID, int kfID, int idx_in_kf);
@@ -169,6 +179,8 @@ private:
 
 
 public:
+  bool make_keyframe;
+
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
 
   //! Contructors. Initialize an empty map

@@ -16,7 +16,6 @@
 
 #include <boris_drone/boris_drone.h>
 
-// #define USE_PROFILING  // Uncomment this line to display timing print in the standard output
 #include <boris_drone/profiling.h>
 
 // Header files

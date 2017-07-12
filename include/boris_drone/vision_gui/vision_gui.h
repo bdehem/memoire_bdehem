@@ -13,7 +13,6 @@
 #include <ros/package.h>
 #include <ros/ros.h>
 
-// #define USE_PROFILING
 #include <boris_drone/profiling.h>
 
 // messages

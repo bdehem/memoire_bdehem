@@ -9,7 +9,6 @@
 #define boris_drone_SIMPLE_MAP_H
 #define PCL_NO_PRECOMPILE
 
-#define USE_PROFILING
 #include <boris_drone/profiling.h>
 
 /* Header files */
@@ -84,6 +83,9 @@ private:
   ros::Subscriber reset_pose_sub;
   std::string     end_reset_pose_channel;
   ros::Subscriber end_reset_pose_sub;
+  std::string     make_keyframe_channel;
+  ros::Subscriber make_keyframe_sub;
+
 
   /* Publishers */
   ros::Publisher pose_visual_pub;
@@ -111,13 +113,14 @@ private:
   void strategyCb(const boris_drone::StrategyMsg::ConstPtr strategyPtr);
   void bundledCb(const boris_drone::BundleMsg::ConstPtr bundlePtr);
   void manualPoseCb(const boris_drone::Pose3D::ConstPtr posePtr);
+  void makeKeyframeCb(const std_msgs::Empty::ConstPtr msg);
 
 
   void showProcImg(const boris_drone::ProcessedImageMsg::ConstPtr pi);
 
 public:
   Map map;
-
+  boris_drone::Pose3D PnP_pose;
   //! The visualizer object to perform projection
   boost::shared_ptr<pcl::visualization::PCLVisualizer> visualizer;
 
