@@ -1,1 +1,118 @@
 %%Computer Vision (chpt3)
+Our approach to the SLAM problem will expand on the work done in previous years, and therefore we will continue using keyframe-based SLAM. This method builds a map made out of points observed from a small number of previous poses of the drone (keyframes). We will use the same terminology as in \cite{engel2011msc}: detected points in images will be refered to as keypoints, and keypoints whose 3D position we have an estimation of will be referred to as landmarks. As we will see later, at least two observations of a same keypoint are necessary to estimate its 3D position and use it as a landmark. Being able to recognize points in different images that correspond to the same world location lies at the basis of both the mapping and localization tasks. To do this, we will proceed in three steps. First, we need to determine which points of an image are particular enough to be recognizable from many different viewpoints. Then we need to characterize and save those points in the form of a descriptor. Finally, when we detect more points later on, we need to be able to compare these descriptors to determine which ones describe the same keypoint.\\
+We already outlined the principal keypoint detectors and descriptors in the state of the art (see section \ref{sec:sota_keypoints}). For this work, we will continue building on what was started last year, and we will use a SURF detector and a SIFT descriptor for the reasons they explained in their thesis (see  \cite{jacquesleclere}).
+
+\section{Scale-space representation}
+One of the problems when trying to recognize points from a variety of viewpoints, is that depending on the distance between the point and the camera, the point can have many different sizes in the image. The scale-space representation is an attempt to solve this problem. An image can be represented as a two variable function $f(x,y)$, where the value of $f$ is the intensity of of the pixel at location $(x,y)$. The scale-space representation of $f$ is a family of signals obtained by convoluting the original signal with a gaussian filter $g$: $L(x,y;\sigma) = g(x,y;\sigma) \star f(x,y)$. For different values of the parameter $\sigma$ (the scale), the result is a blurred image where finer and finer details are indistinguishable. When $\sigma=0$, the gaussian becomes an impulse function and the result of the convolution is the original image. The scale-space representation of an image, $L(x,y,\sigma)$ can be seen as a three dimensional image, made by stacking images obtained by blurring the source image more and more. By working on the scale-space representation of images, we ensure that our methods are scale invariant. \cite{scalespace}\\
+To illustrate this with an example, we look at figure \ref{fig:scalespace}. Images \ref{fig:scalespace_faraway} and \ref{fig:scalespace_closeby} have been observed and we would like to match them. Zooming in on image \ref{fig:scalespace_faraway} gives \ref{fig:scalespace_faraway_zoomedin}, but this image is quite different from \ref{fig:scalespace_closeby}. If we look at the scale-space representation of \ref{fig:scalespace_closeby} we might find a match at higher scales, when the image becomes blurred to look like image \ref{fig:scalespace_closeby_blurred}. Note that we are matching individual keypoints, which are usually smaller than this image (the corners of this image could each be keypoints).
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{scalespace_faraway.png}
+  \caption{View from far away}
+  \label{fig:scalespace_faraway}
+\end{subfigure}%
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{scalespace_closeby.png}
+  \caption{View from close by}
+  \label{fig:scalespace_closeby}
+\end{subfigure} \\
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{scalespace_faraway_zoomedin.png}
+  \caption{From far away, zoomed in}
+  \label{fig:scalespace_faraway_zoomedin}
+\end{subfigure}%
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{scalespace_closeby_blurred.png}
+  \caption{From close by, filtered by a gaussian}
+  \label{fig:scalespace_closeby_blurred}
+\end{subfigure}
+\caption{Usefulness of the scale-space representation}
+\label{fig:scalespace}
+\end{figure}
+
+\section{SURF Keypoint Detector}
+The SURF detector uses the determinant of the Hessian matrix to measure local change around points. The Hessian matrix is defined as follows:
+\begin{equation}
+  \mathcal{H}(\bf{x},\sigma) =  \begin{bmatrix}
+  L_{xx}(\bf{x},\sigma) & L_{xy}(\bf{x},\sigma) &\\
+  L_{xy}(\bf{x},\sigma) & L_{yy}(\bf{x},\sigma)
+\end{bmatrix}
+\end{equation}
+where $L_{xx}$, $L_{xy}$ and $L_{yy}$ are the convolution of the image with the second order derivatives of the gaussian $g(\bf{x};\sigma)$. The creators of SURF decided to approximate the second order Gaussian derivatives with box filters. This decision stemmed from the fact that even though Gaussian filters are optimal, they are already modified quite heavily, as they have to be discretized and cropped, and the result of the convolution is then resampled. The big advantage of using square filters is that they can be evaluated very quickly by using integral images. To obtain a scale-space representation, the SURF method uses box filters of different sizes: for example, a 9x9 filter, approximates gaussian with parameter $\sigma = 1.2$, with larger filters corresponding to bigger values of $\sigma$. Local maxima on 3x3x3 neighborhoods of the scale-space representation are then taken as points of interest.\\
+Finally, so that the detected keypoints are rotationally invariant, we need to assign an orientation to each keypoint that can be recognized from subsequent viewpoints. To do this, the SURF method computes the response to vertical and horizontal Haar wavelets in a circular neighborhood of radius $6s$ around the detected points, $s$ being the scale at which that point was detected. The Haar wavelets are rectangle shaped, so they can also be computed efficiently using integral images. The responses are plotted in a plane, where the abscissa is the horizontal response, and the ordinate is the vertical response. The responses are summed within a sliding orientation window, giving an orientation vector for each position of the sliding window. The orientation vector with the largest norm is taken to be the orientation of the keypoint.
+\cite{bay_surf}
+
+\section{SIFT Keypoint Descriptor}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{siftdescriptor.png}
+    \caption{Illustration of a SIFT descriptor. Each subregion containing 4x4 points defines a histogram with 8 bins. Note that SIFT uses 4x4 subregions, not 2x2 like in this illustration. \cite{sift2}}
+    \label{fig:siftdescriptor}
+\end{figure}
+To create a SIFT descriptor, a 16x16 square region is taken around the keypoint. This region is rotated and scaled according to the orientation and scale of the detected keypoint. The 16x16 region is subdivided into 16 4x4 subregions. In each subregion, a histogram of local gradients is computed and quantized into 8 bins. The magnitudes of these histograms form the descriptor. Figure \ref{fig:siftdescriptor} shows an illustration of the histograms. As there are 16 histograms of 8 bins each, the total length of the descriptor vector is 128. This is quite a large dimension, which has the advantage of being highly discriminative, even with many different keypoints, but the disadvantage of requiring more space to be saved, and to slow down the matching algorithms that will be used later on.
+\cite{sift}
+
+\section{Keypoint Tracking}
+Because the above algorithm to extract a descriptor of a keypoint is quite slow (it takes approximatively %TODO seconds
+to extract all descriptors from a new image, see %TODO for more timings
+), it is not practical to run these algorithms on each new image, as this would greatly reduce the framerate. For this reason, another, faster alternative has been found : keypoint tracking. This method finds keypoints by looking for keypoints that were observed in the previous image, and assuming that their displacement inside the image was small. \\
+The algorithm used for this keypoint tracking is called the pyramidal Lucas-Kanade method \cite{pyramidallucaskanade}. This method assumes that the movement between successive frames is small and can be approximated by an affine transformation in local regions. It uses small dense pixel regions to estimate the movement of a keypoint between successive frames. The method was explained more in detail in last year's master thesis \cite{jacquesleclere}.
+Keypoint tracking has the advantage of being much faster than detecting new keypoints, especially because the descriptor of each tracked keypoint is already known and does not have to be extracted again at each frame. The main drawback of this method is that it does not allow to detect any new keypoints, as all tracked keypoints have to be present in the previous frame.
+
+\section{Detection and Tracking hybrid}
+
+In the previous years, detection and tracking were used alternatively: each new frame was populated with keypoints using one of the two methods. As long as there were enough keypoints in the preceding frame, tracking was used on all these keypoints with no detection of new keypoints. While tracking is used, the number of keypoints in each successive frame is nonincreasing, as each keypoint can either be lost or tracked, and when the number of keypoints in the frame fell below some threshold, keypoint detection was used to populate the next frame with new keypoints. When the detection method is used, all previous keypoints are discarded, and keypoints are detected on the entire image. The reason for this choice was that detection was too slow to be used on each frame, but necessary to find new keypoints, and that if detection and tracking were used simultaneously, keypoints that are already being tracked would be re-detected, which would result in duplicate keypoints in the same frame. However, this method is suboptimal, because every time detection is used, all currently tracked keypoints are lost and have to be re-detected. It also causes quite an inconsistent framerate.\\
+
+\begin{figure}[H]
+  \centering
+  \includegraphics{keyframe_landmark_illustration.eps}
+  \caption{Delay between first observation of a keypoint, and mapping of this keypoint}
+  \label{fig:delay}
+\end{figure}
+
+In addition to being suboptimal, this method has a few drawbacks that make it hard to use for this project. As we will see later, at least two views of a single keypoint from different keyframes are required to estimate the 3D position of the corresponding landmark. Figure \ref{fig:delay} is an illustration of this problem, in a one dimensional world for simplicity. When a keypoint is seen for the first time and saved in a keyframe, it becomes an unmatched keypoint (red cross), and its 3D location is unknown. It has to be observed from a second keyframe in order to become a landmark (black cross), with an estimated 3D position. Only then can it be used as a reference to localize the drone. On figure \ref{fig:delay}, if the drone creates a new keyframe at its current position, the unmatched keypoints can become landmarks, and the potential keypoints become new unmatched keypoints. If we had not detected and saved those new unmatched keypoints, when the drone continues advancing it will not be able to add any landmarks to the map. The difficulty lies in the fact that each time we create a new keyframe, we ideally need to see:
+
+\begin{enumerate}
+\item Enough already mapped landmarks to accurately estimate the position of the keyframe
+\item Unmatched keypoints from previous keyframes so that we can put them into the map to allow further exploration
+\item New, previously unobserved keypoints to ensure long-term viability (these points will be the unmatched keypoints of the next keyframe)
+\end{enumerate}
+
+The need for these three ingredients means that keyframes have to be created more frequently than when we are mapping keypoints from single observations. In many cases, there are enough common keypoints between successive keyframes so that the old method did not require detection at any moment between the two keyframes. As a result, all keypoints of the most recent keyframe would already have been observed before. This means that they can be added to the map, but it seriously harms possible future exploration, as the third element of the above list is missing, so it won't be able to create any new landmarks when the next keyframe is created. Simply decreasing the threshold at which we used detection instead of tracking was not a good solution as it resulted in many more slow detection steps.\\
+
+To solve this problem, a new technique had to be found. It is clear that we need new, unmatched keypoints in each keyframe, and these points cannot be tracked from previous images, so they have to be detected. However, keypoint detection takes so much time it's prohibitive to do it on each image. We noticed that the vast majority of keypoints that are lost during tracking are lost because they are moved out of the field of vision, so they leave the image from the sides. Similarly, new potential keypoints enter the field of view from the sides, so after some displacements, there will often be sections of the image with many keypoints (parts of the scene that were observed continuously since the last full keypoint detection), and sections of the image with no keypoints (parts of the scene that were not in the field of view when the last full detection took place). Our solution is to treat the part of the image with no keypoints as if it was a separate image, and do keypoint detection on that part, while keeping the part of the image with keypoints, and tracking its keypoints.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.33\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{track_detect_hybrid_start.png}
+  \caption{Initial frame}
+  \label{fig:trackdetecthybrid_a}
+\end{subfigure}%
+\begin{subfigure}{.33\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{track_detect_hybrid_mid.png}
+  \caption{After displacement and tracking}
+  \label{fig:trackdetecthybrid_b}
+\end{subfigure}
+\begin{subfigure}{.33\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{track_detect_hybrid_end.png}
+  \caption{After detection}
+  \label{fig:trackdetecthybrid_c}
+\end{subfigure}
+\caption{Illustration of the hybrid between tracking and detection}
+\label{fig:trackdetecthybrid}
+\end{figure}
+
+
+\section{Keypoint Matching}
+The final computer vision task is keypoint matching. After keypoints from multiple viewpoints are saved, we need to know which observations correspond to the same point. This is needed when a keyframe is added to the map, because we need keypoint matches to place landmarks in the map, and also when trying to match an image with the map to localize the drone. We will compare the descriptors of the keypoints to determine which ones are similar enough to represent the same point. The Euclidean distance is a good metric of how different the descriptors are, because they are vectors of floating point numbers (if we were working with binary descriptors, like in the case of BRIEF, we should use the Hamming distance instead).\\
+When matching a query image with a reference image, we find the nearest descriptor of the reference image for each descriptor of the query image. For each pair, we then determine if they are close enough to be considered a match. Finding the exact nearest neighbor would take $O(n*m)$ time for an exhaustive search, where $n$ and $m$ are respectively the number of keypoints in the query and in the reference images. A search with a k-d tree runs in $O(n\log(m))$ time, but suffers from the curse of dimensionality, so in high dimensional spaces it is not always faster than an exhaustive search in practice. To overcome these problems, we only look for an approximate nearest neighbor. There exist many different approximate nearest neighbor methods, one of the most famous for high dimensional search is the best-bin first method, which was recommended by the creators of SIFT. It is based on a k-d tree and finds the nearest neighbor in most cases, and if not, it finds a close neighbor. Other, better approximate nearest neighbor methods have since been invented, so to marginalize the choice of an approximate nearest neighbor algorithm, we use the implementation of a FLANN matcher of OpenCV for the nearest neighbor computation. FLANN stands for Fast Library for Approximate Nearest Neighbors. It contains many state-of-the-art nearest neighbors algorithms and automatically chooses the most appropriate one depending on the data.

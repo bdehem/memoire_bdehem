@@ -6,52 +6,56 @@
 \contentsline {section}{\numberline {1.2}Motivation}{2}{section.1.2}
 \contentsline {subsection}{\numberline {1.2.1}Ethical considerations}{2}{subsection.1.2.1}
 \contentsline {section}{\numberline {1.3}Context}{2}{section.1.3}
-\contentsline {paragraph}{2012-2015: First three theses}{2}{section*.4}
-\contentsline {paragraph}{2015-2016: Recent work}{2}{section*.5}
+\contentsline {paragraph}{2012-2015: First three theses}{2}{section*.5}
+\contentsline {paragraph}{2015-2016: Recent work}{2}{section*.6}
 \contentsline {section}{\numberline {1.4}Objectives}{3}{section.1.4}
 \contentsline {section}{\numberline {1.5}Ressources}{3}{section.1.5}
 \contentsline {subsection}{\numberline {1.5.1}Hardware}{3}{subsection.1.5.1}
-\contentsline {subsubsection}{Sensors}{3}{section*.6}
-\contentsline {paragraph}{Internal sensor fusion}{4}{section*.7}
+\contentsline {subsubsection}{Sensors}{3}{section*.7}
 \contentsline {subsection}{\numberline {1.5.2}Software}{4}{subsection.1.5.2}
-\contentsline {subsubsection}{Parrot SDK}{4}{section*.8}
-\contentsline {subsubsection}{ROS}{4}{section*.9}
-\contentsline {subsubsection}{OpenCV}{4}{section*.10}
-\contentsline {subsubsection}{PCL}{4}{section*.11}
-\contentsline {subsubsection}{Ceres Solver}{4}{section*.12}
+\contentsline {subsubsection}{Closed-source internal code}{4}{section*.8}
+\contentsline {subsubsection}{Parrot SDK}{4}{section*.9}
+\contentsline {subsubsection}{ROS}{4}{section*.10}
+\contentsline {subsubsection}{OpenCV}{4}{section*.11}
+\contentsline {subsubsection}{PCL}{4}{section*.12}
+\contentsline {subsubsection}{Ceres Solver}{5}{section*.13}
 \contentsline {section}{\numberline {1.6}Outline}{5}{section.1.6}
 \contentsline {chapter}{\numberline {2}State of the art}{6}{chapter.2}
-\contentsline {section}{\numberline {2.1}Hardware}{6}{section.2.1}
-\contentsline {subsection}{\numberline {2.1.1}Multirotor systems}{6}{subsection.2.1.1}
-\contentsline {subsection}{\numberline {2.1.2}Sensors}{7}{subsection.2.1.2}
-\contentsline {subsection}{\numberline {2.1.3}Embedded computers}{7}{subsection.2.1.3}
-\contentsline {section}{\numberline {2.2}Computer Vision}{7}{section.2.2}
-\contentsline {section}{\numberline {2.3}Simultaneous Localization And Mapping}{7}{section.2.3}
-\contentsline {subsection}{\numberline {2.3.1}Localization}{7}{subsection.2.3.1}
-\contentsline {subsection}{\numberline {2.3.2}Mapping}{7}{subsection.2.3.2}
-\contentsline {section}{\numberline {2.4}Bundle Adjustment}{7}{section.2.4}
-\contentsline {chapter}{\numberline {3}Computer Visions}{8}{chapter.3}
-\contentsline {chapter}{\numberline {4}Localization}{9}{chapter.4}
-\contentsline {chapter}{\numberline {5}Mapping}{10}{chapter.5}
-\contentsline {section}{\numberline {5.1}Structure of the map}{10}{section.5.1}
-\contentsline {section}{\numberline {5.2}Evaluation procedure}{10}{section.5.2}
-\contentsline {section}{\numberline {5.3}Triangulation}{11}{section.5.3}
-\contentsline {subsection}{\numberline {5.3.1}Midpoint Method}{12}{subsection.5.3.1}
-\contentsline {subsection}{\numberline {5.3.2}Linear least squares}{12}{subsection.5.3.2}
-\contentsline {subsection}{\numberline {5.3.3}Optimal Correction}{12}{subsection.5.3.3}
-\contentsline {subsection}{\numberline {5.3.4}Comparison of triangulation methods}{12}{subsection.5.3.4}
-\contentsline {section}{\numberline {5.4}Bundle Adjustment}{13}{section.5.4}
-\contentsline {subsection}{\numberline {5.4.1}How it works}{13}{subsection.5.4.1}
-\contentsline {subsection}{\numberline {5.4.2}Performance}{13}{subsection.5.4.2}
-\contentsline {subsection}{\numberline {5.4.3}Tuning the Bundle Adjustment}{13}{subsection.5.4.3}
-\contentsline {subsubsection}{Convergence of the solver}{14}{section*.13}
-\contentsline {subsubsection}{Rejecting outliers}{14}{section*.14}
-\contentsline {section}{\numberline {5.5}Map Initialization}{15}{section.5.5}
-\contentsline {chapter}{\numberline {6}Simultaneous Localization and Mapping}{16}{chapter.6}
-\contentsline {chapter}{\numberline {7}Conclusion}{17}{chapter.7}
-\contentsline {chapter}{\numberline {A}Benchmark results}{19}{appendix.A}
-\contentsline {section}{\numberline {A.1}Effect of convergence criterion during bundle adjustment}{19}{section.A.1}
-\contentsline {section}{\numberline {A.2}Effect of outlier threshold after bundle adjustment}{19}{section.A.2}
-\contentsline {subsection}{\numberline {A.2.1}Threshold after first bundle adjustment}{19}{subsection.A.2.1}
-\contentsline {subsection}{\numberline {A.2.2}Threshold after second bundle adjustment}{20}{subsection.A.2.2}
-\contentsline {section}{\numberline {A.3}Effect of limiting the number of matches between keyframes}{20}{section.A.3}
+\contentsline {section}{\numberline {2.1}Drones}{6}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Numer of rotors}{6}{subsection.2.1.1}
+\contentsline {section}{\numberline {2.2}Computer Vision}{6}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Keypoint Detection, Description, and Matching}{6}{subsection.2.2.1}
+\contentsline {paragraph}{Scale-Invariant Feature Transform (SIFT)}{7}{section*.14}
+\contentsline {paragraph}{Speeded Up Robust Features (SURF)}{7}{section*.15}
+\contentsline {paragraph}{Features from Accelerated Segment Test (FAST)}{7}{section*.16}
+\contentsline {paragraph}{Binary Robust Independent Elementary Features (BRIEF)}{7}{section*.17}
+\contentsline {paragraph}{Oriented FAST and Rotated BRIEF (ORB)}{7}{section*.18}
+\contentsline {subsection}{\numberline {2.2.2}Bundle Adjustment}{8}{subsection.2.2.2}
+\contentsline {section}{\numberline {2.3}Simultaneous Localization And Mapping}{8}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}Parallel Tracking and Mapping (PTAM)}{8}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.3.2}ORB-SLAM}{8}{subsection.2.3.2}
+\contentsline {subsection}{\numberline {2.3.3}Large-Scale Direct Monocular SLAM (LSD-SLAM)}{8}{subsection.2.3.3}
+\contentsline {subsection}{\numberline {2.3.4}Direct Sparse Odometry (DSO)}{9}{subsection.2.3.4}
+\contentsline {subsection}{\numberline {2.3.5}SVO}{9}{subsection.2.3.5}
+\contentsline {subsection}{\numberline {2.3.6}CNN-SLAM}{9}{subsection.2.3.6}
+\contentsline {chapter}{\numberline {3}Computer Vision}{10}{chapter.3}
+\contentsline {section}{\numberline {3.1}Scale-state representation}{10}{section.3.1}
+\contentsline {section}{\numberline {3.2}SURF Keypoint Detector}{11}{section.3.2}
+\contentsline {section}{\numberline {3.3}SIFT Keypoint Descriptor}{12}{section.3.3}
+\contentsline {section}{\numberline {3.4}Keypoint Tracking}{12}{section.3.4}
+\contentsline {section}{\numberline {3.5}Detection and Tracking hybrid}{13}{section.3.5}
+\contentsline {section}{\numberline {3.6}Keypoint Matching}{14}{section.3.6}
+\contentsline {chapter}{\numberline {4}Mapping}{16}{chapter.4}
+\contentsline {section}{\numberline {4.1}Structure of the map}{16}{section.4.1}
+\contentsline {section}{\numberline {4.2}Evaluation procedure}{17}{section.4.2}
+\contentsline {section}{\numberline {4.3}Triangulation}{18}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Midpoint Method}{18}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Linear least squares}{18}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.3}Optimal Correction}{18}{subsection.4.3.3}
+\contentsline {subsection}{\numberline {4.3.4}Comparison of triangulation methods}{18}{subsection.4.3.4}
+\contentsline {section}{\numberline {4.4}Bundle Adjustment}{19}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}How it works}{19}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.2}Performance}{19}{subsection.4.4.2}
+\contentsline {subsection}{\numberline {4.4.3}Tuning the Bundle Adjustment}{19}{subsection.4.4.3}
+\contentsline {subsubsection}{Convergence of the solver}{19}{section*.24}
+\contentsline {subsubsection}{Rejecting outliers}{20}{section*.26}

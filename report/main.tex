@@ -13,7 +13,11 @@
 \usepackage{siunitx}
 \usepackage{hyperref}
 \usepackage{multirow}
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage{pgfplotstable} % Generates table from .csv
+
+
 \pgfplotsset{compat=1.9}
 \hypersetup{
     colorlinks,
@@ -66,32 +70,32 @@
 \printglossaries
 \newpage
 \pagenumbering{arabic}
-\chapter{Introduction}
+\chapter{Introduction} %11
 \input{chapters/01_introduction}
 
-\chapter{State of the art}
+\chapter{State of the art} %8
 \input{chapters/02_stateoftheart}
 
-\chapter{Computer Visions}
+\chapter{Computer Vision} %5
 \input{chapters/03_computervision}
 
-\chapter{Localization}
-\input{chapters/04_localisation}
+%\chapter{Localization} %5
+%\input{chapters/04_localisation}
 
-\chapter{Mapping}
+\chapter{Mapping} %10
 \input{chapters/05_mapping}
 
-\chapter{Simultaneous Localization and Mapping}
-\input{chapters/06_slam}
+%\chapter{Simultaneous Localization and Mapping} %5
+%\input{chapters/06_slam}
 
-\chapter{Conclusion}
-\input{chapters/07_conclusion}
+%\chapter{Conclusion} %5
+%\input{chapters/07_conclusion}
 
 \printbibliography%
 
-\appendix
-\chapter{Benchmark results}
-\input{chapters/appendix}
+%\appendix
+%\chapter{Benchmark results}
+%\input{chapters/appendix}
 
 % Back cover page
 \backcoverpage

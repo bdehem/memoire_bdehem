@@ -1,16 +1,17 @@
 [0] Config.pm:318> INFO - This is Biber 1.8
 [0] Config.pm:321> INFO - Logfile is 'main.blg'
-[62] biber:275> INFO - === Fre Jul  7, 2017, 21:35:34
-[63] Biber.pm:333> INFO - Reading 'main.bcf'
-[123] Biber.pm:630> INFO - Found 10 citekeys in bib section 0
-[138] Biber.pm:3053> INFO - Processing section 0
-[153] Biber.pm:3190> INFO - Looking for bibtex format file 'references.bib' for section 0
-[155] bibtex.pm:933> INFO - Decoding LaTeX character macros into UTF-8
-[155] bibtex.pm:808> INFO - Found BibTeX data source 'references.bib'
-[195] Utils.pm:169> WARN - I didn't find a database entry for 'kanatani' (section 0)
-[229] Biber.pm:2939> INFO - Overriding locale 'en_US.UTF-8' default tailoring 'variable = shifted' with 'variable = non-ignorable'
-[229] Biber.pm:2945> INFO - Sorting 'entry' list 'nty' keys
-[229] Biber.pm:2949> INFO - No sort tailoring available for locale 'en_US.UTF-8'
-[253] bbl.pm:482> INFO - Writing 'main.bbl' with encoding 'UTF-8'
-[255] bbl.pm:555> INFO - Output to main.bbl
-[255] Biber.pm:105> INFO - WARNINGS: 1
+[65] biber:275> INFO - === Don Aug  3, 2017, 17:52:45
+[65] Biber.pm:333> INFO - Reading 'main.bcf'
+[128] Biber.pm:630> INFO - Found 28 citekeys in bib section 0
+[144] Biber.pm:3053> INFO - Processing section 0
+[159] Biber.pm:3190> INFO - Looking for bibtex format file 'references.bib' for section 0
+[162] bibtex.pm:933> INFO - Decoding LaTeX character macros into UTF-8
+[168] bibtex.pm:808> INFO - Found BibTeX data source 'references.bib'
+[179] Utils.pm:169> WARN - Name "Herbert Bay, Andreas Ess, Tinne Tuytelaars, Luc Van Gool" has too many commas: skipping name
+[201] Utils.pm:169> WARN - I didn't find a database entry for 'kanatani' (section 0)
+[265] Biber.pm:2939> INFO - Overriding locale 'en_US.UTF-8' default tailoring 'variable = shifted' with 'variable = non-ignorable'
+[266] Biber.pm:2945> INFO - Sorting 'entry' list 'nty' keys
+[266] Biber.pm:2949> INFO - No sort tailoring available for locale 'en_US.UTF-8'
+[349] bbl.pm:482> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[353] bbl.pm:555> INFO - Output to main.bbl
+[354] Biber.pm:105> INFO - WARNINGS: 2

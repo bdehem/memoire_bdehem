@@ -52,6 +52,9 @@ ProcessedImage::ProcessedImage(const sensor_msgs::Image& msg, const boris_drone:
   cv::Mat detected_descriptors;
   cv::Mat roi, mask;
   std::vector<cv::KeyPoint> detected_keypoints;
+  /*TEMP*/
+  OF_mode = 9;
+  /*END TEMP*/
   switch (OF_mode) {
     case 1:
       trackKeypoints(this->descriptors,this->keypoints, prev, min_x, max_x, min_y, max_y);
@@ -89,6 +92,10 @@ ProcessedImage::ProcessedImage(const sensor_msgs::Image& msg, const boris_drone:
       detectKeypoints(this->descriptors, this->keypoints, true, mask);
       made_full_detection = true;
       n_pts = this->keypoints.size();
+      return;
+    default :
+      ROS_INFO("Invalid OF_mode");
+      n_pts = 0;
   }
 }
 

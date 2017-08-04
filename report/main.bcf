@@ -1969,11 +1969,35 @@
     <bcf:citekey order="3">consumerdronesbythenumbers</bcf:citekey>
     <bcf:citekey order="4">agriculturaldrones</bcf:citekey>
     <bcf:citekey order="5">batiravecdesdrones</bcf:citekey>
-    <bcf:citekey order="6">dexteroushexrotor</bcf:citekey>
-    <bcf:citekey order="7">omnidirectionalav</bcf:citekey>
-    <bcf:citekey order="8">multipleviewgeometry</bcf:citekey>
-    <bcf:citekey order="9">hartleysturm</bcf:citekey>
-    <bcf:citekey order="10">kanatani</bcf:citekey>
+    <bcf:citekey order="6">ceres-solver</bcf:citekey>
+    <bcf:citekey order="7">introducingceres</bcf:citekey>
+    <bcf:citekey order="8">dexteroushexrotor</bcf:citekey>
+    <bcf:citekey order="9">omnidirectionalav</bcf:citekey>
+    <bcf:citekey order="10">sift</bcf:citekey>
+    <bcf:citekey order="11">bay_surf</bcf:citekey>
+    <bcf:citekey order="12">fast</bcf:citekey>
+    <bcf:citekey order="13">fast2</bcf:citekey>
+    <bcf:citekey order="14">brief</bcf:citekey>
+    <bcf:citekey order="15">orb</bcf:citekey>
+    <bcf:citekey order="16">ptam</bcf:citekey>
+    <bcf:citekey order="17">engel2011msc</bcf:citekey>
+    <bcf:citekey order="18">engel2011msc</bcf:citekey>
+    <bcf:citekey order="19">orbslam</bcf:citekey>
+    <bcf:citekey order="20">orbslam2</bcf:citekey>
+    <bcf:citekey order="21">lsdslam</bcf:citekey>
+    <bcf:citekey order="22">dso</bcf:citekey>
+    <bcf:citekey order="23">engel2011msc</bcf:citekey>
+    <bcf:citekey order="24">jacquesleclere</bcf:citekey>
+    <bcf:citekey order="25">scalespace</bcf:citekey>
+    <bcf:citekey order="26">bay_surf</bcf:citekey>
+    <bcf:citekey order="27">sift2</bcf:citekey>
+    <bcf:citekey order="28">sift2</bcf:citekey>
+    <bcf:citekey order="29">sift</bcf:citekey>
+    <bcf:citekey order="30">pyramidallucaskanade</bcf:citekey>
+    <bcf:citekey order="31">jacquesleclere</bcf:citekey>
+    <bcf:citekey order="32">multipleviewgeometry</bcf:citekey>
+    <bcf:citekey order="33">hartleysturm</bcf:citekey>
+    <bcf:citekey order="34">kanatani</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" type="entry" label="nty">
   <bcf:sorting>

@@ -158,6 +158,7 @@ void ImageProcessor::publishProcessedImg()
     last_hybrid_detection = ros::Time::now();
   }
   else OF_mode = 1;
+
   bool test = false;
   ProcessedImage cam_img(*lastImageReceived, *lastPoseReceived, *prev_cam_img, OF_mode, test);
   if (test&&OF_mode!=-1) ROS_WARN("anomaly");

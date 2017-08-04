@@ -19,6 +19,41 @@
 
 \refsection{0}
   \sortlist{entry}{nty}
+    \entry{introducingceres}{article}{}
+      \name{labelname}{2}{}{%
+        {{hash=4e180088c2d397bb169dfb45679eba22}{Agarwal}{A\bibinitperiod}{Sameer}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=22b4bd8e91c829bb37417d2c8736820e}{Mierle}{M\bibinitperiod}{Keir}{K\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=4e180088c2d397bb169dfb45679eba22}{Agarwal}{A\bibinitperiod}{Sameer}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=22b4bd8e91c829bb37417d2c8736820e}{Mierle}{M\bibinitperiod}{Keir}{K\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{4363eb6d72ddde52ca971f815ffe6f0a}
+      \strng{fullhash}{4363eb6d72ddde52ca971f815ffe6f0a}
+      \field{sortinit}{A}
+      \field{labeltitle}{Introducing Ceres Solver - A Nonlinear Least Squares Solver}
+      \field{journaltitle}{Google Open Source Blog}
+      \field{title}{Introducing Ceres Solver - A Nonlinear Least Squares Solver}
+      \field{year}{2012}
+    \endentry
+    \entry{ceres-solver}{misc}{}
+      \true{morelabelname}
+      \name{labelname}{2}{}{%
+        {{hash=4e180088c2d397bb169dfb45679eba22}{Agarwal}{A\bibinitperiod}{Sameer}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=22b4bd8e91c829bb37417d2c8736820e}{Mierle}{M\bibinitperiod}{Keir}{K\bibinitperiod}{}{}{}{}}%
+      }
+      \true{moreauthor}
+      \name{author}{2}{}{%
+        {{hash=4e180088c2d397bb169dfb45679eba22}{Agarwal}{A\bibinitperiod}{Sameer}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=22b4bd8e91c829bb37417d2c8736820e}{Mierle}{M\bibinitperiod}{Keir}{K\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{5984370843cdeaf2a24b81194d4d3373}
+      \strng{fullhash}{c5424b8b4975eb6f788e7addc36dec66}
+      \field{sortinit}{A}
+      \field{labeltitle}{Ceres Solver}
+      \field{howpublished}{\url{http://ceres-solver.org}}
+      \field{title}{Ceres Solver}
+    \endentry
     \entry{agriculturaldrones}{article}{}
       \name{labelname}{1}{}{%
         {{hash=23346c878d4afcc84c10b87ab0098261}{Anderson}{A\bibinitperiod}{Chris}{C\bibinitperiod}{}{}{}{}}%
@@ -35,12 +70,44 @@
       \field{volume}{vol. 117 | no. 3}
       \field{year}{2014}
     \endentry
+    \entry{jacquesleclere}{thesis}{}
+      \name{labelname}{1}{}{%
+        {{hash=32606ce23c17413f6b45982f29a58909}{Arnaud\bibnamedelima Jacques}{A\bibinitperiod\bibinitdelim J\bibinitperiod}{Alexandre\bibnamedelima Leclere}{A\bibinitperiod\bibinitdelim L\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=32606ce23c17413f6b45982f29a58909}{Arnaud\bibnamedelima Jacques}{A\bibinitperiod\bibinitdelim J\bibinitperiod}{Alexandre\bibnamedelima Leclere}{A\bibinitperiod\bibinitdelim L\bibinitperiod}{}{}{}{}}%
+      }
+      \list{institution}{1}{%
+        {Université Catholique de Louvain}%
+      }
+      \strng{namehash}{32606ce23c17413f6b45982f29a58909}
+      \strng{fullhash}{32606ce23c17413f6b45982f29a58909}
+      \field{sortinit}{A}
+      \field{labeltitle}{Towards 3D Visual SLAM for an Autonomous Quadcopter Running ROS}
+      \field{title}{Towards 3D Visual SLAM for an Autonomous Quadcopter Running ROS}
+      \field{type}{mathesis}
+      \field{year}{2016}
+    \endentry
     \entry{batiravecdesdrones}{article}{}
       \field{sortinit}{B}
       \field{labeltitle}{Bâtir avec des drones ?}
       \field{journaltitle}{https://uclouvain.be/fr/sciencetoday/actualites/batir-avec-des-drones.html}
       \field{title}{Bâtir avec des drones ?}
       \field{year}{2016}
+    \endentry
+    \entry{pyramidallucaskanade}{article}{}
+      \name{labelname}{1}{}{%
+        {{hash=2084284d3010648735279863dd4ed659}{Bouguet}{B\bibinitperiod}{Jean-Yves}{J\bibinithyphendelim Y\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=2084284d3010648735279863dd4ed659}{Bouguet}{B\bibinitperiod}{Jean-Yves}{J\bibinithyphendelim Y\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{2084284d3010648735279863dd4ed659}
+      \strng{fullhash}{2084284d3010648735279863dd4ed659}
+      \field{sortinit}{B}
+      \field{labeltitle}{Pyramidal Implementation of the Lucas Kanade Feature Tracker}
+      \field{journaltitle}{Intel Corporation}
+      \field{title}{Pyramidal Implementation of the Lucas Kanade Feature Tracker}
     \endentry
     \entry{omnidirectionalav}{article}{}
       \name{labelname}{2}{}{%
@@ -59,6 +126,25 @@
       \field{title}{Design, Modeling and Control of an Omni-Directional Aerial Vehicle}
       \field{year}{2016}
     \endentry
+    \entry{brief}{inproceedings}{}
+      \name{labelname}{3}{}{%
+        {{hash=b9a113c9d085a4a71ae713401ef79cc1}{Calonder}{C\bibinitperiod}{Michael}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=7187819964d2d08695068a3f668e2ed1}{Lepetit}{L\bibinitperiod}{Vincent}{V\bibinitperiod}{}{}{}{}}%
+        {{hash=c5304d4d3b616054451f1a8db2a3974f}{Fua}{F\bibinitperiod}{Pascal}{P\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=b9a113c9d085a4a71ae713401ef79cc1}{Calonder}{C\bibinitperiod}{Michael}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=7187819964d2d08695068a3f668e2ed1}{Lepetit}{L\bibinitperiod}{Vincent}{V\bibinitperiod}{}{}{}{}}%
+        {{hash=c5304d4d3b616054451f1a8db2a3974f}{Fua}{F\bibinitperiod}{Pascal}{P\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{4ba7c83ff62cbb3b64e567832f1a366c}
+      \strng{fullhash}{4ba7c83ff62cbb3b64e567832f1a366c}
+      \field{sortinit}{C}
+      \field{labeltitle}{BRIEF: Binary robust independent elementary features}
+      \field{booktitle}{European Conference on Computer Vision}
+      \field{title}{BRIEF: Binary robust independent elementary features}
+      \field{year}{2010}
+    \endentry
     \entry{consumerdronesbythenumbers}{article}{}
       \name{labelname}{1}{}{%
         {{hash=5b5672799d7382cb7b4d41fbe62bdf7e}{Chavers}{C\bibinitperiod}{Marcus}{M\bibinitperiod}{}{}{}{}}%
@@ -73,6 +159,71 @@
       \field{journaltitle}{newsledge.com}
       \field{title}{Consumer Drones By the Numbers in 2017 and Beyond}
       \field{year}{2017}
+    \endentry
+    \entry{engel2011msc}{thesis}{}
+      \name{labelname}{1}{}{%
+        {{hash=f431c4c0840bfcc900d4659bb811366f}{Engel}{E\bibinitperiod}{J.}{J\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=f431c4c0840bfcc900d4659bb811366f}{Engel}{E\bibinitperiod}{J.}{J\bibinitperiod}{}{}{}{}}%
+      }
+      \list{institution}{1}{%
+        {Technical University Munich}%
+      }
+      \list{location}{1}{%
+        {Germany}%
+      }
+      \strng{namehash}{f431c4c0840bfcc900d4659bb811366f}
+      \strng{fullhash}{f431c4c0840bfcc900d4659bb811366f}
+      \field{sortinit}{E}
+      \field{labeltitle}{Autonomous Camera-Based Navigation of a Quadrocopter}
+      \field{month}{12}
+      \field{title}{Autonomous Camera-Based Navigation of a Quadrocopter}
+      \field{type}{mathesis}
+      \field{year}{2011}
+      \keyw{quadrocopter,ardrone}
+    \endentry
+    \entry{dso}{inproceedings}{}
+      \name{labelname}{3}{}{%
+        {{hash=f431c4c0840bfcc900d4659bb811366f}{Engel}{E\bibinitperiod}{J.}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=953175ec208fbcdae982ed7b65988a52}{Koltun}{K\bibinitperiod}{V.}{V\bibinitperiod}{}{}{}{}}%
+        {{hash=d2e7a9453b9aec6fc6555a4551e262f5}{Cremers}{C\bibinitperiod}{D.}{D\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=f431c4c0840bfcc900d4659bb811366f}{Engel}{E\bibinitperiod}{J.}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=953175ec208fbcdae982ed7b65988a52}{Koltun}{K\bibinitperiod}{V.}{V\bibinitperiod}{}{}{}{}}%
+        {{hash=d2e7a9453b9aec6fc6555a4551e262f5}{Cremers}{C\bibinitperiod}{D.}{D\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{dd52b0082d3a55fbf7db3d7fe05e39cc}
+      \strng{fullhash}{dd52b0082d3a55fbf7db3d7fe05e39cc}
+      \field{sortinit}{E}
+      \field{labeltitle}{Direct Sparse Odometry}
+      \field{booktitle}{arXiv:1607.02565}
+      \field{month}{07}
+      \field{title}{Direct Sparse Odometry}
+      \field{year}{2016}
+      \keyw{mono-ds,dso}
+    \endentry
+    \entry{lsdslam}{inproceedings}{}
+      \name{labelname}{3}{}{%
+        {{hash=f431c4c0840bfcc900d4659bb811366f}{Engel}{E\bibinitperiod}{J.}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=0b31a189e1967b51c2a35d4b63ae2ef0}{Schöps}{S\bibinitperiod}{T.}{T\bibinitperiod}{}{}{}{}}%
+        {{hash=d2e7a9453b9aec6fc6555a4551e262f5}{Cremers}{C\bibinitperiod}{D.}{D\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=f431c4c0840bfcc900d4659bb811366f}{Engel}{E\bibinitperiod}{J.}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=0b31a189e1967b51c2a35d4b63ae2ef0}{Schöps}{S\bibinitperiod}{T.}{T\bibinitperiod}{}{}{}{}}%
+        {{hash=d2e7a9453b9aec6fc6555a4551e262f5}{Cremers}{C\bibinitperiod}{D.}{D\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{40d173e36e4896e7471cedafec7a708b}
+      \strng{fullhash}{40d173e36e4896e7471cedafec7a708b}
+      \field{sortinit}{E}
+      \field{labeltitle}{{LSD-SLAM}: Large-Scale Direct Monocular {SLAM}}
+      \field{booktitle}{European Conference on Computer Vision (ECCV)}
+      \field{month}{09}
+      \field{title}{{LSD-SLAM}: Large-Scale Direct Monocular {SLAM}}
+      \field{year}{2014}
+      \keyw{rgb-d,monocular,slam,semidense,lsdslam}
     \endentry
     \entry{hartleysturm}{article}{}
       \name{labelname}{2}{}{%
@@ -91,6 +242,111 @@
       \field{title}{Triangulation}
       \field{volume}{Vol. 68, No. 2}
       \field{year}{1997}
+    \endentry
+    \entry{ptam}{inproceedings}{}
+      \name{labelname}{2}{}{%
+        {{hash=248eafdb112ac245226abb96a4f482dc}{Klein}{K\bibinitperiod}{Georg}{G\bibinitperiod}{}{}{}{}}%
+        {{hash=e41252b683e5c16ba97e25f372694a43}{Murray}{M\bibinitperiod}{David}{D\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=248eafdb112ac245226abb96a4f482dc}{Klein}{K\bibinitperiod}{Georg}{G\bibinitperiod}{}{}{}{}}%
+        {{hash=e41252b683e5c16ba97e25f372694a43}{Murray}{M\bibinitperiod}{David}{D\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {Nara, Japan}%
+      }
+      \strng{namehash}{87636f88cf67e95591e71e8efc85fb5d}
+      \strng{fullhash}{87636f88cf67e95591e71e8efc85fb5d}
+      \field{sortinit}{K}
+      \field{labeltitle}{Parallel Tracking and Mapping for Small {AR} Workspaces}
+      \field{booktitle}{Proc. Sixth {IEEE} and {ACM} International Symposium on Mixed and Augmented Reality {(ISMAR'07)}}
+      \field{month}{11}
+      \field{title}{Parallel Tracking and Mapping for Small {AR} Workspaces}
+      \field{year}{2007}
+    \endentry
+    \entry{scalespace}{article}{}
+      \name{labelname}{1}{}{%
+        {{hash=0c8382c6d88ddaed3b9ec13784ace09d}{Lindeberg}{L\bibinitperiod}{Tony}{T\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=0c8382c6d88ddaed3b9ec13784ace09d}{Lindeberg}{L\bibinitperiod}{Tony}{T\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{0c8382c6d88ddaed3b9ec13784ace09d}
+      \strng{fullhash}{0c8382c6d88ddaed3b9ec13784ace09d}
+      \field{sortinit}{L}
+      \field{labeltitle}{Scale-space theory: A basic tool for analysing structures at different scales}
+      \field{journaltitle}{Journal of Applied Statistics}
+      \field{title}{Scale-space theory: A basic tool for analysing structures at different scales}
+      \field{volume}{21}
+      \field{year}{1994}
+      \field{pages}{224\bibrangedash 270}
+    \endentry
+    \entry{sift2}{misc}{}
+      \name{labelname}{1}{}{%
+        {{hash=ecc108666da64b7128e221a0e5aaded6}{Lowe}{L\bibinitperiod}{David\bibnamedelima G.}{D\bibinitperiod\bibinitdelim G\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=ecc108666da64b7128e221a0e5aaded6}{Lowe}{L\bibinitperiod}{David\bibnamedelima G.}{D\bibinitperiod\bibinitdelim G\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{ecc108666da64b7128e221a0e5aaded6}
+      \strng{fullhash}{ecc108666da64b7128e221a0e5aaded6}
+      \field{sortinit}{L}
+      \field{labeltitle}{Distinctive Image Features from Scale-Invariant Keypoints}
+      \field{title}{Distinctive Image Features from Scale-Invariant Keypoints}
+      \field{year}{2004}
+    \endentry
+    \entry{sift}{inproceedings}{}
+      \name{labelname}{1}{}{%
+        {{hash=ecc108666da64b7128e221a0e5aaded6}{Lowe}{L\bibinitperiod}{David\bibnamedelima G.}{D\bibinitperiod\bibinitdelim G\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=ecc108666da64b7128e221a0e5aaded6}{Lowe}{L\bibinitperiod}{David\bibnamedelima G.}{D\bibinitperiod\bibinitdelim G\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{ecc108666da64b7128e221a0e5aaded6}
+      \strng{fullhash}{ecc108666da64b7128e221a0e5aaded6}
+      \field{sortinit}{L}
+      \field{labeltitle}{Object recognition from local scale-invariant features}
+      \field{booktitle}{Proceedings of the International Conference on Computer Vision}
+      \field{title}{Object recognition from local scale-invariant features}
+      \field{year}{1999}
+    \endentry
+    \entry{orbslam}{article}{}
+      \name{labelname}{3}{}{%
+        {{hash=e9100e469960dd7fcdaeb3605f8acb4a}{Mur{-}Artal}{M\bibinitperiod}{Raul}{R\bibinitperiod}{}{}{}{}}%
+        {{hash=b8c6f387d6ed9a4f364c8d512f8349b2}{Montiel}{M\bibinitperiod}{J.\bibnamedelimi M.\bibnamedelimi M.}{J\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim M\bibinitperiod}{}{}{}{}}%
+        {{hash=dc52fed03299bfee885aa06d2345ceba}{Tardós}{T\bibinitperiod}{Juan\bibnamedelima D.}{J\bibinitperiod\bibinitdelim D\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=e9100e469960dd7fcdaeb3605f8acb4a}{Mur{-}Artal}{M\bibinitperiod}{Raul}{R\bibinitperiod}{}{}{}{}}%
+        {{hash=b8c6f387d6ed9a4f364c8d512f8349b2}{Montiel}{M\bibinitperiod}{J.\bibnamedelimi M.\bibnamedelimi M.}{J\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim M\bibinitperiod}{}{}{}{}}%
+        {{hash=dc52fed03299bfee885aa06d2345ceba}{Tardós}{T\bibinitperiod}{Juan\bibnamedelima D.}{J\bibinitperiod\bibinitdelim D\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{2b4a09a076d2a2487d5ac00b5fe687cd}
+      \strng{fullhash}{2b4a09a076d2a2487d5ac00b5fe687cd}
+      \field{sortinit}{M}
+      \field{labeltitle}{{ORB-SLAM:} a Versatile and Accurate Monocular {SLAM} System}
+      \field{journaltitle}{CoRR}
+      \field{title}{{ORB-SLAM:} a Versatile and Accurate Monocular {SLAM} System}
+      \field{volume}{abs/1502.00956}
+      \field{year}{2015}
+    \endentry
+    \entry{orbslam2}{article}{}
+      \name{labelname}{2}{}{%
+        {{hash=e9100e469960dd7fcdaeb3605f8acb4a}{Mur{-}Artal}{M\bibinitperiod}{Raul}{R\bibinitperiod}{}{}{}{}}%
+        {{hash=dc52fed03299bfee885aa06d2345ceba}{Tardós}{T\bibinitperiod}{Juan\bibnamedelima D.}{J\bibinitperiod\bibinitdelim D\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=e9100e469960dd7fcdaeb3605f8acb4a}{Mur{-}Artal}{M\bibinitperiod}{Raul}{R\bibinitperiod}{}{}{}{}}%
+        {{hash=dc52fed03299bfee885aa06d2345ceba}{Tardós}{T\bibinitperiod}{Juan\bibnamedelima D.}{J\bibinitperiod\bibinitdelim D\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{cb3a0fed7ffd9712723a1db519a97923}
+      \strng{fullhash}{cb3a0fed7ffd9712723a1db519a97923}
+      \field{sortinit}{M}
+      \field{labeltitle}{{ORB-SLAM2:} an Open-Source {SLAM} System for Monocular, Stereo and {RGB-D} Cameras}
+      \field{journaltitle}{CoRR}
+      \field{title}{{ORB-SLAM2:} an Open-Source {SLAM} System for Monocular, Stereo and {RGB-D} Cameras}
+      \field{volume}{abs/1610.06475}
+      \field{year}{2016}
     \endentry
     \entry{anthology}{report}{}
       \name{labelname}{1}{}{%
@@ -126,6 +382,79 @@
       \field{labeltitle}{Multiple View Geometry in Computer Vision}
       \field{title}{Multiple View Geometry in Computer Vision}
       \field{year}{2003}
+    \endentry
+    \entry{fast}{inproceedings}{}
+      \name{labelname}{2}{}{%
+        {{hash=712f75fa3873cef1c7e0971ca95a0237}{Rosten}{R\bibinitperiod}{Edward}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=7935612af661bcaae62a430e70094064}{Drummond}{D\bibinitperiod}{Tom}{T\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=712f75fa3873cef1c7e0971ca95a0237}{Rosten}{R\bibinitperiod}{Edward}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=7935612af661bcaae62a430e70094064}{Drummond}{D\bibinitperiod}{Tom}{T\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{c8dcfd13eb93dd0078708948c42b5a8a}
+      \strng{fullhash}{c8dcfd13eb93dd0078708948c42b5a8a}
+      \field{sortinit}{R}
+      \field{labeltitle}{Fusing points and lines for high performance tracking.}
+      \field{booktitle}{IEEE International Conference on Computer Vision}
+      \field{month}{10}
+      \field{title}{Fusing points and lines for high performance tracking.}
+      \field{volume}{2}
+      \field{year}{2005}
+      \field{pages}{1508\bibrangedash 1511}
+      \verb{doi}
+      \verb 10.1109/ICCV.2005.104
+      \endverb
+      \verb{url}
+      \verb http://www.edwardrosten.com/work/rosten_2005_tracking.pdf
+      \endverb
+    \endentry
+    \entry{fast2}{inproceedings}{}
+      \name{labelname}{2}{}{%
+        {{hash=712f75fa3873cef1c7e0971ca95a0237}{Rosten}{R\bibinitperiod}{Edward}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=7935612af661bcaae62a430e70094064}{Drummond}{D\bibinitperiod}{Tom}{T\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=712f75fa3873cef1c7e0971ca95a0237}{Rosten}{R\bibinitperiod}{Edward}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=7935612af661bcaae62a430e70094064}{Drummond}{D\bibinitperiod}{Tom}{T\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{c8dcfd13eb93dd0078708948c42b5a8a}
+      \strng{fullhash}{c8dcfd13eb93dd0078708948c42b5a8a}
+      \field{sortinit}{R}
+      \field{labeltitle}{Machine learning for high-speed corner detection}
+      \field{booktitle}{European Conference on Computer Vision}
+      \field{month}{05}
+      \field{title}{Machine learning for high-speed corner detection}
+      \field{volume}{1}
+      \field{year}{2006}
+      \field{pages}{430\bibrangedash 443}
+      \verb{doi}
+      \verb 10.1007/11744023_34
+      \endverb
+      \verb{url}
+      \verb http://www.edwardrosten.com/work/rosten_2006_machine.pdf
+      \endverb
+    \endentry
+    \entry{orb}{inproceedings}{}
+      \name{labelname}{4}{}{%
+        {{hash=0bb47e98134bf40d7a1305159e411dee}{Rublee}{R\bibinitperiod}{Ethan}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=2f19094c6a3c4b8289b0e2545d993850}{Rabaud}{R\bibinitperiod}{Vincent}{V\bibinitperiod}{}{}{}{}}%
+        {{hash=7aa08b4f01b4f639731fdb416173ccd1}{Konolige}{K\bibinitperiod}{Kurt}{K\bibinitperiod}{}{}{}{}}%
+        {{hash=a780b2fbd99e4f7ce78d33324e39d4c2}{Bradski}{B\bibinitperiod}{Gary}{G\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{4}{}{%
+        {{hash=0bb47e98134bf40d7a1305159e411dee}{Rublee}{R\bibinitperiod}{Ethan}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=2f19094c6a3c4b8289b0e2545d993850}{Rabaud}{R\bibinitperiod}{Vincent}{V\bibinitperiod}{}{}{}{}}%
+        {{hash=7aa08b4f01b4f639731fdb416173ccd1}{Konolige}{K\bibinitperiod}{Kurt}{K\bibinitperiod}{}{}{}{}}%
+        {{hash=a780b2fbd99e4f7ce78d33324e39d4c2}{Bradski}{B\bibinitperiod}{Gary}{G\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{ec89b2297475b175019a601cfe2229a6}
+      \strng{fullhash}{50ca2b6817769790341c2b722e0b2ab3}
+      \field{sortinit}{R}
+      \field{labeltitle}{ORB: an efficient alternative to SIFT or SURF}
+      \field{booktitle}{In ICCV}
+      \field{title}{ORB: an efficient alternative to SIFT or SURF}
+      \field{year}{2011}
     \endentry
     \entry{dronesww1}{article}{}
       \name{labelname}{1}{}{%
