@@ -72,9 +72,19 @@ def treat_data(file_in,do_plot):
         axy.set_title('Y')
         axz.set_title('Z')
         axr.set_title('rotZ')
-    (robust,mm,batol,rpt2,rpt3,huber,rmvcoeff,rmvcst) = get_params_from_fn(file_in)
+    #(robust,mm,batol,rpt2,rpt3,huber,rmvcoeff,rmvcst) = get_params_from_fn(file_in)
     #return (avgerrD,avgerrR,batime)
-    return (robust,mm,batol,rpt2,rpt3,huber,rmvcoeff,rmvcst,avgerrD,avgerrR,batime,pts_map[-1])
+    robust = 0
+    mm = 0
+    batol = 0
+    rpt2 = 0
+    rpt3 = 0
+    huber = 0
+    rmvcoeff = 0
+    rmvcst = 0
+
+    #return (robust,mm,batol,rpt2,rpt3,huber,rmvcoeff,rmvcst,avgerrD,avgerrR,batime,pts_map[-1])
+    return (avgerrD,avgerrR,batime)
 
 
 def get_params_from_fn(file_in):
@@ -93,29 +103,10 @@ def get_params_from_fn(file_in):
 
 
 def main():
-    fn = "result_benchmark_noBA_false_robust_true.bag"
-    avgerrD,avgerrR,batime = treat_data('/home/bor/bagfiles/otherpcresults/' + fn,True)
-    print(fn)
-    print(avgerrD)
-    print(avgerrR)
-    print(batime)
-
-    fn = "result_benchmark_noBA_true_robust_true.bag"
-    avgerrD,avgerrR,batime = treat_data('/home/bor/bagfiles/otherpcresults/' + fn,True)
-    print(fn)
-    print(avgerrD)
-    print(avgerrR)
-    print(batime)
-
-    fn = "result_benchmark_noBA_false_robust_false.bag"
-    avgerrD,avgerrR,batime = treat_data('/home/bor/bagfiles/otherpcresults/' + fn,True)
-    print(fn)
-    print(avgerrD)
-    print(avgerrR)
-    print(batime)
-
-    fn = "result_benchmark_noBA_true_robust_false.bag"
-    avgerrD,avgerrR,batime = treat_data('/home/bor/bagfiles/otherpcresults/' + fn,True)
+    fn = "vanillaBA_norobust.bag"
+    dirname = '/home/bor/bagfiles/otherpcresults/'
+    dirname = '/home/bor/bagfiles/aout/bag/'
+    avgerrD,avgerrR,batime = treat_data(dirname + fn,True)
     print(fn)
     print(avgerrD)
     print(avgerrR)

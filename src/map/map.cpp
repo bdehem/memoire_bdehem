@@ -87,7 +87,7 @@ void Map::reset()
   rvec = cv::Mat::zeros(3, 1, CV_64FC1);
 }
 
-bool Map::isInitialized(){  return (keyframes.size() > 4);}
+bool Map::isInitialized(){  return (keyframes.size() > 3);}
 
 int Map::addPoint(cv::Point3d& coordinates, cv::Mat& descriptor)
 {
@@ -506,7 +506,7 @@ bool customLess(std::vector< int > a, std::vector< int > b)
 bool Map::keyframeNeeded(bool manual_pose_received, int n_inliers, double inlier_coverage, boris_drone::Pose3D& current_pose)
 {
   ROS_INFO_THROTTLE(2,"inlier coverage = % 2.0f%%",inlier_coverage*100);
-  if (make_keyframe)
+  if (make_keyframe) //This is set by strategy node, or send by user from a terminal
   {
     make_keyframe = false;
     return true;
