@@ -5,7 +5,7 @@
 %\usepackage{fancyhdr}
 %\pagestyle{fancy}
 \usepackage[backend=biber]{biblatex}
-\usepackage[acronym,nomain,nonumberlist]{glossaries}
+%\usepackage[acronym,nomain,nonumberlist]{glossaries}
 \usepackage{float}
 \usepackage{textcomp,gensymb}
 \usepackage{csquotes}
@@ -15,6 +15,12 @@
 \usepackage{multirow}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{amsmath}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{tabulary}
+
 \usepackage{pgfplotstable} % Generates table from .csv
 
 
@@ -47,7 +53,6 @@
 
 
 % Generate the glossary
-\makeglossaries
 \begin{document}
 %Term definitions
 %\newacronym{uav}{UAV}{Unmanned Aerial Vehicle}
@@ -67,7 +72,6 @@
 
 \tableofcontents
 
-\printglossaries
 \newpage
 \pagenumbering{arabic}
 \chapter{Introduction} %11
@@ -79,14 +83,14 @@
 \chapter{Computer Vision} %5
 \input{chapters/03_computervision}
 
-%\chapter{Localization} %5
-%\input{chapters/04_localisation}
+\chapter{Localization} %5
+\input{chapters/04_localisation}
 
 \chapter{Mapping} %10
 \input{chapters/05_mapping}
 
-%\chapter{Simultaneous Localization and Mapping} %5
-%\input{chapters/06_slam}
+\chapter{Results} %5
+\input{chapters/06_results}
 
 %\chapter{Conclusion} %5
 %\input{chapters/07_conclusion}

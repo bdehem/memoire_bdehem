@@ -1,1 +1,32 @@
 %%Localization (chpt4)
+The first of the two main ingredients of SLAM is localization. The task of localization is the estimation of the drone's position given a map and sensor information. In our case, the map is a map of visual features, and the main sensor used will be the camera. This part was already carried out by last year's groups, and it is already made to work in the three dimensional case. For completeness, we quickly repeat in this chapter how it works.\\
+
+\section{Perspective-$n$-Point}
+To localize the drone using visual information and a map, we need to solve the perspective-$n$-point (PnP) problem. PnP is the problem of estimating the six degrees of freedom 3D pose of a camera, given $n$ observations of 3D points whose locations are known. We use two main methods to solve the PnP problem: P3P and EPnP.\\
+
+\subsection{P3P}
+The smallest number of point correspondences required to solve the PnP problem is 3, in which case it is called P3P. P3P can be solved with a method based on the cosine law, but it can have multiple solutions. A fourth point correspondence can be used to solve this uncertainty. Given three known points $A$, $B$ and $C$, and the center of projection of the camera $P$, define the following distances: $|A B| = c'$, $|B C| = a'$, $|C A| = b'$, $|P A| = X$, $|P B| = Y$, $|P C| = Z$, and the following angles: $\widehat{APB} = \alpha$, $\widehat{BPC} = \beta$, $\widehat{CPA} = \gamma$. We can then use the cosine law on each of the triangles that has $P$ and two of the points $A$, $B$, $C$ as vertices to obtain the following system of equations:
+\begin{align}
+  X^2 + Y^2 - XY\cdot2\cos(\alpha) - c'^2 &= 0 \\
+  Y^2 + Z^2 - YZ\cdot2\cos(\beta)  - a'^2 &= 0 \\
+  Z^2 + X^2 - ZX\cdot2\cos(\gamma) - b'^2 &= 0
+\end{align}
+The only unknowns is these equations are $X$, $Y$ and $Z$, as the distances between points $A$, $B$, $C$ can be deduced from their known position, and the angles can be deduced from the observations of these points on the image. For the resolution of these equations, the reader is referred to the paper that established the P3P method \cite{p3p}. As they show, it is possible to eliminate one of these equations and one of the variables to end up with two quadratic equations and two unknowns. This means that is there exists a finite number of solutions, that number has to be less than or equal to 4. To eliminate the bad solutions, we can use a fourth point correspondence. Once $X$, $Y$ and $Z$ are determined, the position and orientation of point $P$ be can be deduced.
+
+\subsection{EPnP}
+EPnP (Efficient PnP) \cite{epnp} is a method to solve the more general PnP problem. It uses $n \geq 4$ point correspondences to estimate the position of the camera. The central idea of this method is to express the $n$ points as a weighted sum of four virtual points. Because it uses more points, it is be more stable and resistant to noise than P3P.
+
+\subsection{Random Sample Consensus}
+Our data is subject to noise and measurement errors, which can negatively impact our solution. Do deal with this problem, we use Random Sample Consensus (RANSAC). RANSAC is a method to estimate parameters using data that contains outliers. The general idea is to iteratively estimate the parameters using different random samples, and to use a voting scheme to select the best parameters. The algorithm works in two steps:
+\begin{enumerate}
+  \item A random sample is drawn from the data with the smallest number of examples to estimate model parameters. From this random sample, we estimate the parameters.
+  \item We test all the data against the model estimated in step 1. All the data that whose loss according to some predefined loss function falls below a certain threshold when fitted to the model is considered part of the consensus set.
+\end{enumerate}
+Both above steps are repeated, and the model with the largest consensus set is selected. All the data that are part of this consensus set are considered to be inliers, and the rest of the data are considered outliers. A final model can then be computed using all inliers \cite{ransac}.\\
+Applying this scheme to the PnP problem, we use the P3P method to create a model from each of the random samples, and then use the EPnP method on the inliers. This way we determine what points are outliers with the fastest method (P3P), and then use EPnP so that all inliers are used for the final estimation.
+
+\section{Visual Odometry from optical flow}
+Using the output of the bottom-facing camera, it is possible to deduce the ground speed of the drone. Because monocular camera measurements always give information only up to a scale factor, this only gives the ratio between altitude and speed. However, using the ultrasound sensor, that also points downwards, we know the altitude of the drone and can deduce its absolute ground speed. This visual odometry is already implemented by the constructor of the drone, as it is used to control the velocity of the drone during normal (remote-controlled) use. Unfortunately, the code that computes this velocity from the optical flow is a black box inside the closed-source firmware, so we only have access to its output. Those speed estimations can then be integrated to obtain an estimation of the displacement.\\
+
+
+\section{Pose Fusion}\label{sec:posefusion}

@@ -225,6 +225,81 @@
       \field{year}{2014}
       \keyw{rgb-d,monocular,slam,semidense,lsdslam}
     \endentry
+    \entry{ransac}{incollection}{}
+      \name{labelname}{2}{}{%
+        {{hash=9cb3164d714c21e9fedc873c2e09a05e}{Fischler}{F\bibinitperiod}{Martin\bibnamedelima A.}{M\bibinitperiod\bibinitdelim A\bibinitperiod}{}{}{}{}}%
+        {{hash=951f7d383d3ea7b7019a817032735f8b}{Bolles}{B\bibinitperiod}{Robert\bibnamedelima C.}{R\bibinitperiod\bibinitdelim C\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=9cb3164d714c21e9fedc873c2e09a05e}{Fischler}{F\bibinitperiod}{Martin\bibnamedelima A.}{M\bibinitperiod\bibinitdelim A\bibinitperiod}{}{}{}{}}%
+        {{hash=951f7d383d3ea7b7019a817032735f8b}{Bolles}{B\bibinitperiod}{Robert\bibnamedelima C.}{R\bibinitperiod\bibinitdelim C\bibinitperiod}{}{}{}{}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=9cb3164d714c21e9fedc873c2e09a05e}{Fischler}{F\bibinitperiod}{Martin\bibnamedelima A.}{M\bibinitperiod\bibinitdelim A\bibinitperiod}{}{}{}{}}%
+        {{hash=ba0282455c7499017f219075345efb58}{Firschein}{F\bibinitperiod}{Oscar}{O\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {San Francisco, CA, USA}%
+      }
+      \list{publisher}{1}{%
+        {Morgan Kaufmann Publishers Inc.}%
+      }
+      \strng{namehash}{fc26f22afcddeded198fab29d715e89a}
+      \strng{fullhash}{fc26f22afcddeded198fab29d715e89a}
+      \field{sortinit}{F}
+      \field{labeltitle}{Random Sample Consensus: A Paradigm for Model Fitting with Applications to Image Analysis and Automated Cartography}
+      \field{booktitle}{Readings in Computer Vision: Issues, Problems, Principles, and Paradigms}
+      \field{isbn}{0-934613-33-8}
+      \field{title}{Random Sample Consensus: A Paradigm for Model Fitting with Applications to Image Analysis and Automated Cartography}
+      \field{year}{1987}
+      \field{pages}{726\bibrangedash 740}
+    \endentry
+    \entry{p3p}{article}{}
+      \name{labelname}{4}{}{%
+        {{hash=2ea0c2ae93bd601b06e2bcb85873c61b}{Gao}{G\bibinitperiod}{Xiao-Shan}{X\bibinithyphendelim S\bibinitperiod}{}{}{}{}}%
+        {{hash=325360a02b8300137031eeb7169a2355}{Hou}{H\bibinitperiod}{Xiao-Rong}{X\bibinithyphendelim R\bibinitperiod}{}{}{}{}}%
+        {{hash=ead7a06f0e98297582c099680df186cc}{Tang}{T\bibinitperiod}{Jianliang}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=274cc4e181bedc1dcda4503c31caeb15}{Cheng}{C\bibinitperiod}{Hang-Fei}{H\bibinithyphendelim F\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{4}{}{%
+        {{hash=2ea0c2ae93bd601b06e2bcb85873c61b}{Gao}{G\bibinitperiod}{Xiao-Shan}{X\bibinithyphendelim S\bibinitperiod}{}{}{}{}}%
+        {{hash=325360a02b8300137031eeb7169a2355}{Hou}{H\bibinitperiod}{Xiao-Rong}{X\bibinithyphendelim R\bibinitperiod}{}{}{}{}}%
+        {{hash=ead7a06f0e98297582c099680df186cc}{Tang}{T\bibinitperiod}{Jianliang}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=274cc4e181bedc1dcda4503c31caeb15}{Cheng}{C\bibinitperiod}{Hang-Fei}{H\bibinithyphendelim F\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{eb8f6fcfe2d615857a295d9eaa38dceb}
+      \strng{fullhash}{eb54fc2e4db4f28c53254259d76e781c}
+      \field{sortinit}{G}
+      \field{labeltitle}{Complete Solution Classification for the Perspective-Three-Point Problem}
+      \field{issn}{0162-8828}
+      \field{journaltitle}{IEEE Trans. Pattern Anal. Mach. Intell.}
+      \field{month}{08}
+      \field{number}{8}
+      \field{title}{Complete Solution Classification for the Perspective-Three-Point Problem}
+      \field{volume}{25}
+      \field{year}{2003}
+      \field{pages}{930\bibrangedash 943}
+    \endentry
+    \entry{surf}{article}{}
+      \name{labelname}{2}{}{%
+        {{hash=4a20b9e0fbf224169753491fd5fd80e8}{H.\bibnamedelimi Bay}{H\bibinitperiod\bibinitdelim B\bibinitperiod}{T.\bibnamedelimi Tuytelaars}{T\bibinitperiod\bibinitdelim T\bibinitperiod}{}{}{A.\bibnamedelimi Ess}{A\bibinitperiod\bibinitdelim E\bibinitperiod}}%
+        {{hash=26815aa48c753194f0f2f368a61242fb}{Gool}{G\bibinitperiod}{L.\bibnamedelimi Van}{L\bibinitperiod\bibinitdelim V\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=4a20b9e0fbf224169753491fd5fd80e8}{H.\bibnamedelimi Bay}{H\bibinitperiod\bibinitdelim B\bibinitperiod}{T.\bibnamedelimi Tuytelaars}{T\bibinitperiod\bibinitdelim T\bibinitperiod}{}{}{A.\bibnamedelimi Ess}{A\bibinitperiod\bibinitdelim E\bibinitperiod}}%
+        {{hash=26815aa48c753194f0f2f368a61242fb}{Gool}{G\bibinitperiod}{L.\bibnamedelimi Van}{L\bibinitperiod\bibinitdelim V\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{1f108535a79d2409c89ff6d55b5f9d46}
+      \strng{fullhash}{1f108535a79d2409c89ff6d55b5f9d46}
+      \field{sortinit}{H}
+      \field{labeltitle}{SURF Speeded Up Robust Features}
+      \field{journaltitle}{Computer Vision and Image Understanding (CVIU)}
+      \field{number}{3}
+      \field{title}{SURF Speeded Up Robust Features}
+      \field{volume}{110}
+      \field{year}{2008}
+      \field{pages}{346\bibrangedash 359}
+    \endentry
     \entry{hartleysturm}{article}{}
       \name{labelname}{2}{}{%
         {{hash=63c8a3ab640f9b0ad6594125b36f4e20}{Hartley}{H\bibinitperiod}{Richard\bibnamedelima I.}{R\bibinitperiod\bibinitdelim I\bibinitperiod}{}{}{}{}}%
@@ -242,6 +317,47 @@
       \field{title}{Triangulation}
       \field{volume}{Vol. 68, No. 2}
       \field{year}{1997}
+    \endentry
+    \entry{dsovid}{misc}{}
+      \name{labelname}{1}{}{%
+        {{hash=fe044970bdf03273037fb954edbf06a6}{Jakob\bibnamedelima Engel}{J\bibinitperiod\bibinitdelim E\bibinitperiod}{Daniel\bibnamedelima Cremers}{D\bibinitperiod\bibinitdelim C\bibinitperiod}{}{}{Vladlen\bibnamedelima Koltun}{V\bibinitperiod\bibinitdelim K\bibinitperiod}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=fe044970bdf03273037fb954edbf06a6}{Jakob\bibnamedelima Engel}{J\bibinitperiod\bibinitdelim E\bibinitperiod}{Daniel\bibnamedelima Cremers}{D\bibinitperiod\bibinitdelim C\bibinitperiod}{}{}{Vladlen\bibnamedelima Koltun}{V\bibinitperiod\bibinitdelim K\bibinitperiod}}%
+      }
+      \strng{namehash}{fe044970bdf03273037fb954edbf06a6}
+      \strng{fullhash}{fe044970bdf03273037fb954edbf06a6}
+      \field{sortinit}{J}
+      \field{labeltitle}{DSO: Direct Sparse Odometry}
+      \field{howpublished}{Youtube video}
+      \field{month}{07}
+      \field{title}{DSO: Direct Sparse Odometry}
+      \field{year}{2016}
+      \verb{url}
+      \verb https://www.youtube.com/watch?v=C6-xwSOOdqQ
+      \endverb
+    \endentry
+    \entry{kanatani}{inbook}{}
+      \name{labelname}{3}{}{%
+        {{hash=60be1dfbd2d307057e26bc52405cd171}{Kanatani}{K\bibinitperiod}{Kenichi}{K\bibinitperiod}{}{}{}{}}%
+        {{hash=79f1eb6e91f40deddaf2bade56c1c2da}{Sugaya}{S\bibinitperiod}{Yasuyuki}{Y\bibinitperiod}{}{}{}{}}%
+        {{hash=bab82c257c90727c6d2628c446d6fb0e}{Niitsuma}{N\bibinitperiod}{Hirotaka}{H\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=60be1dfbd2d307057e26bc52405cd171}{Kanatani}{K\bibinitperiod}{Kenichi}{K\bibinitperiod}{}{}{}{}}%
+        {{hash=79f1eb6e91f40deddaf2bade56c1c2da}{Sugaya}{S\bibinitperiod}{Yasuyuki}{Y\bibinitperiod}{}{}{}{}}%
+        {{hash=bab82c257c90727c6d2628c446d6fb0e}{Niitsuma}{N\bibinitperiod}{Hirotaka}{H\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {British Machine Vision Association, BMVA}%
+      }
+      \strng{namehash}{2162821270f002505a2bace2b869060a}
+      \strng{fullhash}{2162821270f002505a2bace2b869060a}
+      \field{sortinit}{K}
+      \field{labeltitle}{Triangulation from Two Views Revisited: Hartley-Sturm vs. Optimal Correction}
+      \field{booktitle}{BMVC 2008 - Proceedings of the British Machine Vision Conference 2008}
+      \field{title}{Triangulation from Two Views Revisited: Hartley-Sturm vs. Optimal Correction}
+      \field{year}{2008}
     \endentry
     \entry{ptam}{inproceedings}{}
       \name{labelname}{2}{}{%
@@ -263,6 +379,27 @@
       \field{month}{11}
       \field{title}{Parallel Tracking and Mapping for Small {AR} Workspaces}
       \field{year}{2007}
+    \endentry
+    \entry{epnp}{article}{}
+      \name{labelname}{3}{}{%
+        {{hash=af32838a3f3756fb1c6776d5c7acb7da}{Lepetit}{L\bibinitperiod}{V.}{V\bibinitperiod}{}{}{}{}}%
+        {{hash=5a4b120d696b846011cb7b85f58a33b1}{Moreno-Noguer}{M\bibinithyphendelim N\bibinitperiod}{F.}{F\bibinitperiod}{}{}{}{}}%
+        {{hash=69e7314e1c307d07c454272694e02eff}{Fua}{F\bibinitperiod}{P.}{P\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=af32838a3f3756fb1c6776d5c7acb7da}{Lepetit}{L\bibinitperiod}{V.}{V\bibinitperiod}{}{}{}{}}%
+        {{hash=5a4b120d696b846011cb7b85f58a33b1}{Moreno-Noguer}{M\bibinithyphendelim N\bibinitperiod}{F.}{F\bibinitperiod}{}{}{}{}}%
+        {{hash=69e7314e1c307d07c454272694e02eff}{Fua}{F\bibinitperiod}{P.}{P\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{ebbc056fd6380935ce9d26ffcfe85539}
+      \strng{fullhash}{ebbc056fd6380935ce9d26ffcfe85539}
+      \field{sortinit}{L}
+      \field{labeltitle}{EPnP: An Accurate O(n) Solution to the PnP Problem}
+      \field{journaltitle}{International Journal of Computer Vision}
+      \field{title}{EPnP: An Accurate O(n) Solution to the PnP Problem}
+      \field{volume}{81}
+      \field{year}{2008}
+      \field{pages}{155\bibrangedash 166}
     \endentry
     \entry{scalespace}{article}{}
       \name{labelname}{1}{}{%
@@ -486,7 +623,6 @@
       \field{title}{Dexterous Hexrotor Research}
     \endentry
   \endsortlist
-  \missing{kanatani}
 \endrefsection
 \endinput
 

@@ -1,9 +1,79 @@
 %%Computer Vision (chpt3)
-Our approach to the SLAM problem will expand on the work done in previous years, and therefore we will continue using keyframe-based SLAM. This method builds a map made out of points observed from a small number of previous poses of the drone (keyframes). We will use the same terminology as in \cite{engel2011msc}: detected points in images will be refered to as keypoints, and keypoints whose 3D position we have an estimation of will be referred to as landmarks. As we will see later, at least two observations of a same keypoint are necessary to estimate its 3D position and use it as a landmark. Being able to recognize points in different images that correspond to the same world location lies at the basis of both the mapping and localization tasks. To do this, we will proceed in three steps. First, we need to determine which points of an image are particular enough to be recognizable from many different viewpoints. Then we need to characterize and save those points in the form of a descriptor. Finally, when we detect more points later on, we need to be able to compare these descriptors to determine which ones describe the same keypoint.\\
-We already outlined the principal keypoint detectors and descriptors in the state of the art (see section \ref{sec:sota_keypoints}). For this work, we will continue building on what was started last year, and we will use a SURF detector and a SIFT descriptor for the reasons they explained in their thesis (see  \cite{jacquesleclere}).
+Our approach to the SLAM problem will expand on the work done in previous years, and therefore we will continue using keyframe-based SLAM. This method builds a map made out of points observed from a small number of previous poses of the drone (keyframes). We will use the same terminology as in \cite{engel2011msc}: detected points in images will be referred to as keypoints, and keypoints whose 3D position we have an estimation of will be referred to as landmarks. As we will see later, at least two observations of a same keypoint are necessary to estimate its 3D position and use it as a landmark. Being able to recognize points in different images that correspond to the same world location lies at the basis of both the mapping and localization tasks. To do this, we will proceed in three steps. First, we need to determine which points of an image are particular enough to be recognizable from many different viewpoints. Then we need to characterize and save those points in the form of a descriptor. Finally, when we detect more points later on, we need to be able to compare these descriptors to determine which ones describe the same keypoint.\\
+We already outlined the principal keypoint detectors and descriptors in the state of the art (see section \ref{sec:sota_keypoints}). For this work, we will continue building on what was started last year, and we will use a SURF detector and a SIFT descriptor for the reasons explained in their thesis (see  \cite{jacquesleclere}).
+
+\section{Camera geometry and projection}
+Before we begin it is interesting to think about how cameras represent the world. Images from monocular cameras are a two dimensional representation of a three dimensional scene. One of the main challenges of this work will be to recover the 3D geometry of the scene from these 2D measurements.
+
+\subsection{Extrinsic parameters}
+First of all, a camera can only take measurements relative to itself, so it makes sense to express the coordinates of 3D points in a coordinate frame relative to the camera. The camera's coordinate frame is defined as follows: the $Z$ direction is defined as pointing out of the camera, and the $X$ and $Y$ directions point towards the right and bottom of the direction of the image respectively (see figure \ref{fig:camframe}). This concords nicely with image coordinates, where $(0,0)$ is usually defined to be the top-left of the image.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.3\linewidth]{camframe.eps}
+  \caption{Camera coordinate system}
+  \label{fig:camframe}
+\end{figure}
+
+Let $p_w$ and $p_c$ be the coordinates of point $p$ in a reference coordinate system and in the camera coordinate system respectively. Knowing the camera's position and orientation in the reference system, we can deduce the transformation to go from one coordinate system to the other:
+\begin{equation}\label{eq:camframe}
+  p_c = R \cdot p_w + t
+\end{equation}
+where $R$ is the rotation matrix between the two coordinate systems, and $t$ is the origin of the reference frame expressed in the camera coordinate system. Using homogenous coordinates, equation \ref{eq:camframe} can be rewritten as follows:
+\begin{equation}\label{eq:camframe_bis}
+  \begin{bmatrix}
+     x_c \\
+     y_c \\
+     z_c
+   \end{bmatrix}
+     = [R|t]
+   \begin{bmatrix}
+      x_w \\
+      y_w \\
+      z_w \\
+      1
+   \end{bmatrix}
+\end{equation}
+
+The extrinsic parameters of the camera are its position, $t$, which has 3 degrees of freedom, as well as its orientation, represented by $R$, which also has three degrees of freedom. The orientation's degrees of freedom can be parametrized as three angles, for example the roll, pitch and yaw angles. It is posible to recover these angles from the rotation matrix, and vice versa. The task of localization will be to recover the camera's extrinsic parameters, and from these, the pose of the drone.
+
+\subsection{Instrinsic Parameters}
+Once we have the coordinates of point $p$ in the camera's system, we can project this point onto the image plane, using the camera's instrisic matrix parameters. These are the horizontal and vertical focal lengths $f_x$ and $f_y$, pricipal point coordinates $c_x$ and $c_y$ and skew factor $s$. From these, the image coordinates $u$ and $v$ can be recovered as follows:
+\begin{align}
+  u &= \frac{f_xx_c + sy_c}{z_c} + c_x\\
+  v &= \frac{f_yy_c}{z_c} + c_y
+\end{align}
+%TODO explain equations?
+We can already see that our camera only gives information up to a scale factor, as multiplying all camera frame coordinates by a scalar gives the same image coordinates. The above equations can also we rewritten in matrix form, again using homogenous coordinates:
+\begin{equation}
+  z_c \begin{pmatrix} u\\v\\1 \end{pmatrix} =
+  \begin{bmatrix}
+  f_x & s   & c_x \\
+  0   & f_y & c_y \\
+  0   & 0   & 1
+  \end{bmatrix} \begin{pmatrix} x_c\\y_c\\z_c \end{pmatrix}
+\end{equation}
+The matrix containing all intrinsic parameters of the camera is called the intrinsic matrix $K$:
+\begin{equation}
+  K = \begin{bmatrix}
+  f_x & s   & c_x \\
+  0   & f_y & c_y \\
+  0   & 0   & 1
+\end{bmatrix}
+\end{equation}
+The intrinsic parameters of the camera can be calculated from the output of the camera through a process called camera calibration. As their name implies, they are characteristics intrinsic to a camera, so they only need to be calculated once to be useable as known quantities.\\
+Finally, the full projection from world coordinates to image coordinates can be performed as follows:
+\begin{equation}
+  z_c\begin{pmatrix} u\\v\\1\end{pmatrix} =
+    K[R|t]\begin{pmatrix} x_w\\y_w\\z_w\\1\end{pmatrix}
+\end{equation}
+The projection matrix $P = K[R|t]$ gives the image coordinates up to a scale factor ($z_c$), but this can easily be resolved by normalizing so that the last coordinate is 1.
+
+%TODO camera calibration?
+%TODO distortion?
 
 \section{Scale-space representation}
-One of the problems when trying to recognize points from a variety of viewpoints, is that depending on the distance between the point and the camera, the point can have many different sizes in the image. The scale-space representation is an attempt to solve this problem. An image can be represented as a two variable function $f(x,y)$, where the value of $f$ is the intensity of of the pixel at location $(x,y)$. The scale-space representation of $f$ is a family of signals obtained by convoluting the original signal with a gaussian filter $g$: $L(x,y;\sigma) = g(x,y;\sigma) \star f(x,y)$. For different values of the parameter $\sigma$ (the scale), the result is a blurred image where finer and finer details are indistinguishable. When $\sigma=0$, the gaussian becomes an impulse function and the result of the convolution is the original image. The scale-space representation of an image, $L(x,y,\sigma)$ can be seen as a three dimensional image, made by stacking images obtained by blurring the source image more and more. By working on the scale-space representation of images, we ensure that our methods are scale invariant. \cite{scalespace}\\
+One of the problems when trying to recognize points from a variety of viewpoints, is that depending on the distance between the point and the camera, the point can have many different sizes in the image. The scale-space representation is an attempt to solve this problem. An image can be represented as a two variable function $f(x,y)$, where the value of $f$ is the intensity of the pixel at location $(x,y)$. The scale-space representation of $f$ is a family of signals obtained by convoluting the original signal with a Gaussian filter $g$: $L(x,y;\sigma) = g(x,y;\sigma) \star f(x,y)$. For different values of the parameter $\sigma$ (the scale), the result is a blurred image where finer and finer details are indistinguishable. When $\sigma=0$, the Gaussian becomes an impulse function and the result of the convolution is the original image. The scale-space representation of an image, $L(x,y,\sigma)$ can be seen as a three dimensional image, made by stacking images obtained by blurring the source image more and more. By working on the scale-space representation of images, we ensure that our methods are scale invariant. \cite{scalespace}\\
 To illustrate this with an example, we look at figure \ref{fig:scalespace}. Images \ref{fig:scalespace_faraway} and \ref{fig:scalespace_closeby} have been observed and we would like to match them. Zooming in on image \ref{fig:scalespace_faraway} gives \ref{fig:scalespace_faraway_zoomedin}, but this image is quite different from \ref{fig:scalespace_closeby}. If we look at the scale-space representation of \ref{fig:scalespace_closeby} we might find a match at higher scales, when the image becomes blurred to look like image \ref{fig:scalespace_closeby_blurred}. Note that we are matching individual keypoints, which are usually smaller than this image (the corners of this image could each be keypoints).
 
 \begin{figure}[H]
@@ -29,7 +99,7 @@ To illustrate this with an example, we look at figure \ref{fig:scalespace}. Imag
 \begin{subfigure}{.4\textwidth}
   \centering
   \includegraphics[width=.9\linewidth]{scalespace_closeby_blurred.png}
-  \caption{From close by, filtered by a gaussian}
+  \caption{From close by, filtered by a Gaussian}
   \label{fig:scalespace_closeby_blurred}
 \end{subfigure}
 \caption{Usefulness of the scale-space representation}
@@ -44,9 +114,9 @@ The SURF detector uses the determinant of the Hessian matrix to measure local ch
   L_{xy}(\bf{x},\sigma) & L_{yy}(\bf{x},\sigma)
 \end{bmatrix}
 \end{equation}
-where $L_{xx}$, $L_{xy}$ and $L_{yy}$ are the convolution of the image with the second order derivatives of the gaussian $g(\bf{x};\sigma)$. The creators of SURF decided to approximate the second order Gaussian derivatives with box filters. This decision stemmed from the fact that even though Gaussian filters are optimal, they are already modified quite heavily, as they have to be discretized and cropped, and the result of the convolution is then resampled. The big advantage of using square filters is that they can be evaluated very quickly by using integral images. To obtain a scale-space representation, the SURF method uses box filters of different sizes: for example, a 9x9 filter, approximates gaussian with parameter $\sigma = 1.2$, with larger filters corresponding to bigger values of $\sigma$. Local maxima on 3x3x3 neighborhoods of the scale-space representation are then taken as points of interest.\\
+where $L_{xx}$, $L_{xy}$ and $L_{yy}$ are the convolution of the image with the second order derivatives of the Gaussian $g(\bf{x};\sigma)$. The creators of SURF decided to approximate the second order Gaussian derivatives with box filters. This decision stemmed from the fact that even though Gaussian filters are optimal, they are already modified quite heavily, as they have to be discretized and cropped, and the result of the convolution is then resampled. The big advantage of using square filters is that they can be evaluated very quickly by using integral images. To obtain a scale-space representation, the SURF method uses box filters of different sizes: for example, a 9x9 filter, approximates Gaussian with parameter $\sigma = 1.2$, with larger filters corresponding to bigger values of $\sigma$. Local maxima on 3x3x3 neighborhoods of the scale-space representation are then taken as points of interest.\\
 Finally, so that the detected keypoints are rotationally invariant, we need to assign an orientation to each keypoint that can be recognized from subsequent viewpoints. To do this, the SURF method computes the response to vertical and horizontal Haar wavelets in a circular neighborhood of radius $6s$ around the detected points, $s$ being the scale at which that point was detected. The Haar wavelets are rectangle shaped, so they can also be computed efficiently using integral images. The responses are plotted in a plane, where the abscissa is the horizontal response, and the ordinate is the vertical response. The responses are summed within a sliding orientation window, giving an orientation vector for each position of the sliding window. The orientation vector with the largest norm is taken to be the orientation of the keypoint.
-\cite{bay_surf}
+\cite{surf}
 
 \section{SIFT Keypoint Descriptor}
 \begin{figure}[H]
@@ -59,15 +129,15 @@ To create a SIFT descriptor, a 16x16 square region is taken around the keypoint.
 \cite{sift}
 
 \section{Keypoint Tracking}
-Because the above algorithm to extract a descriptor of a keypoint is quite slow (it takes approximatively %TODO seconds
-to extract all descriptors from a new image, see %TODO for more timings
-), it is not practical to run these algorithms on each new image, as this would greatly reduce the framerate. For this reason, another, faster alternative has been found : keypoint tracking. This method finds keypoints by looking for keypoints that were observed in the previous image, and assuming that their displacement inside the image was small. \\
+Because the above algorithm to extract a descriptor of a keypoint is quite slow (it takes approximately TODO %TODO seconds
+to extract all descriptors from a new image, see TODO %TODO for more timings
+), it is not practical to run these algorithms on each new image, as this would greatly reduce the frame rate. For this reason, another, faster alternative has been found : keypoint tracking. This method finds keypoints by looking for keypoints that were observed in the previous image, and assuming that their displacement inside the image was small. \\
 The algorithm used for this keypoint tracking is called the pyramidal Lucas-Kanade method \cite{pyramidallucaskanade}. This method assumes that the movement between successive frames is small and can be approximated by an affine transformation in local regions. It uses small dense pixel regions to estimate the movement of a keypoint between successive frames. The method was explained more in detail in last year's master thesis \cite{jacquesleclere}.
 Keypoint tracking has the advantage of being much faster than detecting new keypoints, especially because the descriptor of each tracked keypoint is already known and does not have to be extracted again at each frame. The main drawback of this method is that it does not allow to detect any new keypoints, as all tracked keypoints have to be present in the previous frame.
 
 \section{Detection and Tracking hybrid}
 
-In the previous years, detection and tracking were used alternatively: each new frame was populated with keypoints using one of the two methods. As long as there were enough keypoints in the preceding frame, tracking was used on all these keypoints with no detection of new keypoints. While tracking is used, the number of keypoints in each successive frame is nonincreasing, as each keypoint can either be lost or tracked, and when the number of keypoints in the frame fell below some threshold, keypoint detection was used to populate the next frame with new keypoints. When the detection method is used, all previous keypoints are discarded, and keypoints are detected on the entire image. The reason for this choice was that detection was too slow to be used on each frame, but necessary to find new keypoints, and that if detection and tracking were used simultaneously, keypoints that are already being tracked would be re-detected, which would result in duplicate keypoints in the same frame. However, this method is suboptimal, because every time detection is used, all currently tracked keypoints are lost and have to be re-detected. It also causes quite an inconsistent framerate.\\
+In the previous years, detection and tracking were used alternatively: each new frame was populated with keypoints using one of the two methods. As long as there were enough keypoints in the preceding frame, tracking was used on all these keypoints with no detection of new keypoints. While tracking is used, the number of keypoints in each successive frame is nonincreasing, as each keypoint can either be lost or tracked, and when the number of keypoints in the frame fell below some threshold, keypoint detection was used to populate the next frame with new keypoints. When the detection method is used, all previous keypoints are discarded, and keypoints are detected on the entire image. The reason for this choice was that detection was too slow to be used on each frame, but necessary to find new keypoints, and that if detection and tracking were used simultaneously, keypoints that are already being tracked would be re-detected, which would result in duplicate keypoints in the same frame. However, this method is suboptimal, because every time detection is used, all currently tracked keypoints are lost and have to be re-detected. It also causes quite an inconsistent frame rate.\\
 
 \begin{figure}[H]
   \centering

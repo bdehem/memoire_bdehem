@@ -6,30 +6,30 @@
 \contentsline {section}{\numberline {1.2}Motivation}{2}{section.1.2}
 \contentsline {subsection}{\numberline {1.2.1}Ethical considerations}{2}{subsection.1.2.1}
 \contentsline {section}{\numberline {1.3}Context}{2}{section.1.3}
-\contentsline {paragraph}{2012-2015: First three theses}{2}{section*.5}
-\contentsline {paragraph}{2015-2016: Recent work}{2}{section*.6}
+\contentsline {paragraph}{2012-2015: First three theses}{2}{section*.3}
+\contentsline {paragraph}{2015-2016: Recent work}{2}{section*.4}
 \contentsline {section}{\numberline {1.4}Objectives}{3}{section.1.4}
 \contentsline {section}{\numberline {1.5}Ressources}{3}{section.1.5}
 \contentsline {subsection}{\numberline {1.5.1}Hardware}{3}{subsection.1.5.1}
-\contentsline {subsubsection}{Sensors}{3}{section*.7}
+\contentsline {subsubsection}{Sensors}{3}{section*.5}
 \contentsline {subsection}{\numberline {1.5.2}Software}{4}{subsection.1.5.2}
-\contentsline {subsubsection}{Closed-source internal code}{4}{section*.8}
-\contentsline {subsubsection}{Parrot SDK}{4}{section*.9}
-\contentsline {subsubsection}{ROS}{4}{section*.10}
-\contentsline {subsubsection}{OpenCV}{4}{section*.11}
-\contentsline {subsubsection}{PCL}{4}{section*.12}
-\contentsline {subsubsection}{Ceres Solver}{5}{section*.13}
+\contentsline {subsubsection}{Closed-source internal code}{4}{section*.6}
+\contentsline {subsubsection}{Parrot SDK}{4}{section*.7}
+\contentsline {subsubsection}{ROS}{4}{section*.8}
+\contentsline {subsubsection}{OpenCV}{4}{section*.9}
+\contentsline {subsubsection}{PCL}{5}{section*.10}
+\contentsline {subsubsection}{Ceres Solver}{5}{section*.11}
 \contentsline {section}{\numberline {1.6}Outline}{5}{section.1.6}
 \contentsline {chapter}{\numberline {2}State of the art}{6}{chapter.2}
 \contentsline {section}{\numberline {2.1}Drones}{6}{section.2.1}
-\contentsline {subsection}{\numberline {2.1.1}Numer of rotors}{6}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.1}Number of rotors}{6}{subsection.2.1.1}
 \contentsline {section}{\numberline {2.2}Computer Vision}{6}{section.2.2}
 \contentsline {subsection}{\numberline {2.2.1}Keypoint Detection, Description, and Matching}{6}{subsection.2.2.1}
-\contentsline {paragraph}{Scale-Invariant Feature Transform (SIFT)}{7}{section*.14}
-\contentsline {paragraph}{Speeded Up Robust Features (SURF)}{7}{section*.15}
-\contentsline {paragraph}{Features from Accelerated Segment Test (FAST)}{7}{section*.16}
-\contentsline {paragraph}{Binary Robust Independent Elementary Features (BRIEF)}{7}{section*.17}
-\contentsline {paragraph}{Oriented FAST and Rotated BRIEF (ORB)}{7}{section*.18}
+\contentsline {paragraph}{Scale-Invariant Feature Transform (SIFT)}{7}{section*.12}
+\contentsline {paragraph}{Speeded Up Robust Features (SURF)}{7}{section*.13}
+\contentsline {paragraph}{Features from Accelerated Segment Test (FAST)}{7}{section*.14}
+\contentsline {paragraph}{Binary Robust Independent Elementary Features (BRIEF)}{7}{section*.15}
+\contentsline {paragraph}{Oriented FAST and Rotated BRIEF (ORB)}{7}{section*.16}
 \contentsline {subsection}{\numberline {2.2.2}Bundle Adjustment}{8}{subsection.2.2.2}
 \contentsline {section}{\numberline {2.3}Simultaneous Localization And Mapping}{8}{section.2.3}
 \contentsline {subsection}{\numberline {2.3.1}Parallel Tracking and Mapping (PTAM)}{8}{subsection.2.3.1}
@@ -39,23 +39,39 @@
 \contentsline {subsection}{\numberline {2.3.5}SVO}{9}{subsection.2.3.5}
 \contentsline {subsection}{\numberline {2.3.6}CNN-SLAM}{9}{subsection.2.3.6}
 \contentsline {chapter}{\numberline {3}Computer Vision}{10}{chapter.3}
-\contentsline {section}{\numberline {3.1}Scale-state representation}{10}{section.3.1}
-\contentsline {section}{\numberline {3.2}SURF Keypoint Detector}{11}{section.3.2}
-\contentsline {section}{\numberline {3.3}SIFT Keypoint Descriptor}{12}{section.3.3}
-\contentsline {section}{\numberline {3.4}Keypoint Tracking}{12}{section.3.4}
-\contentsline {section}{\numberline {3.5}Detection and Tracking hybrid}{13}{section.3.5}
-\contentsline {section}{\numberline {3.6}Keypoint Matching}{14}{section.3.6}
-\contentsline {chapter}{\numberline {4}Mapping}{16}{chapter.4}
-\contentsline {section}{\numberline {4.1}Structure of the map}{16}{section.4.1}
-\contentsline {section}{\numberline {4.2}Evaluation procedure}{17}{section.4.2}
-\contentsline {section}{\numberline {4.3}Triangulation}{18}{section.4.3}
-\contentsline {subsection}{\numberline {4.3.1}Midpoint Method}{18}{subsection.4.3.1}
-\contentsline {subsection}{\numberline {4.3.2}Linear least squares}{18}{subsection.4.3.2}
-\contentsline {subsection}{\numberline {4.3.3}Optimal Correction}{18}{subsection.4.3.3}
-\contentsline {subsection}{\numberline {4.3.4}Comparison of triangulation methods}{18}{subsection.4.3.4}
-\contentsline {section}{\numberline {4.4}Bundle Adjustment}{19}{section.4.4}
-\contentsline {subsection}{\numberline {4.4.1}How it works}{19}{subsection.4.4.1}
-\contentsline {subsection}{\numberline {4.4.2}Performance}{19}{subsection.4.4.2}
-\contentsline {subsection}{\numberline {4.4.3}Tuning the Bundle Adjustment}{19}{subsection.4.4.3}
-\contentsline {subsubsection}{Convergence of the solver}{19}{section*.24}
-\contentsline {subsubsection}{Rejecting outliers}{20}{section*.26}
+\contentsline {section}{\numberline {3.1}Camera geometry and projection}{10}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Extrinsic parameters}{10}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Instrinsic Parameters}{11}{subsection.3.1.2}
+\contentsline {section}{\numberline {3.2}Scale-space representation}{12}{section.3.2}
+\contentsline {section}{\numberline {3.3}SURF Keypoint Detector}{13}{section.3.3}
+\contentsline {section}{\numberline {3.4}SIFT Keypoint Descriptor}{14}{section.3.4}
+\contentsline {section}{\numberline {3.5}Keypoint Tracking}{14}{section.3.5}
+\contentsline {section}{\numberline {3.6}Detection and Tracking hybrid}{15}{section.3.6}
+\contentsline {section}{\numberline {3.7}Keypoint Matching}{16}{section.3.7}
+\contentsline {chapter}{\numberline {4}Localization}{18}{chapter.4}
+\contentsline {section}{\numberline {4.1}Perspective-$n$-Point}{18}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}P3P}{18}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}EPnP}{19}{subsection.4.1.2}
+\contentsline {subsection}{\numberline {4.1.3}Random Sample Consensus}{19}{subsection.4.1.3}
+\contentsline {section}{\numberline {4.2}Visual Odometry from optical flow}{19}{section.4.2}
+\contentsline {section}{\numberline {4.3}Pose Fusion}{19}{section.4.3}
+\contentsline {chapter}{\numberline {5}Mapping}{20}{chapter.5}
+\contentsline {section}{\numberline {5.1}Structure of the map}{20}{section.5.1}
+\contentsline {section}{\numberline {5.2}Triangulation}{21}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Midpoint Method}{21}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Linear least squares}{21}{subsection.5.2.2}
+\contentsline {subsection}{\numberline {5.2.3}Optimal Correction}{21}{subsection.5.2.3}
+\contentsline {section}{\numberline {5.3}Bundle Adjustment}{22}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Variables and constants}{22}{subsection.5.3.1}
+\contentsline {subsection}{\numberline {5.3.2}Objective function}{23}{subsection.5.3.2}
+\contentsline {subsection}{\numberline {5.3.3}Constraints}{24}{subsection.5.3.3}
+\contentsline {subsection}{\numberline {5.3.4}Solver}{24}{subsection.5.3.4}
+\contentsline {section}{\numberline {5.4}Mapping Strategy}{24}{section.5.4}
+\contentsline {subsection}{\numberline {5.4.1}Map Initialization}{24}{subsection.5.4.1}
+\contentsline {subsection}{\numberline {5.4.2}Rejecting outliers}{24}{subsection.5.4.2}
+\contentsline {chapter}{\numberline {6}Results}{26}{chapter.6}
+\contentsline {section}{\numberline {6.1}Evaluation procedure}{26}{section.6.1}
+\contentsline {subsection}{\numberline {6.1.1}Comparison of triangulation methods}{28}{subsection.6.1.1}
+\contentsline {subsection}{\numberline {6.1.2}Bundle Adjustment}{28}{subsection.6.1.2}
+\contentsline {subsection}{\numberline {6.1.3}Tuning the Bundle Adjustment}{28}{subsection.6.1.3}
+\contentsline {subsubsection}{Convergence of the solver}{29}{section*.29}
