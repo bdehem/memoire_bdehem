@@ -203,7 +203,6 @@ void Map::matchKeyframes(Keyframe* kf0, Keyframe* kf1)
   std::vector<int> idx_kf0, idx_kf1;
   matchDescriptors(kf0->descriptors, kf1->descriptors, kf0->point_IDs, kf1->point_IDs, idx_kf0, idx_kf1, threshold_kf_match, max_matches);
   nmatch = idx_kf0.size();
-  ROS_INFO("%d matches over threshold",nmatch);
   TIC(triang)
   n_new_pts = 0;
   for (i = 0; i<nmatch; i++)
@@ -239,7 +238,7 @@ void Map::matchKeyframes(Keyframe* kf0, Keyframe* kf1)
     }
   }
   triangtime += TOC(triang);
-  ROS_INFO("finished matching keyframe %d with keyframe %d. There are %d new points",kf0->ID, kf1->ID, n_new_pts);
+  ROS_INFO("Matching keyframe %d with keyframe %d. There are %d new points",kf0->ID, kf1->ID, n_new_pts);
 }
 
 void Map::matchKeyframeWithMap(Keyframe* kf)
@@ -252,7 +251,6 @@ void Map::matchKeyframeWithMap(Keyframe* kf)
   matchDescriptors(descriptors, kf->descriptors, map_indices, keyframe_indices, DIST_THRESHOLD,-1);
 
   nmatch = keyframe_indices.size();
-  ROS_INFO("%d matches over threshold",nmatch);
   for (i = 0; i<nmatch; i++)
   {
     pt_idx_kf = keyframe_indices[i];
@@ -270,7 +268,7 @@ void Map::matchKeyframeWithMap(Keyframe* kf)
       ROS_WARN("anomaly3");
     }
   }
-  ROS_INFO("finished matching keyframe %d with map. There are %d matching points",kf->ID, nmatch);
+  ROS_INFO("Matching keyframe %d with map. There are %d matching points",kf->ID, nmatch);
 }
 
 void Map::newKeyframe(const Frame& frame)
@@ -295,14 +293,12 @@ void Map::newKeyframe(const Frame& frame)
   }
   std::vector<int> keyframes_to_adjust;
   std::map<int,Keyframe*>::iterator it;
-  ROS_INFO("Matching keyframe %d with map",new_keyframe->ID);
   matchKeyframeWithMap(new_keyframe);
   //for (it = keyframes.begin(); it!=keyframes.end(); ++it)
   for (it = first_kf_to_adjust; it!=keyframes.end(); ++it)
   {
     if (it->first != new_keyframe->ID)
     {
-      ROS_INFO("Matching keyframes %d and %d",it->first,new_keyframe->ID);
       matchKeyframes(new_keyframe, it->second);
     }
     keyframes_to_adjust.push_back(it->first); //add all kfs
@@ -769,8 +765,8 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
       updatePoint(ptID,cv::Point3d(bundlePtr->points[i].x,bundlePtr->points[i].y,bundlePtr->points[i].z));
     }
   }
-  int pts_removed_clean = cleanMap();
-  ROS_INFO("Removed %d + %d points",pts_removed,pts_removed_clean);
+  //int pts_removed_clean = cleanMap();
+  //ROS_INFO("Removed %d + %d points",pts_removed,pts_removed_clean);
   //print_info();
   if (is_first_pass&&double_ba)
   {

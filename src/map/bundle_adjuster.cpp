@@ -286,9 +286,9 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   double time_taken = summary.total_time_in_seconds;
   int n_iter = summary.num_successful_steps;
 
+  std::cout << summary.FullReport() << "\n";
   if (!quiet_ba&&false)
   {
-    std::cout << summary.FullReport() << "\n";
     ROS_INFO("Cameras after BA:");
     for (int i = 0; i< bal_problem.num_keyframes_; i++)
     {
