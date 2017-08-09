@@ -90,8 +90,7 @@ private:
   bool init;
   bool is_adjusting_bundle;
   bool second_keyframe_pending;
-  bool use_2D_noise;
-  bool use_3D_noise;
+  bool test_robustness;
   bool no_bundle_adjustment;
   bool dlt_triangulation;
   bool midpoint_triangulation;

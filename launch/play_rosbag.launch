@@ -44,9 +44,7 @@
 
 
   <node name="boris_drone_mapping_node" pkg="boris_drone" type="mapping_node" output="screen">
-    <param name="2D_noise"               value="$(arg test_robustness)" />
-    <!--<param name="3D_noise"               value="$(arg test_robustness)" />-->
-    <param name="3D_noise"               value="false" />
+    <param name="test_robustness"        value="$(arg test_robustness)" />
     <param name="threshold_kf_match"     value="$(arg threshold)" />
     <param name="max_matches"            value="$(arg max_matches)" />
     <param name="no_bundle_adjustment"   value="$(arg no_bundle_adjustment)"/>

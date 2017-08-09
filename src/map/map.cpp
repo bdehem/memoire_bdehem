@@ -16,8 +16,7 @@ Map::Map(ros::NodeHandle* nh) : cloud(new pcl::PointCloud< pcl::PointXYZ >())
   benchmark_pub     = nh->advertise<boris_drone::BenchmarkInfoMsg>(benchmark_channel, 1);
 
   //Get some parameters from launch file
-  ros::param::get("~2D_noise", use_2D_noise);
-  ros::param::get("~3D_noise", use_3D_noise);
+  ros::param::get("~test_robustness", test_robustness);
   ros::param::get("~threshold_kf_match", threshold_kf_match);
   ros::param::get("~max_matches", max_matches);
   ros::param::get("~no_bundle_adjustment", no_bundle_adjustment);
@@ -44,7 +43,7 @@ Map::Map(ros::NodeHandle* nh) : cloud(new pcl::PointCloud< pcl::PointXYZ >())
   ROS_INFO("init map");
 
 
-  ROS_INFO("use 2D noise ? %s. Use 3D noise? %s",use_2D_noise?"true":"false",use_3D_noise?"true":"false");
+  ROS_INFO("Test robustness ? %s",test_robustness?"true":"false");
   // define some threshold used later
   // better if defined in the launch file
   frame_counter = 0;
@@ -352,14 +351,17 @@ bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose, bool manual_
   int n_keyframes = keyframes.size();
   if (keyframeNeeded(manual_pose_received, n_inliers, inlier_coverage, frame.pose))
   {
-    if ((use_2D_noise||use_3D_noise)&&n_keyframes!=0)
+    if ((test_robustness)&&n_keyframes==1)
     {
-      frame.pose.x    += (0.300)*(double)(n_keyframes==1||n_keyframes==2)*use_2D_noise;
-      frame.pose.y    += (0.300)*(double)(n_keyframes==2||n_keyframes==3)*use_2D_noise;
-      frame.pose.rotZ += (PI/10)*(double)(n_keyframes==3||n_keyframes==1)*use_2D_noise;
-      frame.pose.z    += (0.050)*(double)(n_keyframes==1)*use_3D_noise;
-      frame.pose.rotX += (PI/30)*(double)(n_keyframes==2)*use_3D_noise;
-      frame.pose.rotY += (PI/30)*(double)(n_keyframes==3)*use_3D_noise;
+      frame.pose.x += (0.14); frame.pose.y += (0.14); frame.pose.rotZ += (PI/36);
+    }
+    else if ((test_robustness)&&n_keyframes==2)
+    {
+      frame.pose.x += (0.14); frame.pose.y -= (0.14); frame.pose.rotZ += (PI/36);
+    }
+    else if ((test_robustness)&&n_keyframes==3)
+    {
+      frame.pose.x -= (0.14); frame.pose.y -= (0.14); frame.pose.rotZ -= (PI/36);
     }
     else if ((PnP_result==1)&&(!benchmark))
     {
