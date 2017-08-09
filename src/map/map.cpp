@@ -505,7 +505,7 @@ bool customLess(std::vector< int > a, std::vector< int > b)
 
 bool Map::keyframeNeeded(bool manual_pose_received, int n_inliers, double inlier_coverage, boris_drone::Pose3D& current_pose)
 {
-  ROS_INFO_THROTTLE(2,"inlier coverage = % 2.0f%%",inlier_coverage*100);
+  //ROS_INFO_THROTTLE(2,"inlier coverage = % 2.0f%%",inlier_coverage*100);
   if (make_keyframe) //This is set by strategy node, or send by user from a terminal
   {
     make_keyframe = false;
@@ -710,6 +710,7 @@ void Map::doBundleAdjustment(std::vector<int> kfIDs, bool is_first_pass)
     msg->ref_poses[i]   = keyframes[kfIDs[i]]->ref_pose;
     msg->keyframes_ID[i] = kfIDs[i];
   }
+  print_benchmark_info();
   if (points_for_ba.size()==0)
     ROS_WARN("Warning: there are no matching points to do Bundle Adjustment");
   else
@@ -786,6 +787,7 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     publishBenchmarkInfo();
     //print_landmarks();
   }
+  print_benchmark_info();
 }
 
 void Map::publishBenchmarkInfo()
@@ -850,4 +852,73 @@ void Map::print_keyframes()
   {
     it->second->print();
   }
+}
+
+void Map::print_benchmark_info()
+{
+  ROS_INFO("             == BENCHMARK INFO ==");
+  ROS_INFO("  kf1     |   kf2     |   kf3     |   kf4");
+  if (keyframes.size() == 1)
+  {
+    ROS_INFO("x = % 4.2f", keyframes[0]->pose.x);
+    ROS_INFO("y = % 4.2f", keyframes[0]->pose.y);
+    ROS_INFO("z = % 4.2f", keyframes[0]->pose.z);
+    ROS_INFO("r = % 5.1f", keyframes[0]->pose.rotX*180/PI);
+    ROS_INFO("p = % 5.1f", keyframes[0]->pose.rotY*180/PI);
+    ROS_INFO("y = % 5.1f", keyframes[0]->pose.rotZ*180/PI);
+  }
+  if (keyframes.size() == 2)
+  {
+    ROS_INFO("x = % 4.2f | x = % 4.2f", keyframes[0]->pose.x          ,keyframes[1]->pose.x          );
+    ROS_INFO("y = % 4.2f | y = % 4.2f", keyframes[0]->pose.y          ,keyframes[1]->pose.y          );
+    ROS_INFO("z = % 4.2f | z = % 4.2f", keyframes[0]->pose.z          ,keyframes[1]->pose.z          );
+    ROS_INFO("r = % 5.1f | r = % 5.1f", keyframes[0]->pose.rotX*180/PI,keyframes[1]->pose.rotX*180/PI);
+    ROS_INFO("p = % 5.1f | p = % 5.1f", keyframes[0]->pose.rotY*180/PI,keyframes[1]->pose.rotY*180/PI);
+    ROS_INFO("y = % 5.1f | y = % 5.1f", keyframes[0]->pose.rotZ*180/PI,keyframes[1]->pose.rotZ*180/PI);
+  }
+  if (keyframes.size() == 3)
+  {
+    ROS_INFO("x = % 4.2f | x = % 4.2f | x = % 4.2f",
+    keyframes[0]->pose.x          , keyframes[1]->pose.x          , keyframes[2]->pose.x          );
+    ROS_INFO("y = % 4.2f | y = % 4.2f | y = % 4.2f",
+    keyframes[0]->pose.y          , keyframes[1]->pose.y          , keyframes[2]->pose.y          );
+    ROS_INFO("z = % 4.2f | z = % 4.2f | z = % 4.2f",
+    keyframes[0]->pose.z          , keyframes[1]->pose.z          , keyframes[2]->pose.z          );
+    ROS_INFO("r = % 5.1f | r = % 5.1f | r = % 5.1f",
+    keyframes[0]->pose.rotX*180/PI, keyframes[1]->pose.rotX*180/PI, keyframes[2]->pose.rotX*180/PI);
+    ROS_INFO("p = % 5.1f | p = % 5.1f | p = % 5.1f",
+    keyframes[0]->pose.rotY*180/PI, keyframes[1]->pose.rotY*180/PI, keyframes[2]->pose.rotY*180/PI);
+    ROS_INFO("y = % 5.1f | y = % 5.1f | y = % 5.1f",
+    keyframes[0]->pose.rotZ*180/PI, keyframes[1]->pose.rotZ*180/PI, keyframes[2]->pose.rotZ*180/PI);
+  }
+  if (keyframes.size() == 4)
+  {
+    ROS_INFO("x = % 4.2f | x = % 4.2f | x = % 4.2f | x = % 4.2f",
+    keyframes[0]->pose.x          ,keyframes[1]->pose.x          ,keyframes[2]->pose.x          ,keyframes[3]->pose.x          );
+    ROS_INFO("y = % 4.2f | y = % 4.2f | y = % 4.2f | y = % 4.2f",
+    keyframes[0]->pose.y          ,keyframes[1]->pose.y          ,keyframes[2]->pose.y          ,keyframes[3]->pose.y          );
+    ROS_INFO("z = % 4.2f | z = % 4.2f | z = % 4.2f | z = % 4.2f",
+    keyframes[0]->pose.z          ,keyframes[1]->pose.z          ,keyframes[2]->pose.z          ,keyframes[3]->pose.z          );
+    ROS_INFO("r = % 5.1f | r = % 5.1f | r = % 5.1f | r = % 5.1f",
+    keyframes[0]->pose.rotX*180/PI,keyframes[1]->pose.rotX*180/PI,keyframes[2]->pose.rotX*180/PI,keyframes[3]->pose.rotX*180/PI);
+    ROS_INFO("p = % 5.1f | p = % 5.1f | p = % 5.1f | p = % 5.1f",
+    keyframes[0]->pose.rotY*180/PI,keyframes[1]->pose.rotY*180/PI,keyframes[2]->pose.rotY*180/PI,keyframes[3]->pose.rotY*180/PI);
+    ROS_INFO("y = % 5.1f | y = % 5.1f | y = % 5.1f | y = % 5.1f",
+    keyframes[0]->pose.rotZ*180/PI,keyframes[1]->pose.rotZ*180/PI,keyframes[2]->pose.rotZ*180/PI,keyframes[3]->pose.rotZ*180/PI);
+  }
+  ROS_INFO("doubleba ? %s",double_ba?"true":"false");
+
+  if (!BA_times_pass2.empty())
+  {
+    if (double_ba) ROS_INFO("ba_time = %f", BA_times_pass1.back() + BA_times_pass2.back());
+    else           ROS_INFO("ba_time = %f", BA_times_pass2.back());
+  }
+
+  int tot_obs = 0;
+  std::map<int,Keyframe*>::iterator it_k;
+  for(it_k = keyframes.begin(); it_k!=keyframes.end();++it_k)
+    tot_obs += it_k->second->n_mapped_pts;
+  int npts = landmarks.size();
+  double avg_obs = (double)tot_obs/(double)npts;
+  ROS_INFO("npts = %d ; average number of keyframes per landmark = %f",npts,avg_obs);
 }

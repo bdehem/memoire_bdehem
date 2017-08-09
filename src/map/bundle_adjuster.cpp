@@ -16,7 +16,7 @@ BALProblem::BALProblem(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   num_parameters_   = 6 * num_keyframes_ + 3 * num_points_;
   point_index_    = new int[num_observations_];
   keyframe_index_ = new int[num_observations_];
-  fixed_kfs_     = new bool[num_keyframes_];
+  fixed_kfs_      = new bool[num_keyframes_];
   observations_   = new double[2 * num_observations_];
   parameters_     = new double[num_parameters_];
   ref_poses_      = new double[6 * num_keyframes_];
@@ -226,7 +226,8 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   bool is_first_pass = bundlePtr->is_first_pass;
 
   double* camera_print;
-  if (!quiet_ba)
+
+  if (!quiet_ba&&false)
   {
     ROS_INFO("Cameras before BA:");
     for (int i = 0; i< bal_problem.num_keyframes_; i++)
@@ -285,7 +286,7 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   double time_taken = summary.total_time_in_seconds;
   int n_iter = summary.num_successful_steps;
 
-  if (!quiet_ba)
+  if (!quiet_ba&&false)
   {
     std::cout << summary.FullReport() << "\n";
     ROS_INFO("Cameras after BA:");

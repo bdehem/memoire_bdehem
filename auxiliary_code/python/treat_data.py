@@ -9,101 +9,55 @@ import sys
 import os
 
 def treat_data(file_in,do_plot):
-    infile = file_in
-    ref_pose_x    = 0
-    ref_pose_y    = 0
-    ref_pose_z    = 0
-    ref_pose_rotZ = 0
-    errors = np.zeros((4,5))
-    counts = np.zeros((4,5))
-    batimes = np.zeros((3,2))
-    pts_map = np.zeros((3))
-    ind = -1
-    starttime = -1
+    vis = rosbag_pandas.bag_to_dataframe(file_in,include="/pose_visual")
+    man = rosbag_pandas.bag_to_dataframe(file_in,include="/pose_estimation")
+    timediff = (vis.index[0] - man.index[0]).total_seconds()
+    ref = pd.read_pickle('reference_poses.pkl')
+    vis = vis.set_index((vis.index - vis.index[0]).total_seconds() + timediff)
     k = 0
-    for topic, msg, t in rosbag.Bag(infile).read_messages():
-        if starttime == -1:
-            starttime = t.secs
-        if topic == "/pose_estimation":
-            at_a_ref_pose = msg.x==0 or msg.x==-0.09 or msg.x==1.12 or msg.x==0.80 or msg.x==0.57
-            new_interval  = (ref_pose_x != msg.x and at_a_ref_pose and msg.x != 0)
-            #if new_interval:
-                #print(t.secs - starttime)
-            ind += new_interval
-            ref_pose_x    = msg.x
-            ref_pose_y    = msg.y
-            ref_pose_z    = msg.z
-            ref_pose_rotZ = msg.rotZ
-        if (topic == "/pose_visual" and ref_pose_x != 0):
-            errX    = ref_pose_x    - msg.x
-            errY    = ref_pose_y    - msg.y
-            errD    = (errX**2 + errY**2)**(0.5)
-            errrotZ = ref_pose_rotZ - msg.rotZ
-            errors[0,ind] += abs(errX)
-            errors[1,ind] += abs(errY)
-            errors[2,ind] += abs(errD)
-            errors[3,ind] += abs(errrotZ)
-            counts[:,ind] += 1
-        if topic == "/benchmark":
+    count = 0
+    errDist = 0
+    errAng = 0
+    for row in vis.itertuples():
+        while row.Index > ref.iloc[[k]].index:
+            k+=1
+        if not (ref['pose_estimation__x'].iloc[[k]].values == 0 or math.isnan(ref['pose_estimation__x'].iloc[[k]])):
+            errX    = row.pose_visual__x    - ref['pose_estimation__x'].iloc[[k]].values
+            errY    = row.pose_visual__y    - ref['pose_estimation__y'].iloc[[k]].values
+            errrotZ = row.pose_visual__rotZ - ref['pose_estimation__rotZ'].iloc[[k]].values
+            errDist += (errX**2 + errY**2)**(0.5)
+            errAng  += abs(errrotZ)
+            count   += 1
+    avgerrD = (errDist/count)
+    avgerrR = (errAng/count)*180/math.pi
 
-            batimes[k,0] = msg.BA_times_pass1
-            batimes[k,1] = msg.BA_times_pass2
+
+    pts_map = np.zeros((3))
+    k = 0
+    batime = 0
+    for topic, msg, t in rosbag.Bag(file_in).read_messages():
+        if topic == "/benchmark":
+            batime += msg.BA_times_pass1
+            batime += msg.BA_times_pass2
             pts_map[k] = msg.pts_map
             k+=1
-    #print(batimes)
-    batime  = sum(sum(batimes))
-    avgerrD = (sum(errors[2,])/sum(counts[2,]))
-    avgerrR = (sum(errors[3,])/sum(counts[3,]))*180/math.pi
-    avgerr = sum(sum(errors))/sum(sum(counts))
-    vis = rosbag_pandas.bag_to_dataframe(infile,include="/pose_visual")
-    man = rosbag_pandas.bag_to_dataframe(infile,include="/pose_estimation")
+
     if do_plot:
-        f, (axx, axy, axz, axr) = plt.subplots(4, sharex=True)
-        #f, (axx, axy, axr) = plt.subplots(3, sharex=True)
-        axx.plot(man.index, man['pose_estimation__x'])
+        f, (axx, axy, axr) = plt.subplots(3, sharex=True)
+        axx.plot(ref.index, ref['pose_estimation__x'])
         axx.plot(vis.index, vis['pose_visual__x'])
-        axy.plot(man.index, man['pose_estimation__y'])
+        axy.plot(ref.index, ref['pose_estimation__y'])
         axy.plot(vis.index, vis['pose_visual__y'])
-        axz.plot(man.index, man['pose_estimation__z'])
-        axz.plot(vis.index, vis['pose_visual__z'])
-        axr.plot(man.index, man['pose_estimation__rotZ'])
+        axr.plot(ref.index, ref['pose_estimation__rotZ'])
         axr.plot(vis.index, vis['pose_visual__rotZ'])
+
         axx.set_title('X')
         axy.set_title('Y')
-        axz.set_title('Z')
         axr.set_title('rotZ')
-    #(robust,mm,batol,rpt2,rpt3,huber,rmvcoeff,rmvcst) = get_params_from_fn(file_in)
-    #return (avgerrD,avgerrR,batime)
-    robust = 0
-    mm = 0
-    batol = 0
-    rpt2 = 0
-    rpt3 = 0
-    huber = 0
-    rmvcoeff = 0
-    rmvcst = 0
-
-    #return (robust,mm,batol,rpt2,rpt3,huber,rmvcoeff,rmvcst,avgerrD,avgerrR,batime,pts_map[-1])
     return (avgerrD,avgerrR,batime)
 
-
-def get_params_from_fn(file_in):
-    arglist1 = file_in.split('/')
-    file_loc = arglist1[-1]
-    arglist = file_loc.replace('.ba','_').split('_')
-    robust  = arglist[2]
-    mm      = arglist[4]
-    batol   = arglist[6]
-    rpt2    = arglist[8]
-    rpt3    = arglist[10]
-    rmvcst   = arglist[14] if len(arglist) > 14 else 0
-    rmvcoeff = arglist[16] if len(arglist) > 16 else -1
-    huber    = arglist[18] if len(arglist) > 18 else "1.0"
-    return (robust,mm,batol,rpt2,rpt3,huber,rmvcoeff,rmvcst)
-
-
 def main():
-    fn = "vanillaBA_norobust.bag"
+    fn = "vanillaBA_robust.bag"
     dirname = '/home/bor/bagfiles/otherpcresults/'
     dirname = '/home/bor/bagfiles/aout/bag/'
     avgerrD,avgerrR,batime = treat_data(dirname + fn,True)
@@ -111,8 +65,7 @@ def main():
     print(avgerrD)
     print(avgerrR)
     print(batime)
-
-
     plt.show()
+
 if __name__ == "__main__":
     main()

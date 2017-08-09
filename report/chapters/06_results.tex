@@ -108,7 +108,6 @@ Using the evaluation procedure described in section \ref{evalproc}, we can compa
 %optimal correc: 24ms
 %midpoint      : 12ms
 
-%TODO: put number of matches
 We can see that the optimal correction method performs somewhat better. However, this comes at the cost of computation time, because it takes approximately \SI{12}{\milli\second} to triangulate all \num{165} matches between two views using the midpoint method, and \SI{24}{\milli\second} to do the same with the optimal corrction method. In both cases however, this time is insignificant when compared to bundle adjustment (which is performed just after triangulation). For this reason, and the fact that optimal correction is better motivated theoretically and that is gives slightly better results on the benchmark test, we will use optimal correction.\\
 It is interesting to see, however, that the difference in performance is much greater between the accuracy and robustness tests than between the two triangulation method. This can be explained by the fact that optimal correction is well suited to correct measurement errors by the camera that follow a normal distribution, but not errors stemming from the fact that the position estimate of the cameras is wrong. That is the reason we need bundle adjustment.
 
@@ -127,14 +126,23 @@ It is interesting to see, however, that the difference in performance is much gr
             & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle} & {\scriptsize Time (\si{\second})} \\
     \midrule
     No B.A.  &\num{0.0988557438948}&\SI{2.3287093550318}{\degree}&{\textemdash}&\num{0.775954169079}&\SI{12.52132481967}{\degree}&{\textemdash}\\
-    With B.A.&\num{0.0282887755044}&\SI{0.617492395502}{\degree}&\num{0.699653536081}
-             &\num{0.0264297442542}&\SI{0.523342243368}{\degree}&\num{2.07235994935}  \\
+    With B.A.&\num{0.0776431}      &\SI{1.25765337}{\degree}     &\num{0.699653536081}
+             &\num{0.13953509}     &\SI{2.76480354}{\degree}     &\num{2.07235994935}  \\
     \bottomrule
   \end{tabular}
-  \label{fig:bacompare}
+  \label{tab:bacompare}
 \end{table}
 
-We see that in the accuracy test, bundle adjustment gives a significant improvement to the performance of the pose estimation. In the robustness test, however, bundle adjustment makes the results quite worse. This is surprising, as it is just in the case where the pose of the camera is uncertain that bundle adjustment should improve the result, by adjusting the pose of the camera. But because the problem is quite non linear, it is possible to fall in local minima. We will later see that by tuning the bundle adjustment phase, we can make it perform much better, and actually improve the results in the robustness test. The other big problem of bundle adjustment is the time it takes. In both tests, this time was over \SI{13}{\second}, which is a prohibitively large amount of time for real time applications. In addition to improving the performance on the robustness test, we will try to reduce the time taken by the bundle adjustment.
+We can see on table \ref{tab:bacompare} that Bundle Adjustment significantly improves the results of the accuracy test, but it is in the robustness test that this improvement is the biggest. The performance in the robustness test is almost as good as it was in  the accuracy test with no bundle adjustment. This first little experiment convinces us that bundle adjustment really works, and is a good way to correct errors coming from imprecise pose estimation. The improvement of the performance in the accuracy test can be explained by the fact that even if we tried giving the drone its exact position when it was building the map, the information we sent was not \SI{100}{\percent} exact, and these inaccuracies were corrected by bundle adjustment.\\
+
+The performance increase gained from bundle adjustment comes at a price, however, in the form of computation time. Table \ref{tab:bacompare} shows that bundle adjustment took a total of \SI{0.699653536081}{\second} during the accuracy test, and \SI{2.07235994935}{\second} during the robustness test. This time is the total time for all three rounds of bundle adjustment run during the initialization phase (it is run every time a keyframe is created, except for the first keyframe).\\
+The other big problem of bundle adjustment is the time it takes. In both tests, this time was over \SI{13}{\second}, which is a prohibitively large amount of time for real time applications. In addition to improving the performance on the robustness test, we will try to reduce the time taken by the bundle adjustment.
+
+
+%TODO put this in threshold tuning
+This is surprising, as it is just in the case where the pose of the camera is uncertain that bundle adjustment should improve the result, by adjusting the pose of the camera. But because the problem is quite non linear, it is possible to fall in local minima.
+
+
 
 
 \subsection{Tuning the Bundle Adjustment}
