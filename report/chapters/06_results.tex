@@ -6,12 +6,12 @@ The evaluation is performed as follows:
 \begin{enumerate}
   \item The drone is placed in a known position on a table (position A in figure \ref{fig:benchmarksetup}). There, the drone is turned on, and it begins initializing its map by creating a first keyframe.
   \item The drone is then successively placed in 3 other known locations (B, then C, then D), and at each of these locations, the drone manually receives its position. Every time this happens, the drone creates a keyframe, adds landmarks into the map, and optionally updates existing landmarks' positions, or even removes some landmarks.
-  \item Finally, the drone is again placed at different known locations (positions 1 through 5 on figure \ref{fig:benchmarksetup}). This time, no information is communicated to the drone from the outside, and the drone does not modify its map. The drone estimates its position using only its camera and the map that it built during step 2. We compare the drone's estimated position with its real position to evaluate the quality of the map.
+  \item Finally, the drone is again placed at different known locations (positions 1 through 4, then back to 1 on figure \ref{fig:benchmarksetup}). This time, no information is communicated to the drone from the outside, and the drone does not modify its map. The drone estimates its position using only its camera and the map that it built during step 2. While the drone is moved from point 4 to 1, its camera is obstructed, to test whether it can recover from being lost. We compare the drone's estimated position with its real position to evaluate the quality of the map.
 \end{enumerate}
 The two quantities we will seek to optimize are the accuracy of the drone's visual pose estimation (as measured during step 3), and the time taken to create the map during step 2.\\
-In reality, the drone would not know its exact position when making keyframes at points B, C, and D (position A is defined as the origin), especially at the beginning, as it would have to rely on its IMU and other internal sensors to estimate its position. To emulate this, we implement a second type of test: the robustness test, where the position that is communicated to the drone is slightly different from its real position, at each of the uncertain points (B, C and D). To differentiate it from the robustness test, we call the first test the precision test.\\
-We do not yet know what a realistic error would be on the position of the drone, so we will choose one arbitrarily, aiming to be pessismistic. At each of the three uncertain poses, we will to two of the following: 1) add \SI{30}{\centi\meter} to the $x$-position, 2) add \SI{30}{\centi\meter} to the $y$-position, 3) add \num{18}{\degree} to the yaw orientation.\\
-For both the robustness and precision tests, we measure two quantities: the average distance error and average angle error. The average distance error is the average distance in the $xy$-plane between the drone's posistion estimate and its real position when it is at the known points of step 3, and the average angle error is the average absolute value of the difference between the estimated yaw angle and the real yaw angle et these positions. We are not counting errors in roll, pitch, and altitude, because as explained in section \ref{sec:posefusion}, we do not use the result of the visual pose estimate for those quantities, but use the IMU and ultrasound directly. We also do not measure the error when we are moving the drone between those positions, as we do not have the equipment to measure its real position during those transitions.
+In reality, the drone does not know its exact position when making keyframes at points B, C, and D (position A is defined as the origin). To emulate this, we implement a second type of test: the robustness test, where the position that is communicated to the drone is a bit off from its real position, at each of the uncertain points (B, C and D). To differentiate it from the robustness test, we call the first test the precision test.\\
+We do not yet know what a realistic error would be on the position of the drone, so we will choose one arbitrarily, aiming to be pessismistic. At each of the three uncertain poses, we will do two of the following: 1) add \SI{30}{\centi\meter} to the $x$-coordinate, 2) add \SI{30}{\centi\meter} to the $y$-coordinate, 3) add \num{18}{\degree} to the yaw.\\
+For both the robustness and precision tests, we measure two quantities: the average distance error and average angle error. The average distance error is the average distance in the $xy$-plane between the drone's posistion estimate and its real position when it is at the known points of step 3, and the average angle error is the average absolute value of the difference between the estimated yaw angle and the real yaw angle at these positions. We do not count errors in roll, pitch, and altitude, because as explained in section \ref{sec:posefusion}, we do not use the result of the visual pose estimate for those quantities, but use the IMU and ultrasound directly. We also do not measure the error when we are moving the drone between the known positions, as we do not have the equipment to measure its real position during those transitions.
 \begin{figure}[H]
 \centering
 \begin{subfigure}{\textwidth}
@@ -110,7 +110,7 @@ Using the evaluation procedure described in section \ref{evalproc}, we can compa
 %midpoint      : 12ms
 
 We can see that the optimal correction method performs somewhat better. However, this comes at the cost of computation time, because it takes approximately \SI{12}{\milli\second} to triangulate all \num{165} matches between two views using the midpoint method, and \SI{24}{\milli\second} to do the same with the optimal corrction method. In both cases however, this time is insignificant when compared to bundle adjustment (which is performed just after triangulation). For this reason, and the fact that optimal correction is better motivated theoretically and that is gives slightly better results on the benchmark test, we will use optimal correction.\\
-It is interesting to see, however, that the difference in performance is much greater between the accuracy and robustness tests than between the two triangulation methods. This can be explained by the fact that optimal correction is well suited to correct measurement errors that follow a normal distribution, but not errors stemming from the fact that the position estimate of the cameras is wrong. That is the reason we need bundle adjustment.
+It is interesting to see, however, that the difference in performance is much greater between the accuracy and robustness tests than between the two triangulation methods. This can be explained by the fact that optimal correction is well suited to correct measurement errors that follow a normal distribution, but not errors stemming from the fact that the position estimate of the cameras is inexact. That is the reason why we need bundle adjustment.
 
 \subsection{Bundle Adjustment}
 \begin{table}[H]
@@ -136,7 +136,7 @@ It is interesting to see, however, that the difference in performance is much gr
 
 We can see on table \ref{tab:bacompare} that bundle adjustment improves the results of both the accuracy and the robustness tests. The improvement is significant in the accuracy test, but it is especially large in the robustness test. The performance in the robustness test is almost as good as it was in  the accuracy test with no bundle adjustment. This first little experiment convinces us that bundle adjustment really works, and is a good way to correct errors coming from imprecise pose estimation. The improvement of the performance in the accuracy test can be explained by the fact that even if we tried giving the drone its exact position when it was building the map, the information we sent was not \SI{100}{\percent} exact, and these inaccuracies were corrected by bundle adjustment.\\
 
-The performance increase gained from bundle adjustment comes at a price, however, in the form of computation time. Table \ref{tab:bacompare} shows that bundle adjustment took a total of \SI{0.775}{\second} during the accuracy test, and \SI{1.836}{\second} during the robustness test. This time is the total time for all three rounds of bundle adjustment run during the initialization phase (it is run every time a keyframe is created, except for the first keyframe). As we can see on table \ref{tab:batime}, the time taken by the algorithm increases each time it is ran as the map grows. Because bundle adjustment is ran every time a keyframe is created but not at every new image, relatively large times are acceptable. However, long times for bundle adjustment limit the speed at which the drone can explore, so we want to keep it under control. We will explore some paths to keep this computation time low, while still having a good enough performance. \\
+The performance increase gained from bundle adjustment comes at a price in the form of computation time, however. Table \ref{tab:bacompare} shows that bundle adjustment took a total of \SI{0.775}{\second} during the accuracy test, and \SI{1.836}{\second} during the robustness test. This time is the total time for all three rounds of bundle adjustment run during the initialization phase (it is run every time a keyframe is created, except for the first keyframe). As we can see on table \ref{tab:batime}, the time taken by the algorithm increases each time it is ran, because the map grows. Because bundle adjustment is ran every time a keyframe is created but not at every new image, relatively large times are acceptable. However, long times for bundle adjustment limit the speed at which the drone can explore, so we want to keep it under control. We will explore some paths to keep this computation time low, while still having a good enough performance. \\
 We can already note the difference in the time it takes for the robustness and accuracy tests. Bundle adjustment is an iterative algorithm that seeks to minize a certain cost function. Because during the accuracy test we start from closer to the solution, it requires fewer iterations to correct the errors. This means that the better our position estimate, the faster bundle adjustment will run. Because the robustness test is quite pessimistic (it gives a larger error on the position than what the what the drone normally makes), we can expect the bundle adjustment to be faster in practice. Because we now have an estimate of the error the drone makes (from table \ref{tab:bacompare}), we can implement a more realistic robustness test, where the error given to the drone is closer to the real one. To still be robust, we will still consider a slightly larger error than what we measured to account for worst-case scenarios. From now on in the robustness test we will give the drone a position \SI{20}{\centi\meter} and \SI{5}{\degree} off. \\
 
 \begin{table}[H]
@@ -161,48 +161,49 @@ We can already note the difference in the time it takes for the robustness and a
   \label{tab:batime}
 \end{table}
 
-
-
-%TODO put this in threshold tuning
-This is surprising, as it is just in the case where the pose of the camera is uncertain that bundle adjustment should improve the result, by adjusting the pose of the camera. But because the problem is quite non linear, it is possible to fall in local minima.
-
-
+{\LARGE
+Je compte encore ajouter ici:\\
+- les positions de keyframes avant et apres bundle adjustment (avec la position originale)\\
+- des images de la carte (pointcloud) obtenue (aussi avec et sans bundle adjustment\\
+- Un graphique de la position du drone estimée vs réelle)}
 
 
 \subsection{Tuning the Bundle Adjustment}
-The main drawback of Bundle Adjustment is that it requires an iterative method to be solved and can take a lot of time, which of course is a limiting factor for a robot that builds a map in real time. Therefore it is important to optimize both the speed of the computations, and their accuracy. As is often the case, there will have to be a tradeoff between these two goals. To measure both the speed of the Bundle Adjustment and the accuracy of the map obtained, we will conduct some experiments using different parameters to initialize the map.
+There are many different parameters for bundle adjustment taht can be tuned. We will try to find the best balance betweed performance and speed
 
-\subsubsection{Convergence of the solver}
-The first element we can tune is the convergence criterion of the solver that solves the bundle adjustment problem. We will stop when the ratio of the change in the objective function to the value of this function arrives below some threshold. This ensures that the criterion scales with the problem, which is important as the size of the problem can vary during operation (as the map grows, for example). The default value of the Ceres solver is $10^{-6}$, but experimentally, we find that we can use a softer threshold to significantly speed up the computations, without impacting the quality of the results too much (and even improving them in the robustness test).
+%\subsubsection{Convergence of the solver}
+%The first element we can tune is the convergence criterion of the solver that solves the bundle adjustment problem. We will stop when the ratio of the change in the objective function to the value of this function arrives below some threshold. This ensures that the criterion scales with the problem, which is important as the size of the problem can vary during operation (as the map grows, for example). The default value of the Ceres solver is $10^{-6}$, but experimentally, we find that this gives very
 
-\begin{table}[H]
-  \centering
-  \caption{Effect of convergence criterion on Bundle Adjustment speed and performance}
-  \small\addtolength{\tabcolsep}{-2pt}
-  \sisetup{round-mode=places, round-precision = 3}
-  \begin{tabular}{ @{} S[scientific-notation=true] S[table-format=1.3] S[table-format=1.3] S[table-format=2.3]
-                                                   S[table-format=1.3] S[table-format=1.3] S[table-format=2.3] @{}  }
-    \toprule
-    \multirow{2}{4em}{Convergence Threshold}  & \multicolumn{3}{c}{Accuracy} &  \multicolumn{3}{c}{Robustness} \\
-        & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})}
-        & {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})} \\
-    \midrule
-    \num{10}       &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.528740555048}&\num{0.775553503184}&\num{0.219380944042} &\num{0.527468636632} \\
-    \num{5}        &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.532568186522}&\num{0.775954169079}&\num{0.218538344815} &\num{0.560289662331} \\
-    \num{1}        &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.536680459976}&\num{0.775954169079}&\num{0.218538344815} &\num{0.529257409275} \\
-    \num{0.5}      &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.532132491469}&\num{0.284057820455}&\num{0.0860006110714}&\num{0.61461224407}  \\
-    \num{0.1}      &\num{0.116334787731} &\num{0.0370860746263}&\num{0.67120449245} &\num{0.244478011775}&\num{0.0982536795903}&\num{1.17620864138}  \\
-    \num{0.05}     &\num{0.0684117396072}&\num{0.01622317801}  &\num{0.742543946952}&\num{0.291411483818}&\num{0.112600996782} &\num{2.11719946936}  \\
-    \num{0.01}     &\num{0.0895791917611}&\num{0.032296133528} &\num{1.42051474378} &\num{0.823415005012}&\num{0.316300896325} &\num{2.77009601146}  \\
-    \num{0.005}    &\num{0.0908954991063}&\num{0.0308365172421}&\num{1.53279625252} &\num{0.142093947791}&\num{0.0495629729962}&\num{4.18590991944}  \\
-    \num{0.001}    &\num{0.0849543195902}&\num{0.023134969351} &\num{3.61956872419} &\num{1.034983532}   &\num{0.397193935917} &\num{4.90690393746}  \\
-    \num{0.0001}   &\num{0.0842253035954}&\num{0.0258716997751}&\num{5.05812323838} &\num{1.36150222356} &\num{0.479872553731} &\num{10.4840388894}  \\
-    \num{0.00001}  &\num{0.0899028376206}&\num{0.0299204957695}&\num{12.4531462789} &\num{1.4834446381}  &\num{0.528430316164} &\num{13.2059885859}  \\
-    \num{0.000001} &\num{0.0897626230568}&\num{0.029930165598} &\num{15.7027562261} &\num{1.37414105299} &\num{0.492183127143} &\num{13.8024009466}  \\
-    \num{0.0000001}&\num{0.0875171189566}&\num{0.0282118025117}&\num{15.7951563597} &\num{1.55886341652} &\num{0.567309620599} &\num{12.934817493}   \\
-    \bottomrule
-  \end{tabular}
-  \label{tab:convergencetol}
-\end{table}
-
-As we can observe on table \ref{tab:convergencetol}, the more severe the convergence threshold, the better the performance on the accuracy test. On the robustness test, however, this is true for high convergence thresholds, but when the convergence threshold is lower than \num{0.01}, the performance starts to degrade as the convergence threshold becomes lower. In both the accuracy and robustness tests, the lower the threshold, the longer it takes. We will chose a threshold of \num{0.05}, as it is a nice compromise of performance on the accuracy test, performance on the robustness test, and speed.
+%TODO put this in threshold tuning
+%This is surprising, as it is just in the case where the pose of the camera is uncertain that bundle adjustment should improve the result, by adjusting the pose of the camera. But because the problem is quite non linear, it is possible to fall in local minima.
+%\begin{table}[H]
+  %\centering
+  %\caption{Effect of convergence criterion on Bundle Adjustment speed and performance}
+  %\small\addtolength{\tabcolsep}{-2pt}
+  %\sisetup{round-mode=places, round-precision = 3}
+  %\begin{tabular}{ @{} S[scientific-notation=true] S[table-format=1.3] S[table-format=1.3] S[table-format=2.3]
+                                                   %S[table-format=1.3] S[table-format=1.3] S[table-format=2.3] @{}  }
+    %\toprule
+    %\multirow{2}{4em}{Convergence Threshold}  & \multicolumn{3}{c}{Accuracy} &  \multicolumn{3}{c}{Robustness} \\
+        %& {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})}
+        %& {\scriptsize Distance (\si{\meter})} & {\scriptsize Angle (\si{\radian})} & {\scriptsize Time (\si{\second})} \\
+    %\midrule
+    %\num{10}       &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.528740555048}&\num{0.775553503184}&\num{0.219380944042} &\num{0.527468636632} \\
+    %\num{5}        &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.532568186522}&\num{0.775954169079}&\num{0.218538344815} &\num{0.560289662331} \\
+    %\num{1}        &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.536680459976}&\num{0.775954169079}&\num{0.218538344815} &\num{0.529257409275} \\
+    %\num{0.5}      &\num{0.0988557438948}&\num{0.0406436455673}&\num{0.532132491469}&\num{0.284057820455}&\num{0.0860006110714}&\num{0.61461224407}  \\
+    %\num{0.1}      &\num{0.116334787731} &\num{0.0370860746263}&\num{0.67120449245} &\num{0.244478011775}&\num{0.0982536795903}&\num{1.17620864138}  \\
+    %\num{0.05}     &\num{0.0684117396072}&\num{0.01622317801}  &\num{0.742543946952}&\num{0.291411483818}&\num{0.112600996782} &\num{2.11719946936}  \\
+    %\num{0.01}     &\num{0.0895791917611}&\num{0.032296133528} &\num{1.42051474378} &\num{0.823415005012}&\num{0.316300896325} &\num{2.77009601146}  \\
+    %\num{0.005}    &\num{0.0908954991063}&\num{0.0308365172421}&\num{1.53279625252} &\num{0.142093947791}&\num{0.0495629729962}&\num{4.18590991944}  \\
+    %\num{0.001}    &\num{0.0849543195902}&\num{0.023134969351} &\num{3.61956872419} &\num{1.034983532}   &\num{0.397193935917} &\num{4.90690393746}  \\
+    %\num{0.0001}   &\num{0.0842253035954}&\num{0.0258716997751}&\num{5.05812323838} &\num{1.36150222356} &\num{0.479872553731} &\num{10.4840388894}  \\
+    %\num{0.00001}  &\num{0.0899028376206}&\num{0.0299204957695}&\num{12.4531462789} &\num{1.4834446381}  &\num{0.528430316164} &\num{13.2059885859}  \\
+    %\num{0.000001} &\num{0.0897626230568}&\num{0.029930165598} &\num{15.7027562261} &\num{1.37414105299} &\num{0.492183127143} &\num{13.8024009466}  \\
+    %\num{0.0000001}&\num{0.0875171189566}&\num{0.0282118025117}&\num{15.7951563597} &\num{1.55886341652} &\num{0.567309620599} &\num{12.934817493}   \\
+    %\bottomrule
+  %\end{tabular}
+  %\label{tab:convergencetol}
+%\end{table}
+%
+%As we can observe on table \ref{tab:convergencetol}, the more severe the convergence threshold, the better the performance on the accuracy test. On the robustness test, however, this is true for high convergence thresholds, but when the convergence threshold is lower than \num{0.01}, the performance starts to degrade as the convergence threshold becomes lower. In both the accuracy and robustness tests, the lower the threshold, the longer it takes. We will chose a threshold of \num{0.05}, as it is a nice compromise of performance on the accuracy test, performance on the robustness test, and speed.

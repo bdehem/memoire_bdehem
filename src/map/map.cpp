@@ -119,6 +119,7 @@ void Map::updatePoint(int ptID, cv::Point3d coordinates)
   cloud->points[idx] = new_point;
 }
 
+
 void Map::removePoint(int ptID)
 {
   //ROS_INFO("removing point %d",ptID);
@@ -729,17 +730,9 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   ncam          = bundlePtr->num_keyframes;
   for (i = 0; i < ncam; ++i) {
     kfID = bundlePtr->keyframes_ID[i];
-    if (i>0 && poseDistance(bundlePtr->poses[i],bundlePtr->poses[i-1])<0.05)
-    {
-      ROS_INFO("Removing keyframe %d",kfID);
-      removeKeyframe(kfID);
-    }
-    else
-    {
-      ROS_INFO("Updating keyframe %d",kfID);
-      keyframes_to_adjust.push_back(kfID);
-      keyframes[kfID]->pose = bundlePtr->poses[i];
-    }
+    ROS_INFO("Updating keyframe %d",kfID);
+    keyframes_to_adjust.push_back(kfID);
+    keyframes[kfID]->pose = bundlePtr->poses[i];
   }
   //cost_of_point = for each point that was bundle adjusted, the cost divided by the number of keyframes seeing it that were bundle adjusted
   int pts_removed = 0;

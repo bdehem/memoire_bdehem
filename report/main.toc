@@ -71,7 +71,6 @@
 \contentsline {subsection}{\numberline {5.4.2}Rejecting outliers}{24}{subsection.5.4.2}
 \contentsline {chapter}{\numberline {6}Results}{26}{chapter.6}
 \contentsline {section}{\numberline {6.1}Evaluation procedure}{26}{section.6.1}
-\contentsline {subsection}{\numberline {6.1.1}Comparison of triangulation methods}{28}{subsection.6.1.1}
-\contentsline {subsection}{\numberline {6.1.2}Bundle Adjustment}{28}{subsection.6.1.2}
-\contentsline {subsection}{\numberline {6.1.3}Tuning the Bundle Adjustment}{29}{subsection.6.1.3}
-\contentsline {subsubsection}{Convergence of the solver}{29}{section*.30}
+\contentsline {subsection}{\numberline {6.1.1}Comparison of triangulation methods}{29}{subsection.6.1.1}
+\contentsline {subsection}{\numberline {6.1.2}Bundle Adjustment}{29}{subsection.6.1.2}
+\contentsline {subsection}{\numberline {6.1.3}Tuning the Bundle Adjustment}{30}{subsection.6.1.3}

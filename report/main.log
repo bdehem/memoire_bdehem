@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.3.17)  9 AUG 2017 17:18
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.3.17)  9 AUG 2017 18:24
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1955,81 +1955,71 @@ Package epstopdf Info: Source file: <images/benchmark_setup.eps>
 (epstopdf)                    date: 2017-06-03 21:51:48
 (epstopdf)                    size: 10979 bytes
 (epstopdf)             Command: <repstopdf --outfile=images/benchmark_setup-eps-converted-to.pdf images/benchmark_setup.eps>
-(epstopdf)             \includegraphics on input line 18.
+(epstopdf)             \includegraphics on input line 19.
 Package epstopdf Info: Output file is already uptodate.
  <images/benchmark_setup-eps-converted-to.pdf, id=639, 375.4025pt x 251.94125pt>
 File: images/benchmark_setup-eps-converted-to.pdf Graphic file (type pdf)
  <use images/benchmark_setup-eps-converted-to.pdf>
-Package pdftex.def Info: images/benchmark_setup-eps-converted-to.pdf used on input line 18.
+Package pdftex.def Info: images/benchmark_setup-eps-converted-to.pdf used on input line 19.
 (pdftex.def)             Requested size: 455.24411pt x 305.54567pt.
  <images/posA.png, id=640, 553.31718pt x 271.0125pt>
 File: images/posA.png Graphic file (type png)
  <use images/posA.png>
-Package pdftex.def Info: images/posA.png used on input line 25.
+Package pdftex.def Info: images/posA.png used on input line 26.
 (pdftex.def)             Requested size: 148.72989pt x 72.84766pt.
  <images/posB.png, id=641, 553.31718pt x 271.0125pt>
 File: images/posB.png Graphic file (type png)
  <use images/posB.png>
-Package pdftex.def Info: images/posB.png used on input line 31.
+Package pdftex.def Info: images/posB.png used on input line 32.
 (pdftex.def)             Requested size: 148.72989pt x 72.84766pt.
  <images/posC.png, id=642, 553.31718pt x 271.0125pt>
 File: images/posC.png Graphic file (type png)
  <use images/posC.png>
-Package pdftex.def Info: images/posC.png used on input line 37.
+Package pdftex.def Info: images/posC.png used on input line 38.
 (pdftex.def)             Requested size: 148.72989pt x 72.84766pt.
  <images/posD.png, id=643, 553.31718pt x 271.0125pt>
 File: images/posD.png Graphic file (type png)
  <use images/posD.png>
-Package pdftex.def Info: images/posD.png used on input line 44.
+Package pdftex.def Info: images/posD.png used on input line 45.
 (pdftex.def)             Requested size: 148.72989pt x 72.84766pt.
  <images/pos1.png, id=644, 553.31718pt x 271.0125pt>
 File: images/pos1.png Graphic file (type png)
  <use images/pos1.png>
-Package pdftex.def Info: images/pos1.png used on input line 50.
+Package pdftex.def Info: images/pos1.png used on input line 51.
 (pdftex.def)             Requested size: 148.72989pt x 72.84766pt.
  <images/pos2.png, id=645, 553.31718pt x 271.0125pt>
 File: images/pos2.png Graphic file (type png)
  <use images/pos2.png>
-Package pdftex.def Info: images/pos2.png used on input line 56.
+Package pdftex.def Info: images/pos2.png used on input line 57.
 (pdftex.def)             Requested size: 148.72989pt x 72.84766pt.
  <images/pos3.png, id=646, 553.31718pt x 271.0125pt>
 File: images/pos3.png Graphic file (type png)
  <use images/pos3.png>
-Package pdftex.def Info: images/pos3.png used on input line 63.
+Package pdftex.def Info: images/pos3.png used on input line 64.
 (pdftex.def)             Requested size: 148.72989pt x 72.84766pt.
  <images/pos4.png, id=647, 553.31718pt x 271.0125pt>
 File: images/pos4.png Graphic file (type png)
  <use images/pos4.png>
-Package pdftex.def Info: images/pos4.png used on input line 69.
+Package pdftex.def Info: images/pos4.png used on input line 70.
 (pdftex.def)             Requested size: 148.72989pt x 72.84766pt.
  <images/pos5.png, id=648, 553.31718pt x 271.0125pt>
 File: images/pos5.png Graphic file (type png)
  <use images/pos5.png>
-Package pdftex.def Info: images/pos5.png used on input line 75.
+Package pdftex.def Info: images/pos5.png used on input line 76.
 (pdftex.def)             Requested size: 148.72989pt x 72.84766pt.
  [26
 
-]
+] [27]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 96.
- [27 <./images/benchmark_setup-eps-converted-to.pdf> <./images/posA.png> <./images/posB.png> <./images/posC.png> <./images/posD.png> <./images/pos1.png> <./images/pos2.png> <./images/pos3.png> <./images/pos4.png> <./images/pos5.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 136--137
+(Font)              <9> on input line 97.
+ [28 <./images/benchmark_setup-eps-converted-to.pdf> <./images/posA.png> <./images/posB.png> <./images/posC.png> <./images/posD.png> <./images/pos1.png> <./images/pos2.png> <./images/pos3.png> <./images/pos4.png> <./images/pos5.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 137--138
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 138--140
+Underfull \hbox (badness 10000) in paragraph at lines 139--141
 
- []
-
-[28]
-Overfull \hbox (13.64398pt too wide) in paragraph at lines 185--185
-[]|\T1/lmr/m/n/10 (-20) Convergence 
- []
-
-
-Overfull \hbox (2.73245pt too wide) in paragraph at lines 185--185
-\T1/lmr/m/n/10 (-20) Threshold|  
  []
 
 [29]) [30]
@@ -2119,19 +2109,19 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 41464 strings out of 494985
- 885954 string characters out of 6180356
- 1347088 words of memory out of 5000000
- 43509 multiletter control sequences out of 15000+600000
- 153118 words of font info for 192 fonts, out of 8000000 for 9000
+ 41461 strings out of 494985
+ 885928 string characters out of 6180356
+ 1339980 words of memory out of 5000000
+ 43510 multiletter control sequences out of 15000+600000
+ 156050 words of font info for 192 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  70i,12n,81p,10417b,2231s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmcsc10.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm/
-lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb>
-Output written on main.pdf (35 pages, 7595564 bytes).
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmcsc10.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm
+/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb>
+Output written on main.pdf (35 pages, 7594249 bytes).
 PDF statistics:
- 839 PDF objects out of 1000 (max. 8388607)
- 706 compressed objects within 8 object streams
- 180 named destinations out of 1000 (max. 500000)
- 49762 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 831 PDF objects out of 1000 (max. 8388607)
+ 700 compressed objects within 7 object streams
+ 178 named destinations out of 1000 (max. 500000)
+ 50274 words of extra memory for PDF output out of 51595 (max. 10000000)
 
