@@ -2,7 +2,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{eplmastersthesis}[2016/05/21 EPL Master''s Thesis class]
 
-\LoadClass[11pt, a4paper, openright]{report}
+\LoadClass[11pt, a4paper, twoside, openright]{report}
 
 % Usefull packages
 \usepackage[utf8]{inputenc}
@@ -21,6 +21,7 @@
 \DeclareTextSymbol{\degre}{T1}{6}
 
 \RequirePackage{etoolbox}
+
 \newcommand{\subtitle}[1]{\def\@subtitle{#1}}
 \newcommand{\secondauthor}[1]{\def\@secondauthor{#1}}
 \newcommand{\supervisor}[1]{\def\@supervisor{#1}}

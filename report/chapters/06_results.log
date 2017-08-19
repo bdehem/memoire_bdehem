@@ -1,15 +1,14 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.3.17)  9 AUG 2017 16:37
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.3.17)  11 AUG 2017 09:36
 entering extended mode
  restricted \write18 enabled.
- file:line:error style messages enabled.
  %&-line parsing enabled.
 **06_results.tex
 (./06_results.tex
 LaTeX2e <2011/06/27>
 Babel <3.9h> and hyphenation patterns for 4 languages loaded.
-./06_results.tex:2: Undefined control sequence.
-l.2 \section
-            {Evaluation procedure} \label{evalproc}
+! Undefined control sequence.
+l.2 \chapter
+            {Results} \label{chpt:results}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
@@ -17,16 +16,32 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-./06_results.tex:2: LaTeX Error: Missing \begin{document}.
+! LaTeX Error: Missing \begin{document}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.2 \section{E
-              valuation procedure} \label{evalproc}
+l.2 \chapter{R
+              esults} \label{chpt:results}
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no R in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no s in font nullfont!
+! Undefined control sequence.
+l.3 \section
+            {Evaluation procedure} \label{evalproc}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
 Missing character: There is no E in font nullfont!
 Missing character: There is no v in font nullfont!
@@ -306,10 +321,10 @@ Missing character: There is no g in font nullfont!
 Missing character: There is no u in font nullfont!
 Missing character: There is no r in font nullfont!
 Missing character: There is no e in font nullfont!
-./06_results.tex:4: Undefined control sequence.
+! Undefined control sequence.
 <write> ... `fig:benchmarksetup' on page \thepage 
                                                   \space undefined\on@line .
-l.4 ...ustrated on figure \ref{fig:benchmarksetup}
+l.5 ...ustrated on figure \ref{fig:benchmarksetup}
                                                   .\\
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -318,7 +333,8 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-LaTeX Warning: Reference `fig:benchmarksetup' on page  undefined on input line 4.
+LaTeX Warning: Reference `fig:benchmarksetup' on page  undefined on input line 
+5.
 
 Missing character: There is no . in font nullfont!
 Missing character: There is no T in font nullfont!
@@ -356,12 +372,12 @@ Missing character: There is no w in font nullfont!
 Missing character: There is no s in font nullfont!
 Missing character: There is no : in font nullfont!
 
-Overfull \hbox (20.0pt too wide) in paragraph at lines 2--6
+Overfull \hbox (20.0pt too wide) in paragraph at lines 2--7
 []
  []
 
 
-Overfull \hbox (10.86105pt too wide) in paragraph at lines 2--6
+Overfull \hbox (10.86105pt too wide) in paragraph at lines 2--7
 [] 
  []
 
@@ -423,10 +439,10 @@ Missing character: There is no g in font nullfont!
 Missing character: There is no u in font nullfont!
 Missing character: There is no r in font nullfont!
 Missing character: There is no e in font nullfont!
-./06_results.tex:7: Undefined control sequence.
+! Undefined control sequence.
 <write> ... `fig:benchmarksetup' on page \thepage 
                                                   \space undefined\on@line .
-l.7 ...sition A in figure \ref{fig:benchmarksetup}
+l.8 ...sition A in figure \ref{fig:benchmarksetup}
                                                   ). There, the drone is tur...
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -435,7 +451,8 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-LaTeX Warning: Reference `fig:benchmarksetup' on page  undefined on input line 7.
+LaTeX Warning: Reference `fig:benchmarksetup' on page  undefined on input line 
+8.
 
 Missing character: There is no ) in font nullfont!
 Missing character: There is no . in font nullfont!
@@ -519,7 +536,7 @@ Missing character: There is no m in font nullfont!
 Missing character: There is no e in font nullfont!
 Missing character: There is no . in font nullfont!
 
-Overfull \hbox (10.86105pt too wide) in paragraph at lines 7--8
+Overfull \hbox (10.86105pt too wide) in paragraph at lines 8--9
 []
  []
 
@@ -872,7 +889,19 @@ Missing character: There is no o in font nullfont!
 Missing character: There is no u in font nullfont!
 Missing character: There is no g in font nullfont!
 Missing character: There is no h in font nullfont!
-Missing character: There is no 5 in font nullfont!
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no 1 in font nullfont!
 Missing character: There is no o in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no f in font nullfont!
@@ -881,10 +910,10 @@ Missing character: There is no g in font nullfont!
 Missing character: There is no u in font nullfont!
 Missing character: There is no r in font nullfont!
 Missing character: There is no e in font nullfont!
-./06_results.tex:9: Undefined control sequence.
+! Undefined control sequence.
 <write> ... `fig:benchmarksetup' on page \thepage 
                                                   \space undefined\on@line .
-l.9 ...hrough 5 on figure \ref{fig:benchmarksetup}
+l.10 ...ck to 1 on figure \ref{fig:benchmarksetup}
                                                   ). This time, no informati...
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -893,7 +922,8 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-LaTeX Warning: Reference `fig:benchmarksetup' on page  undefined on input line 9.
+LaTeX Warning: Reference `fig:benchmarksetup' on page  undefined on input line 
+10.
 
 Missing character: There is no ) in font nullfont!
 Missing character: There is no . in font nullfont!
@@ -1068,6 +1098,101 @@ Missing character: There is no p in font nullfont!
 Missing character: There is no 2 in font nullfont!
 Missing character: There is no . in font nullfont!
 Missing character: There is no W in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no v in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no v in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no W in font nullfont!
 Missing character: There is no e in font nullfont!
 Missing character: There is no c in font nullfont!
 Missing character: There is no o in font nullfont!
@@ -1152,7 +1277,7 @@ Missing character: There is no a in font nullfont!
 Missing character: There is no p in font nullfont!
 Missing character: There is no . in font nullfont!
 
-Overfull \hbox (10.86105pt too wide) in paragraph at lines 9--10
+Overfull \hbox (10.86105pt too wide) in paragraph at lines 10--11
 []
  []
 
@@ -1321,11 +1446,10 @@ Missing character: There is no r in font nullfont!
 Missing character: There is no o in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no e in font nullfont!
-Missing character: There is no w in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no u in font nullfont!
-Missing character: There is no l in font nullfont!
 Missing character: There is no d in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no s in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no o in font nullfont!
 Missing character: There is no t in font nullfont!
@@ -1415,103 +1539,6 @@ Missing character: There is no g in font nullfont!
 Missing character: There is no i in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no ) in font nullfont!
-Missing character: There is no , in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no c in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no y in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no h in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no b in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no g in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no g in font nullfont!
-Missing character: There is no , in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no w in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no u in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no d in font nullfont!
-Missing character: There is no h in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no v in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no y in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no I in font nullfont!
-Missing character: There is no M in font nullfont!
-Missing character: There is no U in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no d in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no h in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no m in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no n in font nullfont!
 Missing character: There is no . in font nullfont!
 Missing character: There is no T in font nullfont!
 Missing character: There is no o in font nullfont!
@@ -1620,23 +1647,13 @@ Missing character: There is no n in font nullfont!
 Missing character: There is no e in font nullfont!
 Missing character: There is no i in font nullfont!
 Missing character: There is no s in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no b in font nullfont!
 Missing character: There is no i in font nullfont!
-Missing character: There is no g in font nullfont!
-Missing character: There is no h in font nullfont!
 Missing character: There is no t in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no y in font nullfont!
-Missing character: There is no d in font nullfont!
-Missing character: There is no i in font nullfont!
+Missing character: There is no o in font nullfont!
 Missing character: There is no f in font nullfont!
 Missing character: There is no f in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no t in font nullfont!
 Missing character: There is no f in font nullfont!
 Missing character: There is no r in font nullfont!
 Missing character: There is no o in font nullfont!
@@ -1766,6 +1783,318 @@ Missing character: There is no t in font nullfont!
 Missing character: There is no e in font nullfont!
 Missing character: There is no s in font nullfont!
 Missing character: There is no t in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no W in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no A in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no : in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no ) in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no d in font nullfont!
+! Undefined control sequence.
+l.14 ...e will do two of the following: 1) add \SI
+                                                  {30}{\centi\meter} to the ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+! Undefined control sequence.
+l.14 ...wo of the following: 1) add \SI{30}{\centi
+                                                  \meter} to the $x$-coordin...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.14 ...the following: 1) add \SI{30}{\centi\meter
+                                                  } to the $x$-coordinate, 2...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no e in font nullfont!
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 14.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 14.
+Missing character: There is no - in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no ) in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no d in font nullfont!
+! Undefined control sequence.
+l.14 ...i\meter} to the $x$-coordinate, 2) add \SI
+                                                  {30}{\centi\meter} to the ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+! Undefined control sequence.
+l.14 ... the $x$-coordinate, 2) add \SI{30}{\centi
+                                                  \meter} to the $y$-coordin...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.14 ...x$-coordinate, 2) add \SI{30}{\centi\meter
+                                                  } to the $y$-coordinate, 3...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no - in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no ) in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no d in font nullfont!
+! Undefined control sequence.
+l.14 ...\meter} to the $y$-coordinate, 3) add \num
+                                                  {18}{\degree} to the yaw.\\
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no 8 in font nullfont!
+! Undefined control sequence.
+l.14 ...he $y$-coordinate, 3) add \num{18}{\degree
+                                                  } to the yaw.\\
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no w in font nullfont!
 Missing character: There is no . in font nullfont!
 Missing character: There is no F in font nullfont!
 Missing character: There is no o in font nullfont!
@@ -1920,10 +2249,6 @@ Missing character: There is no n in font nullfont!
 Missing character: There is no t in font nullfont!
 Missing character: There is no h in font nullfont!
 Missing character: There is no e in font nullfont!
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 13.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 13.
 Missing character: There is no - in font nullfont!
 Missing character: There is no p in font nullfont!
 Missing character: There is no l in font nullfont!
@@ -1951,7 +2276,6 @@ Missing character: There is no p in font nullfont!
 Missing character: There is no o in font nullfont!
 Missing character: There is no s in font nullfont!
 Missing character: There is no i in font nullfont!
-Missing character: There is no s in font nullfont!
 Missing character: There is no t in font nullfont!
 Missing character: There is no i in font nullfont!
 Missing character: There is no o in font nullfont!
@@ -2122,7 +2446,7 @@ Missing character: There is no n in font nullfont!
 Missing character: There is no g in font nullfont!
 Missing character: There is no l in font nullfont!
 Missing character: There is no e in font nullfont!
-Missing character: There is no e in font nullfont!
+Missing character: There is no a in font nullfont!
 Missing character: There is no t in font nullfont!
 Missing character: There is no t in font nullfont!
 Missing character: There is no h in font nullfont!
@@ -2141,9 +2465,8 @@ Missing character: There is no s in font nullfont!
 Missing character: There is no . in font nullfont!
 Missing character: There is no W in font nullfont!
 Missing character: There is no e in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no e in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no o in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no o in font nullfont!
 Missing character: There is no t in font nullfont!
@@ -2152,9 +2475,6 @@ Missing character: There is no o in font nullfont!
 Missing character: There is no u in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no t in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no g in font nullfont!
 Missing character: There is no e in font nullfont!
 Missing character: There is no r in font nullfont!
 Missing character: There is no r in font nullfont!
@@ -2213,10 +2533,10 @@ Missing character: There is no t in font nullfont!
 Missing character: There is no i in font nullfont!
 Missing character: There is no o in font nullfont!
 Missing character: There is no n in font nullfont!
-./06_results.tex:13: Undefined control sequence.
+! Undefined control sequence.
 <write> ...ence `sec:posefusion' on page \thepage 
                                                   \space undefined\on@line .
-l.13 ... explained in section \ref{sec:posefusion}
+l.15 ... explained in section \ref{sec:posefusion}
                                                   , we do not use the result...
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2225,7 +2545,7 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-LaTeX Warning: Reference `sec:posefusion' on page  undefined on input line 13.
+LaTeX Warning: Reference `sec:posefusion' on page  undefined on input line 15.
 
 Missing character: There is no , in font nullfont!
 Missing character: There is no w in font nullfont!
@@ -2381,9 +2701,12 @@ Missing character: There is no e in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no t in font nullfont!
 Missing character: There is no h in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no s in font nullfont!
 Missing character: There is no e in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no n in font nullfont!
 Missing character: There is no p in font nullfont!
 Missing character: There is no o in font nullfont!
 Missing character: There is no s in font nullfont!
@@ -2467,13 +2790,33 @@ Missing character: There is no n in font nullfont!
 Missing character: There is no s in font nullfont!
 Missing character: There is no . in font nullfont!
 
-./06_results.tex:14: LaTeX Error: Environment figure undefined.
+Overfull \hbox (5.71527pt too wide) in paragraph at lines 12--16
+\OML/cmm/m/it/10 x$
+ []
+
+
+Overfull \hbox (5.2616pt too wide) in paragraph at lines 12--16
+\OML/cmm/m/it/10 y$
+ []
+
+
+Overfull \hbox (10.97687pt too wide) in paragraph at lines 12--16
+\OML/cmm/m/it/10 xy$
+ []
+
+
+Overfull \hbox (10.86105pt too wide) in paragraph at lines 12--16
+[]
+ []
+
+
+! LaTeX Error: Environment figure undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.14 \begin{figure}
+l.17 \begin{figure}
                    [H]
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2482,43 +2825,9 @@ or  <return>  to continue without it.
 Missing character: There is no [ in font nullfont!
 Missing character: There is no H in font nullfont!
 Missing character: There is no ] in font nullfont!
-
-./06_results.tex:16: LaTeX Error: Environment subfigure undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.16 \begin{subfigure}
-                      {\textwidth}
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-./06_results.tex:16: Missing number, treated as zero.
-<to be read again> 
-                   }
-l.16 \begin{subfigure}{\textwidth}
-                                  
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-./06_results.tex:16: Illegal unit of measure (pt inserted).
-<to be read again> 
-                   }
-l.16 \begin{subfigure}{\textwidth}
-                                  
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
-./06_results.tex:18: Undefined control sequence.
-l.18   \includegraphics
-                       [width=\linewidth]{benchmark_setup.eps}
+! Undefined control sequence.
+l.19   \includegraphics
+                       [width=\linewidth]{benchmark_setup_noground.eps}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
@@ -2532,20 +2841,20 @@ Missing character: There is no d in font nullfont!
 Missing character: There is no t in font nullfont!
 Missing character: There is no h in font nullfont!
 Missing character: There is no = in font nullfont!
-./06_results.tex:18: Missing number, treated as zero.
+! Missing number, treated as zero.
 <to be read again> 
                    ]
-l.18   \includegraphics[width=\linewidth]
-                                         {benchmark_setup.eps}
+l.19   \includegraphics[width=\linewidth]
+                                         {benchmark_setup_noground.eps}
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:18: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    ]
-l.18   \includegraphics[width=\linewidth]
-                                         {benchmark_setup.eps}
+l.19   \includegraphics[width=\linewidth]
+                                         {benchmark_setup_noground.eps}
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
 I'll assume that you meant to say pt, for printer's points.
@@ -2563,16 +2872,16 @@ Missing character: There is no m in font nullfont!
 Missing character: There is no a in font nullfont!
 Missing character: There is no r in font nullfont!
 Missing character: There is no k in font nullfont!
-./06_results.tex:18: Missing $ inserted.
+! Missing $ inserted.
 <inserted text> 
                 $
-l.18 ...cludegraphics[width=\linewidth]{benchmark_
-                                                  setup.eps}
+l.19 ...cludegraphics[width=\linewidth]{benchmark_
+                                                  setup_noground.eps}
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
-./06_results.tex:18: Extra }, or forgotten $.
-l.18 ...ics[width=\linewidth]{benchmark_setup.eps}
+! Extra }, or forgotten $.
+l.19 ...=\linewidth]{benchmark_setup_noground.eps}
                                                   
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -2581,46 +2890,46 @@ the way to recover is to insert both the forgotten and the
 deleted material, e.g., by typing `I$}'.
 
 
-./06_results.tex:19: LaTeX Error: \caption outside float.
+! LaTeX Error: \caption outside float.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.19   \caption
+l.20   \caption
                {Different positions of the drone during benchmark test}
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:21: LaTeX Error: \begin{document} ended by \end{subfigure}.
+! LaTeX Error: \begin{document} ended by \end{figure}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.21 \end{subfigure}
-                    \\
+l.22 \end{figure}
+                 
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-./06_results.tex:21: Missing $ inserted.
+! Missing $ inserted.
 <inserted text> 
                 $
-l.21 \end{subfigure}
-                    \\
+l.22 \end{figure}
+                 
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
 With luck, this will get me unwedged. But if you
 really didn't forget anything, try typing `2' now; then
 my insertion and my current dilemma will both disappear.
 
-./06_results.tex:21: Missing } inserted.
+! Missing } inserted.
 <inserted text> 
                 }
-l.21 \end{subfigure}
-                    \\
+l.22 \end{figure}
+                 
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
 With luck, this will get me unwedged. But if you
@@ -2628,49 +2937,60 @@ really didn't forget anything, try typing `2' now; then
 my insertion and my current dilemma will both disappear.
 
 
-Overfull \hbox (10.97687pt too wide) in paragraph at lines 11--21
- \OML/cmm/m/it/10 xy$ 
+Overfull \hbox (20.0pt too wide) in paragraph at lines 17--23
+[]
  []
 
 
-Overfull \hbox (10.86105pt too wide) in paragraph at lines 11--21
- [] 
+Overfull \hbox (317.32906pt too wide) in paragraph at lines 17--23
+[]\OML/cmm/m/it/10 etup[]oground:eps[][]$ 
  []
 
 
-Overfull \hbox (275.34164pt too wide) in paragraph at lines 11--21
- []\OML/cmm/m/it/10 etup:eps[][]$ 
- []
-
-
-./06_results.tex:23: LaTeX Error: Environment subfigure undefined.
+! LaTeX Error: Environment figure undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.23 \begin{subfigure}
-                      {.33\textwidth}
+l.24 \begin{figure}
+                   [H]
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no [ in font nullfont!
+Missing character: There is no H in font nullfont!
+Missing character: There is no ] in font nullfont!
+
+! LaTeX Error: Environment subfigure undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.26 \begin{subfigure}
+                      {.24\textwidth}
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 Missing character: There is no . in font nullfont!
-Missing character: There is no 3 in font nullfont!
-Missing character: There is no 3 in font nullfont!
-./06_results.tex:23: Missing number, treated as zero.
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 4 in font nullfont!
+! Missing number, treated as zero.
 <to be read again> 
                    }
-l.23 \begin{subfigure}{.33\textwidth}
+l.26 \begin{subfigure}{.24\textwidth}
                                      
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:23: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    }
-l.23 \begin{subfigure}{.33\textwidth}
+l.26 \begin{subfigure}{.24\textwidth}
                                      
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -2679,8 +2999,8 @@ To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
 
-./06_results.tex:25: Undefined control sequence.
-l.25   \includegraphics
+! Undefined control sequence.
+l.28   \includegraphics
                        [width=.99\linewidth]{posA.png}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2698,19 +3018,19 @@ Missing character: There is no = in font nullfont!
 Missing character: There is no . in font nullfont!
 Missing character: There is no 9 in font nullfont!
 Missing character: There is no 9 in font nullfont!
-./06_results.tex:25: Missing number, treated as zero.
+! Missing number, treated as zero.
 <to be read again> 
                    ]
-l.25   \includegraphics[width=.99\linewidth]
+l.28   \includegraphics[width=.99\linewidth]
                                             {posA.png}
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:25: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    ]
-l.25   \includegraphics[width=.99\linewidth]
+l.28   \includegraphics[width=.99\linewidth]
                                             {posA.png}
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -2729,13 +3049,13 @@ Missing character: There is no p in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no g in font nullfont!
 
-./06_results.tex:26: LaTeX Error: \caption outside float.
+! LaTeX Error: \caption outside float.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.26   \caption
+l.29   \caption
                {View from position A}
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -2758,47 +3078,47 @@ Missing character: There is no o in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no A in font nullfont!
 
-./06_results.tex:28: LaTeX Error: \begin{document} ended by \end{subfigure}.
+! LaTeX Error: \begin{document} ended by \end{subfigure}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.28 \end{subfigure}
-                    %
+l.31 \end{subfigure}
+                    
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-./06_results.tex:29: LaTeX Error: Environment subfigure undefined.
+! LaTeX Error: Environment subfigure undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.29 \begin{subfigure}
-                      {.33\textwidth}
+l.32 \begin{subfigure}
+                      {.24\textwidth}
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 Missing character: There is no . in font nullfont!
-Missing character: There is no 3 in font nullfont!
-Missing character: There is no 3 in font nullfont!
-./06_results.tex:29: Missing number, treated as zero.
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 4 in font nullfont!
+! Missing number, treated as zero.
 <to be read again> 
                    }
-l.29 \begin{subfigure}{.33\textwidth}
+l.32 \begin{subfigure}{.24\textwidth}
                                      
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:29: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    }
-l.29 \begin{subfigure}{.33\textwidth}
+l.32 \begin{subfigure}{.24\textwidth}
                                      
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -2807,8 +3127,8 @@ To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
 
-./06_results.tex:31: Undefined control sequence.
-l.31   \includegraphics
+! Undefined control sequence.
+l.34   \includegraphics
                        [width=.99\linewidth]{posB.png}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2826,19 +3146,19 @@ Missing character: There is no = in font nullfont!
 Missing character: There is no . in font nullfont!
 Missing character: There is no 9 in font nullfont!
 Missing character: There is no 9 in font nullfont!
-./06_results.tex:31: Missing number, treated as zero.
+! Missing number, treated as zero.
 <to be read again> 
                    ]
-l.31   \includegraphics[width=.99\linewidth]
+l.34   \includegraphics[width=.99\linewidth]
                                             {posB.png}
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:31: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    ]
-l.31   \includegraphics[width=.99\linewidth]
+l.34   \includegraphics[width=.99\linewidth]
                                             {posB.png}
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -2857,13 +3177,13 @@ Missing character: There is no p in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no g in font nullfont!
 
-./06_results.tex:32: LaTeX Error: \caption outside float.
+! LaTeX Error: \caption outside float.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.32   \caption
+l.35   \caption
                {View from position B}
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -2886,47 +3206,47 @@ Missing character: There is no o in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no B in font nullfont!
 
-./06_results.tex:34: LaTeX Error: \begin{document} ended by \end{subfigure}.
+! LaTeX Error: \begin{document} ended by \end{subfigure}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.34 \end{subfigure}
-                    %
+l.37 \end{subfigure}
+                    
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-./06_results.tex:35: LaTeX Error: Environment subfigure undefined.
+! LaTeX Error: Environment subfigure undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.35 \begin{subfigure}
-                      {.33\textwidth}
+l.38 \begin{subfigure}
+                      {.24\textwidth}
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 Missing character: There is no . in font nullfont!
-Missing character: There is no 3 in font nullfont!
-Missing character: There is no 3 in font nullfont!
-./06_results.tex:35: Missing number, treated as zero.
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 4 in font nullfont!
+! Missing number, treated as zero.
 <to be read again> 
                    }
-l.35 \begin{subfigure}{.33\textwidth}
+l.38 \begin{subfigure}{.24\textwidth}
                                      
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:35: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    }
-l.35 \begin{subfigure}{.33\textwidth}
+l.38 \begin{subfigure}{.24\textwidth}
                                      
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -2935,8 +3255,8 @@ To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
 
-./06_results.tex:37: Undefined control sequence.
-l.37   \includegraphics
+! Undefined control sequence.
+l.40   \includegraphics
                        [width=.99\linewidth]{posC.png}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2954,19 +3274,19 @@ Missing character: There is no = in font nullfont!
 Missing character: There is no . in font nullfont!
 Missing character: There is no 9 in font nullfont!
 Missing character: There is no 9 in font nullfont!
-./06_results.tex:37: Missing number, treated as zero.
+! Missing number, treated as zero.
 <to be read again> 
                    ]
-l.37   \includegraphics[width=.99\linewidth]
+l.40   \includegraphics[width=.99\linewidth]
                                             {posC.png}
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:37: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    ]
-l.37   \includegraphics[width=.99\linewidth]
+l.40   \includegraphics[width=.99\linewidth]
                                             {posC.png}
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -2985,13 +3305,13 @@ Missing character: There is no p in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no g in font nullfont!
 
-./06_results.tex:38: LaTeX Error: \caption outside float.
+! LaTeX Error: \caption outside float.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.38   \caption
+l.41   \caption
                {View from position C}
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -3014,47 +3334,47 @@ Missing character: There is no o in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no C in font nullfont!
 
-./06_results.tex:40: LaTeX Error: \begin{document} ended by \end{subfigure}.
+! LaTeX Error: \begin{document} ended by \end{subfigure}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.40 \end{subfigure}
-                     \\
+l.43 \end{subfigure}
+                    
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-./06_results.tex:42: LaTeX Error: Environment subfigure undefined.
+! LaTeX Error: Environment subfigure undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.42 \begin{subfigure}
-                      {.33\textwidth}
+l.44 \begin{subfigure}
+                      {.24\textwidth}
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 Missing character: There is no . in font nullfont!
-Missing character: There is no 3 in font nullfont!
-Missing character: There is no 3 in font nullfont!
-./06_results.tex:42: Missing number, treated as zero.
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 4 in font nullfont!
+! Missing number, treated as zero.
 <to be read again> 
                    }
-l.42 \begin{subfigure}{.33\textwidth}
+l.44 \begin{subfigure}{.24\textwidth}
                                      
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:42: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    }
-l.42 \begin{subfigure}{.33\textwidth}
+l.44 \begin{subfigure}{.24\textwidth}
                                      
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -3063,8 +3383,8 @@ To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
 
-./06_results.tex:44: Undefined control sequence.
-l.44   \includegraphics
+! Undefined control sequence.
+l.46   \includegraphics
                        [width=.99\linewidth]{posD.png}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -3082,19 +3402,19 @@ Missing character: There is no = in font nullfont!
 Missing character: There is no . in font nullfont!
 Missing character: There is no 9 in font nullfont!
 Missing character: There is no 9 in font nullfont!
-./06_results.tex:44: Missing number, treated as zero.
+! Missing number, treated as zero.
 <to be read again> 
                    ]
-l.44   \includegraphics[width=.99\linewidth]
+l.46   \includegraphics[width=.99\linewidth]
                                             {posD.png}
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:44: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    ]
-l.44   \includegraphics[width=.99\linewidth]
+l.46   \includegraphics[width=.99\linewidth]
                                             {posD.png}
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -3113,13 +3433,13 @@ Missing character: There is no p in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no g in font nullfont!
 
-./06_results.tex:45: LaTeX Error: \caption outside float.
+! LaTeX Error: \caption outside float.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.45   \caption
+l.47   \caption
                {View from position D}
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -3142,47 +3462,52 @@ Missing character: There is no o in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no D in font nullfont!
 
-./06_results.tex:47: LaTeX Error: \begin{document} ended by \end{subfigure}.
+! LaTeX Error: \begin{document} ended by \end{subfigure}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.47 \end{subfigure}
-                    %
+l.49 \end{subfigure}
+                    \\
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-./06_results.tex:48: LaTeX Error: Environment subfigure undefined.
+Overfull \hbox (20.0pt too wide) in paragraph at lines 24--49
+ [] 
+ []
+
+
+! LaTeX Error: Environment subfigure undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.48 \begin{subfigure}
-                      {.33\textwidth}
+l.51 \begin{subfigure}
+                      {.24\textwidth}
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 Missing character: There is no . in font nullfont!
-Missing character: There is no 3 in font nullfont!
-Missing character: There is no 3 in font nullfont!
-./06_results.tex:48: Missing number, treated as zero.
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 4 in font nullfont!
+! Missing number, treated as zero.
 <to be read again> 
                    }
-l.48 \begin{subfigure}{.33\textwidth}
+l.51 \begin{subfigure}{.24\textwidth}
                                      
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:48: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    }
-l.48 \begin{subfigure}{.33\textwidth}
+l.51 \begin{subfigure}{.24\textwidth}
                                      
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -3191,8 +3516,8 @@ To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
 
-./06_results.tex:50: Undefined control sequence.
-l.50   \includegraphics
+! Undefined control sequence.
+l.53   \includegraphics
                        [width=.99\linewidth]{pos1.png}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -3210,19 +3535,19 @@ Missing character: There is no = in font nullfont!
 Missing character: There is no . in font nullfont!
 Missing character: There is no 9 in font nullfont!
 Missing character: There is no 9 in font nullfont!
-./06_results.tex:50: Missing number, treated as zero.
+! Missing number, treated as zero.
 <to be read again> 
                    ]
-l.50   \includegraphics[width=.99\linewidth]
+l.53   \includegraphics[width=.99\linewidth]
                                             {pos1.png}
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:50: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    ]
-l.50   \includegraphics[width=.99\linewidth]
+l.53   \includegraphics[width=.99\linewidth]
                                             {pos1.png}
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -3241,13 +3566,13 @@ Missing character: There is no p in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no g in font nullfont!
 
-./06_results.tex:51: LaTeX Error: \caption outside float.
+! LaTeX Error: \caption outside float.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.51   \caption
+l.54   \caption
                {View from position 1}
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -3270,47 +3595,47 @@ Missing character: There is no o in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no 1 in font nullfont!
 
-./06_results.tex:53: LaTeX Error: \begin{document} ended by \end{subfigure}.
+! LaTeX Error: \begin{document} ended by \end{subfigure}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.53 \end{subfigure}
+l.56 \end{subfigure}
                     %
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-./06_results.tex:54: LaTeX Error: Environment subfigure undefined.
+! LaTeX Error: Environment subfigure undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.54 \begin{subfigure}
-                      {.33\textwidth}
+l.57 \begin{subfigure}
+                      {.24\textwidth}
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 Missing character: There is no . in font nullfont!
-Missing character: There is no 3 in font nullfont!
-Missing character: There is no 3 in font nullfont!
-./06_results.tex:54: Missing number, treated as zero.
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 4 in font nullfont!
+! Missing number, treated as zero.
 <to be read again> 
                    }
-l.54 \begin{subfigure}{.33\textwidth}
+l.57 \begin{subfigure}{.24\textwidth}
                                      
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:54: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    }
-l.54 \begin{subfigure}{.33\textwidth}
+l.57 \begin{subfigure}{.24\textwidth}
                                      
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -3319,8 +3644,8 @@ To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
 
-./06_results.tex:56: Undefined control sequence.
-l.56   \includegraphics
+! Undefined control sequence.
+l.59   \includegraphics
                        [width=.99\linewidth]{pos2.png}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -3338,19 +3663,19 @@ Missing character: There is no = in font nullfont!
 Missing character: There is no . in font nullfont!
 Missing character: There is no 9 in font nullfont!
 Missing character: There is no 9 in font nullfont!
-./06_results.tex:56: Missing number, treated as zero.
+! Missing number, treated as zero.
 <to be read again> 
                    ]
-l.56   \includegraphics[width=.99\linewidth]
+l.59   \includegraphics[width=.99\linewidth]
                                             {pos2.png}
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:56: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    ]
-l.56   \includegraphics[width=.99\linewidth]
+l.59   \includegraphics[width=.99\linewidth]
                                             {pos2.png}
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -3369,13 +3694,13 @@ Missing character: There is no p in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no g in font nullfont!
 
-./06_results.tex:57: LaTeX Error: \caption outside float.
+! LaTeX Error: \caption outside float.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.57   \caption
+l.60   \caption
                {View from position 2}
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -3398,47 +3723,47 @@ Missing character: There is no o in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no 2 in font nullfont!
 
-./06_results.tex:59: LaTeX Error: \begin{document} ended by \end{subfigure}.
+! LaTeX Error: \begin{document} ended by \end{subfigure}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.59 \end{subfigure}
-                     \\
+l.62 \end{subfigure}
+                    
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-./06_results.tex:61: LaTeX Error: Environment subfigure undefined.
+! LaTeX Error: Environment subfigure undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.61 \begin{subfigure}
-                      {.33\textwidth}
+l.63 \begin{subfigure}
+                      {.24\textwidth}
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 Missing character: There is no . in font nullfont!
-Missing character: There is no 3 in font nullfont!
-Missing character: There is no 3 in font nullfont!
-./06_results.tex:61: Missing number, treated as zero.
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 4 in font nullfont!
+! Missing number, treated as zero.
 <to be read again> 
                    }
-l.61 \begin{subfigure}{.33\textwidth}
+l.63 \begin{subfigure}{.24\textwidth}
                                      
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:61: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    }
-l.61 \begin{subfigure}{.33\textwidth}
+l.63 \begin{subfigure}{.24\textwidth}
                                      
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -3447,8 +3772,8 @@ To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
 
-./06_results.tex:63: Undefined control sequence.
-l.63   \includegraphics
+! Undefined control sequence.
+l.65   \includegraphics
                        [width=.99\linewidth]{pos3.png}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -3466,19 +3791,19 @@ Missing character: There is no = in font nullfont!
 Missing character: There is no . in font nullfont!
 Missing character: There is no 9 in font nullfont!
 Missing character: There is no 9 in font nullfont!
-./06_results.tex:63: Missing number, treated as zero.
+! Missing number, treated as zero.
 <to be read again> 
                    ]
-l.63   \includegraphics[width=.99\linewidth]
+l.65   \includegraphics[width=.99\linewidth]
                                             {pos3.png}
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:63: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    ]
-l.63   \includegraphics[width=.99\linewidth]
+l.65   \includegraphics[width=.99\linewidth]
                                             {pos3.png}
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -3497,13 +3822,13 @@ Missing character: There is no p in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no g in font nullfont!
 
-./06_results.tex:64: LaTeX Error: \caption outside float.
+! LaTeX Error: \caption outside float.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.64   \caption
+l.66   \caption
                {View from position 3}
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -3526,47 +3851,47 @@ Missing character: There is no o in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no 3 in font nullfont!
 
-./06_results.tex:66: LaTeX Error: \begin{document} ended by \end{subfigure}.
+! LaTeX Error: \begin{document} ended by \end{subfigure}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.66 \end{subfigure}
-                    %
+l.68 \end{subfigure}
+                    
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-./06_results.tex:67: LaTeX Error: Environment subfigure undefined.
+! LaTeX Error: Environment subfigure undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.67 \begin{subfigure}
-                      {.33\textwidth}
+l.69 \begin{subfigure}
+                      {.24\textwidth}
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 Missing character: There is no . in font nullfont!
-Missing character: There is no 3 in font nullfont!
-Missing character: There is no 3 in font nullfont!
-./06_results.tex:67: Missing number, treated as zero.
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 4 in font nullfont!
+! Missing number, treated as zero.
 <to be read again> 
                    }
-l.67 \begin{subfigure}{.33\textwidth}
+l.69 \begin{subfigure}{.24\textwidth}
                                      
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:67: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    }
-l.67 \begin{subfigure}{.33\textwidth}
+l.69 \begin{subfigure}{.24\textwidth}
                                      
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -3575,8 +3900,8 @@ To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
 
-./06_results.tex:69: Undefined control sequence.
-l.69   \includegraphics
+! Undefined control sequence.
+l.71   \includegraphics
                        [width=.99\linewidth]{pos4.png}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -3594,19 +3919,19 @@ Missing character: There is no = in font nullfont!
 Missing character: There is no . in font nullfont!
 Missing character: There is no 9 in font nullfont!
 Missing character: There is no 9 in font nullfont!
-./06_results.tex:69: Missing number, treated as zero.
+! Missing number, treated as zero.
 <to be read again> 
                    ]
-l.69   \includegraphics[width=.99\linewidth]
+l.71   \includegraphics[width=.99\linewidth]
                                             {pos4.png}
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
 
-./06_results.tex:69: Illegal unit of measure (pt inserted).
+! Illegal unit of measure (pt inserted).
 <to be read again> 
                    ]
-l.69   \includegraphics[width=.99\linewidth]
+l.71   \includegraphics[width=.99\linewidth]
                                             {pos4.png}
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -3625,13 +3950,13 @@ Missing character: There is no p in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no g in font nullfont!
 
-./06_results.tex:70: LaTeX Error: \caption outside float.
+! LaTeX Error: \caption outside float.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.70   \caption
+l.72   \caption
                {View from position 4}
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -3654,154 +3979,26 @@ Missing character: There is no o in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no 4 in font nullfont!
 
-./06_results.tex:72: LaTeX Error: \begin{document} ended by \end{subfigure}.
+! LaTeX Error: \begin{document} ended by \end{subfigure}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.72 \end{subfigure}
-                    %
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-./06_results.tex:73: LaTeX Error: Environment subfigure undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.73 \begin{subfigure}
-                      {.33\textwidth}
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-Missing character: There is no . in font nullfont!
-Missing character: There is no 3 in font nullfont!
-Missing character: There is no 3 in font nullfont!
-./06_results.tex:73: Missing number, treated as zero.
-<to be read again> 
-                   }
-l.73 \begin{subfigure}{.33\textwidth}
-                                     
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-./06_results.tex:73: Illegal unit of measure (pt inserted).
-<to be read again> 
-                   }
-l.73 \begin{subfigure}{.33\textwidth}
-                                     
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
-./06_results.tex:75: Undefined control sequence.
-l.75   \includegraphics
-                       [width=.99\linewidth]{pos5.png}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-Missing character: There is no [ in font nullfont!
-Missing character: There is no w in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no d in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no h in font nullfont!
-Missing character: There is no = in font nullfont!
-Missing character: There is no . in font nullfont!
-Missing character: There is no 9 in font nullfont!
-Missing character: There is no 9 in font nullfont!
-./06_results.tex:75: Missing number, treated as zero.
-<to be read again> 
-                   ]
-l.75   \includegraphics[width=.99\linewidth]
-                                            {pos5.png}
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-./06_results.tex:75: Illegal unit of measure (pt inserted).
-<to be read again> 
-                   ]
-l.75   \includegraphics[width=.99\linewidth]
-                                            {pos5.png}
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
-Missing character: There is no ] in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no 5 in font nullfont!
-Missing character: There is no . in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no g in font nullfont!
-
-./06_results.tex:76: LaTeX Error: \caption outside float.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.76   \caption
-               {View from position 5}
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-Missing character: There is no V in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no w in font nullfont!
-Missing character: There is no f in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no m in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no 5 in font nullfont!
-
-./06_results.tex:78: LaTeX Error: \begin{document} ended by \end{subfigure}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.78 \end{subfigure}
+l.74 \end{subfigure}
                     
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-./06_results.tex:80: LaTeX Error: \caption outside float.
+! LaTeX Error: \caption outside float.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.80 \caption
+l.76 \caption
              {Views during benchmark test}
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -3831,21 +4028,21 @@ Missing character: There is no e in font nullfont!
 Missing character: There is no s in font nullfont!
 Missing character: There is no t in font nullfont!
 
-./06_results.tex:82: LaTeX Error: \begin{document} ended by \end{figure}.
+! LaTeX Error: \begin{document} ended by \end{figure}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.82 \end{figure}
+l.78 \end{figure}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-./06_results.tex:84: Undefined control sequence.
-l.84 \subsection
-                {Comparison of triangulation methods} \label{sec:comparetriang}
+! Undefined control sequence.
+l.80 \section
+             {Comparison of triangulation methods} \label{sec:comparetriang}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
@@ -3929,10 +4126,10 @@ Missing character: There is no t in font nullfont!
 Missing character: There is no i in font nullfont!
 Missing character: There is no o in font nullfont!
 Missing character: There is no n in font nullfont!
-./06_results.tex:85: Undefined control sequence.
+! Undefined control sequence.
 <write> ... Reference `evalproc' on page \thepage 
                                                   \space undefined\on@line .
-l.85 ...cedure described in section \ref{evalproc}
+l.81 ...cedure described in section \ref{evalproc}
                                                   , we can compare midpoint ...
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -3941,7 +4138,7 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-LaTeX Warning: Reference `evalproc' on page  undefined on input line 85.
+LaTeX Warning: Reference `evalproc' on page  undefined on input line 81.
 
 Missing character: There is no , in font nullfont!
 Missing character: There is no w in font nullfont!
@@ -4044,10 +4241,10 @@ Missing character: There is no a in font nullfont!
 Missing character: There is no b in font nullfont!
 Missing character: There is no l in font nullfont!
 Missing character: There is no e in font nullfont!
-./06_results.tex:85: Undefined control sequence.
+! Undefined control sequence.
 <write> ...e `fig:triangcompare' on page \thepage 
                                                   \space undefined\on@line .
-l.85 ...n be seen on table \ref{fig:triangcompare}
+l.81 ...n be seen on table \ref{fig:triangcompare}
                                                   .
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -4056,32 +4253,33 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-LaTeX Warning: Reference `fig:triangcompare' on page  undefined on input line 85.
+LaTeX Warning: Reference `fig:triangcompare' on page  undefined on input line 8
+1.
 
 Missing character: There is no . in font nullfont!
 
-Overfull \hbox (20.0pt too wide) in paragraph at lines 84--86
+Overfull \hbox (20.0pt too wide) in paragraph at lines 80--82
 []
  []
 
 
-Overfull \hbox (10.86105pt too wide) in paragraph at lines 84--86
+Overfull \hbox (10.86105pt too wide) in paragraph at lines 80--82
 []
  []
 
 
-Overfull \hbox (10.86105pt too wide) in paragraph at lines 84--86
+Overfull \hbox (10.86105pt too wide) in paragraph at lines 80--82
 [] 
  []
 
 
-./06_results.tex:87: LaTeX Error: Environment table undefined.
+! LaTeX Error: Environment table undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.87 \begin{table}
+l.83 \begin{table}
                   [H]
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -4091,13 +4289,13 @@ Missing character: There is no [ in font nullfont!
 Missing character: There is no H in font nullfont!
 Missing character: There is no ] in font nullfont!
 
-./06_results.tex:89: LaTeX Error: \caption outside float.
+! LaTeX Error: \caption outside float.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.89   \caption
+l.85   \caption
                {Comparison between triangulation methods}
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -4139,8 +4337,8 @@ Missing character: There is no h in font nullfont!
 Missing character: There is no o in font nullfont!
 Missing character: There is no d in font nullfont!
 Missing character: There is no s in font nullfont!
-./06_results.tex:90: Undefined control sequence.
-l.90   \small
+! Undefined control sequence.
+l.86   \small
              \addtolength{\tabcolsep}{-2pt}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -4148,8 +4346,8 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-./06_results.tex:91: Undefined control sequence.
-l.91   \sisetup
+! Undefined control sequence.
+l.87   \sisetup
                {round-mode=places, round-precision = 3}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -4193,1162 +4391,1162 @@ Missing character: There is no n in font nullfont!
 Missing character: There is no = in font nullfont!
 Missing character: There is no 3 in font nullfont!
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./06_results.tex:93: LaTeX Error: Illegal character in array arg.
+! LaTeX Error: Illegal character in array arg.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.93 ...table-format=2.1,round-precision=1] @{}  }
+l.89 ...table-format=2.1,round-precision=1] @{}  }
                                                   
 (That makes 100 errors; please try again.) 
 Here is how much of TeX's memory you used:
  22 strings out of 494985
  459 string characters out of 6180356
- 49761 words of memory out of 5000000
+ 49774 words of memory out of 5000000
  3337 multiletter control sequences out of 15000+600000
  3948 words of font info for 15 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 19i,4n,19p,881b,105s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 19i,4n,19p,880b,105s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-./06_results.tex:93:  ==> Fatal error occurred, no output PDF file produced!
+!  ==> Fatal error occurred, no output PDF file produced!

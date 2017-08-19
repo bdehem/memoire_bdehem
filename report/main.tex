@@ -1,11 +1,16 @@
-\documentclass{eplmastersthesis}
-%TODO: fixing the scale: the more points, the more everything goes to the origin?
-%\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
-%\usepackage{graphicx}
-%\usepackage{fancyhdr}
-%\pagestyle{fancy}
+\documentclass[11pt, a4paper, twoside, openright]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{microtype} % Improves typography
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[pdftex]{graphicx}
+\usepackage{graphics}
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage{etoolbox}
 \usepackage[backend=biber]{biblatex}
-%\usepackage[acronym,nomain,nonumberlist]{glossaries}
 \usepackage{float}
 \usepackage{textcomp,gensymb}
 \usepackage{csquotes}
@@ -20,8 +25,21 @@
 \usepackage{mathtools}
 \usepackage{amssymb}
 \usepackage{tabulary}
+\usepackage{etoolbox}
+\usepackage{setspace}
+\usepackage{enumitem}
 
-\usepackage{pgfplotstable} % Generates table from .csv
+
+\usepackage{pgfplotstable}
+\definecolor{UCLblue}{cmyk}{1.00,0.68,0.00,0.54}
+\definecolor{EPLblue}{cmyk}{0.70,0.30,0.00,0.00}
+
+%\usepackage{fancyhdr}
+%\pagestyle{fancy}
+%\usepackage[acronym,nomain,nonumberlist]{glossaries}
+%Term definitions
+%\newacronym{uav}{UAV}{Unmanned Aerial Vehicle}
+%%\newglossaryentry{caca}{name=ABC, description={Allo Boris Caca}}
 
 
 \pgfplotsset{compat=1.9}
@@ -40,68 +58,44 @@
 
 \graphicspath{ {images/} }
 
-\title{Drone Navigation in Confined Spaces}
-%\subtitle{Subtitle (optional)}			% Optional subtitle
+\title{Three Dimensional Monocular SLAM for Autonomous Drone Navigation}
 \author{Boris \textsc{Dehem}}
-\speciality{Mathematical Engineering}
-%\options{Option(s)}		% If required by program commission mention options
-\supervisor{Julien \textsc{Hendrickx}}
-\cosupervisor{François \textsc{Wielant}}	% 2nd supervisor name if applicable
-\readertwo{Christophe \textsc{De Vleeschouwer}}
-%\readerone{François \textsc{Wielant}}
-\years{2016-2017}
 
-
-% Generate the glossary
 \begin{document}
-%Term definitions
-%\newacronym{uav}{UAV}{Unmanned Aerial Vehicle}
-%%\newglossaryentry{caca}{name=ABC, description={Allo Boris Caca}}
 
-%\maketitle					% To create front cover page
-%\thispagestyle{empty}		% To suppress header and footer on the back of the cover page
+\setlength{\parindent}{0cm}
+
+\input{chapters/00_cover.tex}
+
 \pagenumbering{roman}
-
-%\chapter*{Abstract} Abstract goes here
-
-%\chapter*{Dedication} To mum and dad
-
-%\chapter*{Declaration} I declare that..
-
-%\chapter*{Acknowledgements} I want to thank...
-
+\input{chapters/abstract}
 \tableofcontents
+\input{chapters/glossary}
 
-\newpage
+\ifodd\value{page}\hbox{}\newpage\thispagestyle{empty}\hbox{}\newpage\fi
+
 \pagenumbering{arabic}
-\chapter{Introduction} %11
 \input{chapters/01_introduction}
-
-\chapter{State of the art} %8
 \input{chapters/02_stateoftheart}
-
-\chapter{Computer Vision} %5
 \input{chapters/03_computervision}
-
-\chapter{Localization} %5
 \input{chapters/04_localisation}
-
-\chapter{Mapping} %10
 \input{chapters/05_mapping}
-
-\chapter{Results} %5
 \input{chapters/06_results}
-
-%\chapter{Conclusion} %5
-%\input{chapters/07_conclusion}
+\input{chapters/07_conclusion}
 
 \printbibliography%
 
-%\appendix
-%\chapter{Benchmark results}
-%\input{chapters/appendix}
+\appendix
+\input{chapters/appendix}
 
 % Back cover page
-\backcoverpage
+
+\newpage
+\thispagestyle{empty}
+\newgeometry{top=1.25cm,bottom=1.25cm,left=1.25cm,right=1.25cm}
+\vspace*{17.75cm}
+\noindent \footnotesize \color{UCLblue} \fontfamily{phv} \selectfont Rue Archim\`{e}de, 1 bte L6.11.01, 1348 Louvain-la-Neuve ~ ~ \color{EPLblue} \textbf{www.uclouvain.be/epl} \\
+\vspace*{6pt}
+\textcolor{EPLblue}{\rule{18.5cm}{8.25cm}}
 
 \end{document}

@@ -70,30 +70,34 @@
       \field{volume}{vol. 117 | no. 3}
       \field{year}{2014}
     \endentry
-    \entry{jacquesleclere}{thesis}{}
-      \name{labelname}{1}{}{%
-        {{hash=32606ce23c17413f6b45982f29a58909}{Arnaud\bibnamedelima Jacques}{A\bibinitperiod\bibinitdelim J\bibinitperiod}{Alexandre\bibnamedelima Leclere}{A\bibinitperiod\bibinitdelim L\bibinitperiod}{}{}{}{}}%
-      }
-      \name{author}{1}{}{%
-        {{hash=32606ce23c17413f6b45982f29a58909}{Arnaud\bibnamedelima Jacques}{A\bibinitperiod\bibinitdelim J\bibinitperiod}{Alexandre\bibnamedelima Leclere}{A\bibinitperiod\bibinitdelim L\bibinitperiod}{}{}{}{}}%
-      }
-      \list{institution}{1}{%
-        {Université Catholique de Louvain}%
-      }
-      \strng{namehash}{32606ce23c17413f6b45982f29a58909}
-      \strng{fullhash}{32606ce23c17413f6b45982f29a58909}
-      \field{sortinit}{A}
-      \field{labeltitle}{Towards 3D Visual SLAM for an Autonomous Quadcopter Running ROS}
-      \field{title}{Towards 3D Visual SLAM for an Autonomous Quadcopter Running ROS}
-      \field{type}{mathesis}
-      \field{year}{2016}
-    \endentry
     \entry{batiravecdesdrones}{article}{}
       \field{sortinit}{B}
       \field{labeltitle}{Bâtir avec des drones ?}
       \field{journaltitle}{https://uclouvain.be/fr/sciencetoday/actualites/batir-avec-des-drones.html}
       \field{title}{Bâtir avec des drones ?}
       \field{year}{2016}
+    \endentry
+    \entry{surf}{article}{}
+      \name{labelname}{3}{}{%
+        {{hash=a06a24a184d39c3aa9a7718cd9a5868d}{Bay}{B\bibinitperiod}{Herbert}{H\bibinitperiod}{}{}{}{}}%
+        {{hash=1fffde1e018446dc52c3da9c6e26ec11}{Tuytelaars}{T\bibinitperiod}{Tinne}{T\bibinitperiod}{}{}{}{}}%
+        {{hash=97097efa079bb7f45db94404bf6cbfa0}{Van\bibnamedelima Gool}{V\bibinitperiod\bibinitdelim G\bibinitperiod}{Luc}{L\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=a06a24a184d39c3aa9a7718cd9a5868d}{Bay}{B\bibinitperiod}{Herbert}{H\bibinitperiod}{}{}{}{}}%
+        {{hash=1fffde1e018446dc52c3da9c6e26ec11}{Tuytelaars}{T\bibinitperiod}{Tinne}{T\bibinitperiod}{}{}{}{}}%
+        {{hash=97097efa079bb7f45db94404bf6cbfa0}{Van\bibnamedelima Gool}{V\bibinitperiod\bibinitdelim G\bibinitperiod}{Luc}{L\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{e1768fe1bf22d28b202d0066ed2a9c3c}
+      \strng{fullhash}{e1768fe1bf22d28b202d0066ed2a9c3c}
+      \field{sortinit}{B}
+      \field{labeltitle}{SURF Speeded Up Robust Features}
+      \field{journaltitle}{Computer Vision and Image Understanding (CVIU)}
+      \field{number}{3}
+      \field{title}{SURF Speeded Up Robust Features}
+      \field{volume}{110}
+      \field{year}{2008}
+      \field{pages}{346\bibrangedash 359}
     \endentry
     \entry{pyramidallucaskanade}{article}{}
       \name{labelname}{1}{}{%
@@ -225,27 +229,40 @@
       \field{year}{2014}
       \keyw{rgb-d,monocular,slam,semidense,lsdslam}
     \endentry
+    \entry{dsovid}{misc}{}
+      \name{labelname}{3}{}{%
+        {{hash=105f32574a19425c80138198b0b09cd5}{Engel}{E\bibinitperiod}{Jakob}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=9025300f43a193cfed8e10e924f2a117}{Koltun}{K\bibinitperiod}{Vladlen}{V\bibinitperiod}{}{}{}{}}%
+        {{hash=1bd2b6b6ca2fc15a90f164070b626131}{Cremers}{C\bibinitperiod}{Daniel}{D\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=105f32574a19425c80138198b0b09cd5}{Engel}{E\bibinitperiod}{Jakob}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=9025300f43a193cfed8e10e924f2a117}{Koltun}{K\bibinitperiod}{Vladlen}{V\bibinitperiod}{}{}{}{}}%
+        {{hash=1bd2b6b6ca2fc15a90f164070b626131}{Cremers}{C\bibinitperiod}{Daniel}{D\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{974ceb49e0d7e4e5dec3dc9cf0eaeae5}
+      \strng{fullhash}{974ceb49e0d7e4e5dec3dc9cf0eaeae5}
+      \field{sortinit}{E}
+      \field{labeltitle}{DSO: Direct Sparse Odometry}
+      \field{howpublished}{Youtube video}
+      \field{month}{07}
+      \field{title}{DSO: Direct Sparse Odometry}
+      \field{year}{2016}
+      \verb{url}
+      \verb https://www.youtube.com/watch?v=C6-xwSOOdqQ
+      \endverb
+    \endentry
     \entry{ransac}{incollection}{}
       \name{labelname}{2}{}{%
-        {{hash=9cb3164d714c21e9fedc873c2e09a05e}{Fischler}{F\bibinitperiod}{Martin\bibnamedelima A.}{M\bibinitperiod\bibinitdelim A\bibinitperiod}{}{}{}{}}%
-        {{hash=951f7d383d3ea7b7019a817032735f8b}{Bolles}{B\bibinitperiod}{Robert\bibnamedelima C.}{R\bibinitperiod\bibinitdelim C\bibinitperiod}{}{}{}{}}%
+        {{hash=f01e7807f4ac10d0a19aedfb63488ab4}{Fischler}{F\bibinitperiod}{M.}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=bc9c689f45c6aa96cb2203b5f49c72e8}{Bolles}{B\bibinitperiod}{R.}{R\bibinitperiod}{}{}{}{}}%
       }
       \name{author}{2}{}{%
-        {{hash=9cb3164d714c21e9fedc873c2e09a05e}{Fischler}{F\bibinitperiod}{Martin\bibnamedelima A.}{M\bibinitperiod\bibinitdelim A\bibinitperiod}{}{}{}{}}%
-        {{hash=951f7d383d3ea7b7019a817032735f8b}{Bolles}{B\bibinitperiod}{Robert\bibnamedelima C.}{R\bibinitperiod\bibinitdelim C\bibinitperiod}{}{}{}{}}%
+        {{hash=f01e7807f4ac10d0a19aedfb63488ab4}{Fischler}{F\bibinitperiod}{M.}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=bc9c689f45c6aa96cb2203b5f49c72e8}{Bolles}{B\bibinitperiod}{R.}{R\bibinitperiod}{}{}{}{}}%
       }
-      \name{editor}{2}{}{%
-        {{hash=9cb3164d714c21e9fedc873c2e09a05e}{Fischler}{F\bibinitperiod}{Martin\bibnamedelima A.}{M\bibinitperiod\bibinitdelim A\bibinitperiod}{}{}{}{}}%
-        {{hash=ba0282455c7499017f219075345efb58}{Firschein}{F\bibinitperiod}{Oscar}{O\bibinitperiod}{}{}{}{}}%
-      }
-      \list{location}{1}{%
-        {San Francisco, CA, USA}%
-      }
-      \list{publisher}{1}{%
-        {Morgan Kaufmann Publishers Inc.}%
-      }
-      \strng{namehash}{fc26f22afcddeded198fab29d715e89a}
-      \strng{fullhash}{fc26f22afcddeded198fab29d715e89a}
+      \strng{namehash}{a08c08a8b1253ff3cf1b55c430cccb1f}
+      \strng{fullhash}{a08c08a8b1253ff3cf1b55c430cccb1f}
       \field{sortinit}{F}
       \field{labeltitle}{Random Sample Consensus: A Paradigm for Model Fitting with Applications to Image Analysis and Automated Cartography}
       \field{booktitle}{Readings in Computer Vision: Issues, Problems, Principles, and Paradigms}
@@ -280,37 +297,34 @@
       \field{year}{2003}
       \field{pages}{930\bibrangedash 943}
     \endentry
-    \entry{surf}{article}{}
-      \name{labelname}{2}{}{%
-        {{hash=4a20b9e0fbf224169753491fd5fd80e8}{H.\bibnamedelimi Bay}{H\bibinitperiod\bibinitdelim B\bibinitperiod}{T.\bibnamedelimi Tuytelaars}{T\bibinitperiod\bibinitdelim T\bibinitperiod}{}{}{A.\bibnamedelimi Ess}{A\bibinitperiod\bibinitdelim E\bibinitperiod}}%
-        {{hash=26815aa48c753194f0f2f368a61242fb}{Gool}{G\bibinitperiod}{L.\bibnamedelimi Van}{L\bibinitperiod\bibinitdelim V\bibinitperiod}{}{}{}{}}%
+    \entry{levmar}{misc}{}
+      \name{labelname}{1}{}{%
+        {{hash=313ac0e9e98b307617a74f42ccbffc3a}{Gavin}{G\bibinitperiod}{Henri\bibnamedelima P.}{H\bibinitperiod\bibinitdelim P\bibinitperiod}{}{}{}{}}%
       }
-      \name{author}{2}{}{%
-        {{hash=4a20b9e0fbf224169753491fd5fd80e8}{H.\bibnamedelimi Bay}{H\bibinitperiod\bibinitdelim B\bibinitperiod}{T.\bibnamedelimi Tuytelaars}{T\bibinitperiod\bibinitdelim T\bibinitperiod}{}{}{A.\bibnamedelimi Ess}{A\bibinitperiod\bibinitdelim E\bibinitperiod}}%
-        {{hash=26815aa48c753194f0f2f368a61242fb}{Gool}{G\bibinitperiod}{L.\bibnamedelimi Van}{L\bibinitperiod\bibinitdelim V\bibinitperiod}{}{}{}{}}%
+      \name{author}{1}{}{%
+        {{hash=313ac0e9e98b307617a74f42ccbffc3a}{Gavin}{G\bibinitperiod}{Henri\bibnamedelima P.}{H\bibinitperiod\bibinitdelim P\bibinitperiod}{}{}{}{}}%
       }
-      \strng{namehash}{1f108535a79d2409c89ff6d55b5f9d46}
-      \strng{fullhash}{1f108535a79d2409c89ff6d55b5f9d46}
-      \field{sortinit}{H}
-      \field{labeltitle}{SURF Speeded Up Robust Features}
-      \field{journaltitle}{Computer Vision and Image Understanding (CVIU)}
-      \field{number}{3}
-      \field{title}{SURF Speeded Up Robust Features}
-      \field{volume}{110}
-      \field{year}{2008}
-      \field{pages}{346\bibrangedash 359}
+      \strng{namehash}{313ac0e9e98b307617a74f42ccbffc3a}
+      \strng{fullhash}{313ac0e9e98b307617a74f42ccbffc3a}
+      \field{sortinit}{G}
+      \field{labeltitle}{The Levenberg-Marquardt method for nonlinear least squares curve-fitting problems}
+      \field{title}{The Levenberg-Marquardt method for nonlinear least squares curve-fitting problems}
+      \field{year}{2017}
+      \verb{url}
+      \verb http://people.duke.edu/~hpgavin/ce281/lm.pdf
+      \endverb
     \endentry
     \entry{hartleysturm}{article}{}
       \name{labelname}{2}{}{%
-        {{hash=63c8a3ab640f9b0ad6594125b36f4e20}{Hartley}{H\bibinitperiod}{Richard\bibnamedelima I.}{R\bibinitperiod\bibinitdelim I\bibinitperiod}{}{}{}{}}%
+        {{hash=a0cea72f57464ff654a3f8362e58503d}{Hartley}{H\bibinitperiod}{Richard}{R\bibinitperiod}{}{}{}{}}%
         {{hash=02c64dfdce9a74895fb75c7895e0a38b}{Sturm}{S\bibinitperiod}{Peter}{P\bibinitperiod}{}{}{}{}}%
       }
       \name{author}{2}{}{%
-        {{hash=63c8a3ab640f9b0ad6594125b36f4e20}{Hartley}{H\bibinitperiod}{Richard\bibnamedelima I.}{R\bibinitperiod\bibinitdelim I\bibinitperiod}{}{}{}{}}%
+        {{hash=a0cea72f57464ff654a3f8362e58503d}{Hartley}{H\bibinitperiod}{Richard}{R\bibinitperiod}{}{}{}{}}%
         {{hash=02c64dfdce9a74895fb75c7895e0a38b}{Sturm}{S\bibinitperiod}{Peter}{P\bibinitperiod}{}{}{}{}}%
       }
-      \strng{namehash}{48868cd6188592f265a348e252118a2a}
-      \strng{fullhash}{48868cd6188592f265a348e252118a2a}
+      \strng{namehash}{c21ad62f1346873aa65bd504b8ef0303}
+      \strng{fullhash}{c21ad62f1346873aa65bd504b8ef0303}
       \field{sortinit}{H}
       \field{labeltitle}{Triangulation}
       \field{journaltitle}{CVIU - Computer Vision and Image Understanding}
@@ -318,24 +332,25 @@
       \field{volume}{Vol. 68, No. 2}
       \field{year}{1997}
     \endentry
-    \entry{dsovid}{misc}{}
-      \name{labelname}{1}{}{%
-        {{hash=fe044970bdf03273037fb954edbf06a6}{Jakob\bibnamedelima Engel}{J\bibinitperiod\bibinitdelim E\bibinitperiod}{Daniel\bibnamedelima Cremers}{D\bibinitperiod\bibinitdelim C\bibinitperiod}{}{}{Vladlen\bibnamedelima Koltun}{V\bibinitperiod\bibinitdelim K\bibinitperiod}}%
+    \entry{jacquesleclere}{thesis}{}
+      \name{labelname}{2}{}{%
+        {{hash=46ec0e3e6cce7dea4ccced9dd5413b73}{Jacques}{J\bibinitperiod}{Arnaud}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=11f83e28d9a0486417f0a3df7be94333}{Leclere}{L\bibinitperiod}{Alexandre}{A\bibinitperiod}{}{}{}{}}%
       }
-      \name{author}{1}{}{%
-        {{hash=fe044970bdf03273037fb954edbf06a6}{Jakob\bibnamedelima Engel}{J\bibinitperiod\bibinitdelim E\bibinitperiod}{Daniel\bibnamedelima Cremers}{D\bibinitperiod\bibinitdelim C\bibinitperiod}{}{}{Vladlen\bibnamedelima Koltun}{V\bibinitperiod\bibinitdelim K\bibinitperiod}}%
+      \name{author}{2}{}{%
+        {{hash=46ec0e3e6cce7dea4ccced9dd5413b73}{Jacques}{J\bibinitperiod}{Arnaud}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=11f83e28d9a0486417f0a3df7be94333}{Leclere}{L\bibinitperiod}{Alexandre}{A\bibinitperiod}{}{}{}{}}%
       }
-      \strng{namehash}{fe044970bdf03273037fb954edbf06a6}
-      \strng{fullhash}{fe044970bdf03273037fb954edbf06a6}
+      \list{institution}{1}{%
+        {Université Catholique de Louvain}%
+      }
+      \strng{namehash}{5ba7ded284ca3217c34d927a79197e42}
+      \strng{fullhash}{5ba7ded284ca3217c34d927a79197e42}
       \field{sortinit}{J}
-      \field{labeltitle}{DSO: Direct Sparse Odometry}
-      \field{howpublished}{Youtube video}
-      \field{month}{07}
-      \field{title}{DSO: Direct Sparse Odometry}
+      \field{labeltitle}{Towards 3D Visual SLAM for an Autonomous Quadcopter Running ROS}
+      \field{title}{Towards 3D Visual SLAM for an Autonomous Quadcopter Running ROS}
+      \field{type}{mathesis}
       \field{year}{2016}
-      \verb{url}
-      \verb https://www.youtube.com/watch?v=C6-xwSOOdqQ
-      \endverb
     \endentry
     \entry{kanatani}{inbook}{}
       \name{labelname}{3}{}{%
@@ -417,6 +432,35 @@
       \field{volume}{21}
       \field{year}{1994}
       \field{pages}{224\bibrangedash 270}
+    \endentry
+    \entry{sba}{article}{}
+      \name{labelname}{2}{}{%
+        {{hash=6e57578028cbdc61175367cf62044703}{Lourakis}{L\bibinitperiod}{M.I.\bibnamedelimi A.}{M\bibinitperiod\bibinitdelim A\bibinitperiod}{}{}{}{}}%
+        {{hash=55d7caeae863bde0857a096d27b96876}{Argyros}{A\bibinitperiod}{A.A.}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=6e57578028cbdc61175367cf62044703}{Lourakis}{L\bibinitperiod}{M.I.\bibnamedelimi A.}{M\bibinitperiod\bibinitdelim A\bibinitperiod}{}{}{}{}}%
+        {{hash=55d7caeae863bde0857a096d27b96876}{Argyros}{A\bibinitperiod}{A.A.}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{6cee429712ee935d4bcd9eb1cbea1075}
+      \strng{fullhash}{6cee429712ee935d4bcd9eb1cbea1075}
+      \field{sortinit}{L}
+      \field{labeltitle}{{SBA: A Software Package for Generic Sparse Bundle Adjustment}}
+      \field{journaltitle}{ACM Trans. Math. Software}
+      \field{number}{1}
+      \field{title}{{SBA: A Software Package for Generic Sparse Bundle Adjustment}}
+      \field{volume}{36}
+      \field{year}{2009}
+      \field{pages}{1\bibrangedash 30}
+      \verb{doi}
+      \verb http://doi.acm.org/10.1145/1486525.1486527
+      \endverb
     \endentry
     \entry{sift2}{misc}{}
       \name{labelname}{1}{}{%
@@ -503,23 +547,6 @@
       \field{type}{techreport}
       \field{year}{2003}
     \endentry
-    \entry{multipleviewgeometry}{book}{}
-      \name{labelname}{1}{}{%
-        {{hash=e273f6b964e98f03b1c4c71b0be050e4}{Richard\bibnamedelima Hartley}{R\bibinitperiod\bibinitdelim H\bibinitperiod}{Andrew\bibnamedelima Zisserman}{A\bibinitperiod\bibinitdelim Z\bibinitperiod}{}{}{}{}}%
-      }
-      \name{author}{1}{}{%
-        {{hash=e273f6b964e98f03b1c4c71b0be050e4}{Richard\bibnamedelima Hartley}{R\bibinitperiod\bibinitdelim H\bibinitperiod}{Andrew\bibnamedelima Zisserman}{A\bibinitperiod\bibinitdelim Z\bibinitperiod}{}{}{}{}}%
-      }
-      \list{publisher}{1}{%
-        {Cambridge University Press}%
-      }
-      \strng{namehash}{e273f6b964e98f03b1c4c71b0be050e4}
-      \strng{fullhash}{e273f6b964e98f03b1c4c71b0be050e4}
-      \field{sortinit}{R}
-      \field{labeltitle}{Multiple View Geometry in Computer Vision}
-      \field{title}{Multiple View Geometry in Computer Vision}
-      \field{year}{2003}
-    \endentry
     \entry{fast}{inproceedings}{}
       \name{labelname}{2}{}{%
         {{hash=712f75fa3873cef1c7e0971ca95a0237}{Rosten}{R\bibinitperiod}{Edward}{E\bibinitperiod}{}{}{}{}}%
@@ -593,6 +620,23 @@
       \field{title}{ORB: an efficient alternative to SIFT or SURF}
       \field{year}{2011}
     \endentry
+    \entry{bundler}{misc}{}
+      \name{labelname}{1}{}{%
+        {{hash=691a70527bf15623328097c061ad1940}{Snavely}{S\bibinitperiod}{Noah}{N\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=691a70527bf15623328097c061ad1940}{Snavely}{S\bibinitperiod}{Noah}{N\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{691a70527bf15623328097c061ad1940}
+      \strng{fullhash}{691a70527bf15623328097c061ad1940}
+      \field{sortinit}{S}
+      \field{labeltitle}{Bundler: Structure from Motion (SfM) for Unordered Image Collections}
+      \field{title}{Bundler: Structure from Motion (SfM) for Unordered Image Collections}
+      \field{year}{2008}
+      \verb{url}
+      \verb http://www.cs.cornell.edu/~snavely/bundler/
+      \endverb
+    \endentry
     \entry{dronesww1}{article}{}
       \name{labelname}{1}{}{%
         {{hash=542143b58b79f2a676ec82b2a1339194}{Stamp}{S\bibinitperiod}{Jimmy}{J\bibinitperiod}{}{}{}{}}%
@@ -608,6 +652,89 @@
       \field{title}{Unmanned Drones Have Been Around Since World War I}
       \field{year}{2013}
     \endentry
+    \entry{cnnslam}{inproceedings}{}
+      \name{labelname}{4}{}{%
+        {{hash=39eaf7e2d8219b9885bfc2d606a6016d}{Tateno}{T\bibinitperiod}{K.}{K\bibinitperiod}{}{}{}{}}%
+        {{hash=04ea61b6d8efbf2e39f6b4710da725b0}{Tombari}{T\bibinitperiod}{F.}{F\bibinitperiod}{}{}{}{}}%
+        {{hash=3ed5e291172e541f111352739f2a5276}{Laina}{L\bibinitperiod}{I.}{I\bibinitperiod}{}{}{}{}}%
+        {{hash=4a307cddb95d6695790a7f7a064e0fce}{Navab}{N\bibinitperiod}{N.}{N\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{4}{}{%
+        {{hash=39eaf7e2d8219b9885bfc2d606a6016d}{Tateno}{T\bibinitperiod}{K.}{K\bibinitperiod}{}{}{}{}}%
+        {{hash=04ea61b6d8efbf2e39f6b4710da725b0}{Tombari}{T\bibinitperiod}{F.}{F\bibinitperiod}{}{}{}{}}%
+        {{hash=3ed5e291172e541f111352739f2a5276}{Laina}{L\bibinitperiod}{I.}{I\bibinitperiod}{}{}{}{}}%
+        {{hash=4a307cddb95d6695790a7f7a064e0fce}{Navab}{N\bibinitperiod}{N.}{N\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {Hawaii USA}%
+      }
+      \strng{namehash}{d3a747717a71a49e2eab165ffe66fa0c}
+      \strng{fullhash}{c9175af0100f6f94b7ceaf85e2ae3b89}
+      \field{sortinit}{T}
+      \field{labeltitle}{CNNSLAM : Real-time dense monocular SLAM with learned depth prediction}
+      \field{booktitle}{IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR)}
+      \field{month}{06}
+      \field{title}{CNNSLAM : Real-time dense monocular SLAM with learned depth prediction}
+      \field{year}{2017}
+    \endentry
+    \entry{opencvcamcalib}{misc}{}
+      \name{labelname}{1}{}{%
+        {{hash=2e0c3cac52a3e787243bb98ede19a5c6}{team}{t\bibinitperiod}{}{}{opencv\bibnamedelima dev}{o\bibinitperiod\bibinitdelim d\bibinitperiod}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=2e0c3cac52a3e787243bb98ede19a5c6}{team}{t\bibinitperiod}{}{}{opencv\bibnamedelima dev}{o\bibinitperiod\bibinitdelim d\bibinitperiod}{}{}}%
+      }
+      \strng{namehash}{2e0c3cac52a3e787243bb98ede19a5c6}
+      \strng{fullhash}{2e0c3cac52a3e787243bb98ede19a5c6}
+      \field{sortinit}{t}
+      \field{labeltitle}{Camera Calibration and 3D Reconstruction}
+      \field{title}{Camera Calibration and 3D Reconstruction}
+      \verb{url}
+      \verb http://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html
+      \endverb
+    \endentry
+    \entry{bamodernsynthesis}{inproceedings}{}
+      \name{labelname}{4}{}{%
+        {{hash=7edc70f9ce27f4a800aa68cbd1625f51}{Triggs}{T\bibinitperiod}{Bill}{B\bibinitperiod}{}{}{}{}}%
+        {{hash=fe6de3ec52eb5d85304de88a3e09203f}{McLauchlan}{M\bibinitperiod}{Philip}{P\bibinitperiod}{}{}{}{}}%
+        {{hash=a0cea72f57464ff654a3f8362e58503d}{Hartley}{H\bibinitperiod}{Richard}{R\bibinitperiod}{}{}{}{}}%
+        {{hash=8eb0347090bee0e3077a241bdad85387}{Fitzgibbon}{F\bibinitperiod}{Andrew}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{4}{}{%
+        {{hash=7edc70f9ce27f4a800aa68cbd1625f51}{Triggs}{T\bibinitperiod}{Bill}{B\bibinitperiod}{}{}{}{}}%
+        {{hash=fe6de3ec52eb5d85304de88a3e09203f}{McLauchlan}{M\bibinitperiod}{Philip}{P\bibinitperiod}{}{}{}{}}%
+        {{hash=a0cea72f57464ff654a3f8362e58503d}{Hartley}{H\bibinitperiod}{Richard}{R\bibinitperiod}{}{}{}{}}%
+        {{hash=8eb0347090bee0e3077a241bdad85387}{Fitzgibbon}{F\bibinitperiod}{Andrew}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Springer Verlag}%
+      }
+      \strng{namehash}{36a5e31de7a1be65ff51f08258616698}
+      \strng{fullhash}{39e68d58abf36cfab8c46b74b47af9f3}
+      \field{sortinit}{T}
+      \field{labeltitle}{Bundle Adjustment -- A Modern Synthesis}
+      \field{booktitle}{VISION ALGORITHMS: THEORY AND PRACTICE, LNCS}
+      \field{title}{Bundle Adjustment -- A Modern Synthesis}
+      \field{year}{2000}
+      \field{pages}{298\bibrangedash 375}
+    \endentry
+    \entry{ardroneautonomy}{misc}{}
+      \name{labelname}{1}{}{%
+        {{hash=bb8dba311c841fd684c99a4711ec5803}{University}{U\bibinitperiod}{Simon\bibnamedelima Fraser}{S\bibinitperiod\bibinitdelim F\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=bb8dba311c841fd684c99a4711ec5803}{University}{U\bibinitperiod}{Simon\bibnamedelima Fraser}{S\bibinitperiod\bibinitdelim F\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{bb8dba311c841fd684c99a4711ec5803}
+      \strng{fullhash}{bb8dba311c841fd684c99a4711ec5803}
+      \field{sortinit}{U}
+      \field{labeltitle}{ardrone-autonomy}
+      \field{note}{software}
+      \field{title}{ardrone-autonomy}
+      \verb{url}
+      \verb http://ardrone-autonomy.readthedocs.io
+      \endverb
+    \endentry
     \entry{dexteroushexrotor}{misc}{}
       \name{labelname}{1}{}{%
         {{hash=645174914ae06840849dfd04fc676223}{Voyles}{V\bibinitperiod}{Richard}{R\bibinitperiod}{}{}{}{}}%
@@ -615,11 +742,14 @@
       \name{author}{1}{}{%
         {{hash=645174914ae06840849dfd04fc676223}{Voyles}{V\bibinitperiod}{Richard}{R\bibinitperiod}{}{}{}{}}%
       }
+      \list{institution}{1}{%
+        {Purdue University}%
+      }
       \strng{namehash}{645174914ae06840849dfd04fc676223}
       \strng{fullhash}{645174914ae06840849dfd04fc676223}
       \field{sortinit}{V}
       \field{labeltitle}{Dexterous Hexrotor Research}
-      \field{howpublished}{http://web.ics.purdue.edu/~rvoyles/research.Hexrotor.html}
+      \field{howpublished}{web.ics.purdue.edu/~rvoyles/research.Hexrotor.html}
       \field{title}{Dexterous Hexrotor Research}
     \endentry
   \endsortlist

@@ -11,7 +11,6 @@
 
 MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3D visualizer"))
 {
-  manual_pose_received = false;
   iter = 0;
   // Subsribers
   strategy_channel        = nh.resolveName("strategy");
@@ -76,7 +75,8 @@ MappingNode::~MappingNode()
 
 void MappingNode::manualPoseCb(const boris_drone::Pose3D::ConstPtr posePtr)
 {
-  manual_pose_received = true;
+  ROS_INFO("mapping node received manual pose");
+  map.setManualPose(*posePtr);
   PnP_pose = *posePtr;
 }
 
@@ -108,7 +108,6 @@ void MappingNode::endResetPoseCb(const std_msgs::Empty& msg)
 void MappingNode::processedImageCb(const boris_drone::ProcessedImageMsg::ConstPtr processed_image_in)
 {
   TIC(mapprocessimage);
-  //ROS_INFO_THROTTLE(1,"Processed image callback. Keyframe needed? %d", manual_pose_received);
   //ROS_INFO_THROTTLE(1,"pending reset? %d, strategy? %d", pending_reset, strategy);
   bool PnP_success;
   //if (pending_reset || strategy == WAIT || strategy == TAKEOFF)
@@ -117,8 +116,7 @@ void MappingNode::processedImageCb(const boris_drone::ProcessedImageMsg::ConstPt
   if (target_detected)
     lastProcessedImgReceived = processed_image_in;
   Frame current_frame(processed_image_in);
-  PnP_success = map.processFrame(current_frame, PnP_pose, manual_pose_received);
-  manual_pose_received = false;
+  PnP_success = map.processFrame(current_frame, PnP_pose);
   this->visualizer->updatePointCloud<pcl::PointXYZ>(map.cloud, "SIFT_cloud");
   if (PnP_success)
   {

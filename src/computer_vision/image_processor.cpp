@@ -146,19 +146,18 @@ void ImageProcessor::publishProcessedImg()
   // give all data to process the last image received (keypoints and target detection)
   //ProcessedImage cam_img(*lastImageReceived, *lastPoseReceived, *prev_cam_img, use_OpticalFlowPyrLK);
   int OF_mode;
-  if (ros::Time::now() - last_full_detection > ros::Duration(9.0)||!prev_cam_img->cv_img||prev_cam_img->n_pts < 20)
-  {
+  if (ros::Time::now() - last_full_detection > ros::Duration(10.0)||!prev_cam_img->cv_img||prev_cam_img->n_pts < 20)
+  {//Full detection
     OF_mode = -1;
     last_full_detection   = ros::Time::now();
     last_hybrid_detection = ros::Time::now();
   }
-  else if (ros::Time::now() - last_hybrid_detection > ros::Duration(3.0))
-  {
-    OF_mode = 0;
-    last_hybrid_detection = ros::Time::now();
-  }
-  else OF_mode = 1;
-
+  //else if (ros::Time::now() - last_hybrid_detection > ros::Duration(3.0))
+  //{//forced hybrid
+    //OF_mode = 0;
+    //last_hybrid_detection = ros::Time::now();
+  //}
+  else OF_mode = 1; //Tracking, with detection on the sides when necessary
   bool test = false;
   ProcessedImage cam_img(*lastImageReceived, *lastPoseReceived, *prev_cam_img, OF_mode, test);
   if (test&&OF_mode!=-1) ROS_WARN("anomaly");

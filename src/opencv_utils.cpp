@@ -55,7 +55,7 @@ cv::Mat rollPitchYawToRotationMatrix(const double roll, const double pitch, cons
 }
 
 //This function gives the same reslt as the transpose of the above function,
-//but it is clearer for me to have two different functions
+//but it is clearer to have two different functions
 cv::Mat rollPitchYawToChangeBaseMatrix(const double roll, const double pitch, const double yaw)
 {
   cv::Mat Rx = rotationMatrixX(-roll);  //-angles

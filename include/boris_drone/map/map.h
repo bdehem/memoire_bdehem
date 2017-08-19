@@ -95,30 +95,32 @@ private:
   bool dlt_triangulation;
   bool midpoint_triangulation;
   bool only_init;
-  bool double_ba;
   bool manual_keyframes;
   bool benchmark;
-  double rpt2;//remove_point_threshold
-  double rpt3;
-  double rpt4;
+  bool sonar_unavailable;
+  double outlier_threshold;
   double remove_cst;
   double remove_coeff;
 
 
   double min_dist;
   double min_time;
-  double inliers_thresh;
+  double dist_thresh;
   double time_thresh;
+  double inliers_thresh;
+  double FOV_thresh;
   int n_kf_local_ba;
   int freq_global_ba;
   int n_inliers_moving_avg;
 
-  std::vector<double> BA_times_pass1;
-  std::vector<double> BA_times_pass2;
-  std::vector<int>    num_iter_pass1;
-  std::vector<int>    num_iter_pass2;
+  int kf_since_last_global_BA;
+
+  std::vector<double> BA_times;
+  std::vector<int>    BA_num_iter;
 
   Camera camera;
+  boris_drone::Pose3D manual_pose;
+  bool                manual_pose_available;
 
   std::map<int,Landmark*> landmarks;
   std::map<int,int> landmark_indices; //TODO unused? remove
@@ -154,7 +156,7 @@ private:
    */
   bool keyframeNeeded(bool manual_pose_received, int n_inliers, double inlier_coverage, boris_drone::Pose3D& current_pose);
 
-  void newKeyframe(const Frame& frame);
+  void newKeyframe(Frame& frame);
   void newPairOfKeyframes(const Frame& frame, const boris_drone::Pose3D& pose, bool use_pose);
   void newPairOfKeyframes2(const Frame& frame, const boris_drone::Pose3D& pose, bool use_pose);
 
@@ -165,7 +167,7 @@ private:
   int getPointsForBA(std::vector<int> &kfIDs,
     std::map<int,std::map<int,int> > &points);
 
-  void doBundleAdjustment(std::vector<int> kfIDs, bool is_first_pass);
+  void doBundleAdjustment(std::vector<int> kfIDs, bool is_global);
 
   void targetDetectedPublisher();
 
@@ -191,9 +193,10 @@ public:
 
   void reset();
 
-  bool processFrame(Frame& frame,boris_drone::Pose3D& PnP_pose, bool keyframeneeded);
+  bool processFrame(Frame& frame,boris_drone::Pose3D& PnP_pose);
 
   void removeUnusedPoints();
+  void setManualPose(const boris_drone::Pose3D& manual_pose);
 
   bool isInitialized();
 

@@ -150,9 +150,9 @@ struct SemiFixedCameraError {
   template <typename T>
   bool operator()(const T* const camera,
                   T* residuals) const {
-    double weight_x = 0.0  ; double weight_rotX = 0.15 ;
-    double weight_y = 0.0  ; double weight_rotY = 0.15 ;
-    double weight_z = 0.25 ; double weight_rotZ = 0.0  ;
+    double weight_x = 0.0 ; double weight_rotX = 0.5 ;
+    double weight_y = 0.0 ; double weight_rotY = 0.5 ;
+    double weight_z = 0.5 ; double weight_rotZ = 0.0 ;
 
     residuals[0] = weight_x    * ((double)nobs/(double)ncam) * (camera[0] - x);
     residuals[1] = weight_y    * ((double)nobs/(double)ncam) * (camera[1] - y);
@@ -223,11 +223,10 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   //Inspired by example code for bundle adjustment of Ceres (main function)
   //google::InitGoogleLogging(argv[0]);
   BALProblem bal_problem = BALProblem(bundlePtr);
-  bool is_first_pass = bundlePtr->is_first_pass;
-
   double* camera_print;
+  bool is_global = bundlePtr->is_global;
 
-  if (!quiet_ba&&false)
+  if (!quiet_ba)
   {
     ROS_INFO("Cameras before BA:");
     for (int i = 0; i< bal_problem.num_keyframes_; i++)
@@ -256,8 +255,7 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     ceres::LossFunction* loss_function = new ceres::HuberLoss(huber_delta);
     problem.AddResidualBlock(cost_function, loss_function, camera, point);
   }
-  int n_constcams = ncam>4 ? ncam / 3 : 1;
-  n_constcams = 1;
+  int n_constcams = ncam > 4 ? 3 : 1;
 
   for (int i = 0; i < ncam; ++i)
   {
@@ -275,7 +273,8 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   computeResiduals(problem, bal_problem, cost_of_point);
 
   ceres::Solver::Options options;
-  options.max_num_iterations = is_first_pass? 100 : 100;
+  options.max_num_iterations = is_global? 5 : 100;
+  options.max_solver_time_in_seconds = is_global? 30 : 50;
   options.linear_solver_type = ceres::DENSE_SCHUR;
   //TODO this is temporary
   options.minimizer_progress_to_stdout = !quiet_ba;
@@ -287,7 +286,7 @@ void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
   int n_iter = summary.num_successful_steps;
 
   std::cout << summary.FullReport() << "\n";
-  if (!quiet_ba&&false)
+  if (!quiet_ba)
   {
     ROS_INFO("Cameras after BA:");
     for (int i = 0; i< bal_problem.num_keyframes_; i++)

@@ -5,40 +5,50 @@
 
 <launch>
   <arg name="file_in"                default="benchmark"/>
-  <arg name="max_matches"            default="200"/>
+  <arg name="max_matches"            default="250"/>
   <arg name="test_robustness"        default="false"/>
   <arg name="no_bundle_adjustment"   default="false"/>
   <arg name="dlt_triangulation"      default="false"/>
   <arg name="midpoint_triangulation" default="false"/>
-  <arg name="double_ba"              default="false"/>
   <arg name="bundle_adjustment_tol"  default="0.05"/>
-  <arg name="rpt2"                   default="6.0" />
-  <arg name="rpt3"                   default="-1" />
-  <arg name="remove_cst"             default="0" />
+  <arg name="rpt2"                   default="5.0" />
+  <arg name="rpt3"                   default="5.0" />
+  <arg name="remove_cst"             default="-1" />
   <arg name="remove_coeff"           default="-1" />
-  <arg name="huber_delta"            default="1.0" />
-  <arg name="file_out"  default="result_robust_$(arg test_robustness)_mm_$(arg max_matches)_batol_$(arg bundle_adjustment_tol)_rpt2_$(arg rpt2)_rpt3_$(arg rpt3)_double_$(arg double_ba)_rmvcst_$(arg remove_cst)_rmvcoeff_$(arg remove_coeff)_huberdelta_$(arg huber_delta)_noba_$(arg no_bundle_adjustment)_mid_$(arg midpoint_triangulation)_dlt_$(arg dlt_triangulation)"/>
+  <arg name="huber_delta"            default="0.05" />
+  <arg name="file_out"  default="result_robust_$(arg test_robustness)_mm_$(arg max_matches)_batol_$(arg bundle_adjustment_tol)_rpt2_$(arg rpt2)_rpt3_$(arg rpt3)_rmvcst_$(arg remove_cst)_rmvcoeff_$(arg remove_coeff)_huberdelta_$(arg huber_delta)_noba_$(arg no_bundle_adjustment)_mid_$(arg midpoint_triangulation)_dlt_$(arg dlt_triangulation)"/>
 
   <include file="$(find boris_drone)/launch/global_params.xml" />
   <include file="$(find boris_drone)/launch/gui.xml" />
-  <include file="$(find boris_drone)/launch/slam.xml" >
-    <arg name="max_matches"            value="$(arg max_matches)"/>
-    <arg name="test_robustness"        value="$(arg test_robustness)"/>
-    <arg name="no_bundle_adjustment"   value="$(arg no_bundle_adjustment)"/>
-    <arg name="midpoint_triangulation" value="$(arg midpoint_triangulation)"/>
-    <arg name="dlt_triangulation"      value="$(arg dlt_triangulation)"/>
-    <arg name="double_ba"              value="$(arg double_ba)"/>
-    <arg name="bundle_adjustment_tol"  value="$(arg bundle_adjustment_tol)"/>
-    <arg name="rpt2"                   value="$(arg rpt2)"/>
-    <arg name="rpt3"                   value="$(arg rpt3)"/>
-    <arg name="remove_cst"             value="$(arg remove_cst)"/>
-    <arg name="remove_coeff"           value="$(arg remove_coeff)"/>
-    <arg name="only_init"              value="true" />
-    <arg name="huber_delta"            value="$(arg huber_delta)"/>
-    <arg name="benchmark"              value="true" />
-  </include>
+  <include file="$(find boris_drone)/launch/slam.xml" />
 
-  <node name="boris_drone_manual_pose_estimation" pkg="boris_drone" type="manual_pose_estimation" output="screen"></node>
+  <node name="boris_drone_manual_pose_estimation" pkg="boris_drone" type="manual_pose_estimation" output="screen" />
   <node pkg="rosbag" type="play"   name="player"   output="screen" args="-q /home/$(env USER)/bagfiles/$(arg file_in).bag"/>
   <node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/$(env USER)/bagfiles/$(arg file_out).bag /pose_visual /pose_estimation /benchmark"/>
+
+
+  <param name="boris_drone_mapping_node/max_matches"            value="$(arg max_matches)"/>
+  <param name="boris_drone_mapping_node/test_robustness"        value="$(arg test_robustness)"/>
+  <param name="boris_drone_mapping_node/no_bundle_adjustment"   value="$(arg no_bundle_adjustment)"/>
+  <param name="boris_drone_mapping_node/midpoint_triangulation" value="$(arg midpoint_triangulation)"/>
+  <param name="boris_drone_mapping_node/dlt_triangulation"      value="$(arg dlt_triangulation)"/>
+  <param name="boris_drone_mapping_node/outlier_threshold"      value="$(arg outlier_threshold)"/>
+  <param name="boris_drone_mapping_node/remove_cst"             value="$(arg remove_cst)"/>
+  <param name="boris_drone_mapping_node/remove_coeff"           value="$(arg remove_coeff)"/>
+  <param name="boris_drone_mapping_node/only_init"              value="true" />
+  <param name="boris_drone_mapping_node/benchmark"              value="true" />
+
+  <param name="boris_drone_mapping_node/min_dist"               value="$(arg min_dist)" />
+  <param name="boris_drone_mapping_node/min_time"               value="$(arg min_time)" />
+  <param name="boris_drone_mapping_node/time_thresh"            value="$(arg time_thresh)" />
+  <param name="boris_drone_mapping_node/inliers_thresh"         value="$(arg inliers_thresh)" />
+  <param name="boris_drone_mapping_node/n_kf_local_ba"          value="$(arg n_kf_local_ba)" />
+  <param name="boris_drone_mapping_node/freq_global_ba"         value="$(arg freq_global_ba)" />
+
+  <param name="boris_drone_bundle_adjuster/bundle_adjustment_tol"  value="$(arg bundle_adjustment_tol)"/>
+  <param name="boris_drone_bundle_adjuster/huber_delta"            value="$(arg huber_delta)"/>
+
+
+
+
 </launch>

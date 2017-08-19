@@ -28,11 +28,54 @@ void matchDescriptors(const cv::Mat& descriptors1, const cv::Mat& descriptors2,
   }
 }
 
-double poseDistance(boris_drone::Pose3D pose0, boris_drone::Pose3D pose1)
+bool pointIsVisible(const Keyframe kf, const cv::Point3d& point3D, double thresh)
 {
-  return sqrt((pose0.x-pose1.x)*(pose0.x-pose1.x) +
-              (pose0.y-pose1.y)*(pose0.y-pose1.y) +
-              (pose0.z-pose1.z)*(pose0.z-pose1.z));
+  cv::Mat point = (cv::Mat_<double>(3, 1) << point3D.x, point3D.y, point3D.z);
+
+  cv::Mat top_l = (cv::Mat_<double>(3, 1) << -kf.camera->cx                 / kf.camera->fx,
+                                             -kf.camera->cy                 / kf.camera->fy, 1);
+  cv::Mat top_r = (cv::Mat_<double>(3, 1) << (kf.camera->W - kf.camera->cx) / kf.camera->fx,
+                                             -kf.camera->cy                 / kf.camera->fy, 1);
+  cv::Mat bot_l = (cv::Mat_<double>(3, 1) << -kf.camera->cx                 / kf.camera->fx,
+                                             (kf.camera->H - kf.camera->cy) / kf.camera->fy, 1);
+  cv::Mat bot_r = (cv::Mat_<double>(3, 1) << (kf.camera->W - kf.camera->cx) / kf.camera->fx,
+                                             (kf.camera->H - kf.camera->cy) / kf.camera->fy, 1);
+
+  cv::Mat cam2world, drone2world, origin;
+  getCameraPositionMatrices(kf.pose, drone2world, origin, true);
+  cam2world = drone2world * kf.camera->get_R();
+
+  cv::Mat world_plane_U, world_plane_D, world_plane_L, world_plane_R;
+  cv::Mat cam_plane_U, cam_plane_D, cam_plane_L, cam_plane_R;
+
+
+  cam_plane_U = top_r.cross(top_l);
+  cam_plane_D = bot_l.cross(bot_r);
+  cam_plane_L = top_l.cross(bot_l);
+  cam_plane_R = bot_r.cross(top_r);
+
+  world_plane_U = cam2world * cam_plane_U;
+  world_plane_D = cam2world * cam_plane_D;
+  world_plane_L = cam2world * cam_plane_L;
+  world_plane_R = cam2world * cam_plane_R;
+
+  double d_U = origin.dot(world_plane_U);
+  double d_D = origin.dot(world_plane_D);
+  double d_L = origin.dot(world_plane_L);
+  double d_R = origin.dot(world_plane_R);
+
+  if (d_U - point.dot(world_plane_U) <= thresh) return false;
+  if (d_D - point.dot(world_plane_D) <= thresh) return false;
+  if (d_L - point.dot(world_plane_L) <= thresh) return false;
+  if (d_R - point.dot(world_plane_R) <= thresh) return false;
+  return true;
+}
+
+double poseDistance(const boris_drone::Pose3D& pose0, const boris_drone::Pose3D& pose1)
+{
+  return sqrt((pose0.x-pose1.x)*(pose0.x-pose1.x)
+            + (pose0.y-pose1.y)*(pose0.y-pose1.y)
+            + (pose0.z-pose1.z)*(pose0.z-pose1.z));
 }
 
 void matchDescriptors(const cv::Mat& descriptors1, const cv::Mat& descriptors2,
@@ -43,6 +86,7 @@ void matchDescriptors(const cv::Mat& descriptors1, const cv::Mat& descriptors2,
   std::vector<cv::DMatch> simple_matches;
   std::vector<int>::iterator it;
   int train_idx;
+  TIC(match);
   matcher.match(descriptors1, descriptors2, simple_matches);
   int nmatch = simple_matches.size();
   std::sort(simple_matches.begin(), simple_matches.end());
@@ -60,6 +104,7 @@ void matchDescriptors(const cv::Mat& descriptors1, const cv::Mat& descriptors2,
       matching_indices_2.push_back(simple_matches[k].trainIdx);
     }
   }
+  TOC_DISPLAY(match,"matching");
 }
 
 

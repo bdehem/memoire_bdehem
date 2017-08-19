@@ -42,18 +42,36 @@ def treat_data(file_in,do_plot):
             pts_map[k] = msg.pts_map
             k+=1
 
+
     if do_plot:
+        refplot = ref.ix[145:325]
+        visplot = vis.ix[145:325]
         f, (axx, axy, axr) = plt.subplots(3, sharex=True)
-        axx.plot(ref.index, ref['pose_estimation__x'])
-        axx.plot(vis.index, vis['pose_visual__x'])
-        axy.plot(ref.index, ref['pose_estimation__y'])
-        axy.plot(vis.index, vis['pose_visual__y'])
-        axr.plot(ref.index, ref['pose_estimation__rotZ'])
-        axr.plot(vis.index, vis['pose_visual__rotZ'])
+        refpose = axx.plot(refplot.index, refplot['pose_estimation__x'],label='True Posesk')
+        vispose = axx.plot(visplot.index, visplot['pose_visual__x'],label='Visual Estimationsk')
+        axy.plot(refplot.index, refplot['pose_estimation__y'])
+        axy.plot(visplot.index, visplot['pose_visual__y'])
+        axr.plot(refplot.index, refplot['pose_estimation__rotZ']*180/math.pi)
+        axr.plot(visplot.index, visplot['pose_visual__rotZ']*180/math.pi)
 
         axx.set_title('X')
+        axx.set_ylabel('Position [m]')
         axy.set_title('Y')
+        axy.set_ylabel('Position [m]')
         axr.set_title('rotZ')
+        axr.set_ylabel('Orientation [$\degree$]')
+        axr.set_xlabel("Time [s]")
+        axr.legend(('True pose', 'Visual estimation'), 'bottom left')
+
+        fig2 = plt.figure()
+        axxyy = fig2.add_subplot(111)
+        axxyy.scatter(ref['pose_estimation__y'], ref['pose_estimation__x'])
+        axxyy.plot(vis['pose_visual__y'], vis['pose_visual__x'])
+        axxyy.set_xlabel("Y position [m]")
+        axxyy.set_ylabel('X position [m]')
+        axxyy.legend(('Estimated trajectory','Reference positions'), 'bottom left')
+        axxyy.invert_xaxis()
+
     return (avgerrD,avgerrR,batime)
 
 def main():

@@ -49,9 +49,16 @@ ProcessedImage::ProcessedImage(const sensor_msgs::Image& msg, const boris_drone:
   int min_x, max_x, min_y, max_y;
   int nrow = cv_img->image.rows;
   int ncol = cv_img->image.cols;
+
+  double pct_detect = 0.1;
+  int thresh_x = (int) ((double)ncol*pct_detect);
+  int thresh_y = (int) ((double)nrow*pct_detect);
+
   cv::Mat detected_descriptors;
   cv::Mat roi, mask;
   std::vector<cv::KeyPoint> detected_keypoints;
+  double thetime;
+  bool hyb = false;
   switch (OF_mode) {
     case 1:
       trackKeypoints(this->descriptors,this->keypoints, prev, min_x, max_x, min_y, max_y);
@@ -63,9 +70,44 @@ ProcessedImage::ProcessedImage(const sensor_msgs::Image& msg, const boris_drone:
         detectKeypoints(this->descriptors, this->keypoints, true, mask);
         made_full_detection = true;
       }
-      n_pts = this->keypoints.size();
+      else if(min_x<thresh_x||max_x>ncol-thresh_x||min_y<thresh_y||max_y>nrow-thresh_y)
+      {
+        thetime = ros::Time::now().toSec();
+        mask = cv::Mat::zeros(nrow,ncol,CV_8UC1);
+        if(min_x<thresh_x)
+        {
+          roi = mask(cv::Rect(0,min_y,min_x,max_y-min_y));
+          roi = cv::Scalar(1);
+          hyb = true;
+        }
+        if(max_x>ncol-thresh_x)
+        {
+          roi = mask(cv::Rect(max_x,min_y,ncol-max_x,max_y-min_y));
+          roi = cv::Scalar(1);
+          hyb = true;
+        }
+        if(min_y<thresh_y)
+        {
+          roi = mask(cv::Rect(min_x,0,max_x-min_x,min_y));
+          roi = cv::Scalar(1);
+          hyb = true;
+        }
+        if(max_y>nrow-thresh_y)
+        {
+          roi = mask(cv::Rect(min_x,max_y,max_x-min_x,nrow-max_y));
+          roi = cv::Scalar(1);
+          hyb = true;
+        }
+        detectKeypoints(detected_descriptors, detected_keypoints, false, mask);
+        keypoints.insert(keypoints.end(), detected_keypoints.begin(), detected_keypoints.end());
+        descriptors.push_back(detected_descriptors);
+        n_pts = this->keypoints.size();
+        std::cout << "\033[1;36m[TIC TOC]: " << "Hybrid" << ": " << ros::Time::now().toSec() - thetime << "\033[0m\n";
+        ROS_INFO("Hybrid at %f",ros::Time::now().toSec());
+      }
       return;
     case 0:
+      thetime = ros::Time::now().toSec();
       trackKeypoints(this->descriptors,this->keypoints, prev, min_x, max_x, min_y, max_y);
       if(min_x>max_x||min_y>max_y)
       {
@@ -84,6 +126,8 @@ ProcessedImage::ProcessedImage(const sensor_msgs::Image& msg, const boris_drone:
       keypoints.insert(keypoints.end(), detected_keypoints.begin(), detected_keypoints.end());
       descriptors.push_back(detected_descriptors);
       n_pts = this->keypoints.size();
+      std::cout << "\033[1;36m[TIC TOC]: " << "Hybrid" << ": " << ros::Time::now().toSec() - thetime << "\033[0m\n";
+      ROS_INFO("Hybrid at %f",ros::Time::now().toSec());
       return;
     case -1:
       detectKeypoints(this->descriptors, this->keypoints, true, mask);
@@ -105,6 +149,9 @@ bool ProcessedImage::trackKeypoints(cv::Mat& tracked_descriptors,
 std::vector<cv::KeyPoint>& tracked_keypoints, ProcessedImage& prev,
 int& min_x, int& max_x, int& min_y, int& max_y)
 {
+  TIC(track);
+
+
   min_x = cv_img->image.cols + 1;  max_x = -1;
   min_y = cv_img->image.rows + 1;  max_y = -1;
   TIC(optical_flow);
@@ -144,6 +191,7 @@ int& min_x, int& max_x, int& min_y, int& max_y)
       tracked_keypoints.push_back(newKeyPoint);
     }
   }
+  //TOC_DISPLAY(track, "tracking");
   if (min_x < 0) min_x = 0;
   if (min_y < 0) min_y = 0;
   if (max_x >= cv_img->image.cols) max_x = cv_img->image.cols - 1;
@@ -174,11 +222,11 @@ std::vector<cv::KeyPoint>& detected_keypoints, bool full_detection, cv::Mat& mas
 
   if (full_detection) detector.detect(cv_img->image, detected_keypoints);
   else                detector.detect(cv_img->image, detected_keypoints, mask);
-  //TOC(detect, "detect detected_keypoints");
+  //TOC_DISPLAY(detect, "detect detected_keypoints");
   if (detected_keypoints.size() == 0) return;
   TIC(extract);
   extractor.compute(cv_img->image, detected_keypoints, detected_descriptors);
-  //TOC(extract, "descriptor extrator");
+  //TOC_DISPLAY(extract, "descriptor extrator");
 }
 
 void ProcessedImage::combineKeypoints(cv::Mat& tracked_descriptors,  std::vector<cv::KeyPoint>& tracked_keypoints,
@@ -303,7 +351,7 @@ void ProcessedImage::convertToMsg(boris_drone::ProcessedImageMsg::Ptr& msg, Targ
       }
     }
   }
-  //TOC(target, "detect and remove target");
+  //TOC_DISPLAY(target, "detect and remove target");
   ROS_DEBUG("=========== POINT (%f;%f)", msg->keypoints[msg->keypoints.size() - 1].point.x,
             msg->keypoints[msg->keypoints.size() - 1].point.y);
 }

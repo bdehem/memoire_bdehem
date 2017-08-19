@@ -1,7 +1,6 @@
 
 bool converged
 bool is_global
-bool is_first_pass
 bool[] fixed_cams
 float32[] cost_of_point
 float32 time_taken
