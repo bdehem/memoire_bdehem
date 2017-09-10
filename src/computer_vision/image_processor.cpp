@@ -1,14 +1,14 @@
 /*
- *  This file is part of boris_drone 2016.
+ *  This file is part of ucl_drone 2016.
  *  For more information, refer
  *  to the corresponding header file.
  *
- *  \author Arnaud Jacques & Alexandre Leclere
- *  \date 2016
+ *  \author Arnaud Jacques, Alexandre Leclere, Boris Dehem
+ *  \date 2016, 2017
  *
  */
 
-#include <boris_drone/computer_vision/image_processor.h>
+#include <ucl_drone/computer_vision/image_processor.h>
 
 ImageProcessor::ImageProcessor() : it(nh)
 {
@@ -41,14 +41,14 @@ ImageProcessor::ImageProcessor() : it(nh)
   pose_channel           = nh.resolveName("pose_estimation");
   reset_pose_channel     = nh.resolveName("reset_pose");
   end_reset_pose_channel = nh.resolveName("end_reset_pose");
-  image_sub_         = it.subscribe(video_channel,          1, &ImageProcessor::imageCb,        this);
+  image_sub          = it.subscribe(video_channel,          1, &ImageProcessor::imageCb,        this);
   pose_sub           = nh.subscribe(pose_channel,           1, &ImageProcessor::poseCb,         this);
   reset_pose_sub     = nh.subscribe(reset_pose_channel,     1, &ImageProcessor::resetPoseCb,    this);
   end_reset_pose_sub = nh.subscribe(end_reset_pose_channel, 1, &ImageProcessor::endResetPoseCb, this);
 
   // Initialize publisher of processed_image
   processed_image_channel_out = nh.resolveName("processed_image");
-  processed_image_pub = nh.advertise<boris_drone::ProcessedImageMsg>(processed_image_channel_out, 1);
+  processed_image_pub = nh.advertise<ucl_drone::ProcessedImageMsg>(processed_image_channel_out, 1);
 
   if (!autonomy_unavailable)  // then set the drone to the selected camera
   {
@@ -126,7 +126,7 @@ void ImageProcessor::imageCb(const sensor_msgs::Image::ConstPtr& msg)
 }
 
 /* This function is called every time a new pose is published */
-void ImageProcessor::poseCb(const boris_drone::Pose3D::ConstPtr& posePtr)
+void ImageProcessor::poseCb(const ucl_drone::Pose3D::ConstPtr& posePtr)
 {
   if (pending_reset)
     return;
@@ -163,7 +163,7 @@ void ImageProcessor::publishProcessedImg()
   if (test&&OF_mode!=-1) ROS_WARN("anomaly");
 
   // initialize the message to send
-  boris_drone::ProcessedImageMsg::Ptr msg(new boris_drone::ProcessedImageMsg);
+  ucl_drone::ProcessedImageMsg::Ptr msg(new ucl_drone::ProcessedImageMsg);
   // build the message to send
   cam_img.convertToMsg(msg, target);
   //TOC(processed_image, "processedImage");

@@ -1,0 +1,179 @@
+\hypertarget{classProcessedImage}{}\section{Processed\+Image Class Reference}
+\label{classProcessedImage}\index{Processed\+Image@{Processed\+Image}}
+
+
+Provide tools to process keypoint extraction.  
+
+
+
+
+{\ttfamily \#include $<$processed\+\_\+image.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classProcessedImage_ae69fda8dc14b796b7fb632d596b69590}\label{classProcessedImage_ae69fda8dc14b796b7fb632d596b69590}} 
+\hyperlink{classProcessedImage_ae69fda8dc14b796b7fb632d596b69590}{Processed\+Image} ()
+\begin{DoxyCompactList}\small\item\em Empty constructor. \end{DoxyCompactList}\item 
+\hyperlink{classProcessedImage_a4733c93afcd9d3376cb5b1e02dbf6024}{Processed\+Image} (const sensor\+\_\+msgs\+::\+Image \&\hyperlink{classProcessedImage_a8e3f0066b0fd5f1b858f0d977d8cb8ff}{msg}, const ucl\+\_\+drone\+::\+Pose3D \&\hyperlink{classProcessedImage_a2297493e85206abec15dc01ad467142f}{pose}, \hyperlink{classProcessedImage}{Processed\+Image} \&prev, int O\+F\+\_\+mode, bool \&made\+\_\+full\+\_\+detection)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+bool \hyperlink{classProcessedImage_a267f990b3804d93170e0abae9423cb3f}{track\+Keypoints} (cv\+::\+Mat \&tracked\+\_\+descriptors, std\+::vector$<$ cv\+::\+Key\+Point $>$ \&tracked\+\_\+keypoints, \hyperlink{classProcessedImage}{Processed\+Image} \&prev, int \&min\+\_\+x, int \&max\+\_\+x, int \&min\+\_\+y, int \&max\+\_\+y)
+\begin{DoxyCompactList}\small\item\em Find keypoints using tracking. \end{DoxyCompactList}\item 
+void \hyperlink{classProcessedImage_a54e2bf4e40ce4ac52bd83b33afe40b4b}{detect\+Keypoints} (cv\+::\+Mat \&detected\+\_\+descriptors, std\+::vector$<$ cv\+::\+Key\+Point $>$ \&detected\+\_\+keypoints, bool full\+\_\+detection, cv\+::\+Mat \&mask)
+\begin{DoxyCompactList}\small\item\em Find keypoints using detection and descriptor extraction. \end{DoxyCompactList}\item 
+void \hyperlink{classProcessedImage_ac8955f0c80a6dc3dde51167083e22634}{combine\+Keypoints} (cv\+::\+Mat \&tracked\+\_\+descriptors, std\+::vector$<$ cv\+::\+Key\+Point $>$ \&tracked\+\_\+keypoints, cv\+::\+Mat \&detected\+\_\+descriptors, std\+::vector$<$ cv\+::\+Key\+Point $>$ \&detected\+\_\+keypoints)
+\begin{DoxyCompactList}\small\item\em Combine detected and tracked keypoints. \end{DoxyCompactList}\item 
+\hyperlink{classProcessedImage_ad54aba79f66018dffdfe6c3671e60f9c}{$\sim$\+Processed\+Image} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classProcessedImage_a05b1fa58ff21619a11364f7d7474b602}\label{classProcessedImage_a05b1fa58ff21619a11364f7d7474b602}} 
+void {\bfseries convert\+To\+Msg} (ucl\+\_\+drone\+::\+Processed\+Image\+Msg\+::\+Ptr \&\hyperlink{classProcessedImage_a8e3f0066b0fd5f1b858f0d977d8cb8ff}{msg}, \hyperlink{classTarget}{Target} target)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classProcessedImage_ade3b1abb2a76c250890f7f47526a4982}\label{classProcessedImage_ade3b1abb2a76c250890f7f47526a4982}} 
+cv\+\_\+bridge\+::\+Cv\+Image\+Ptr \hyperlink{classProcessedImage_ade3b1abb2a76c250890f7f47526a4982}{cv\+\_\+img}
+\begin{DoxyCompactList}\small\item\em Image in Open\+CV format. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classProcessedImage_a0b24f5980f7c260d38ac056f355401e4}\label{classProcessedImage_a0b24f5980f7c260d38ac056f355401e4}} 
+std\+::vector$<$ cv\+::\+Key\+Point $>$ \hyperlink{classProcessedImage_a0b24f5980f7c260d38ac056f355401e4}{keypoints}
+\begin{DoxyCompactList}\small\item\em vector of keypoints detected \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classProcessedImage_a2cd78d795c267711680681c61d361017}\label{classProcessedImage_a2cd78d795c267711680681c61d361017}} 
+cv\+::\+Mat \hyperlink{classProcessedImage_a2cd78d795c267711680681c61d361017}{descriptors}
+\begin{DoxyCompactList}\small\item\em the keypoints descripors in opencv format \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classProcessedImage_ac97dd98356dbb3ac9d761d5d26e1169a}\label{classProcessedImage_ac97dd98356dbb3ac9d761d5d26e1169a}} 
+sensor\+\_\+msgs\+::\+Image \hyperlink{classProcessedImage_ac97dd98356dbb3ac9d761d5d26e1169a}{image}
+\begin{DoxyCompactList}\small\item\em video image in the R\+OS format after rescaling \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classProcessedImage_a2297493e85206abec15dc01ad467142f}\label{classProcessedImage_a2297493e85206abec15dc01ad467142f}} 
+ucl\+\_\+drone\+::\+Pose3D \hyperlink{classProcessedImage_a2297493e85206abec15dc01ad467142f}{pose}
+\begin{DoxyCompactList}\small\item\em estimated pose of the drone before the visual estimation \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classProcessedImage_a6030bdbeefb071b139739c8977a48bba}\label{classProcessedImage_a6030bdbeefb071b139739c8977a48bba}} 
+int \hyperlink{classProcessedImage_a6030bdbeefb071b139739c8977a48bba}{n\+\_\+pts}
+\begin{DoxyCompactList}\small\item\em the number of keypoints detected in the last image \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classProcessedImage_a8e3f0066b0fd5f1b858f0d977d8cb8ff}\label{classProcessedImage_a8e3f0066b0fd5f1b858f0d977d8cb8ff}} 
+ucl\+\_\+drone\+::\+Processed\+Image\+Msg\+::\+Ptr \hyperlink{classProcessedImage_a8e3f0066b0fd5f1b858f0d977d8cb8ff}{msg}
+\begin{DoxyCompactList}\small\item\em the message to be sent \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classProcessedImage_a8cc90ba7c11bfc4aa5c711b0b6d5f236}\label{classProcessedImage_a8cc90ba7c11bfc4aa5c711b0b6d5f236}} 
+static constexpr double \hyperlink{classProcessedImage_a8cc90ba7c11bfc4aa5c711b0b6d5f236}{border\+\_\+detec\+\_\+frac} = 0.\+15
+\begin{DoxyCompactList}\small\item\em Percentage threshold of border with no inliers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Provide tools to process keypoint extraction. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classProcessedImage_a4733c93afcd9d3376cb5b1e02dbf6024}\label{classProcessedImage_a4733c93afcd9d3376cb5b1e02dbf6024}} 
+\index{Processed\+Image@{Processed\+Image}!Processed\+Image@{Processed\+Image}}
+\index{Processed\+Image@{Processed\+Image}!Processed\+Image@{Processed\+Image}}
+\subsubsection{\texorpdfstring{Processed\+Image()}{ProcessedImage()}}
+{\footnotesize\ttfamily Processed\+Image\+::\+Processed\+Image (\begin{DoxyParamCaption}\item[{const sensor\+\_\+msgs\+::\+Image \&}]{msg,  }\item[{const ucl\+\_\+drone\+::\+Pose3D \&}]{pose,  }\item[{\hyperlink{classProcessedImage}{Processed\+Image} \&}]{prev,  }\item[{int}]{O\+F\+\_\+mode,  }\item[{bool \&}]{made\+\_\+full\+\_\+detection }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+Create a Process\+Image object from an image message, and extract keypoints 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em msg} & Image to be processed. \\
+\hline
+\mbox{\tt in}  & {\em pose} & Estimation of the pose at the moment the image was observed. \\
+\hline
+\mbox{\tt in}  & {\em prev} & Pointer to previous \hyperlink{classProcessedImage}{Processed\+Image}. \\
+\hline
+\mbox{\tt in}  & {\em O\+F\+\_\+mode} & Optical Flow mode. 1 = Use only tracking. 0 = use hybrid. -\/1 = Use only detection \\
+\hline
+\mbox{\tt out}  & {\em made\+\_\+full\+\_\+detection} & True if full detection (on entire image was used) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classProcessedImage_ad54aba79f66018dffdfe6c3671e60f9c}\label{classProcessedImage_ad54aba79f66018dffdfe6c3671e60f9c}} 
+\index{Processed\+Image@{Processed\+Image}!````~Processed\+Image@{$\sim$\+Processed\+Image}}
+\index{````~Processed\+Image@{$\sim$\+Processed\+Image}!Processed\+Image@{Processed\+Image}}
+\subsubsection{\texorpdfstring{$\sim$\+Processed\+Image()}{~ProcessedImage()}}
+{\footnotesize\ttfamily Processed\+Image\+::$\sim$\+Processed\+Image (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Destructor. 
+
+build a message that can be sent to other nodes 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classProcessedImage_ac8955f0c80a6dc3dde51167083e22634}\label{classProcessedImage_ac8955f0c80a6dc3dde51167083e22634}} 
+\index{Processed\+Image@{Processed\+Image}!combine\+Keypoints@{combine\+Keypoints}}
+\index{combine\+Keypoints@{combine\+Keypoints}!Processed\+Image@{Processed\+Image}}
+\subsubsection{\texorpdfstring{combine\+Keypoints()}{combineKeypoints()}}
+{\footnotesize\ttfamily void Processed\+Image\+::combine\+Keypoints (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{tracked\+\_\+descriptors,  }\item[{std\+::vector$<$ cv\+::\+Key\+Point $>$ \&}]{tracked\+\_\+keypoints,  }\item[{cv\+::\+Mat \&}]{detected\+\_\+descriptors,  }\item[{std\+::vector$<$ cv\+::\+Key\+Point $>$ \&}]{detected\+\_\+keypoints }\end{DoxyParamCaption})}
+
+
+
+Combine detected and tracked keypoints. 
+
+Combined keypoints are saved in the \hyperlink{classProcessedImage}{Processed\+Image} object. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em tracked\+\_\+descriptors} & Descriptors of detected keypoints. \\
+\hline
+\mbox{\tt in}  & {\em tracked\+\_\+keypoints} & Detected keypoints (2D coordinates in this image). \\
+\hline
+\mbox{\tt in}  & {\em detected\+\_\+descriptors} & Descriptors of tracked keypoints. \\
+\hline
+\mbox{\tt in}  & {\em detected\+\_\+keypoints} & Tracked keypoints (2D coordinates in this image). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classProcessedImage_a54e2bf4e40ce4ac52bd83b33afe40b4b}\label{classProcessedImage_a54e2bf4e40ce4ac52bd83b33afe40b4b}} 
+\index{Processed\+Image@{Processed\+Image}!detect\+Keypoints@{detect\+Keypoints}}
+\index{detect\+Keypoints@{detect\+Keypoints}!Processed\+Image@{Processed\+Image}}
+\subsubsection{\texorpdfstring{detect\+Keypoints()}{detectKeypoints()}}
+{\footnotesize\ttfamily void Processed\+Image\+::detect\+Keypoints (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{detected\+\_\+descriptors,  }\item[{std\+::vector$<$ cv\+::\+Key\+Point $>$ \&}]{detected\+\_\+keypoints,  }\item[{bool}]{full\+\_\+detection,  }\item[{cv\+::\+Mat \&}]{mask }\end{DoxyParamCaption})}
+
+
+
+Find keypoints using detection and descriptor extraction. 
+
+Detect keypoints in the image using a detector, and then extract a descriptor for these points 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em detected\+\_\+descriptors} & Descriptors of detected keypoints. \\
+\hline
+\mbox{\tt out}  & {\em detected\+\_\+keypoints} & Detected keypoints (2D coordinates in this image). \\
+\hline
+\mbox{\tt in}  & {\em full\+\_\+detection} & If true, disregard mask and perform detection on entire image. \\
+\hline
+\mbox{\tt in}  & {\em mask} & Mask specifying what part of the image to search for detectors. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classProcessedImage_a267f990b3804d93170e0abae9423cb3f}\label{classProcessedImage_a267f990b3804d93170e0abae9423cb3f}} 
+\index{Processed\+Image@{Processed\+Image}!track\+Keypoints@{track\+Keypoints}}
+\index{track\+Keypoints@{track\+Keypoints}!Processed\+Image@{Processed\+Image}}
+\subsubsection{\texorpdfstring{track\+Keypoints()}{trackKeypoints()}}
+{\footnotesize\ttfamily bool Processed\+Image\+::track\+Keypoints (\begin{DoxyParamCaption}\item[{cv\+::\+Mat \&}]{tracked\+\_\+descriptors,  }\item[{std\+::vector$<$ cv\+::\+Key\+Point $>$ \&}]{tracked\+\_\+keypoints,  }\item[{\hyperlink{classProcessedImage}{Processed\+Image} \&}]{prev,  }\item[{int \&}]{min\+\_\+x,  }\item[{int \&}]{max\+\_\+x,  }\item[{int \&}]{min\+\_\+y,  }\item[{int \&}]{max\+\_\+y }\end{DoxyParamCaption})}
+
+
+
+Find keypoints using tracking. 
+
+Find keypoints present by looking for keypoints from the previous image using an optical flow method 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em tracked\+\_\+descriptors} & Descriptors of tracked keypoints. \\
+\hline
+\mbox{\tt out}  & {\em tracked\+\_\+keypoints} & Tracked keypoints (2D coordinates in this image). \\
+\hline
+\mbox{\tt in}  & {\em prev} & Pointer to previous \hyperlink{classProcessedImage}{Processed\+Image}. \\
+\hline
+\mbox{\tt out}  & {\em min\+\_\+x} & Leftmost x-\/position of tracked keypoints \\
+\hline
+\mbox{\tt out}  & {\em max\+\_\+x} & Rightmost x-\/position of tracked keypoints \\
+\hline
+\mbox{\tt out}  & {\em min\+\_\+y} & Highest y-\/position of tracked keypoints \\
+\hline
+\mbox{\tt out}  & {\em max\+\_\+y} & Lowest y-\/position of tracked keypoints \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/computer\+\_\+vision/processed\+\_\+image.\+h\end{DoxyCompactItemize}

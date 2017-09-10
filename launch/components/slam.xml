@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<!-- Launch file for the starting mission for the thesis of Boris Dehem-->
+<!-- Work In Progress -->
+<launch>
+  <node name="image_proc_front" pkg="image_proc" type="image_proc" ns="ardrone/front"/>
+
+  <node name="ucl_drone_computer_vision" pkg="ucl_drone" type="computer_vision" output="screen">
+    <param name="video_channel" value="ardrone/front/image_rect_color"/>
+    <param name="cam_type" value="front"/>
+    <param name="use_OpticalFlowPyrLK" value="true"/>
+  </node>
+
+  <node name="ucl_drone_mapping_node" pkg="ucl_drone" type="mapping_node" output="screen">
+    <param name="thresh_descriptor_match"     value="250" />
+    <param name="max_matches"            value="200" />
+    <param name="no_bundle_adjustment"   value="false" />
+    <param name="only_init"              value="false" />
+    <param name="outlier_threshold"      value="5"/>
+    <param name="manual_keyframes"       value="false"/>
+    <param name="sonar_unavailable"      value="false" />
+
+    <param name="min_dist"        value="0.3" />
+    <param name="min_time"        value="2" />
+    <param name="dist_thresh"     value="0.5" />
+    <param name="time_thresh"     value="5" />
+    <param name="inliers_thresh"  value="40" />
+    <param name="FOV_thresh"      value="0.33" />
+    <param name="n_kf_local_ba"   value="6" />
+    <param name="freq_global_ba"  value="5" />
+  </node>
+
+  <node name="ucl_drone_bundle_adjuster" pkg="ucl_drone" type="bundle_adjuster" output="screen">
+    <param name="bundle_adjustment_tol" value="0.1" />
+    <param name="quiet"                 value="false" />
+    <param name="huber_delta"           value="0.05"/>
+  </node>
+
+</launch>

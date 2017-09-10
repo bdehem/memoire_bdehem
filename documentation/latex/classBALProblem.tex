@@ -1,0 +1,112 @@
+\hypertarget{classBALProblem}{}\section{B\+A\+L\+Problem Class Reference}
+\label{classBALProblem}\index{B\+A\+L\+Problem@{B\+A\+L\+Problem}}
+
+
+{\ttfamily \#include $<$bundle\+\_\+adjuster.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classBALProblem_accc972616862be896a2d018946989eb2}\label{classBALProblem_accc972616862be896a2d018946989eb2}} 
+\hyperlink{classBALProblem_accc972616862be896a2d018946989eb2}{B\+A\+L\+Problem} ()
+\begin{DoxyCompactList}\small\item\em Empty Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classBALProblem_adb33eb5929766ce616575e54a93a214f}{B\+A\+L\+Problem} (const ucl\+\_\+drone\+::\+Bundle\+Msg\+::\+Const\+Ptr bundle\+Ptr)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a15ede54c9418e6874b348af1e06b034b}\label{classBALProblem_a15ede54c9418e6874b348af1e06b034b}} 
+\hyperlink{classBALProblem_a15ede54c9418e6874b348af1e06b034b}{$\sim$\+B\+A\+L\+Problem} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_ace84d9674b5c79b731b04d3a86b0cd6d}\label{classBALProblem_ace84d9674b5c79b731b04d3a86b0cd6d}} 
+int \hyperlink{classBALProblem_ace84d9674b5c79b731b04d3a86b0cd6d}{num\+\_\+observations} () const
+\begin{DoxyCompactList}\small\item\em Get number of landmark observations in the problem. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a276ca464f09f2fe5a76e0c2bc0afe57f}\label{classBALProblem_a276ca464f09f2fe5a76e0c2bc0afe57f}} 
+const double $\ast$ \hyperlink{classBALProblem_a276ca464f09f2fe5a76e0c2bc0afe57f}{observations} () const
+\begin{DoxyCompactList}\small\item\em Get pointer to the begin of the array containing 2D position of each observation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a6f94a879ab1f8d53316ab01051b9512d}\label{classBALProblem_a6f94a879ab1f8d53316ab01051b9512d}} 
+double $\ast$ \hyperlink{classBALProblem_a6f94a879ab1f8d53316ab01051b9512d}{mutable\+\_\+keyframes} ()
+\begin{DoxyCompactList}\small\item\em Get pointer to the begin of the array containing the keyframe poses to be adjusted. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_aa17a635043ae62cf9707763e5a246803}\label{classBALProblem_aa17a635043ae62cf9707763e5a246803}} 
+double $\ast$ \hyperlink{classBALProblem_aa17a635043ae62cf9707763e5a246803}{mutable\+\_\+points} ()
+\begin{DoxyCompactList}\small\item\em Get pointer to the begin of the array containing the landmark positions to be adjusted. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a4cedeb4aef54242cfb0f7170db45f7d2}\label{classBALProblem_a4cedeb4aef54242cfb0f7170db45f7d2}} 
+double $\ast$ \hyperlink{classBALProblem_a4cedeb4aef54242cfb0f7170db45f7d2}{mutable\+\_\+keyframe} (int i)
+\begin{DoxyCompactList}\small\item\em Get pointer to the begin of the ith keyframe pose to be adjusted. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a89c3d6afe28864900bd086a52c5277d6}\label{classBALProblem_a89c3d6afe28864900bd086a52c5277d6}} 
+double $\ast$ \hyperlink{classBALProblem_a89c3d6afe28864900bd086a52c5277d6}{mutable\+\_\+point} (int i)
+\begin{DoxyCompactList}\small\item\em Get pointer to the begin of the ith landmark to be adjusted. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_ab9462d8a6cab6fe6ecc20e299048e611}\label{classBALProblem_ab9462d8a6cab6fe6ecc20e299048e611}} 
+double $\ast$ \hyperlink{classBALProblem_ab9462d8a6cab6fe6ecc20e299048e611}{ref\+\_\+pose} (int i)
+\begin{DoxyCompactList}\small\item\em Get pointer to the begin of the reference pose of the ith keyframe. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_ac2584b6fcb2111ec0af43332fbf3cb12}\label{classBALProblem_ac2584b6fcb2111ec0af43332fbf3cb12}} 
+double $\ast$ \hyperlink{classBALProblem_ac2584b6fcb2111ec0af43332fbf3cb12}{mutable\+\_\+keyframe\+\_\+for\+\_\+observation} (int i)
+\begin{DoxyCompactList}\small\item\em Get pointer to the begin of the keyframe the ith observation belongs to. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a52472f4c0418e0a4ccb981c60f2e3af2}\label{classBALProblem_a52472f4c0418e0a4ccb981c60f2e3af2}} 
+double $\ast$ \hyperlink{classBALProblem_a52472f4c0418e0a4ccb981c60f2e3af2}{mutable\+\_\+point\+\_\+for\+\_\+observation} (int i)
+\begin{DoxyCompactList}\small\item\em Get pointer to the begin of the landmark observed in the ith observation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classBALProblem_addfe81faa0a3a9406c6998bbf63b5161}\label{classBALProblem_addfe81faa0a3a9406c6998bbf63b5161}} 
+bool \hyperlink{classBALProblem_addfe81faa0a3a9406c6998bbf63b5161}{fixed\+\_\+poses\+\_\+}
+\begin{DoxyCompactList}\small\item\em If true, only the landmark positions are adjusted, not the keyframes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_ad3caa42180a04d6cadc77c6469e8c05f}\label{classBALProblem_ad3caa42180a04d6cadc77c6469e8c05f}} 
+int \hyperlink{classBALProblem_ad3caa42180a04d6cadc77c6469e8c05f}{num\+\_\+keyframes\+\_\+}
+\begin{DoxyCompactList}\small\item\em Number of keyframes in problem. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a150ce94d21ed28813ee952592ad2cc79}\label{classBALProblem_a150ce94d21ed28813ee952592ad2cc79}} 
+int \hyperlink{classBALProblem_a150ce94d21ed28813ee952592ad2cc79}{num\+\_\+points\+\_\+}
+\begin{DoxyCompactList}\small\item\em Number of landmarks in problem. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a56442746026abb390c4793dfcceeb60b}\label{classBALProblem_a56442746026abb390c4793dfcceeb60b}} 
+int \hyperlink{classBALProblem_a56442746026abb390c4793dfcceeb60b}{num\+\_\+observations\+\_\+}
+\begin{DoxyCompactList}\small\item\em Number of observations (correpondences between a landmark and a keyframe) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a6e73e7f1014a05baab7d268e0902ae02}\label{classBALProblem_a6e73e7f1014a05baab7d268e0902ae02}} 
+int \hyperlink{classBALProblem_a6e73e7f1014a05baab7d268e0902ae02}{num\+\_\+parameters\+\_\+}
+\begin{DoxyCompactList}\small\item\em Total number of optimization parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a95170f7decfb90ac5ef8e6232c68bebf}\label{classBALProblem_a95170f7decfb90ac5ef8e6232c68bebf}} 
+bool $\ast$ \hyperlink{classBALProblem_a95170f7decfb90ac5ef8e6232c68bebf}{fixed\+\_\+kfs\+\_\+}
+\begin{DoxyCompactList}\small\item\em If fixed\+\_\+kgs\+\_\+\mbox{[}i\mbox{]} is true, then the ith keyframe\textquotesingle{}s position is kept constant. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a1ed337b74232331dffb9442a28989dda}\label{classBALProblem_a1ed337b74232331dffb9442a28989dda}} 
+int $\ast$ \hyperlink{classBALProblem_a1ed337b74232331dffb9442a28989dda}{point\+\_\+index\+\_\+}
+\begin{DoxyCompactList}\small\item\em Index of the point of each observation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a86be22d2f1d63bbc41a55df8ad2bfd79}\label{classBALProblem_a86be22d2f1d63bbc41a55df8ad2bfd79}} 
+int $\ast$ \hyperlink{classBALProblem_a86be22d2f1d63bbc41a55df8ad2bfd79}{keyframe\+\_\+index\+\_\+}
+\begin{DoxyCompactList}\small\item\em Index of the keyframe of each observation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a4fc62a548af2b622ccc5c2f827f05184}\label{classBALProblem_a4fc62a548af2b622ccc5c2f827f05184}} 
+double $\ast$ \hyperlink{classBALProblem_a4fc62a548af2b622ccc5c2f827f05184}{observations\+\_\+}
+\begin{DoxyCompactList}\small\item\em Observations (2D coordinated of all points) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a4a3738ac41f84f7cb83d225e7affc821}\label{classBALProblem_a4a3738ac41f84f7cb83d225e7affc821}} 
+double $\ast$ \hyperlink{classBALProblem_a4a3738ac41f84f7cb83d225e7affc821}{parameters\+\_\+}
+\begin{DoxyCompactList}\small\item\em Array containing all optimization parameters (landmark and keyframe positions) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a913fc7e394e953605eb8fd4eabdba27f}\label{classBALProblem_a913fc7e394e953605eb8fd4eabdba27f}} 
+double $\ast$ \hyperlink{classBALProblem_a913fc7e394e953605eb8fd4eabdba27f}{ref\+\_\+poses\+\_\+}
+\begin{DoxyCompactList}\small\item\em Reference pose of each keyframe. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a17d631353328b43894488ea06ee8d95d}\label{classBALProblem_a17d631353328b43894488ea06ee8d95d}} 
+double $\ast$ \hyperlink{classBALProblem_a17d631353328b43894488ea06ee8d95d}{cam\+\_\+rotations\+\_\+}
+\begin{DoxyCompactList}\small\item\em Drone to camera rotation of each keyframe. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBALProblem_a0a6bdd9b5c6f327f1d44e725abbf7c08}\label{classBALProblem_a0a6bdd9b5c6f327f1d44e725abbf7c08}} 
+ucl\+\_\+drone\+::\+Bundle\+Msg\+::\+Const\+Ptr \hyperlink{classBALProblem_a0a6bdd9b5c6f327f1d44e725abbf7c08}{bundle\+Msg\+Ptr\+\_\+}
+\begin{DoxyCompactList}\small\item\em Pointer to bundle message. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that describes a bundle adjustment problem. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classBALProblem_adb33eb5929766ce616575e54a93a214f}\label{classBALProblem_adb33eb5929766ce616575e54a93a214f}} 
+\index{B\+A\+L\+Problem@{B\+A\+L\+Problem}!B\+A\+L\+Problem@{B\+A\+L\+Problem}}
+\index{B\+A\+L\+Problem@{B\+A\+L\+Problem}!B\+A\+L\+Problem@{B\+A\+L\+Problem}}
+\subsubsection{\texorpdfstring{B\+A\+L\+Problem()}{BALProblem()}}
+{\footnotesize\ttfamily B\+A\+L\+Problem\+::\+B\+A\+L\+Problem (\begin{DoxyParamCaption}\item[{const ucl\+\_\+drone\+::\+Bundle\+Msg\+::\+Const\+Ptr}]{bundle\+Ptr }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em bundle\+Ptr} & \hyperlink{classBundle}{Bundle} message containing all data to be adjusted. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/map/\hyperlink{bundle__adjuster_8h}{bundle\+\_\+adjuster.\+h}\end{DoxyCompactItemize}

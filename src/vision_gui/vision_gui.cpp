@@ -1,5 +1,5 @@
 /*
- *  This file is part of boris_drone 2016.
+ *  This file is part of ucl_drone 2016.
  *  For more information, refer
  *  to the corresponding header file.
  *
@@ -8,7 +8,7 @@
  *
  */
 
-#include <boris_drone/vision_gui/vision_gui.h>
+#include <ucl_drone/vision_gui/vision_gui.h>
 
 VisionGui::VisionGui()
 {
@@ -33,7 +33,7 @@ VisionGui::~VisionGui()
 }
 
 /* This function is called every time a new processed_image is published */
-void VisionGui::processedImageCb(const boris_drone::ProcessedImageMsg::ConstPtr processed_image)
+void VisionGui::processedImageCb(const ucl_drone::ProcessedImageMsg::ConstPtr processed_image)
 {
   ROS_DEBUG("VisionGui::processedImageCb start");
   this->lastProcessedImgReceived = processed_image;
@@ -74,7 +74,7 @@ void VisionGui::guiDrawKeypoints()
   cv::waitKey(3);
 }
 
-void VisionGui::convertMsgToAttributes(boris_drone::ProcessedImageMsg::ConstPtr msg)
+void VisionGui::convertMsgToAttributes(ucl_drone::ProcessedImageMsg::ConstPtr msg)
 {
   // convert points in the msg to opencv format
   // and store these as object attributes
@@ -102,7 +102,7 @@ void VisionGui::convertMsgToAttributes(boris_drone::ProcessedImageMsg::ConstPtr 
   }
   catch (cv_bridge::Exception& e)
   {
-    ROS_ERROR("boris_drone::VisionGui::cv_bridge exception: %s", e.what());
+    ROS_ERROR("ucl_drone::VisionGui::cv_bridge exception: %s", e.what());
     return;
   }
 }

@@ -1,0 +1,144 @@
+\hypertarget{classImageProcessor}{}\section{Image\+Processor Class Reference}
+\label{classImageProcessor}\index{Image\+Processor@{Image\+Processor}}
+
+
+Class of the image processor node for R\+OS.  
+
+
+
+
+{\ttfamily \#include $<$image\+\_\+processor.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classImageProcessor_aa9201a4d14b20ac968919145db3a588b}\label{classImageProcessor_aa9201a4d14b20ac968919145db3a588b}} 
+\hyperlink{classImageProcessor_aa9201a4d14b20ac968919145db3a588b}{Image\+Processor} ()
+\begin{DoxyCompactList}\small\item\em Contructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a2ff83cf5f0986ed04b7799499fe0defc}\label{classImageProcessor_a2ff83cf5f0986ed04b7799499fe0defc}} 
+\hyperlink{classImageProcessor_a2ff83cf5f0986ed04b7799499fe0defc}{$\sim$\+Image\+Processor} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \hyperlink{classImageProcessor_ac46ce7c70848213b2221fb46f1b58f45}{publish\+Processed\+Img} ()
+\begin{DoxyCompactList}\small\item\em Publish Processed image. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classImageProcessor_ad10f9df9c9717fd360537841b210585c}\label{classImageProcessor_ad10f9df9c9717fd360537841b210585c}} 
+bool \hyperlink{classImageProcessor_ad10f9df9c9717fd360537841b210585c}{pose\+\_\+publishing}
+\begin{DoxyCompactList}\small\item\em true after receiving the first pose3D message from pose\+\_\+estimation \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a9b53107e1aa08d862e40d9ec27400d8f}\label{classImageProcessor_a9b53107e1aa08d862e40d9ec27400d8f}} 
+bool \hyperlink{classImageProcessor_a9b53107e1aa08d862e40d9ec27400d8f}{video\+\_\+publishing}
+\begin{DoxyCompactList}\small\item\em true after receiving the first Image message from ardrone\+\_\+autonomy \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classImageProcessor_a2a0803b9dc88fbff9e9db2a36367dd68}\label{classImageProcessor_a2a0803b9dc88fbff9e9db2a36367dd68}} 
+void {\bfseries set\+Cam\+Channel} (std\+::string cam\+\_\+type)
+\item 
+\mbox{\Hypertarget{classImageProcessor_a800e26b296b48983699652d6147287af}\label{classImageProcessor_a800e26b296b48983699652d6147287af}} 
+void \hyperlink{classImageProcessor_a800e26b296b48983699652d6147287af}{image\+Cb} (const sensor\+\_\+msgs\+::\+Image\+::\+Const\+Ptr \&msg)
+\begin{DoxyCompactList}\small\item\em Callback when image is received. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_ad605030b64f4aadbe16253b0b32d4cdd}\label{classImageProcessor_ad605030b64f4aadbe16253b0b32d4cdd}} 
+void \hyperlink{classImageProcessor_ad605030b64f4aadbe16253b0b32d4cdd}{pose\+Cb} (const ucl\+\_\+drone\+::\+Pose3\+D\+::\+Const\+Ptr \&pose\+Ptr)
+\begin{DoxyCompactList}\small\item\em Callback when pose is received. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a8d473fde95f696d4705b7ee659e588de}\label{classImageProcessor_a8d473fde95f696d4705b7ee659e588de}} 
+void \hyperlink{classImageProcessor_a8d473fde95f696d4705b7ee659e588de}{reset\+Pose\+Cb} (const std\+\_\+msgs\+::\+Empty \&msg)
+\begin{DoxyCompactList}\small\item\em Callback when a pose reset begining is received. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a76f4419e8a18cf8141d4ea565b248c7e}\label{classImageProcessor_a76f4419e8a18cf8141d4ea565b248c7e}} 
+void \hyperlink{classImageProcessor_a76f4419e8a18cf8141d4ea565b248c7e}{end\+Reset\+Pose\+Cb} (const std\+\_\+msgs\+::\+Empty \&msg)
+\begin{DoxyCompactList}\small\item\em Callback when the pose reset end is received. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a660ad0c87f07a4180349cc411020f6e1}\label{classImageProcessor_a660ad0c87f07a4180349cc411020f6e1}} 
+void \hyperlink{classImageProcessor_a660ad0c87f07a4180349cc411020f6e1}{navdata\+Cb} (const ardrone\+\_\+autonomy\+::\+Navdata\+::\+Const\+Ptr navdata\+Ptr)
+\begin{DoxyCompactList}\small\item\em Callback when a navdata is received. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classImageProcessor_a5881b13aaa2f4221995e1feffc5926f4}\label{classImageProcessor_a5881b13aaa2f4221995e1feffc5926f4}} 
+ros\+::\+Node\+Handle \hyperlink{classImageProcessor_a5881b13aaa2f4221995e1feffc5926f4}{nh}
+\begin{DoxyCompactList}\small\item\em Node handle (used by R\+OS) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a5a50b4f4f51f84d2cfb783bb72b3f353}\label{classImageProcessor_a5a50b4f4f51f84d2cfb783bb72b3f353}} 
+image\+\_\+transport\+::\+Image\+Transport {\bfseries it}
+\item 
+\mbox{\Hypertarget{classImageProcessor_a8d8738a4c260ca625d5b37cfa1421a8e}\label{classImageProcessor_a8d8738a4c260ca625d5b37cfa1421a8e}} 
+std\+::string \hyperlink{classImageProcessor_a8d8738a4c260ca625d5b37cfa1421a8e}{video\+\_\+channel}
+\begin{DoxyCompactList}\small\item\em Channel for input video. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_aa968e5f3f146cb0a2a714fddac92bdb1}\label{classImageProcessor_aa968e5f3f146cb0a2a714fddac92bdb1}} 
+image\+\_\+transport\+::\+Subscriber \hyperlink{classImageProcessor_aa968e5f3f146cb0a2a714fddac92bdb1}{image\+\_\+sub}
+\begin{DoxyCompactList}\small\item\em Subscriber to input video. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a426d7131b95f7c9c6bd7bd88a9babd43}\label{classImageProcessor_a426d7131b95f7c9c6bd7bd88a9babd43}} 
+std\+::string \hyperlink{classImageProcessor_a426d7131b95f7c9c6bd7bd88a9babd43}{pose\+\_\+channel}
+\begin{DoxyCompactList}\small\item\em Channel for estimated pose. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_acec03fa90dcfe504222c82ae2f3c30a4}\label{classImageProcessor_acec03fa90dcfe504222c82ae2f3c30a4}} 
+ros\+::\+Subscriber \hyperlink{classImageProcessor_acec03fa90dcfe504222c82ae2f3c30a4}{pose\+\_\+sub}
+\begin{DoxyCompactList}\small\item\em Subscriber to estimated pose. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a88ec7454f073462c8a7ca450e43dd539}\label{classImageProcessor_a88ec7454f073462c8a7ca450e43dd539}} 
+std\+::string \hyperlink{classImageProcessor_a88ec7454f073462c8a7ca450e43dd539}{reset\+\_\+pose\+\_\+channel}
+\begin{DoxyCompactList}\small\item\em Channel for pose reset. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a8596b9b6db94f1dc0d93f999444b5766}\label{classImageProcessor_a8596b9b6db94f1dc0d93f999444b5766}} 
+ros\+::\+Subscriber \hyperlink{classImageProcessor_a8596b9b6db94f1dc0d93f999444b5766}{reset\+\_\+pose\+\_\+sub}
+\begin{DoxyCompactList}\small\item\em Subscriber to pose reset. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a600802b2e07fe85edae2e9a8b008aeb9}\label{classImageProcessor_a600802b2e07fe85edae2e9a8b008aeb9}} 
+std\+::string \hyperlink{classImageProcessor_a600802b2e07fe85edae2e9a8b008aeb9}{end\+\_\+reset\+\_\+pose\+\_\+channel}
+\begin{DoxyCompactList}\small\item\em Channel for end of pose reset. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_af9b887dea99d4724a1656d4e0caa0cb4}\label{classImageProcessor_af9b887dea99d4724a1656d4e0caa0cb4}} 
+ros\+::\+Subscriber \hyperlink{classImageProcessor_af9b887dea99d4724a1656d4e0caa0cb4}{end\+\_\+reset\+\_\+pose\+\_\+sub}
+\begin{DoxyCompactList}\small\item\em Subscriber to end of pose reset. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a4cd1ce0e630478d0e706003f1b5d61d7}\label{classImageProcessor_a4cd1ce0e630478d0e706003f1b5d61d7}} 
+std\+::string \hyperlink{classImageProcessor_a4cd1ce0e630478d0e706003f1b5d61d7}{processed\+\_\+image\+\_\+channel\+\_\+out}
+\begin{DoxyCompactList}\small\item\em Channel for processed images. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_afe26c18f9619b6e98d63770dddfb6b15}\label{classImageProcessor_afe26c18f9619b6e98d63770dddfb6b15}} 
+ros\+::\+Publisher \hyperlink{classImageProcessor_afe26c18f9619b6e98d63770dddfb6b15}{processed\+\_\+image\+\_\+pub}
+\begin{DoxyCompactList}\small\item\em Publisher of processed images. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a4440a56ed4a34a938ec8f63c5652ec02}\label{classImageProcessor_a4440a56ed4a34a938ec8f63c5652ec02}} 
+ros\+::\+Time \hyperlink{classImageProcessor_a4440a56ed4a34a938ec8f63c5652ec02}{last\+\_\+full\+\_\+detection}
+\begin{DoxyCompactList}\small\item\em Time when we last used detection on entire image. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a7b448fb86c393a1ed2174c705f5e0e31}\label{classImageProcessor_a7b448fb86c393a1ed2174c705f5e0e31}} 
+ros\+::\+Time \hyperlink{classImageProcessor_a7b448fb86c393a1ed2174c705f5e0e31}{last\+\_\+hybrid\+\_\+detection}
+\begin{DoxyCompactList}\small\item\em Time when we last used hybrid detection/tracking. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_af7d65d14c5455a966287e730caebab91}\label{classImageProcessor_af7d65d14c5455a966287e730caebab91}} 
+\hyperlink{classProcessedImage}{Processed\+Image} $\ast$ \hyperlink{classImageProcessor_af7d65d14c5455a966287e730caebab91}{prev\+\_\+cam\+\_\+img}
+\begin{DoxyCompactList}\small\item\em the last image processed \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a2e2844af7d74f100c4290dde55a86750}\label{classImageProcessor_a2e2844af7d74f100c4290dde55a86750}} 
+bool \hyperlink{classImageProcessor_a2e2844af7d74f100c4290dde55a86750}{use\+\_\+\+Optical\+Flow\+Pyr\+LK}
+\begin{DoxyCompactList}\small\item\em launch parameter\+: if true, processed\+\_\+image has to use Optical\+Flow\+Pyr\+LK \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a866a6bc9818ecd3467d82a7fa8c5a257}\label{classImageProcessor_a866a6bc9818ecd3467d82a7fa8c5a257}} 
+bool \hyperlink{classImageProcessor_a866a6bc9818ecd3467d82a7fa8c5a257}{target\+\_\+loaded}
+\begin{DoxyCompactList}\small\item\em true if the target is successfully loaded \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a4dd5e2fe72ce2245e63e05e4ff2808c9}\label{classImageProcessor_a4dd5e2fe72ce2245e63e05e4ff2808c9}} 
+bool \hyperlink{classImageProcessor_a4dd5e2fe72ce2245e63e05e4ff2808c9}{pending\+\_\+reset}
+\begin{DoxyCompactList}\small\item\em true during a reset \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a160e890a82a045904f3866f5656a9ce9}\label{classImageProcessor_a160e890a82a045904f3866f5656a9ce9}} 
+\hyperlink{classTarget}{Target} {\bfseries target}
+\item 
+\mbox{\Hypertarget{classImageProcessor_a4475f48beeb11082aa74723997ef3fee}\label{classImageProcessor_a4475f48beeb11082aa74723997ef3fee}} 
+ucl\+\_\+drone\+::\+Pose3\+D\+::\+Const\+Ptr \hyperlink{classImageProcessor_a4475f48beeb11082aa74723997ef3fee}{last\+Pose\+Received}
+\begin{DoxyCompactList}\small\item\em the last Pose3D message received \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a8c528573983c6cadf259e7d5ac466f09}\label{classImageProcessor_a8c528573983c6cadf259e7d5ac466f09}} 
+ardrone\+\_\+autonomy\+::\+Navdata \hyperlink{classImageProcessor_a8c528573983c6cadf259e7d5ac466f09}{last\+Navdata\+Received}
+\begin{DoxyCompactList}\small\item\em the last Navdata message received \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImageProcessor_a55878a7516f24609d569e3d96147b407}\label{classImageProcessor_a55878a7516f24609d569e3d96147b407}} 
+sensor\+\_\+msgs\+::\+Image\+::\+Const\+Ptr \hyperlink{classImageProcessor_a55878a7516f24609d569e3d96147b407}{last\+Image\+Received}
+\begin{DoxyCompactList}\small\item\em the last Image message received \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class of the image processor node for R\+OS. 
+
+Creates a \hyperlink{classProcessedImage}{Processed\+Image} object every time an image is received from the video input. Keypoint extraction happens in the \hyperlink{classProcessedImage}{Processed\+Image} constructor. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classImageProcessor_ac46ce7c70848213b2221fb46f1b58f45}\label{classImageProcessor_ac46ce7c70848213b2221fb46f1b58f45}} 
+\index{Image\+Processor@{Image\+Processor}!publish\+Processed\+Img@{publish\+Processed\+Img}}
+\index{publish\+Processed\+Img@{publish\+Processed\+Img}!Image\+Processor@{Image\+Processor}}
+\subsubsection{\texorpdfstring{publish\+Processed\+Img()}{publishProcessedImg()}}
+{\footnotesize\ttfamily void Image\+Processor\+::publish\+Processed\+Img (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Publish Processed image. 
+
+Function to build and send messages with all computed keypoints and target detected. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/computer\+\_\+vision/\hyperlink{image__processor_8h}{image\+\_\+processor.\+h}\end{DoxyCompactItemize}

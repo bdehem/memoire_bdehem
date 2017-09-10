@@ -1,0 +1,61 @@
+\hypertarget{classMultiStrategy}{}\section{Multi\+Strategy Class Reference}
+\label{classMultiStrategy}\index{Multi\+Strategy@{Multi\+Strategy}}
+
+
+Provide tools to let drones communicate a common strategy.  
+
+
+
+
+{\ttfamily \#include $<$multi\+\_\+strategy.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMultiStrategy_a0a36ce25f1d4fb7b44c792c4f67b8f4c}\label{classMultiStrategy_a0a36ce25f1d4fb7b44c792c4f67b8f4c}} 
+\hyperlink{classMultiStrategy_a0a36ce25f1d4fb7b44c792c4f67b8f4c}{Multi\+Strategy} ()
+\begin{DoxyCompactList}\small\item\em Contructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMultiStrategy_a5b2657a08fb1c5a1f38dec9a855055d3}\label{classMultiStrategy_a5b2657a08fb1c5a1f38dec9a855055d3}} 
+\hyperlink{classMultiStrategy_a5b2657a08fb1c5a1f38dec9a855055d3}{$\sim$\+Multi\+Strategy} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMultiStrategy_a34ec173b53387fea1757bdafaa52c7c9}\label{classMultiStrategy_a34ec173b53387fea1757bdafaa52c7c9}} 
+void {\bfseries init} ()
+\item 
+\mbox{\Hypertarget{classMultiStrategy_a9c4a794972baf798f70cdbc861ab87b2}\label{classMultiStrategy_a9c4a794972baf798f70cdbc861ab87b2}} 
+void {\bfseries Publish\+Drone\+Role} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMultiStrategy_afd108771c02167ba6bcee890d332a94e}\label{classMultiStrategy_afd108771c02167ba6bcee890d332a94e}} 
+void \hyperlink{classMultiStrategy_afd108771c02167ba6bcee890d332a94e}{ready\+Cb} (const ucl\+\_\+drone\+::\+Drone\+Role\+::\+Const\+Ptr ready\+Ptr)
+\begin{DoxyCompactList}\small\item\em Callback\+: check which drone are ready to take part to the mission. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMultiStrategy_a5fe16b5df97ee4761b2f0adc01380184}\label{classMultiStrategy_a5fe16b5df97ee4761b2f0adc01380184}} 
+ros\+::\+Node\+Handle {\bfseries nh\+\_\+}
+\item 
+\mbox{\Hypertarget{classMultiStrategy_a8876ccc41e56a752ed56b38f400f37d3}\label{classMultiStrategy_a8876ccc41e56a752ed56b38f400f37d3}} 
+ros\+::\+Subscriber {\bfseries ready\+\_\+sub}
+\item 
+\mbox{\Hypertarget{classMultiStrategy_a47750195152d6ae2e7b17c2631d42d40}\label{classMultiStrategy_a47750195152d6ae2e7b17c2631d42d40}} 
+std\+::string {\bfseries ready\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classMultiStrategy_a36d8bf823e376cdfdab7dc309146fa95}\label{classMultiStrategy_a36d8bf823e376cdfdab7dc309146fa95}} 
+ros\+::\+Publisher {\bfseries drones\+\_\+roles\+\_\+pub}
+\item 
+\mbox{\Hypertarget{classMultiStrategy_abd96e678131b8aa4b28aa628b48350be}\label{classMultiStrategy_abd96e678131b8aa4b28aa628b48350be}} 
+std\+::string {\bfseries drones\+\_\+roles\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classMultiStrategy_a2a1084c2eed610d795eeac2e65a55d35}\label{classMultiStrategy_a2a1084c2eed610d795eeac2e65a55d35}} 
+std\+::vector$<$ \hyperlink{classDroneRole}{Drone\+Role} $>$ \hyperlink{classMultiStrategy_a2a1084c2eed610d795eeac2e65a55d35}{role\+\_\+list}
+\begin{DoxyCompactList}\small\item\em Frequently updated list of drone roles. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Provide tools to let drones communicate a common strategy. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/\hyperlink{multi__strategy_8h}{multi\+\_\+strategy.\+h}\end{DoxyCompactItemize}

@@ -1,5 +1,5 @@
 /*
- *  This file is part of boris_drone 2016.
+ *  This file is part of ucl_drone 2016.
  *  For more information, refer
  *  to the corresponding header file.
  *
@@ -13,7 +13,7 @@
  *
  */
 
-#include "boris_drone/strategy.h"
+#include "ucl_drone/strategy.h"
 
 // Constructor
 Strategy::Strategy()
@@ -30,19 +30,16 @@ Strategy::Strategy()
 
   // Publishers
   strategy_channel = nh.resolveName("strategy");
-  strategy_pub = nh.advertise<boris_drone::StrategyMsg>(strategy_channel, 1);
+  strategy_pub = nh.advertise<ucl_drone::StrategyMsg>(strategy_channel, 1);
 
   destination_channel = nh.resolveName("destination");
-  destination_pub     = nh.advertise<boris_drone::Pose3D>(destination_channel, 1);
+  destination_pub     = nh.advertise<ucl_drone::Pose3D>(destination_channel, 1);
 
   takeoff_channel = nh.resolveName("ardrone/takeoff");
   takeoff_pub     = nh.advertise<std_msgs::Empty>(takeoff_channel, 1, true);
 
   land_channel = nh.resolveName("ardrone/land");
   land_pub     = nh.advertise<std_msgs::Empty>(land_channel, 1);
-
-  make_keyframe_channel = nh.resolveName("make_keyframe");
-  make_keyframe_pub     = nh.advertise<std_msgs::Empty>(make_keyframe_channel, 1);
 
   destination.x = 0.0;
   destination.y = 0.0;
@@ -70,19 +67,13 @@ void Strategy::publishDestination()
 
 void Strategy::publishStrategy(int strat_type)
 {
-  boris_drone::StrategyMsg strat;
+  ucl_drone::StrategyMsg strat;
   strat.type = strat_type;
   strategy_pub.publish(strat);
 }
 
-void Strategy::publishMakeKeyframe()
-{
-    make_keyframe_pub.publish(std_msgs::Empty());
-}
-
-
 // This function is called when the topic of the target_detected of this drone publishes something.
-void Strategy::manualDestinationCb(const boris_drone::Pose3D::ConstPtr manualDestinationPtr)
+void Strategy::manualDestinationCb(const ucl_drone::Pose3D::ConstPtr manualDestinationPtr)
 {
   ROS_INFO("received manual destination: x=%f; y=%f; z=%f; rotZ=%f", manualDestinationPtr->x, manualDestinationPtr->y, manualDestinationPtr->z, manualDestinationPtr->rotZ);
   destination = *manualDestinationPtr;
@@ -94,7 +85,7 @@ void Strategy::navdataCb(const ardrone_autonomy::Navdata::ConstPtr navdataPtr)
   state = navdataPtr->state;
 }
 
-void Strategy::poseCb(const boris_drone::Pose3D::ConstPtr posePtr)
+void Strategy::poseCb(const ucl_drone::Pose3D::ConstPtr posePtr)
 {
   pose = *posePtr;
 }
@@ -143,7 +134,6 @@ int main(int argc, char** argv)
   myStrategy.publishDestination();
   myStrategy.publishStrategy(DESTINATION);
   waitSomeSeconds(2.0,r);
-  myStrategy.publishMakeKeyframe();
   waitSomeSeconds(1.0,r);
   myStrategy.setDestination(0.0,0.0,1.3,0.0);
   myStrategy.publishDestination();
@@ -152,8 +142,6 @@ int main(int argc, char** argv)
     ros::spinOnce();
     r.sleep();
   }
-  waitSomeSeconds(2.0,r);
-  myStrategy.publishMakeKeyframe();
   waitSomeSeconds(2.0,r);
   myStrategy.setDestination(0.0,0.0,0.7,0.0);
   myStrategy.publishDestination();

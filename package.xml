@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>boris_drone</name>
+  <name>ucl_drone</name>
   <version>0.0.1</version>
-  <description>The boris_drone package</description>
+  <description>The ucl_drone package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but mutiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <url type="website">http://wiki.ros.org/boris_drone</url>
+  <url type="website">http://wiki.ros.org/ucl_drone</url>
 
 
   <!-- Author tags are optional, mutiple are allowed, one per tag -->

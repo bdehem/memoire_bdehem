@@ -1,6 +1,14 @@
-#include <boris_drone/map/map.h>
+/*
+ *  This file is part of ucl_drone 2017.
+ *  For more information, please refer
+ *  to the corresponding header file.
+ *
+ *  \author Boris Dehem
+ *  \date 2017
+ *
+ */
 
-int Map::point_ID_counter = 0;
+#include <ucl_drone/map/map.h>
 
 Map::Map() {}
 
@@ -10,25 +18,21 @@ Map::Map(ros::NodeHandle* nh) : cloud(new pcl::PointCloud< pcl::PointXYZ >())
 
   nh = nh;
   bundle_channel = nh->resolveName("bundle");
-  bundle_pub     = nh->advertise<boris_drone::BundleMsg>(bundle_channel, 1);
+  bundle_pub     = nh->advertise<ucl_drone::BundleMsg>(bundle_channel, 1);
 
   benchmark_channel = nh->resolveName("benchmark");
-  benchmark_pub     = nh->advertise<boris_drone::BenchmarkInfoMsg>(benchmark_channel, 1);
+  benchmark_pub     = nh->advertise<ucl_drone::BenchmarkInfoMsg>(benchmark_channel, 1);
 
   //Get some parameters from launch file
-  ros::param::get("~test_robustness", test_robustness);
-  ros::param::get("~threshold_kf_match", threshold_kf_match);
+  ros::param::get("~thresh_descriptor_match", thresh_descriptor_match);
   ros::param::get("~max_matches", max_matches);
   ros::param::get("~no_bundle_adjustment", no_bundle_adjustment);
-  ros::param::get("~dlt_triangulation", dlt_triangulation);
-  ros::param::get("~midpoint_triangulation", midpoint_triangulation);
   ros::param::get("~only_init", only_init);
   ros::param::get("~outlier_threshold", outlier_threshold);
-  ros::param::get("~remove_cst", remove_cst);
-  ros::param::get("~remove_coeff", remove_coeff);
   ros::param::get("~manual_keyframes", manual_keyframes);
-  ros::param::get("~benchmark", benchmark);
   ros::param::get("~sonar_unavailable", sonar_unavailable);
+  ros::param::get("~n_kf_local_ba", n_kf_local_ba);
+  ros::param::get("~freq_global_ba", freq_global_ba);
 
   ros::param::get("~min_dist", min_dist);
   ros::param::get("~min_time", min_time);
@@ -36,32 +40,19 @@ Map::Map(ros::NodeHandle* nh) : cloud(new pcl::PointCloud< pcl::PointXYZ >())
   ros::param::get("~FOV_thresh", FOV_thresh);
   ros::param::get("~time_thresh", time_thresh);
   ros::param::get("~dist_thresh", dist_thresh);
-  ros::param::get("~n_kf_local_ba", n_kf_local_ba);
-  ros::param::get("~freq_global_ba", freq_global_ba);
-  bool make_keyframe = false;
 
-  ROS_INFO("dist_thresh = %f",dist_thresh);
+  ROS_INFO("dist_thresh = %f", dist_thresh);
   ROS_INFO("init map");
 
-
-  ROS_INFO("Test robustness ? %s",test_robustness?"true":"false");
-  // define some threshold used later
-  // better if defined in the launch file
-  frame_counter = 0;
   is_adjusting_bundle     = false;
-  second_keyframe_pending = false;
-  triangtime = 0.0;
-  nptstriang =0;
-  last_removal = ros::Time::now();
-  n_inliers_moving_avg = 0;
+  n_inliers_moving_avg    = 0;
   kf_since_last_global_BA = 0;
 
   camera = Camera(true);
+
   // get camera parameters in launch file
-  if (!Read::CamMatrixParams("cam_matrix"))
-    ROS_ERROR("cam_matrix not properly transmitted");
-  if (!Read::ImgSizeParams("img_size"))
-    ROS_ERROR("img_size not properly transmitted");
+  if (!Read::CamMatrixParams("cam_matrix")) ROS_ERROR("cam_matrix not properly transmitted");
+  if (!Read::ImgSizeParams("img_size"))     ROS_ERROR("img_size not properly transmitted");
 
   // initialize empty opencv vectors
   this->tvec = cv::Mat::zeros(3, 1, CV_64FC1);
@@ -76,10 +67,8 @@ void Map::reset()
 {
   std::map<int,Keyframe*>::iterator it_k;
   std::map<int,Landmark*>::iterator it_l;
-  for(it_k = keyframes.begin(); it_k!=keyframes.end();++it_k)
-    delete it_k->second;
-  for(it_l = landmarks.begin(); it_l!=landmarks.end();++it_l)
-    delete it_l->second;
+  for(it_k = keyframes.begin(); it_k!=keyframes.end();++it_k) delete it_k->second;
+  for(it_l = landmarks.begin(); it_l!=landmarks.end();++it_l) delete it_l->second;
   keyframes.clear();
   landmarks.clear();
   cloud = boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >(new pcl::PointCloud<pcl::PointXYZ>);
@@ -123,7 +112,6 @@ void Map::updatePoint(int ptID, cv::Point3d coordinates)
 
 void Map::removePoint(int ptID)
 {
-  //ROS_INFO("removing point %d",ptID);
   bool keyframe_is_dead;
   std::map<int,Landmark*>::iterator it = landmarks.find(ptID);
   if(it==landmarks.end())
@@ -182,8 +170,7 @@ void Map::removeKeyframe(int kfID)
     {
       ROS_INFO("removing point %d from keyframe %d",lmID,kfID);
       point_is_dead = landmarks[lmID]->setAsUnseenBy(kfID);
-      if (point_is_dead)
-        removePoint(lmID);
+      if (point_is_dead) removePoint(lmID);
     }
   }
   keyframes.erase(kfID);
@@ -205,9 +192,8 @@ void Map::matchKeyframes(Keyframe* kf0, Keyframe* kf1)
   int i, nmatch, ptID, ptID_kf0, ptID_kf1, n_new_pts;
   cv::Point3d point3D;
   std::vector<int> idx_kf0, idx_kf1;
-  matchDescriptors(kf0->descriptors, kf1->descriptors, kf0->point_IDs, kf1->point_IDs, idx_kf0, idx_kf1, threshold_kf_match, max_matches);
+  matchDescriptors(kf0->descriptors, kf1->descriptors, kf0->point_IDs, kf1->point_IDs, idx_kf0, idx_kf1, thresh_descriptor_match, max_matches);
   nmatch = idx_kf0.size();
-  TIC(triang)
   n_new_pts = 0;
   for (i = 0; i<nmatch; i++)
   {
@@ -217,14 +203,8 @@ void Map::matchKeyframes(Keyframe* kf0, Keyframe* kf1)
     ROS_DEBUG("IDs of match %d are %d and %d",i,ptID_kf0,ptID_kf1);
     if ((ptID_kf0==-1) && (ptID_kf1==-1))
     {
-      nptstriang++;
       n_new_pts++;
-      if (dlt_triangulation)
-        triangulate_dlt(point3D, kf0, kf1, idx_kf0[i], idx_kf1[i]);
-      else if (midpoint_triangulation)
-        triangulate_midpoint(point3D, kf0, kf1, idx_kf0[i], idx_kf1[i]);
-      else
-        triangulate(point3D, kf0, kf1, idx_kf0[i], idx_kf1[i]);
+      triangulate(point3D, kf0, kf1, idx_kf0[i], idx_kf1[i]);
       if (pointIsVisible(*kf0,point3D,-0.5) && pointIsVisible(*kf1,point3D,-0.5))
       {
         cv::Mat new_descriptor = 0.5*(kf0->descriptors.row(idx_kf0[i])+kf1->descriptors.row(idx_kf1[i]));
@@ -244,7 +224,6 @@ void Map::matchKeyframes(Keyframe* kf0, Keyframe* kf1)
       setPointAsSeen(ptID_kf0, kf1->ID, idx_kf1[i]);
     }
   }
-  triangtime += TOC(triang);
   ROS_INFO("Matching keyframe %d with keyframe %d. There are %d new points",kf0->ID, kf1->ID, n_new_pts);
 }
 
@@ -280,10 +259,6 @@ void Map::matchKeyframeWithMap(Keyframe* kf)
 
 void Map::newKeyframe(Frame& frame)
 {
-  //Temporary cheat, because no sensor info
-  //if (keyframes.size() > 4) frame.pose.z    = 0.06;
-  //if (keyframes.size() > 4) frame.pose.rotX = 0.0;
-  //if (keyframes.size() > 4) frame.pose.rotY = 0.0;
   ROS_INFO("new keyframe start pose = %f, %f, %f",frame.pose.x,frame.pose.y,frame.pose.z);
   if (frame.img_points.size() <= 10)
   {
@@ -293,7 +268,6 @@ void Map::newKeyframe(Frame& frame)
   Keyframe* new_keyframe = new Keyframe(frame,&camera);
   last_new_keyframe = ros::Time::now();
   keyframes[new_keyframe->ID] = new_keyframe;
-  //if (n_kf_local_ba > 0 ? keyframes.size() <= n_kf_local_ba : true)
   if (keyframes.size() < 2) return;
   if (n_kf_local_ba <= 0 || keyframes.size() <= n_kf_local_ba || keyframes.size() % freq_global_ba == 0)
     first_kf_to_adjust = keyframes.begin();
@@ -305,7 +279,6 @@ void Map::newKeyframe(Frame& frame)
   std::vector<int> keyframes_to_adjust;
   std::map<int,Keyframe*>::iterator it;
   matchKeyframeWithMap(new_keyframe);
-  //for (it = keyframes.begin(); it!=keyframes.end(); ++it)
   for (it = first_kf_to_adjust; it!=keyframes.end(); ++it)
   {
     if (it->first != new_keyframe->ID)
@@ -316,32 +289,11 @@ void Map::newKeyframe(Frame& frame)
   }
 
   ROS_INFO("\t Map now has %lu points",this->cloud->points.size());
-  if (no_bundle_adjustment)
-  {
-    ROS_INFO("total triang time = %f for %d points",triangtime,nptstriang);
-    return;
-  }
   doBundleAdjustment(keyframes_to_adjust, false);
 }
 
-int Map::cleanMap()
-{
-  std::map<int,Landmark*>::iterator it;
-  int nptsremoved = 0;
-  for (it = landmarks.begin(); it != landmarks.end(); )
-  {
-    if((abs(it->second->coordinates.x)>10)||(abs(it->second->coordinates.y)>10)||(abs(it->second->coordinates.z)>10))
-    {
-      removePoint((it++)->first);
-      nptsremoved++;
-    }
-    else
-      ++it;
-  }
-  return nptsremoved;
-}
 
-bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose)
+bool Map::processFrame(Frame& frame, ucl_drone::Pose3D& PnP_pose)
 {
   int n_keyframes = keyframes.size();
   int n_inliers;
@@ -350,7 +302,7 @@ bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose)
   int PnP_result = doPnP(frame, PnP_pose, n_inliers, fraction_FOV_without_inliers);
   n_inliers_moving_avg = (2*n_inliers_moving_avg + n_inliers)/3;
 
-  if (PnP_result&&(!benchmark))
+  if (PnP_result)
   {
     frame.pose.x    = PnP_pose.x;
     frame.pose.y    = PnP_pose.y;
@@ -385,10 +337,7 @@ bool Map::processFrame(Frame& frame, boris_drone::Pose3D& PnP_pose)
   }
   else if (keyframeNeeded(manual_pose_available, n_inliers, fraction_FOV_without_inliers, frame.pose))
   {
-    if      ((test_robustness)&&n_keyframes==1) {frame.pose.x += (0.14); frame.pose.y += (0.14); frame.pose.rotZ += (PI/36); }
-    else if ((test_robustness)&&n_keyframes==2) {frame.pose.x += (0.14); frame.pose.y -= (0.14); frame.pose.rotZ += (PI/36); }
-    else if ((test_robustness)&&n_keyframes==3) {frame.pose.x -= (0.14); frame.pose.y -= (0.14); frame.pose.rotZ -= (PI/36); }
-    else if (keyframes.size()==0)
+    if (keyframes.size()==0)
     {  frame.pose.x = 0; frame.pose.y = 0; frame.pose.z = 0; frame.pose.rotX = 0; frame.pose.rotY = 0; frame.pose.rotZ = 0;  }
     newKeyframe(frame);
     manual_pose_available = false;
@@ -459,7 +408,7 @@ int Map::getPointsForBA(std::vector<int> &kfIDs,
   return nobs;
 }
 
-int Map::doPnP(const Frame& current_frame, boris_drone::Pose3D& PnP_pose, int& n_inliers, double& fraction_FOV_without_inliers)
+int Map::doPnP(const Frame& current_frame, ucl_drone::Pose3D& PnP_pose, int& n_inliers, double& fraction_FOV_without_inliers)
 {
   std::vector<cv::Point3f> inliers_map_matching_points;
   std::vector<cv::Point2f> inliers_frame_matching_points;
@@ -516,20 +465,13 @@ bool customLess(std::vector< int > a, std::vector< int > b)
   return a[1] > b[1];
 }
 
-bool Map::keyframeNeeded(bool manual_pose_available, int n_inliers, double fraction_FOV_without_inliers, boris_drone::Pose3D& current_pose)
+bool Map::keyframeNeeded(bool manual_pose_available, int n_inliers, double fraction_FOV_without_inliers, ucl_drone::Pose3D& current_pose)
 {
-  //ROS_INFO_THROTTLE(2,"inlier coverage = % 2.0f%%",fraction_FOV_without_inliers*100);
-  if (make_keyframe) //This is set by strategy node, or send by user from a terminal
-  {
-    make_keyframe = false;
-    return true;
-  }
-  if (keyframes.size()==0)          return true;
-  if (manual_keyframes)             return false;
-  if (only_init && isInitialized()) return false;
+  if (keyframes.size()==0)                        return true;
+  if (manual_keyframes)                           return false;
+  if (only_init && isInitialized())               return false;
   if (!isInitialized() && !manual_pose_available) return false;
-  if (is_adjusting_bundle) return false;
-
+  if (is_adjusting_bundle)                        return false;
 
   ros::Duration time_last_kf = ros::Time::now() - last_new_keyframe; //time elapsed
   double dist_last_kf = poseDistance(current_pose, keyframes.rbegin()->second->pose);
@@ -537,37 +479,13 @@ bool Map::keyframeNeeded(bool manual_pose_available, int n_inliers, double fract
   while (angle_dist >  PI) angle_dist -= 2*PI;
   while (angle_dist < -PI) angle_dist += 2*PI;
 
-  //ROS_INFO_THROTTLE(5,"fraction_FOV_without_inliers = %f",fraction_FOV_without_inliers);
-  //ROS_INFO_THROTTLE(5,"dist_last_kf = %f"                ,dist_last_kf);
-  //ROS_INFO_THROTTLE(5,"time_last_kf = %f"                ,time_last_kf.toSec());
-  //ROS_INFO_THROTTLE(5,"n_inliers = %d"                   ,n_inliers);
-
-
-  if (fraction_FOV_without_inliers < 0.2)     return false;
-  if (dist_last_kf < min_dist)                return false;
-  if (time_last_kf < ros::Duration(min_time)) return false;
-  if (fraction_FOV_without_inliers > FOV_thresh)
-  {
-    ROS_INFO("keyframe needed because fraction_FOV_without_inliers = %f", fraction_FOV_without_inliers);
-    return true;
-  }
-  if (dist_last_kf > dist_thresh)
-  {
-    ROS_INFO("keyframe needed because dist_last_kf = %f", dist_last_kf);
-    ROS_INFO("current pose       = % 4.2f, % 4.2f, % 4.2f",current_pose.x,current_pose.y,current_pose.z);
-    ROS_INFO("last keyframe pose = % 4.2f, % 4.2f, % 4.2f" ,keyframes.rbegin()->second->pose.x,keyframes.rbegin()->second->pose.y,keyframes.rbegin()->second->pose.z);
-    return true;
-  }
-  if (n_inliers < inliers_thresh)
-  {
-    ROS_INFO("keyframe needed because n_inliers = %d", n_inliers);
-    return true;
-  }
-  if (time_last_kf > ros::Duration(time_thresh))
-  {
-    ROS_INFO("keyframe needed because time_last_kf = %f", time_last_kf.toSec());
-    return true;
-  }
+  if (fraction_FOV_without_inliers < 0.2)        return false;
+  if (dist_last_kf < min_dist)                   return false;
+  if (time_last_kf < ros::Duration(min_time))    return false;
+  if (fraction_FOV_without_inliers > FOV_thresh) return true;
+  if (dist_last_kf > dist_thresh)                return true;
+  if (n_inliers < inliers_thresh)                return true;
+  if (time_last_kf > ros::Duration(time_thresh)) return true;
   return false;
 }
 
@@ -575,27 +493,15 @@ void cloud_debug(pcl::PointCloud< pcl::PointXYZ >::ConstPtr cloud)
 {
   for (size_t i = 0; i < cloud->points.size(); ++i)
   {
-    ROS_DEBUG("points[%lu] = (%f, %f, %f)", i, cloud->points[i].x, cloud->points[i].y,
-              cloud->points[i].z);
-  }
-}
-
-void Map::getDescriptors(cv::Mat &map_descriptors)
-{
-  std::map<int,Landmark*>::iterator it;
-  for (it=landmarks.begin();it!=landmarks.end();++it)
-  {
-    map_descriptors.push_back(it->second->descriptor);
+    ROS_DEBUG("points[%lu] = (%f, %f, %f)", i, cloud->points[i].x, cloud->points[i].y, cloud->points[i].z);
   }
 }
 
 int Map::matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_map_matching_points,
                 std::vector<cv::Point2f>& inliers_frame_matching_points, double& fraction_FOV_without_inliers)
 {
-  if (frame.descriptors.rows == 0)
-    return -1;
-  if (descriptors.rows == 0)
-    return -2;
+  if (frame.descriptors.rows == 0) return -1;
+  if (descriptors.rows == 0)       return -2;
   double minx = frame.image.width;
   double miny = frame.image.height;
   double maxx = 0;
@@ -626,7 +532,7 @@ int Map::matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_ma
   fraction_FOV_without_inliers = std::max(std::max(minx,1-maxx),std::max(miny,1-maxy));
   cv::Mat distCoeffs = (cv::Mat_< double >(1, 5) << 0, 0, 0, 0, 0);
   cv::solvePnPRansac(map_matching_points, frame_matching_points, camera.get_K(), distCoeffs, rvec, tvec,
-                     true, 2500, 2, 2 * threshold_new_keyframe, inliers, CV_P3P);  // or: CV_EPNP and CV_ITERATIVE
+                     true, 2500, 2, 100, inliers, CV_P3P);  // or: CV_EPNP and CV_ITERATIVE
   if (inliers.size() < threshold_lost)
     return -4;
 
@@ -658,24 +564,8 @@ int Map::matchWithFrame(const Frame& frame, std::vector<cv::Point3f>& inliers_ma
   return 1;
 }
 
-void Map::removeUnusedPoints()
-{
-  last_removal = ros::Time::now();
-  std::map<int,Landmark*>::iterator it;
-  for (it = landmarks.begin();it!=landmarks.end(); )
-  {
-    int n_out = it->second->times_outlier;
-    int n_in  = it->second->times_inlier;
-    if (n_out > remove_cst + remove_coeff*n_in)
-      removePoint((it++)->first);
-    else
-      ++it;
-  }
-}
-
 void Map::doBundleAdjustment(std::vector<int> kfIDs, bool is_global)
 {
-  if (remove_coeff > 0) removeUnusedPoints();
   is_adjusting_bundle = true;
   int ncam, npt, nobs, i, j, k;
   std::map<int,std::map<int,int> > points_for_ba;
@@ -698,7 +588,7 @@ void Map::doBundleAdjustment(std::vector<int> kfIDs, bool is_global)
   ncam = kfIDs.size();
   npt  = points_for_ba.size();
 
-  boris_drone::BundleMsg::Ptr msg(new boris_drone::BundleMsg);
+  ucl_drone::BundleMsg::Ptr msg(new ucl_drone::BundleMsg);
 
   msg->is_global        = is_global;
   msg->num_keyframes    = ncam;
@@ -723,7 +613,6 @@ void Map::doBundleAdjustment(std::vector<int> kfIDs, bool is_global)
       ROS_DEBUG("writing observation in message. kfID = %d; ptID = %d, idx in kf = %d",kfID,ptID,local_idx);
       msg->observations[k].kfID = kfID;
       msg->observations[k].ptID = ptID;
-      //ROS_DEBUG("Observation %d: Cam index = %d; Point index = %d",k,kfID,ptID);
       msg->observations[k].x = keyframes[kfID]->img_points[local_idx].x;
       msg->observations[k].y = keyframes[kfID]->img_points[local_idx].y;
       k++;
@@ -749,7 +638,6 @@ void Map::doBundleAdjustment(std::vector<int> kfIDs, bool is_global)
     msg->ref_poses[i]   = keyframes[kfIDs[i]]->ref_pose;
     msg->keyframes_ID[i] = kfIDs[i];
   }
-  //print_benchmark_info();
   if (points_for_ba.size()==0)
     ROS_WARN("Warning: there are no matching points to do Bundle Adjustment");
   else
@@ -757,12 +645,11 @@ void Map::doBundleAdjustment(std::vector<int> kfIDs, bool is_global)
 }
 
 
-void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
+void Map::updateBundle(const ucl_drone::BundleMsg::ConstPtr bundlePtr)
 {
-  //print_info();
   int npt, ncam, i, kfID, ptID;
   int n_kf_seeing_this_pt;
-  boris_drone::Pose3D thispose, prevpose;
+  ucl_drone::Pose3D thispose, prevpose;
   bool converged, remove_point;
   std::vector<int> keyframes_to_adjust;
   converged     = bundlePtr->converged;
@@ -775,7 +662,6 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     if (i==ncam-1 && poseDistance(prevpose,thispose)<0.05)
     {
       ROS_INFO("removing keyframe %d because it is too close to the previous one",kfID);
-      //removeKeyframe(kfID);
     }
     else
     {
@@ -820,9 +706,7 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
       updatePoint(ptID,cv::Point3d(bundlePtr->points[i].x,bundlePtr->points[i].y,bundlePtr->points[i].z));
     }
   }
-  //int pts_removed_clean = cleanMap();
   ROS_INFO("Removed %d points",pts_removed);
-  //print_info();
 
   BA_times.push_back(bundlePtr->time_taken);
   BA_num_iter.push_back(bundlePtr->num_iter);
@@ -846,11 +730,9 @@ void Map::updateBundle(const boris_drone::BundleMsg::ConstPtr bundlePtr)
     last_new_keyframe   = ros::Time::now();
     kf_since_last_global_BA++;
   }
-
-  //print_benchmark_info();
 }
 
-void Map::setManualPose(const boris_drone::Pose3D& manual_pose)
+void Map::setManualPose(const ucl_drone::Pose3D& manual_pose)
 {
   this->manual_pose = manual_pose;
   this->manual_pose_available = true;
@@ -859,10 +741,9 @@ void Map::setManualPose(const boris_drone::Pose3D& manual_pose)
 
 void Map::publishBenchmarkInfo()
 {
-  boris_drone::BenchmarkInfoMsg::Ptr msg(new boris_drone::BenchmarkInfoMsg);
+  ucl_drone::BenchmarkInfoMsg::Ptr msg(new ucl_drone::BenchmarkInfoMsg);
 
   msg->pts_map = landmarks.size();
-
   msg->keyframes_pose.resize(keyframes.size());
   msg->keyframes_ID.resize(keyframes.size());
   msg->n_pts_keyframe.resize(keyframes.size());

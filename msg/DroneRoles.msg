@@ -3,4 +3,4 @@
 # multi-agent strategy and read by each drone's IA.
 
 # Role list
-boris_drone/DroneRole[] roles
+ucl_drone/DroneRole[] roles

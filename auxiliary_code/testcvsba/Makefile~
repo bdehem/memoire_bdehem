@@ -1,4 +1,0 @@
-
-main : main.cpp
-	g++ -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_objdetect main.cpp -o main
-

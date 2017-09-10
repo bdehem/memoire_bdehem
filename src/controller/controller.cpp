@@ -1,5 +1,5 @@
 /*!
- *  This file is part of boris_drone 2016.
+ *  This file is part of ucl_drone 2016.
  *  For more information, refer
  *  to the corresponding header file.
  *
@@ -12,7 +12,7 @@
  *
  */
 
-#include "boris_drone/controller.h"
+#include "ucl_drone/controller.h"
 
 static bool urgency_signal = false;  // true when Ctrl-C (Emergency stop)
 
@@ -240,14 +240,14 @@ void BasicController::sendVelToDrone(double pitch, double roll, double yaw_vel, 
 
 // This function is called when this node receives a message from the topic "pose_estimation". So it
 // takes this message and put it in a variable where it will be used in the other functions.
-void BasicController::poseCb(const boris_drone::Pose3D::ConstPtr posePtr)
+void BasicController::poseCb(const ucl_drone::Pose3D::ConstPtr posePtr)
 {
   lastPoseReceived = *posePtr;
 }
 
 // This function is called when this node receives a message from the topic "poseref". So it
 // takes this message and put it in a variable where it will be used in the other functions.
-void BasicController::poseRefCb(const boris_drone::Pose3D::ConstPtr poseRefPtr)
+void BasicController::poseRefCb(const ucl_drone::Pose3D::ConstPtr poseRefPtr)
 {
   if (lastPoseRefReceived.x    != poseRefPtr->x)    integral_x_error   = 0.0;
   if (lastPoseRefReceived.y    != poseRefPtr->y)    integral_y_error   = 0.0;
@@ -256,7 +256,7 @@ void BasicController::poseRefCb(const boris_drone::Pose3D::ConstPtr poseRefPtr)
   lastPoseRefReceived = *poseRefPtr;
 }
 
-void BasicController::strategyCb(const boris_drone::StrategyMsg::ConstPtr strategyPtr)
+void BasicController::strategyCb(const ucl_drone::StrategyMsg::ConstPtr strategyPtr)
 {
   if (strategyPtr->type==69)
   {

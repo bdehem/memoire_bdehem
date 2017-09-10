@@ -1,5 +1,5 @@
 /*
- *  This file is part of boris_drone 2016.
+ *  This file is part of ucl_drone 2016.
  *  For more information, refer
  *  to the corresponding header file.
  *
@@ -10,10 +10,10 @@
  * http://docs.opencv.org/2.4/doc/tutorials/features2d/feature_homography/feature_homography.html
  */
 
-#include <boris_drone/computer_vision/target.h>
+#include <ucl_drone/computer_vision/target.h>
 
 //! Absolute path to the package
-static const std::string PKG_DIR = ros::package::getPath("boris_drone");
+static const std::string PKG_DIR = ros::package::getPath("ucl_drone");
 
 #if EXTRACTOR_TYPE == TYPE_ORB
 Target::Target() : matcher(new cv::flann::LshIndexParams(20, 10, 2))
@@ -77,7 +77,7 @@ bool Target::detect(cv::Mat cam_descriptors, std::vector< cv::KeyPoint >& cam_ke
                     std::vector< cv::Point2f >& target_coord
 #ifdef DEBUG_PROJECTION
                     ,
-                    boris_drone::Pose3D pose
+                    ucl_drone::Pose3D pose
 #endif
 #ifdef DEBUG_TARGET
                     ,

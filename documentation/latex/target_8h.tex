@@ -1,0 +1,56 @@
+\hypertarget{target_8h}{}\section{include/ucl\+\_\+drone/computer\+\_\+vision/target.h File Reference}
+\label{target_8h}\index{include/ucl\+\_\+drone/computer\+\_\+vision/target.\+h@{include/ucl\+\_\+drone/computer\+\_\+vision/target.\+h}}
+
+
+Header file for the \hyperlink{classTarget}{Target} class which wraps all procedures to detect a predfined target.  
+
+
+{\ttfamily \#include $<$ucl\+\_\+drone/profiling.\+h$>$}\newline
+{\ttfamily \#include $<$boost/shared\+\_\+ptr.\+hpp$>$}\newline
+{\ttfamily \#include $<$ros/package.\+h$>$}\newline
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/ucl\+\_\+drone.\+h$>$}\newline
+{\ttfamily \#include $<$cv\+\_\+bridge/cv\+\_\+bridge.\+h$>$}\newline
+{\ttfamily \#include $<$image\+\_\+transport/image\+\_\+transport.\+h$>$}\newline
+{\ttfamily \#include $<$opencv2/calib3d/calib3d.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/core/core.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/highgui/highgui.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/imgproc/imgproc.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/nonfree/features2d.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/nonfree/gpu.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/nonfree/nonfree.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/nonfree/ocl.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/ocl/ocl.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/video/tracking.\+hpp$>$}\newline
+{\ttfamily \#include $<$ardrone\+\_\+autonomy/\+Cam\+Select.\+h$>$}\newline
+{\ttfamily \#include $<$ardrone\+\_\+autonomy/\+Navdata.\+h$>$}\newline
+{\ttfamily \#include $<$sensor\+\_\+msgs/image\+\_\+encodings.\+h$>$}\newline
+{\ttfamily \#include $<$std\+\_\+msgs/\+Empty.\+h$>$}\newline
+{\ttfamily \#include $<$std\+\_\+srvs/\+Empty.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/\+Pose3\+D.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/\+Processed\+Image\+Msg.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/\+Key\+Point.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/constants/feature\+\_\+types.\+h$>$}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classTarget}{Target}
+\begin{DoxyCompactList}\small\item\em Provide tools to track the presence of a target. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{target_8h_acbd75a702ef8cd56ac3c4424e158baf7}\label{target_8h_acbd75a702ef8cd56ac3c4424e158baf7}} 
+bool {\bfseries custom\+Less} (cv\+::\+D\+Match a, cv\+::\+D\+Match b)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Header file for the \hyperlink{classTarget}{Target} class which wraps all procedures to detect a predfined target. 
+
+\begin{DoxyAuthor}{Author}
+Arnaud Jacques \& Alexandre Leclere 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2016
+\end{DoxyDate}
+Part of ucl\+\_\+drone. 

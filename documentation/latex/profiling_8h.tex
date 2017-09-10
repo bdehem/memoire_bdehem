@@ -1,0 +1,50 @@
+\hypertarget{profiling_8h}{}\section{include/ucl\+\_\+drone/profiling.h File Reference}
+\label{profiling_8h}\index{include/ucl\+\_\+drone/profiling.\+h@{include/ucl\+\_\+drone/profiling.\+h}}
+
+
+Common definition for P\+R\+O\+F\+I\+L\+I\+NG M\+A\+C\+RO.  
+
+
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{profiling_8h_a075675aa6fc450dc9c2fc37f2cc37acf}\label{profiling_8h_a075675aa6fc450dc9c2fc37f2cc37acf}} 
+\#define {\bfseries U\+S\+E\+\_\+\+P\+R\+O\+F\+I\+L\+I\+NG}
+\item 
+\mbox{\Hypertarget{profiling_8h_a8274d883cc52c2008e10992f1e0ba2c7}\label{profiling_8h_a8274d883cc52c2008e10992f1e0ba2c7}} 
+\#define \hyperlink{profiling_8h_a8274d883cc52c2008e10992f1e0ba2c7}{T\+IC}(name)~double profiling\+\_\+\#\#name = ros\+::\+Time\+::now().to\+Sec();
+\begin{DoxyCompactList}\small\item\em begin counter \end{DoxyCompactList}\item 
+\#define \hyperlink{profiling_8h_a926d5d85912abbd76f5ce49fbb14a9b3}{T\+O\+C\+\_\+\+D\+I\+S\+P\+L\+AY}(name,  msg)
+\begin{DoxyCompactList}\small\item\em stop counter and display message in the standard output \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{profiling_8h_a63b60ba54647b768f1cd8a571e51e7e9}\label{profiling_8h_a63b60ba54647b768f1cd8a571e51e7e9}} 
+\#define {\bfseries T\+OC}(name)~ros\+::\+Time\+::now().to\+Sec() -\/ profiling\+\_\+\#\#name;
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Common definition for P\+R\+O\+F\+I\+L\+I\+NG M\+A\+C\+RO. 
+
+\begin{DoxyAuthor}{Author}
+Arnaud Jacques \& Alexandre Leclere 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2016 
+\end{DoxyDate}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{profiling_8h_a926d5d85912abbd76f5ce49fbb14a9b3}\label{profiling_8h_a926d5d85912abbd76f5ce49fbb14a9b3}} 
+\index{profiling.\+h@{profiling.\+h}!T\+O\+C\+\_\+\+D\+I\+S\+P\+L\+AY@{T\+O\+C\+\_\+\+D\+I\+S\+P\+L\+AY}}
+\index{T\+O\+C\+\_\+\+D\+I\+S\+P\+L\+AY@{T\+O\+C\+\_\+\+D\+I\+S\+P\+L\+AY}!profiling.\+h@{profiling.\+h}}
+\subsubsection{\texorpdfstring{T\+O\+C\+\_\+\+D\+I\+S\+P\+L\+AY}{TOC\_DISPLAY}}
+{\footnotesize\ttfamily \#define T\+O\+C\+\_\+\+D\+I\+S\+P\+L\+AY(\begin{DoxyParamCaption}\item[{}]{name,  }\item[{}]{msg }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+std::cout << \textcolor{stringliteral}{"\(\backslash\)033[1;36m[TIC TOC]: "} << msg << \textcolor{stringliteral}{": "}     \(\backslash\)
+            << ros::Time::now().toSec() - profiling\_##name << \textcolor{stringliteral}{"\(\backslash\)033[0m\(\backslash\)n"};
+\end{DoxyCode}
+
+
+stop counter and display message in the standard output 
+

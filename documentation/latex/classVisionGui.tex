@@ -1,0 +1,79 @@
+\hypertarget{classVisionGui}{}\section{Vision\+Gui Class Reference}
+\label{classVisionGui}\index{Vision\+Gui@{Vision\+Gui}}
+
+
+Class having one attribute per Open\+CV 2D Viewer.  
+
+
+
+
+{\ttfamily \#include $<$vision\+\_\+gui.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classVisionGui_a5644adaa95fdc17a31a7f93b56dc9877}\label{classVisionGui_a5644adaa95fdc17a31a7f93b56dc9877}} 
+\hyperlink{classVisionGui_a5644adaa95fdc17a31a7f93b56dc9877}{Vision\+Gui} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classVisionGui_a81c5abb0ecb8f778f7231d203c1e5e34}\label{classVisionGui_a81c5abb0ecb8f778f7231d203c1e5e34}} 
+\hyperlink{classVisionGui_a81c5abb0ecb8f778f7231d203c1e5e34}{$\sim$\+Vision\+Gui} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classVisionGui_aa854ee62bbbd30e7e6cfdfdd5289c356}\label{classVisionGui_aa854ee62bbbd30e7e6cfdfdd5289c356}} 
+void {\bfseries gui\+Draw\+Keypoints} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classVisionGui_aa6529d6831271a627be6aabce599b387}\label{classVisionGui_aa6529d6831271a627be6aabce599b387}} 
+bool {\bfseries new\+\_\+processed\+\_\+img\+\_\+available}
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classVisionGui_a821250f86f11cd74cc1f1930589b5a46}\label{classVisionGui_a821250f86f11cd74cc1f1930589b5a46}} 
+void \hyperlink{classVisionGui_a821250f86f11cd74cc1f1930589b5a46}{processed\+Image\+Cb} (const ucl\+\_\+drone\+::\+Processed\+Image\+Msg\+::\+Const\+Ptr processed\+\_\+image)
+\begin{DoxyCompactList}\small\item\em Callbacks. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classVisionGui_af7a9dfa6e4171669fc2540f92a0f9c31}\label{classVisionGui_af7a9dfa6e4171669fc2540f92a0f9c31}} 
+void \hyperlink{classVisionGui_af7a9dfa6e4171669fc2540f92a0f9c31}{convert\+Msg\+To\+Attributes} (ucl\+\_\+drone\+::\+Processed\+Image\+Msg\+::\+Const\+Ptr msg)
+\begin{DoxyCompactList}\small\item\em Translation to Open\+CV format. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classVisionGui_ae1984130b804c80a871eef3acb459ce6}\label{classVisionGui_ae1984130b804c80a871eef3acb459ce6}} 
+ros\+::\+Node\+Handle \hyperlink{classVisionGui_ae1984130b804c80a871eef3acb459ce6}{nh\+\_\+}
+\begin{DoxyCompactList}\small\item\em ros node \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classVisionGui_a48ff0b036731d35858333acc0c3cd336}\label{classVisionGui_a48ff0b036731d35858333acc0c3cd336}} 
+bool \hyperlink{classVisionGui_a48ff0b036731d35858333acc0c3cd336}{draw\+\_\+keypoints}
+\begin{DoxyCompactList}\small\item\em Launch parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classVisionGui_a514e7ce268cc5d2c11ef6b2e08c6f6e3}\label{classVisionGui_a514e7ce268cc5d2c11ef6b2e08c6f6e3}} 
+bool {\bfseries draw\+\_\+target}
+\item 
+\mbox{\Hypertarget{classVisionGui_ae4a5452537e1ae7541e0d5d08486e28a}\label{classVisionGui_ae4a5452537e1ae7541e0d5d08486e28a}} 
+ros\+::\+Subscriber \hyperlink{classVisionGui_ae4a5452537e1ae7541e0d5d08486e28a}{processed\+\_\+img\+\_\+sub}
+\begin{DoxyCompactList}\small\item\em Subscribers. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classVisionGui_a964bc034aaf954786c95550ab2377c03}\label{classVisionGui_a964bc034aaf954786c95550ab2377c03}} 
+std\+::string {\bfseries processed\+\_\+img\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classVisionGui_a0961cfa70c5e0d7a66660cea4f78d538}\label{classVisionGui_a0961cfa70c5e0d7a66660cea4f78d538}} 
+ucl\+\_\+drone\+::\+Processed\+Image\+Msg\+::\+Const\+Ptr \hyperlink{classVisionGui_a0961cfa70c5e0d7a66660cea4f78d538}{last\+Processed\+Img\+Received}
+\begin{DoxyCompactList}\small\item\em Measure. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classVisionGui_ad85345558f85debe1047590b12caa045}\label{classVisionGui_ad85345558f85debe1047590b12caa045}} 
+cv\+\_\+bridge\+::\+Cv\+Image\+Ptr \hyperlink{classVisionGui_ad85345558f85debe1047590b12caa045}{cv\+\_\+ptr}
+\begin{DoxyCompactList}\small\item\em Measure after translation to Open\+CV format. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classVisionGui_aaf51140acd73d436b9fbc1d0acecf167}\label{classVisionGui_aaf51140acd73d436b9fbc1d0acecf167}} 
+std\+::vector$<$ cv\+::\+Point2f $>$ {\bfseries keypoints}
+\item 
+\mbox{\Hypertarget{classVisionGui_a5a39bb5cf028158ef12c8dbfaa85e881}\label{classVisionGui_a5a39bb5cf028158ef12c8dbfaa85e881}} 
+std\+::vector$<$ cv\+::\+Point2f $>$ {\bfseries target\+\_\+corners\+And\+Center}
+\item 
+\mbox{\Hypertarget{classVisionGui_a399fac134b4485ad24ba48c2d49381c9}\label{classVisionGui_a399fac134b4485ad24ba48c2d49381c9}} 
+bool {\bfseries target\+\_\+detected}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class having one attribute per Open\+CV 2D Viewer. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/vision\+\_\+gui/\hyperlink{vision__gui_8h}{vision\+\_\+gui.\+h}\end{DoxyCompactItemize}

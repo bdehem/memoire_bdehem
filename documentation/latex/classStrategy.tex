@@ -1,0 +1,106 @@
+\hypertarget{classStrategy}{}\section{Strategy Class Reference}
+\label{classStrategy}\index{Strategy@{Strategy}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classStrategy_a2021a15bbc4f0d13f7b92f8933db2235}\label{classStrategy_a2021a15bbc4f0d13f7b92f8933db2235}} 
+\hyperlink{classStrategy_a2021a15bbc4f0d13f7b92f8933db2235}{Strategy} ()
+\begin{DoxyCompactList}\small\item\em Constructor \& Destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classStrategy_a1e81656e20e3c60210fc04ca917e7d44}\label{classStrategy_a1e81656e20e3c60210fc04ca917e7d44}} 
+void {\bfseries publish\+Takeoff} ()
+\item 
+\mbox{\Hypertarget{classStrategy_ac450376976cdcfc57e932531d84e5cad}\label{classStrategy_ac450376976cdcfc57e932531d84e5cad}} 
+void {\bfseries publish\+Land} ()
+\item 
+\mbox{\Hypertarget{classStrategy_a7d2f3578d82a930bdac7d2de370fcf86}\label{classStrategy_a7d2f3578d82a930bdac7d2de370fcf86}} 
+void {\bfseries publish\+Destination} ()
+\item 
+\mbox{\Hypertarget{classStrategy_a1192ddc6501d9ba8d94814f4eed7d383}\label{classStrategy_a1192ddc6501d9ba8d94814f4eed7d383}} 
+void {\bfseries publish\+Strategy} (int strat\+\_\+type)
+\item 
+\mbox{\Hypertarget{classStrategy_aadce56eefaf8a87f75c99291b3f83df9}\label{classStrategy_aadce56eefaf8a87f75c99291b3f83df9}} 
+void {\bfseries set\+Destination} (double x, double y, double z, double rotZ)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classStrategy_a31ba8ee1e14540db60dcceb88779bb61}\label{classStrategy_a31ba8ee1e14540db60dcceb88779bb61}} 
+int {\bfseries strategy}
+\item 
+\mbox{\Hypertarget{classStrategy_a345025c5108d57560eefb595e502fbfc}\label{classStrategy_a345025c5108d57560eefb595e502fbfc}} 
+int {\bfseries state}
+\item 
+\mbox{\Hypertarget{classStrategy_a912b520d791d89042528945fa9ba40c9}\label{classStrategy_a912b520d791d89042528945fa9ba40c9}} 
+bool {\bfseries emergency\+\_\+stop}
+\item 
+\mbox{\Hypertarget{classStrategy_aa9cef6e1f9a3f2270f84f43e6d167222}\label{classStrategy_aa9cef6e1f9a3f2270f84f43e6d167222}} 
+ucl\+\_\+drone\+::\+Pose3D {\bfseries pose}
+\item 
+\mbox{\Hypertarget{classStrategy_a6f83c4b3d1f6c4d4ec94868d33dc4353}\label{classStrategy_a6f83c4b3d1f6c4d4ec94868d33dc4353}} 
+ucl\+\_\+drone\+::\+Pose3D {\bfseries destination}
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classStrategy_a76355a6fc70c8d4c78a700423c154eba}\label{classStrategy_a76355a6fc70c8d4c78a700423c154eba}} 
+void {\bfseries manual\+Destination\+Cb} (const ucl\+\_\+drone\+::\+Pose3\+D\+::\+Const\+Ptr manual\+Destination\+Ptr)
+\item 
+\mbox{\Hypertarget{classStrategy_aa59b2ad936c1b75c1853f5c5087505a0}\label{classStrategy_aa59b2ad936c1b75c1853f5c5087505a0}} 
+void {\bfseries navdata\+Cb} (const ardrone\+\_\+autonomy\+::\+Navdata\+::\+Const\+Ptr navdata\+Ptr)
+\item 
+\mbox{\Hypertarget{classStrategy_a9e9fca352e67441b32b28b27bf1e0c79}\label{classStrategy_a9e9fca352e67441b32b28b27bf1e0c79}} 
+void {\bfseries pose\+Cb} (const ucl\+\_\+drone\+::\+Pose3\+D\+::\+Const\+Ptr pose\+Ptr)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classStrategy_a84206e2d0226fee2b494250e1e58ea60}\label{classStrategy_a84206e2d0226fee2b494250e1e58ea60}} 
+ros\+::\+Node\+Handle {\bfseries nh}
+\item 
+\mbox{\Hypertarget{classStrategy_a2a127443a2dd78c711393f7d66caa6df}\label{classStrategy_a2a127443a2dd78c711393f7d66caa6df}} 
+std\+::string {\bfseries pose\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classStrategy_a4e1a388cee6f0a4bdc2a2af3e83702a3}\label{classStrategy_a4e1a388cee6f0a4bdc2a2af3e83702a3}} 
+std\+::string {\bfseries navdata\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classStrategy_ae6623e185a70d5337a12adbc4b05702d}\label{classStrategy_ae6623e185a70d5337a12adbc4b05702d}} 
+std\+::string {\bfseries manual\+\_\+destination\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classStrategy_a22dc47841221dd2fff9d7030c4b7ea28}\label{classStrategy_a22dc47841221dd2fff9d7030c4b7ea28}} 
+ros\+::\+Subscriber {\bfseries pose\+\_\+sub}
+\item 
+\mbox{\Hypertarget{classStrategy_a9b80202b4db9330834c76a3755399da4}\label{classStrategy_a9b80202b4db9330834c76a3755399da4}} 
+ros\+::\+Subscriber {\bfseries navdata\+\_\+sub}
+\item 
+\mbox{\Hypertarget{classStrategy_a019f76ac00aa5a037d082ebb6bae951c}\label{classStrategy_a019f76ac00aa5a037d082ebb6bae951c}} 
+ros\+::\+Subscriber {\bfseries manual\+\_\+destination\+\_\+sub}
+\item 
+\mbox{\Hypertarget{classStrategy_ae502f048ed40a7d2eef49da6c3e85182}\label{classStrategy_ae502f048ed40a7d2eef49da6c3e85182}} 
+std\+::string {\bfseries strategy\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classStrategy_af37ba1f383c46b7b9a596d052372d2e4}\label{classStrategy_af37ba1f383c46b7b9a596d052372d2e4}} 
+std\+::string {\bfseries destination\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classStrategy_a7bbc0b7a0b3348d398856db9da4a86ff}\label{classStrategy_a7bbc0b7a0b3348d398856db9da4a86ff}} 
+std\+::string {\bfseries takeoff\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classStrategy_a311bb1b7be560a42a6e2ef325fbeab39}\label{classStrategy_a311bb1b7be560a42a6e2ef325fbeab39}} 
+std\+::string {\bfseries land\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classStrategy_a9f6cb812568383dc5f6ead712a834775}\label{classStrategy_a9f6cb812568383dc5f6ead712a834775}} 
+ros\+::\+Publisher {\bfseries strategy\+\_\+pub}
+\item 
+\mbox{\Hypertarget{classStrategy_a04eb8ad81f1c04d28b6f8cdac79bb5da}\label{classStrategy_a04eb8ad81f1c04d28b6f8cdac79bb5da}} 
+ros\+::\+Publisher {\bfseries destination\+\_\+pub}
+\item 
+\mbox{\Hypertarget{classStrategy_addc57fbde81ebfce1e6cce5a2442c9a7}\label{classStrategy_addc57fbde81ebfce1e6cce5a2442c9a7}} 
+ros\+::\+Publisher {\bfseries takeoff\+\_\+pub}
+\item 
+\mbox{\Hypertarget{classStrategy_ae0105e8c02b4301b55d8daa879a75604}\label{classStrategy_ae0105e8c02b4301b55d8daa879a75604}} 
+ros\+::\+Publisher {\bfseries land\+\_\+pub}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/\hyperlink{strategy_8h}{strategy.\+h}\end{DoxyCompactItemize}

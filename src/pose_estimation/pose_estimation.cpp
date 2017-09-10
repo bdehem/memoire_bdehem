@@ -1,5 +1,5 @@
 /*!
- *  This file is part of boris_drone 2016.
+ *  This file is part of ucl_drone 2016.
  *  For more information, refer to the corresponding header file.
  *
  *  \author Arnaud Jacques & Alexandre Leclere
@@ -7,7 +7,7 @@
  *
  */
 
-#include "boris_drone/pose_estimation.h"
+#include "ucl_drone/pose_estimation.h"
 
 // Constructor
 PoseEstimator::PoseEstimator()
@@ -25,7 +25,7 @@ PoseEstimator::PoseEstimator()
   // Publishers
   pose_channel           = nh.resolveName("pose_estimation");
   end_reset_pose_channel = nh.resolveName("end_reset_pose");
-  pose_pub           = nh.advertise<boris_drone::Pose3D>(pose_channel,       1);
+  pose_pub           = nh.advertise<ucl_drone::Pose3D>(pose_channel,       1);
   end_reset_pose_pub = nh.advertise<std_msgs::Empty>(end_reset_pose_channel, 1);
 
   // Parameters
@@ -63,7 +63,7 @@ void PoseEstimator::doReset()
   odometry_rotZ = 0;
   odom_time = lastOdometryReceived.header.stamp;
 
-  lastposeVisualReceived = boris_drone::Pose3D();
+  lastposeVisualReceived = ucl_drone::Pose3D();
   lastposeVisualReceived.rotZ = 0.0;
   visual_pose_available = false;
 
@@ -79,7 +79,7 @@ void PoseEstimator::navdataCb(const ardrone_autonomy::Navdata::ConstPtr navdataP
   lastRotZ = lastNavdataReceived.rotZ / 180.0 * PI;
 }
 
-void PoseEstimator::poseVisualCb(const boris_drone::Pose3D::ConstPtr poseVisualPtr)
+void PoseEstimator::poseVisualCb(const ucl_drone::Pose3D::ConstPtr poseVisualPtr)
 {
   if (pending_reset)
     return;
@@ -122,7 +122,7 @@ void PoseEstimator::publish_end_reset_pose()
 
 void PoseEstimator::publish_pose()
 {
-  boris_drone::Pose3D pose_msg;
+  ucl_drone::Pose3D pose_msg;
   bool fusion_success = false;
 
   fusion_success = use_visual_pose ? queuePoseFusion(pose_msg) : poseFusion(pose_msg);
@@ -130,7 +130,7 @@ void PoseEstimator::publish_pose()
   ROS_INFO("PnprotZ = %f ; fusedrotZ = %f",lastposeVisualReceived.rotZ*180/PI,pose_msg.rotZ*180/PI);
 }
 
-bool PoseEstimator::poseCopy(boris_drone::Pose3D& pose_msg)
+bool PoseEstimator::poseCopy(ucl_drone::Pose3D& pose_msg)
 {
   // Stupid recopying of ardrone_autonomy odometry based on the integration of
   // velocity estimation based on Parrot's optical flow (bottom camera).
@@ -155,7 +155,7 @@ bool PoseEstimator::poseCopy(boris_drone::Pose3D& pose_msg)
   pose_msg.rotZvel = lastOdometryReceived.twist.twist.angular.z;
 }
 
-bool PoseEstimator::poseFusion(boris_drone::Pose3D& pose_msg)
+bool PoseEstimator::poseFusion(ucl_drone::Pose3D& pose_msg)
 {
   // with our own odometry integrated from optical flow
   // reset taken into account but visual pose not used
@@ -212,7 +212,7 @@ bool PoseEstimator::poseFusion(boris_drone::Pose3D& pose_msg)
   return true;
 }
 
-bool PoseEstimator::queuePoseFusion(boris_drone::Pose3D& pose_msg)
+bool PoseEstimator::queuePoseFusion(ucl_drone::Pose3D& pose_msg)
 {
   // Simple fusion technique explained in our report our own odometry integrated from optical flow
   ros::Time previous_odom_time = odom_time;

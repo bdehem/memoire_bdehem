@@ -1,5 +1,5 @@
 /*
- *  This file is part of boris_drone 2016.
+ *  This file is part of ucl_drone 2016.
  *  For more information, refer
  *  to the corresponding header file.
  *
@@ -13,7 +13,7 @@
  *
  */
 
-#include "boris_drone/imagepiper.h"
+#include "ucl_drone/imagepiper.h"
 
 // Constructor
 Piper::Piper()
@@ -37,7 +37,7 @@ void Piper::publish_image(sensor_msgs::Image& img)
   im_pub.publish(img);
 }
 
-void Piper::processedImageCb(const boris_drone::ProcessedImageMsg::ConstPtr processed_image_in)
+void Piper::processedImageCb(const ucl_drone::ProcessedImageMsg::ConstPtr processed_image_in)
 {
   sensor_msgs::Image img = processed_image_in->image;
   publish_image(img);

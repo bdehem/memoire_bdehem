@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- [begin] RELAY TOPICS BETWEEN ucl_drone_GUI AND ARDRONE_AUTONOMY -->
+    <!-- if you need something more sophisticated, create your node and replace the corresponding relay -->
+    <node name="relay_navdata"   pkg="topic_tools" type="relay"  args="ardrone/navdata navdata" />
+    <node name="relay_emergency" pkg="topic_tools" type="relay"  args="ardrone/reset" />
+    <node name="relay_land"      pkg="topic_tools" type="relay"  args="land ardrone/land" />
+    <node name="relay_takeoff"   pkg="topic_tools" type="relay"  args="takeoff ardrone/takeoff" />
+    <!-- [end] RELAY TOPICS BETWEEN ucl_drone_GUI AND ARDRONE_AUTONOMY -->
+
+    <node name="vision_gui" pkg="ucl_drone" type="vision_gui" output="screen">
+      <param name="draw_keypoints" value="true" />
+      <param name="draw_target" value="true" />
+    </node>
+</launch>

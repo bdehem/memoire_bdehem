@@ -1,12 +1,12 @@
 /* Pojection 2D
 */
 
-#include <boris_drone/map/projection_2D.h>
+#include <ucl_drone/map/projection_2D.h>
 
 //#define PROJECTION_2D_2015  // to comment if wanna use the 2016 projection
 
 // this function prepares structures to compute all point projections
-void projection2D_utils1(double h, const boris_drone::Pose3D pose, cv::Mat &T, cv::Mat &n_cam)
+void projection2D_utils1(double h, const ucl_drone::Pose3D pose, cv::Mat &T, cv::Mat &n_cam)
 {
   // Conversion
   double yaw = -pose.rotZ;
@@ -46,7 +46,7 @@ void projection2D_utils2(double pixelx, double pixely, double h, const cv::Mat &
 
 //! converts a point in an image in openCV format to a mappoint in OpenCV format.
 //! 2015-2016 version
-void projection_2D(std::vector< cv::Point2f > &points_in, boris_drone::Pose3D &pose,
+void projection_2D(std::vector< cv::Point2f > &points_in, ucl_drone::Pose3D &pose,
                    std::vector< cv::Point3f > &points_out, bool h_flag /*= false*/)
 {
   cv::Mat T;
@@ -84,10 +84,10 @@ void projection_2D(std::vector< cv::Point2f > &points_in, boris_drone::Pose3D &p
 
 //! converts a point in an image in openCV format to a mappoint in OpenCV format.
 //! 2014-2015 version
-void projection_2D(std::vector< cv::Point2f > &points_in, boris_drone::Pose3D &pose,
+void projection_2D(std::vector< cv::Point2f > &points_in, ucl_drone::Pose3D &pose,
                    std::vector< cv::Point3f > &points_out, bool h_flag /*= false*/)
 
-// boost::shared_ptr< ProcessedImage > image, boris_drone::Pose3D pose,
+// boost::shared_ptr< ProcessedImage > image, ucl_drone::Pose3D pose,
 // pcl::PointCloud< pcl::PointXYZRGB >::Ptr pointcloud)
 {
   // see report 2015 for details section workspace transformation

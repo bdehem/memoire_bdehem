@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<launch>
+  <node name="ucl_drone_strategy"      pkg="ucl_drone" type="strategy"      output="screen"/>
+  <node name="ucl_drone_path_planning" pkg="ucl_drone" type="path_planning" output="screen"/>
+  <node name="ucl_drone_controller"    pkg="ucl_drone" type="controller"    output="screen">
+    <param name="Kp_xy"  value="0.1" />
+    <param name="Ki_xy"  value="0.01" />
+    <param name="Kd_xy"  value="0.35" />
+
+    <param name="Kp_z"   value="0.6" />
+    <param name="Ki_z"   value="0.001" />
+    <param name="Kd_z"   value="0.1" />
+
+    <param name="Kp_yaw" value="2.0" />
+    <param name="Ki_yaw" value="0.1" />
+    <param name="Kd_yaw" value="0.1" />
+
+    <param name="max_cmd_xy"  value="0.5" />
+    <param name="max_cmd_z"   value="0.5" />
+    <param name="max_cmd_yaw" value="0.5" />
+    <param name="anti_windup_yaw" value="0.5" />
+  </node>
+</launch>
+<!--
+from before: PID yaw = 3.0, 0.0, 0.3
+
+
+"working" values inside   : Kp_z = 7   & Kd_z = 2
+"working" values dronelab : Kp_z = 1.5 & Kd_z = 2
+"working" values          : Kp_yaw=3
+"working" values          : Kp_xy=0.06 ki_xy = 0.002 kd_plan = 0.2
+-->

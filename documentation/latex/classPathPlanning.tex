@@ -1,0 +1,76 @@
+\hypertarget{classPathPlanning}{}\section{Path\+Planning Class Reference}
+\label{classPathPlanning}\index{Path\+Planning@{Path\+Planning}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classPathPlanning_a314735f239a01515a3450205dd144619}\label{classPathPlanning_a314735f239a01515a3450205dd144619}} 
+\hyperlink{classPathPlanning_a314735f239a01515a3450205dd144619}{Path\+Planning} ()
+\begin{DoxyCompactList}\small\item\em Constructor \& Destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPathPlanning_a93f2860b8204e00e79f901342e0b9172}\label{classPathPlanning_a93f2860b8204e00e79f901342e0b9172}} 
+void {\bfseries publish\+Pose\+Ref} ()
+\item 
+\mbox{\Hypertarget{classPathPlanning_a637e61ee5e62a571afd51a29569652a2}\label{classPathPlanning_a637e61ee5e62a571afd51a29569652a2}} 
+void {\bfseries publish\+Pose\+Ref} (double x\+\_\+ref, double y\+\_\+ref, double z\+\_\+ref, double rot\+Z\+\_\+ref)
+\item 
+\mbox{\Hypertarget{classPathPlanning_a9ea15dcfe0f54540ffe5bbed26566f53}\label{classPathPlanning_a9ea15dcfe0f54540ffe5bbed26566f53}} 
+void {\bfseries init\+Pose} (ucl\+\_\+drone\+::\+Pose3D \&pose\+\_\+to\+\_\+init)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classPathPlanning_aa07fb09be4b33fe98f3adb1fceb16627}\label{classPathPlanning_aa07fb09be4b33fe98f3adb1fceb16627}} 
+int {\bfseries strategy}
+\item 
+\mbox{\Hypertarget{classPathPlanning_ab4a4fce1ae04bd1a9fb9422a931a8f05}\label{classPathPlanning_ab4a4fce1ae04bd1a9fb9422a931a8f05}} 
+ucl\+\_\+drone\+::\+Pose3D {\bfseries pose}
+\item 
+\mbox{\Hypertarget{classPathPlanning_a507e4241363364d9bf1d9350a691abdd}\label{classPathPlanning_a507e4241363364d9bf1d9350a691abdd}} 
+ucl\+\_\+drone\+::\+Pose3D {\bfseries destination}
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classPathPlanning_a02f2a2a3324d4a8f24ec5ee11d746e7b}\label{classPathPlanning_a02f2a2a3324d4a8f24ec5ee11d746e7b}} 
+void \hyperlink{classPathPlanning_a02f2a2a3324d4a8f24ec5ee11d746e7b}{pose\+Cb} (const ucl\+\_\+drone\+::\+Pose3\+D\+::\+Const\+Ptr pose\+Ptr)
+\begin{DoxyCompactList}\small\item\em Callbacks. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPathPlanning_a119777174248b9df2e0545488e242c2a}\label{classPathPlanning_a119777174248b9df2e0545488e242c2a}} 
+void {\bfseries strategy\+Cb} (const ucl\+\_\+drone\+::\+Strategy\+Msg\+::\+Const\+Ptr strategy\+Ptr)
+\item 
+\mbox{\Hypertarget{classPathPlanning_ae53b9142cad8205127a1781bf892525c}\label{classPathPlanning_ae53b9142cad8205127a1781bf892525c}} 
+void {\bfseries destination\+Cb} (const ucl\+\_\+drone\+::\+Pose3\+D\+::\+Const\+Ptr destination\+Ptr)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classPathPlanning_a1835423557580f21ff1d569e892cc0d5}\label{classPathPlanning_a1835423557580f21ff1d569e892cc0d5}} 
+ros\+::\+Node\+Handle {\bfseries nh}
+\item 
+\mbox{\Hypertarget{classPathPlanning_a8bcaea60eb993a015a3c419ec8397b40}\label{classPathPlanning_a8bcaea60eb993a015a3c419ec8397b40}} 
+std\+::string {\bfseries pose\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classPathPlanning_ad15e0d527a36593a3af94269a825a3f9}\label{classPathPlanning_ad15e0d527a36593a3af94269a825a3f9}} 
+std\+::string {\bfseries strategy\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classPathPlanning_a736d7b73b31db35d37d2755aeb20641f}\label{classPathPlanning_a736d7b73b31db35d37d2755aeb20641f}} 
+std\+::string {\bfseries destination\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classPathPlanning_af1936848055c37f265eb915def4ec015}\label{classPathPlanning_af1936848055c37f265eb915def4ec015}} 
+ros\+::\+Subscriber {\bfseries pose\+\_\+sub}
+\item 
+\mbox{\Hypertarget{classPathPlanning_a452296f3a2428ba72c2c724fa30da368}\label{classPathPlanning_a452296f3a2428ba72c2c724fa30da368}} 
+ros\+::\+Subscriber {\bfseries strategy\+\_\+sub}
+\item 
+\mbox{\Hypertarget{classPathPlanning_ad97846d17e986769d1b09dc8af51ed9f}\label{classPathPlanning_ad97846d17e986769d1b09dc8af51ed9f}} 
+ros\+::\+Subscriber {\bfseries destination\+\_\+sub}
+\item 
+\mbox{\Hypertarget{classPathPlanning_a6cbf43e103869fd4615ff42961933981}\label{classPathPlanning_a6cbf43e103869fd4615ff42961933981}} 
+std\+::string {\bfseries poseref\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classPathPlanning_a04c7e23384c1072c477262717851cbeb}\label{classPathPlanning_a04c7e23384c1072c477262717851cbeb}} 
+ros\+::\+Publisher {\bfseries poseref\+\_\+pub}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/\hyperlink{path__planning_8h}{path\+\_\+planning.\+h}\end{DoxyCompactItemize}

@@ -1,5 +1,5 @@
 /*
- *  This file is part of boris_drone 2016.
+ *  This file is part of ucl_drone 2016.
  *  For more information, refer to the corresponding header file.
  *
  *  \author Arnaud Jacques & Alexandre Leclere
@@ -7,11 +7,10 @@
  *
  */
 
-#include <boris_drone/map/mapping_node.h>
+#include <ucl_drone/map/mapping_node.h>
 
 MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3D visualizer"))
 {
-  iter = 0;
   // Subsribers
   strategy_channel        = nh.resolveName("strategy");
   processed_image_channel = nh.resolveName("processed_image");
@@ -19,24 +18,20 @@ MappingNode::MappingNode() : visualizer(new pcl::visualization::PCLVisualizer("3
   end_reset_pose_channel  = nh.resolveName("end_reset_pose");
   bundled_channel         = nh.resolveName("bundled");
   mpe_channel             = nh.resolveName("manual_pose_estimation");
-  make_keyframe_channel   = nh.resolveName("make_keyframe");
   strategy_sub        = nh.subscribe(strategy_channel,       10, &MappingNode::strategyCb,       this);
   processed_image_sub = nh.subscribe(processed_image_channel, 1, &MappingNode::processedImageCb, this);
   reset_pose_sub      = nh.subscribe(reset_pose_channel,      1, &MappingNode::resetPoseCb,      this);
   end_reset_pose_sub  = nh.subscribe(end_reset_pose_channel,  1, &MappingNode::endResetPoseCb,   this);
   bundled_sub         = nh.subscribe(bundled_channel,         1, &MappingNode::bundledCb,        this);
   mpe_sub             = nh.subscribe(mpe_channel,             1, &MappingNode::manualPoseCb,     this);
-  make_keyframe_sub   = nh.subscribe(make_keyframe_channel,   1, &MappingNode::makeKeyframeCb,   this);
 
   // Publishers
   pose_visual_channel     = nh.resolveName("pose_visual");
   pose_correction_channel = nh.resolveName("pose_visual_correction");
-  target_channel          = nh.resolveName("boris_drone/target_detected");
-  go_high_channel         = nh.resolveName("go_high");
-  pose_visual_pub     = nh.advertise<boris_drone::Pose3D>(pose_visual_channel,     1);
-  pose_correction_pub = nh.advertise<boris_drone::Pose3D>(pose_correction_channel, 1);
-  target_pub          = nh.advertise<boris_drone::TargetDetected>(target_channel,  1);
-  go_high_pub         = nh.advertise<std_msgs::Float32>(go_high_channel,           1);
+  target_channel          = nh.resolveName("ucl_drone/target_detected");
+  pose_visual_pub     = nh.advertise<ucl_drone::Pose3D>(pose_visual_channel,     1);
+  pose_correction_pub = nh.advertise<ucl_drone::Pose3D>(pose_correction_channel, 1);
+  target_pub          = nh.advertise<ucl_drone::TargetDetected>(target_channel,  1);
 
   this->target_detected = false;
   this->pending_reset   = false;
@@ -73,19 +68,19 @@ MappingNode::~MappingNode()
 {
 }
 
-void MappingNode::manualPoseCb(const boris_drone::Pose3D::ConstPtr posePtr)
+void MappingNode::manualPoseCb(const ucl_drone::Pose3D::ConstPtr posePtr)
 {
   ROS_INFO("mapping node received manual pose");
   map.setManualPose(*posePtr);
   PnP_pose = *posePtr;
 }
 
-void MappingNode::bundledCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
+void MappingNode::bundledCb(const ucl_drone::BundleMsg::ConstPtr bundlePtr)
 {
   map.updateBundle(bundlePtr);
 }
 
-void MappingNode::strategyCb(const boris_drone::StrategyMsg::ConstPtr strategyPtr)
+void MappingNode::strategyCb(const ucl_drone::StrategyMsg::ConstPtr strategyPtr)
 {
   strategy = strategyPtr->type;
 }
@@ -105,7 +100,7 @@ void MappingNode::endResetPoseCb(const std_msgs::Empty& msg)
   pending_reset = false;
 }
 
-void MappingNode::processedImageCb(const boris_drone::ProcessedImageMsg::ConstPtr processed_image_in)
+void MappingNode::processedImageCb(const ucl_drone::ProcessedImageMsg::ConstPtr processed_image_in)
 {
   TIC(mapprocessimage);
   //ROS_INFO_THROTTLE(1,"pending reset? %d, strategy? %d", pending_reset, strategy);
@@ -120,35 +115,15 @@ void MappingNode::processedImageCb(const boris_drone::ProcessedImageMsg::ConstPt
   this->visualizer->updatePointCloud<pcl::PointXYZ>(map.cloud, "SIFT_cloud");
   if (PnP_success)
   {
-    boris_drone::Pose3D frame_pose = current_frame.pose;
+    ucl_drone::Pose3D frame_pose = current_frame.pose;
     this->publishPoseVisual(PnP_pose, frame_pose);
   }
-  iter++;
   //TOC_DISPLAY(mapprocessimage,"process an image in the map");
 }
 
-void MappingNode::makeKeyframeCb(const std_msgs::Empty::ConstPtr msg)
+void MappingNode::publishPoseVisual(ucl_drone::Pose3D PnP_pose, ucl_drone::Pose3D frame_pose)
 {
-  map.make_keyframe = true;
-}
-
-void MappingNode::showProcImg(const boris_drone::ProcessedImageMsg::ConstPtr pi)
-{
-  ROS_INFO("Processed Image:");
-  ROS_INFO("\tpose: x=%f, y=%f, z = %f",pi->pose.x,pi->pose.y,pi->pose.z);
-  ROS_INFO("\timage: height =%u, width=%u",pi->image.height,pi->image.width);
-  ROS_INFO("\tnber of keypoints = %lu",pi->keypoints.size());
-  for (unsigned i = 0; i < pi->keypoints.size(); ++i)
-  {
-    ROS_INFO("\tKeypoint %u: x=%f, y=%f, z=%f",i,pi->keypoints[i].point.x,
-                                                 pi->keypoints[i].point.y,
-                                                 pi->keypoints[i].point.z);
-  }
-}
-
-void MappingNode::publishPoseVisual(boris_drone::Pose3D PnP_pose, boris_drone::Pose3D frame_pose)
-{
-  boris_drone::Pose3D pose_correction;
+  ucl_drone::Pose3D pose_correction;
   pose_correction.header.stamp = ros::Time::now();
   pose_correction.x = frame_pose.x - PnP_pose.x;
   pose_correction.y = frame_pose.y - PnP_pose.y;
@@ -167,7 +142,7 @@ void MappingNode::targetDetectedPublisher()
 {
   if (target_detected)
   {
-    boris_drone::TargetDetected msg;
+    ucl_drone::TargetDetected msg;
     msg.pose = lastProcessedImgReceived->pose;
     msg.img_point.x = lastProcessedImgReceived->target_points[4].x;
     msg.img_point.y = lastProcessedImgReceived->target_points[4].y;
@@ -183,15 +158,6 @@ void MappingNode::targetDetectedPublisher()
     target_pub.publish(msg);
   }
 }
-
-
-void MappingNode::publishGoHigh(double altitude)
-{
-  std_msgs::Float32 msg;
-  msg.data = altitude;
-  go_high_pub.publish(msg);
-}
-
 
 int main(int argc, char** argv)
 {

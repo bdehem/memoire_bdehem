@@ -1,0 +1,93 @@
+\hypertarget{classManualPoseEstimator}{}\section{Manual\+Pose\+Estimator Class Reference}
+\label{classManualPoseEstimator}\index{Manual\+Pose\+Estimator@{Manual\+Pose\+Estimator}}
+
+
+This class defines an object which wraps all methods to perform the pose estimation based on info from user.  
+
+
+
+
+{\ttfamily \#include $<$manual\+\_\+pose\+\_\+estimation.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classManualPoseEstimator_aa7ca58da3b62a0dcef1ad72c5045347e}\label{classManualPoseEstimator_aa7ca58da3b62a0dcef1ad72c5045347e}} 
+\hyperlink{classManualPoseEstimator_aa7ca58da3b62a0dcef1ad72c5045347e}{Manual\+Pose\+Estimator} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classManualPoseEstimator_a620324d78a3cfa946fe99ea7b647eb00}\label{classManualPoseEstimator_a620324d78a3cfa946fe99ea7b647eb00}} 
+\hyperlink{classManualPoseEstimator_a620324d78a3cfa946fe99ea7b647eb00}{$\sim$\+Manual\+Pose\+Estimator} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classManualPoseEstimator_a838f7f52d105ee50f22058cb7ceca527}\label{classManualPoseEstimator_a838f7f52d105ee50f22058cb7ceca527}} 
+void \hyperlink{classManualPoseEstimator_a838f7f52d105ee50f22058cb7ceca527}{publish\+\_\+pose} ()
+\begin{DoxyCompactList}\small\item\em sends message with the estimated pose \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classManualPoseEstimator_a1aa19bbcb80a687fa0b9416ee272cdbd}{manual\+Pose\+Cb} (const ucl\+\_\+drone\+::\+Pose3\+D\+::\+Const\+Ptr manual\+Pose\+Ptr)
+\begin{DoxyCompactList}\small\item\em Manual pose callback. \end{DoxyCompactList}\item 
+void \hyperlink{classManualPoseEstimator_a77e0e96d37601fefa3dd0ac306081723}{visual\+Pose\+Cb} (const ucl\+\_\+drone\+::\+Pose3\+D\+::\+Const\+Ptr manual\+Pose\+Ptr)
+\begin{DoxyCompactList}\small\item\em Visual pose callback. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classManualPoseEstimator_a591bf0d14b91ec8d19e1789fb65114f8}\label{classManualPoseEstimator_a591bf0d14b91ec8d19e1789fb65114f8}} 
+ros\+::\+Node\+Handle \hyperlink{classManualPoseEstimator_a591bf0d14b91ec8d19e1789fb65114f8}{nh}
+\begin{DoxyCompactList}\small\item\em Node handle (used by R\+OS) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classManualPoseEstimator_ad45feb13c3fd599956218ecfdffee979}\label{classManualPoseEstimator_ad45feb13c3fd599956218ecfdffee979}} 
+std\+::string \hyperlink{classManualPoseEstimator_ad45feb13c3fd599956218ecfdffee979}{pose\+\_\+channel}
+\begin{DoxyCompactList}\small\item\em Channel for pose estimation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classManualPoseEstimator_acd9f42383724f243a2d85daad233b0bb}\label{classManualPoseEstimator_acd9f42383724f243a2d85daad233b0bb}} 
+ros\+::\+Publisher \hyperlink{classManualPoseEstimator_acd9f42383724f243a2d85daad233b0bb}{pose\+\_\+pub}
+\begin{DoxyCompactList}\small\item\em Published for pose estimation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classManualPoseEstimator_a2b5555c6940b90da529f77e880844a1f}\label{classManualPoseEstimator_a2b5555c6940b90da529f77e880844a1f}} 
+std\+::string \hyperlink{classManualPoseEstimator_a2b5555c6940b90da529f77e880844a1f}{manual\+\_\+pose\+\_\+channel}
+\begin{DoxyCompactList}\small\item\em Channel for manual pose. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classManualPoseEstimator_aaf4c9f2bf8a02bec7c1f6078d6fc7fed}\label{classManualPoseEstimator_aaf4c9f2bf8a02bec7c1f6078d6fc7fed}} 
+ros\+::\+Subscriber \hyperlink{classManualPoseEstimator_aaf4c9f2bf8a02bec7c1f6078d6fc7fed}{manual\+\_\+pose\+\_\+sub}
+\begin{DoxyCompactList}\small\item\em Subscriber to manual pose. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classManualPoseEstimator_a234948acc3fb2e252c1b522c5adc0cfb}\label{classManualPoseEstimator_a234948acc3fb2e252c1b522c5adc0cfb}} 
+std\+::string \hyperlink{classManualPoseEstimator_a234948acc3fb2e252c1b522c5adc0cfb}{visual\+\_\+pose\+\_\+channel}
+\begin{DoxyCompactList}\small\item\em Channel for visual pose. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classManualPoseEstimator_a283880b513982528236ae380d38b878d}\label{classManualPoseEstimator_a283880b513982528236ae380d38b878d}} 
+ros\+::\+Subscriber \hyperlink{classManualPoseEstimator_a283880b513982528236ae380d38b878d}{visual\+\_\+pose\+\_\+sub}
+\begin{DoxyCompactList}\small\item\em Subscriber to visual pose. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classManualPoseEstimator_a137fb097b5b9822146afe0409f1c7464}\label{classManualPoseEstimator_a137fb097b5b9822146afe0409f1c7464}} 
+ucl\+\_\+drone\+::\+Pose3D \hyperlink{classManualPoseEstimator_a137fb097b5b9822146afe0409f1c7464}{pose}
+\begin{DoxyCompactList}\small\item\em Current estimated pose (using visual and manual information) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classManualPoseEstimator_a0d0b3e32a5d47bee9e849398a44aec8a}\label{classManualPoseEstimator_a0d0b3e32a5d47bee9e849398a44aec8a}} 
+bool \hyperlink{classManualPoseEstimator_a0d0b3e32a5d47bee9e849398a44aec8a}{has\+\_\+received\+\_\+visual\+\_\+pose}
+\begin{DoxyCompactList}\small\item\em Flag for when first visual pose is received. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class defines an object which wraps all methods to perform the pose estimation based on info from user. 
+
+Only the z, rotX, rotY coordinates are taken from manual pose. The x, y, rotZ coordinates are taken from visual pose. A manual pose can be sent to the drone by using rostopic pub to publish a Pose3D message to manual\+\_\+pose\+\_\+channel 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classManualPoseEstimator_a1aa19bbcb80a687fa0b9416ee272cdbd}\label{classManualPoseEstimator_a1aa19bbcb80a687fa0b9416ee272cdbd}} 
+\index{Manual\+Pose\+Estimator@{Manual\+Pose\+Estimator}!manual\+Pose\+Cb@{manual\+Pose\+Cb}}
+\index{manual\+Pose\+Cb@{manual\+Pose\+Cb}!Manual\+Pose\+Estimator@{Manual\+Pose\+Estimator}}
+\subsubsection{\texorpdfstring{manual\+Pose\+Cb()}{manualPoseCb()}}
+{\footnotesize\ttfamily void Manual\+Pose\+Estimator\+::manual\+Pose\+Cb (\begin{DoxyParamCaption}\item[{const ucl\+\_\+drone\+::\+Pose3\+D\+::\+Const\+Ptr}]{manual\+Pose\+Ptr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Manual pose callback. 
+
+Called automatically when a message is received by manual\+\_\+pose\+\_\+sub. Updates current pose estimation with z, rotX, and rotY from manual pose message \mbox{\Hypertarget{classManualPoseEstimator_a77e0e96d37601fefa3dd0ac306081723}\label{classManualPoseEstimator_a77e0e96d37601fefa3dd0ac306081723}} 
+\index{Manual\+Pose\+Estimator@{Manual\+Pose\+Estimator}!visual\+Pose\+Cb@{visual\+Pose\+Cb}}
+\index{visual\+Pose\+Cb@{visual\+Pose\+Cb}!Manual\+Pose\+Estimator@{Manual\+Pose\+Estimator}}
+\subsubsection{\texorpdfstring{visual\+Pose\+Cb()}{visualPoseCb()}}
+{\footnotesize\ttfamily void Manual\+Pose\+Estimator\+::visual\+Pose\+Cb (\begin{DoxyParamCaption}\item[{const ucl\+\_\+drone\+::\+Pose3\+D\+::\+Const\+Ptr}]{manual\+Pose\+Ptr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Visual pose callback. 
+
+Called automatically when a message is received by visual\+\_\+pose\+\_\+sub. Updates current pose estimation with x, y, and rotZ from visual pose message 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/\hyperlink{manual__pose__estimation_8h}{manual\+\_\+pose\+\_\+estimation.\+h}\end{DoxyCompactItemize}

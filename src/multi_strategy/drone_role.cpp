@@ -1,5 +1,5 @@
 /*
- *  This file is part of boris_drone 2016.
+ *  This file is part of ucl_drone 2016.
  *  For more information, refer
  *  to the corresponding header file.
  *
@@ -8,7 +8,7 @@
  *
  */
 
-#include <boris_drone/drone_role.h>
+#include <ucl_drone/drone_role.h>
 
 // Role code + list of strings to contain useful topic names
 DroneRole::DroneRole(std::string name)
@@ -62,9 +62,9 @@ int DroneRole::GetDroneRole()
   return role;
 }
 
-boris_drone::DroneRole DroneRole::DroneRoleToMsg()
+ucl_drone::DroneRole DroneRole::DroneRoleToMsg()
 {
-  boris_drone::DroneRole msg;
+  ucl_drone::DroneRole msg;
   msg.name = this->name;
   msg.role = this->role;
   msg.params = this->parameters;
@@ -75,9 +75,9 @@ void DroneRole::MsgToDroneRole()
 {
 }
 
-boris_drone::DroneRoles DroneRole::DroneRolesToMsg(std::vector<DroneRole> roles)
+ucl_drone::DroneRoles DroneRole::DroneRolesToMsg(std::vector<DroneRole> roles)
 {
-  boris_drone::DroneRoles msg;
+  ucl_drone::DroneRoles msg;
   msg.roles.resize(roles.size());
   for (int i = 0; i < roles.size(); i++)
   {

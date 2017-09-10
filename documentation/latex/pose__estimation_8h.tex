@@ -1,0 +1,39 @@
+\hypertarget{pose__estimation_8h}{}\section{include/ucl\+\_\+drone/pose\+\_\+estimation.h File Reference}
+\label{pose__estimation_8h}\index{include/ucl\+\_\+drone/pose\+\_\+estimation.\+h@{include/ucl\+\_\+drone/pose\+\_\+estimation.\+h}}
+
+
+Pose estimation node of the drone (x,y,z,theta,phi,psi) in an absolute coordinate frame. At the present\+: on the basis of the Odometry received from ardrone\+\_\+autonomy and Visual pose estimation from the mapping node In future developpment\+: Kalman filters, visual odometry, raw sensors, etc.  
+
+
+{\ttfamily \#include $<$ucl\+\_\+drone/ucl\+\_\+drone.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/profiling.\+h$>$}\newline
+{\ttfamily \#include $<$ardrone\+\_\+autonomy/\+Navdata.\+h$>$}\newline
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include $<$tf/transform\+\_\+broadcaster.\+h$>$}\newline
+{\ttfamily \#include $<$tf/transform\+\_\+datatypes.\+h$>$}\newline
+{\ttfamily \#include $<$tf/transform\+\_\+listener.\+h$>$}\newline
+{\ttfamily \#include $<$queue$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$nav\+\_\+msgs/\+Odometry.\+h$>$}\newline
+{\ttfamily \#include $<$sensor\+\_\+msgs/\+Imu.\+h$>$}\newline
+{\ttfamily \#include $<$std\+\_\+msgs/\+Empty.\+h$>$}\newline
+{\ttfamily \#include $<$std\+\_\+srvs/\+Empty.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/\+Pose3\+D.\+h$>$}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classPoseEstimator}{Pose\+Estimator}
+\begin{DoxyCompactList}\small\item\em This class defines an object which wraps all method to perform the pose estimation based on fusion between sensors and visual information. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Pose estimation node of the drone (x,y,z,theta,phi,psi) in an absolute coordinate frame. At the present\+: on the basis of the Odometry received from ardrone\+\_\+autonomy and Visual pose estimation from the mapping node In future developpment\+: Kalman filters, visual odometry, raw sensors, etc. 
+
+\begin{DoxyAuthor}{Author}
+Arnaud Jacques \& Alexandre Leclere 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2016
+\end{DoxyDate}
+Part of ucl\+\_\+drone. Pose estimation R\+OS node for the ardrone. 

@@ -1,0 +1,96 @@
+\hypertarget{structCamera}{}\section{Camera Struct Reference}
+\label{structCamera}\index{Camera@{Camera}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structCamera_a01f94c3543f56ede7af49dc778f19331}\label{structCamera_a01f94c3543f56ede7af49dc778f19331}} 
+\hyperlink{structCamera_a01f94c3543f56ede7af49dc778f19331}{Camera} ()
+\begin{DoxyCompactList}\small\item\em Empty Constructor. \end{DoxyCompactList}\item 
+\hyperlink{structCamera_affd4ef0866e8ac1e8da35ad09e5f6256}{Camera} (bool is\+\_\+front)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structCamera_a138da7d5e6a8c889382c0f15121e6091}\label{structCamera_a138da7d5e6a8c889382c0f15121e6091}} 
+cv\+::\+Mat \hyperlink{structCamera_a138da7d5e6a8c889382c0f15121e6091}{get\+\_\+K} ()
+\begin{DoxyCompactList}\small\item\em Get camera intrinsic matrix. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structCamera_a8ccd39e3c88e25eeaeaa5647c704e2f7}\label{structCamera_a8ccd39e3c88e25eeaeaa5647c704e2f7}} 
+cv\+::\+Mat \hyperlink{structCamera_a8ccd39e3c88e25eeaeaa5647c704e2f7}{get\+\_\+R} ()
+\begin{DoxyCompactList}\small\item\em Get camera rotation matrix (to drone) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structCamera_a506a796b772b7ae8b14b808726490d3a}\label{structCamera_a506a796b772b7ae8b14b808726490d3a}} 
+double \hyperlink{structCamera_a506a796b772b7ae8b14b808726490d3a}{fx}
+\begin{DoxyCompactList}\small\item\em Horizontal focal length. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structCamera_a483ce6b47634e24381c96e08c29a8bc1}\label{structCamera_a483ce6b47634e24381c96e08c29a8bc1}} 
+double \hyperlink{structCamera_a483ce6b47634e24381c96e08c29a8bc1}{fy}
+\begin{DoxyCompactList}\small\item\em Vertical focal length. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structCamera_aea02a5d8eb87cd1f2e686a111b47a0b1}\label{structCamera_aea02a5d8eb87cd1f2e686a111b47a0b1}} 
+double \hyperlink{structCamera_aea02a5d8eb87cd1f2e686a111b47a0b1}{cx}
+\begin{DoxyCompactList}\small\item\em Image center x-\/coordinate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structCamera_ab5bfaefefc3478028de70b786752669d}\label{structCamera_ab5bfaefefc3478028de70b786752669d}} 
+double \hyperlink{structCamera_ab5bfaefefc3478028de70b786752669d}{cy}
+\begin{DoxyCompactList}\small\item\em Image center y-\/coordinate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structCamera_aa1c5b57adea93b8efe623c631a863f72}\label{structCamera_aa1c5b57adea93b8efe623c631a863f72}} 
+double \hyperlink{structCamera_aa1c5b57adea93b8efe623c631a863f72}{W}
+\begin{DoxyCompactList}\small\item\em Image width. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structCamera_a08b26416f7b00171c4a4e301ab33ee64}\label{structCamera_a08b26416f7b00171c4a4e301ab33ee64}} 
+double \hyperlink{structCamera_a08b26416f7b00171c4a4e301ab33ee64}{H}
+\begin{DoxyCompactList}\small\item\em Image height. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structCamera_a4159be1fbc48e36fddf6720475450a0c}\label{structCamera_a4159be1fbc48e36fddf6720475450a0c}} 
+double \hyperlink{structCamera_a4159be1fbc48e36fddf6720475450a0c}{roll}
+\begin{DoxyCompactList}\small\item\em Roll angle of camera to drone rotation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structCamera_a481e669a6f96826929e323706543a6a4}\label{structCamera_a481e669a6f96826929e323706543a6a4}} 
+double \hyperlink{structCamera_a481e669a6f96826929e323706543a6a4}{pitch}
+\begin{DoxyCompactList}\small\item\em Pitch angle of camera to drone rotation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structCamera_a54536224732656e8f4a419cf11662d3e}\label{structCamera_a54536224732656e8f4a419cf11662d3e}} 
+double \hyperlink{structCamera_a54536224732656e8f4a419cf11662d3e}{yaw}
+\begin{DoxyCompactList}\small\item\em Yaw angle of camera to drone rotation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structCamera_a60b9f85205ff2ec338a9d25031401f04}\label{structCamera_a60b9f85205ff2ec338a9d25031401f04}} 
+cv\+::\+Mat \hyperlink{structCamera_a60b9f85205ff2ec338a9d25031401f04}{cam\+\_\+plane\+\_\+top}
+\begin{DoxyCompactList}\small\item\em Plane defining top edge of field of vision in camera coordinates. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structCamera_a25cec7b31e3bd02d20934e471fa48a3f}\label{structCamera_a25cec7b31e3bd02d20934e471fa48a3f}} 
+cv\+::\+Mat \hyperlink{structCamera_a25cec7b31e3bd02d20934e471fa48a3f}{cam\+\_\+plane\+\_\+bottom}
+\begin{DoxyCompactList}\small\item\em Plane defining bottom edge of field of vision in camera coordinates. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structCamera_aebad25ab660ec7783bc5ac04438f7ae4}\label{structCamera_aebad25ab660ec7783bc5ac04438f7ae4}} 
+cv\+::\+Mat \hyperlink{structCamera_aebad25ab660ec7783bc5ac04438f7ae4}{cam\+\_\+plane\+\_\+left}
+\begin{DoxyCompactList}\small\item\em Plane defining left edge of field of vision in camera coordinates. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structCamera_ac185e1126f097594dcbe31df39307f2d}\label{structCamera_ac185e1126f097594dcbe31df39307f2d}} 
+cv\+::\+Mat \hyperlink{structCamera_ac185e1126f097594dcbe31df39307f2d}{cam\+\_\+plane\+\_\+right}
+\begin{DoxyCompactList}\small\item\em Plane defining right edge of field of vision in camera coordinates. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structCamera_a0bdcc221c0b0f2b7d94d777c845b1830}\label{structCamera_a0bdcc221c0b0f2b7d94d777c845b1830}} 
+void \hyperlink{structCamera_a0bdcc221c0b0f2b7d94d777c845b1830}{init\+Planes} ()
+\begin{DoxyCompactList}\small\item\em This method initializes planes defining the visible area from the camera (according to camera parameters) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structCamera_a7cef7ea1429494c0497ce6e7e0e6124c}\label{structCamera_a7cef7ea1429494c0497ce6e7e0e6124c}} 
+cv\+::\+Mat \hyperlink{structCamera_a7cef7ea1429494c0497ce6e7e0e6124c}{K}
+\begin{DoxyCompactList}\small\item\em Intrinsic camera matrix. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structCamera_a10c6e1e6a928c2b773d2e24ea4c804d6}\label{structCamera_a10c6e1e6a928c2b773d2e24ea4c804d6}} 
+cv\+::\+Mat \hyperlink{structCamera_a10c6e1e6a928c2b773d2e24ea4c804d6}{R}
+\begin{DoxyCompactList}\small\item\em Rotation matrix camera to drone. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structCamera_affd4ef0866e8ac1e8da35ad09e5f6256}\label{structCamera_affd4ef0866e8ac1e8da35ad09e5f6256}} 
+\index{Camera@{Camera}!Camera@{Camera}}
+\index{Camera@{Camera}!Camera@{Camera}}
+\subsubsection{\texorpdfstring{Camera()}{Camera()}}
+{\footnotesize\ttfamily Camera\+::\+Camera (\begin{DoxyParamCaption}\item[{bool}]{is\+\_\+front }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em is\+\_\+front} & If true, camera parameters of A\+R.\+Drone\textquotesingle{}s front camera are taken \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/map/\hyperlink{camera_8h}{camera.\+h}\end{DoxyCompactItemize}

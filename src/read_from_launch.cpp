@@ -1,5 +1,5 @@
 /*!
- *  This file is part of boris_drone 2016.
+ *  This file is part of ucl_drone 2016.
  *  For more information, refer
  *  to the corresponding header file.
  *
@@ -8,7 +8,7 @@
  *
  */
 
-#include <boris_drone/read_from_launch.h>
+#include <ucl_drone/read_from_launch.h>
 
 // IMPROVEMENT: use NAN as default value rather than 0
 

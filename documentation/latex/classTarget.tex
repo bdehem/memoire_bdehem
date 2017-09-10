@@ -1,0 +1,116 @@
+\hypertarget{classTarget}{}\section{Target Class Reference}
+\label{classTarget}\index{Target@{Target}}
+
+
+Provide tools to track the presence of a target.  
+
+
+
+
+{\ttfamily \#include $<$target.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classTarget_a7008d6752ce64f82e56aae6ea6c2bb65}{Target} ()
+\begin{DoxyCompactList}\small\item\em wrapper object to the F\+L\+A\+NN library to perform matching with the video pictures \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classTarget_a18102a6c58a268fb1466771463fdc9b3}\label{classTarget_a18102a6c58a268fb1466771463fdc9b3}} 
+\hyperlink{classTarget_a18102a6c58a268fb1466771463fdc9b3}{$\sim$\+Target} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classTarget_a5526dfd0f5096add631b619309445ec6}\label{classTarget_a5526dfd0f5096add631b619309445ec6}} 
+bool \hyperlink{classTarget_a5526dfd0f5096add631b619309445ec6}{init} (const std\+::string relative\+\_\+path)
+\begin{DoxyCompactList}\small\item\em initializer \end{DoxyCompactList}\item 
+bool \hyperlink{classTarget_ab4bfd2ba3ed56a749f15e18c3a50bb1c}{detect} (cv\+::\+Mat cam\+\_\+descriptors, std\+::vector$<$ cv\+::\+Key\+Point $>$ \&cam\+\_\+keypoints, std\+::vector$<$ cv\+::\+D\+Match $>$ \&good\+\_\+matches, std\+::vector$<$ int $>$ \&idxs\+\_\+to\+\_\+remove, std\+::vector$<$ cv\+::\+Point2f $>$ \&target\+\_\+coord)
+\begin{DoxyCompactList}\small\item\em This method detects the target in a given picture. \end{DoxyCompactList}\item 
+void \hyperlink{classTarget_aeded1864a766c08b65c920974d7f4a6c}{draw} (cv\+::\+Mat cam\+\_\+img, std\+::vector$<$ cv\+::\+Key\+Point $>$ cam\+\_\+keypoints, std\+::vector$<$ cv\+::\+D\+Match $>$ good\+\_\+matches, cv\+::\+Mat \&img\+\_\+matches)
+\begin{DoxyCompactList}\small\item\em This method draws a green frame to indicate the detected target. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classTarget_aa83d54e883a7b8cc0ebf09ea612e335a}\label{classTarget_aa83d54e883a7b8cc0ebf09ea612e335a}} 
+void \hyperlink{classTarget_aa83d54e883a7b8cc0ebf09ea612e335a}{position} (std\+::vector$<$ cv\+::\+Key\+Point $>$ cam\+\_\+keypoints, std\+::vector$<$ cv\+::\+D\+Match $>$ good\+\_\+matches, std\+::vector$<$ cv\+::\+Point2f $>$ \&coord)
+\begin{DoxyCompactList}\small\item\em This method computes the position of the target on the camera image. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classTarget_ae6fef05f06361399105661363eda1b48}\label{classTarget_ae6fef05f06361399105661363eda1b48}} 
+cv\+::\+Mat {\bfseries image}
+\item 
+\mbox{\Hypertarget{classTarget_a832b225c80fbe2a9015b875810d3d58d}\label{classTarget_a832b225c80fbe2a9015b875810d3d58d}} 
+std\+::vector$<$ cv\+::\+Key\+Point $>$ \hyperlink{classTarget_a832b225c80fbe2a9015b875810d3d58d}{keypoints}
+\begin{DoxyCompactList}\small\item\em Picture of the target as read at \$\+T\+A\+R\+G\+E\+T\+\_\+\+R\+E\+L\+P\+A\+TH\$. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classTarget_a8ff89fafe1f7733950775eddbcd24abd}\label{classTarget_a8ff89fafe1f7733950775eddbcd24abd}} 
+cv\+::\+Mat \hyperlink{classTarget_a8ff89fafe1f7733950775eddbcd24abd}{descriptors}
+\begin{DoxyCompactList}\small\item\em keypoints detected on the target picture \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classTarget_a05b3598fe7077a631c8c1b8accb60dea}\label{classTarget_a05b3598fe7077a631c8c1b8accb60dea}} 
+std\+::vector$<$ cv\+::\+Point2f $>$ \hyperlink{classTarget_a05b3598fe7077a631c8c1b8accb60dea}{center\+And\+Corners}
+\begin{DoxyCompactList}\small\item\em target keypoints descriptors \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classTarget_a0f2a301f380d5ef780b246c44ea3a132}\label{classTarget_a0f2a301f380d5ef780b246c44ea3a132}} 
+cv\+::\+Flann\+Based\+Matcher \hyperlink{classTarget_a0f2a301f380d5ef780b246c44ea3a132}{matcher}
+\begin{DoxyCompactList}\small\item\em position of the center and the corners of the target \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Provide tools to track the presence of a target. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classTarget_a7008d6752ce64f82e56aae6ea6c2bb65}\label{classTarget_a7008d6752ce64f82e56aae6ea6c2bb65}} 
+\index{Target@{Target}!Target@{Target}}
+\index{Target@{Target}!Target@{Target}}
+\subsubsection{\texorpdfstring{Target()}{Target()}}
+{\footnotesize\ttfamily Target\+::\+Target (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+wrapper object to the F\+L\+A\+NN library to perform matching with the video pictures 
+
+Constructor 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classTarget_ab4bfd2ba3ed56a749f15e18c3a50bb1c}\label{classTarget_ab4bfd2ba3ed56a749f15e18c3a50bb1c}} 
+\index{Target@{Target}!detect@{detect}}
+\index{detect@{detect}!Target@{Target}}
+\subsubsection{\texorpdfstring{detect()}{detect()}}
+{\footnotesize\ttfamily bool Target\+::detect (\begin{DoxyParamCaption}\item[{cv\+::\+Mat}]{cam\+\_\+descriptors,  }\item[{std\+::vector$<$ cv\+::\+Key\+Point $>$ \&}]{cam\+\_\+keypoints,  }\item[{std\+::vector$<$ cv\+::\+D\+Match $>$ \&}]{good\+\_\+matches,  }\item[{std\+::vector$<$ int $>$ \&}]{idxs\+\_\+to\+\_\+remove,  }\item[{std\+::vector$<$ cv\+::\+Point2f $>$ \&}]{target\+\_\+coord }\end{DoxyParamCaption})}
+
+
+
+This method detects the target in a given picture. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em cam\+\_\+descriptors} & The desciptors of keypoints in camera picture \\
+\hline
+\mbox{\tt in}  & {\em cam\+\_\+keypoints} & The coordinates of keypoints in camera picture \\
+\hline
+\mbox{\tt out}  & {\em good\+\_\+matches} & The good matches between the target picture and the camera picture, in Open\+CV format \\
+\hline
+\mbox{\tt out}  & {\em idxs\+\_\+to\+\_\+remove} & A list of indexes of keypoints on the target \\
+\hline
+\mbox{\tt out}  & {\em target\+\_\+coord} & The coordinates if the target is detected \\
+\hline
+\mbox{\tt in}  & {\em pose} & (\#ifdef D\+E\+B\+U\+G\+\_\+\+P\+R\+O\+J\+E\+C\+T\+I\+ON) Pose of the drone estimated with \\
+\hline
+\mbox{\tt in}  & {\em image\+\_\+cam} & (\#ifdef D\+E\+B\+U\+G\+\_\+\+T\+A\+R\+G\+ET) image matrix (Open\+CV format) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the target is detected 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classTarget_aeded1864a766c08b65c920974d7f4a6c}\label{classTarget_aeded1864a766c08b65c920974d7f4a6c}} 
+\index{Target@{Target}!draw@{draw}}
+\index{draw@{draw}!Target@{Target}}
+\subsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily void Target\+::draw (\begin{DoxyParamCaption}\item[{cv\+::\+Mat}]{cam\+\_\+img,  }\item[{std\+::vector$<$ cv\+::\+Key\+Point $>$}]{cam\+\_\+keypoints,  }\item[{std\+::vector$<$ cv\+::\+D\+Match $>$}]{good\+\_\+matches,  }\item[{cv\+::\+Mat \&}]{img\+\_\+matches }\end{DoxyParamCaption})}
+
+
+
+This method draws a green frame to indicate the detected target. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em cam\+\_\+img} & image matrix (Open\+CV format) \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/computer\+\_\+vision/\hyperlink{target_8h}{target.\+h}\end{DoxyCompactItemize}

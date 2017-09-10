@@ -1,28 +1,27 @@
 /*
- *  This file is part of boris_drone 2016.
- *  For more information, refer
- *  to the corresponding header file.
+ *  This file is part of ucl_drone 2016.
+ *  For more information, refer to the corresponding header file.
  *
- *  \author Arnaud Jacques & Alexandre Leclere
- *  \date 2016
+ *  \author Arnaud Jacques, Alexandre Leclere, Boris Dehem
+ *  \date 2016, 2017
  *
- *  based on tuto:
+ *  based on tutorial:
  *  http://wiki.ros.org/cv_bridge/Tutorials/UsingCvBridgeToConvertBetweenROSImagesAndOpenCVImages
  */
 
-#include <boris_drone/computer_vision/processed_image.h>
+#include <ucl_drone/computer_vision/processed_image.h>
 
 // Contructor for the empty object
 ProcessedImage::ProcessedImage()
 {
-  boris_drone::ProcessedImageMsg::Ptr msg(new boris_drone::ProcessedImageMsg());
+  ucl_drone::ProcessedImageMsg::Ptr msg(new ucl_drone::ProcessedImageMsg());
   n_pts = 0;
 }
 
 //OF_mode = 1: use only optical flow
 //OF_mode =-1: use only detection
 //OF_mode = 0: use OF and detection hybrid
-ProcessedImage::ProcessedImage(const sensor_msgs::Image& msg, const boris_drone::Pose3D& pose, ProcessedImage& prev, int OF_mode, bool& made_full_detection)
+ProcessedImage::ProcessedImage(const sensor_msgs::Image& msg, const ucl_drone::Pose3D& pose, ProcessedImage& prev, int OF_mode, bool& made_full_detection)
 {
   this->pose = pose;
   this->pose.header.stamp = msg.header.stamp;
@@ -35,7 +34,7 @@ ProcessedImage::ProcessedImage(const sensor_msgs::Image& msg, const boris_drone:
   }
   catch (cv_bridge::Exception& e)
   {
-    ROS_ERROR("boris_drone::imgproc::cv_bridge exception: %s", e.what());
+    ROS_ERROR("ucl_drone::imgproc::cv_bridge exception: %s", e.what());
     return;
   }
 
@@ -259,7 +258,7 @@ void ProcessedImage::combineKeypoints(cv::Mat& tracked_descriptors,  std::vector
 // This function fill the message that will be sent by the computer vision node
 // [out] msg: the filled message
 // [in] target: the object to perform target detection
-void ProcessedImage::convertToMsg(boris_drone::ProcessedImageMsg::Ptr& msg, Target target)
+void ProcessedImage::convertToMsg(ucl_drone::ProcessedImageMsg::Ptr& msg, Target target)
 {
   msg->pose = this->pose;
   msg->image = this->image;
@@ -323,7 +322,7 @@ void ProcessedImage::convertToMsg(boris_drone::ProcessedImageMsg::Ptr& msg, Targ
     if (idxs_to_remove.size() == 0 || i != idxs_to_remove[count])
     {
       // Copy the current keypoint position
-      boris_drone::KeyPoint keypoint;
+      ucl_drone::KeyPoint keypoint;
       geometry_msgs::Point point;
       point.x = (double)this->keypoints[i].pt.x;
       point.y = (double)this->keypoints[i].pt.y;

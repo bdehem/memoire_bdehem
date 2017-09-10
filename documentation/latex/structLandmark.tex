@@ -1,0 +1,92 @@
+\hypertarget{structLandmark}{}\section{Landmark Struct Reference}
+\label{structLandmark}\index{Landmark@{Landmark}}
+
+
+A \hyperlink{structLandmark}{Landmark} is a 3D point with a descriptor used to localize the drone.  
+
+
+
+
+{\ttfamily \#include $<$landmark.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structLandmark_a17dfe0ec5742240823d44deb443c6046}{Landmark} (cv\+::\+Point3d \&\hyperlink{structLandmark_a47a014d563b50c513c914d497638c380}{coordinates}, cv\+::\+Mat \&\hyperlink{structLandmark_a0b3dba38446853398db97517bdc86c0b}{descriptor})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structLandmark_a231bfe6c5d9bc82e63a068be94e5f07e}\label{structLandmark_a231bfe6c5d9bc82e63a068be94e5f07e}} 
+\hyperlink{structLandmark_a231bfe6c5d9bc82e63a068be94e5f07e}{Landmark} ()
+\begin{DoxyCompactList}\small\item\em Empty Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structLandmark_add8b834269cebb84cc638c183ff83208}\label{structLandmark_add8b834269cebb84cc638c183ff83208}} 
+\hyperlink{structLandmark_add8b834269cebb84cc638c183ff83208}{$\sim$\+Landmark} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structLandmark_a13da9a6fac1732732dcf223b629bc2a3}\label{structLandmark_a13da9a6fac1732732dcf223b629bc2a3}} 
+void \hyperlink{structLandmark_a13da9a6fac1732732dcf223b629bc2a3}{update\+Coords} (cv\+::\+Point3d \&\hyperlink{structLandmark_a47a014d563b50c513c914d497638c380}{coordinates})
+\begin{DoxyCompactList}\small\item\em Replace the estimated 3D coordinates of this landmark by coordinates. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structLandmark_aa259d66ed80334a6064ef4fe612eb89b}\label{structLandmark_aa259d66ed80334a6064ef4fe612eb89b}} 
+void \hyperlink{structLandmark_aa259d66ed80334a6064ef4fe612eb89b}{set\+As\+Seen\+By} (int kf\+ID)
+\begin{DoxyCompactList}\small\item\em Set this landmark as seen by keyframe with ID kf\+ID. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structLandmark_aa3422d34478d9bd37baf1dcdc67b60a8}\label{structLandmark_aa3422d34478d9bd37baf1dcdc67b60a8}} 
+bool \hyperlink{structLandmark_aa3422d34478d9bd37baf1dcdc67b60a8}{set\+As\+Unseen\+By} (int kf\+ID)
+\begin{DoxyCompactList}\small\item\em Set this landmark as not seen by keyframe with ID kf\+ID. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structLandmark_afdba741cc3b29eef1784aa9a9ff8c032}\label{structLandmark_afdba741cc3b29eef1784aa9a9ff8c032}} 
+void \hyperlink{structLandmark_afdba741cc3b29eef1784aa9a9ff8c032}{print} ()
+\begin{DoxyCompactList}\small\item\em Display information about this landmark in the terminal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structLandmark_a72c0ddd12ae0673a13d85a887af82b43}\label{structLandmark_a72c0ddd12ae0673a13d85a887af82b43}} 
+std\+::set$<$ int $>$ \hyperlink{structLandmark_a72c0ddd12ae0673a13d85a887af82b43}{keyframes\+\_\+seeing}
+\begin{DoxyCompactList}\small\item\em Set of I\+Ds of the keyframes seeing this landmark. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structLandmark_a47a014d563b50c513c914d497638c380}\label{structLandmark_a47a014d563b50c513c914d497638c380}} 
+cv\+::\+Point3d \hyperlink{structLandmark_a47a014d563b50c513c914d497638c380}{coordinates}
+\begin{DoxyCompactList}\small\item\em Estimated 3D coordinates of this landmark. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structLandmark_a0b3dba38446853398db97517bdc86c0b}\label{structLandmark_a0b3dba38446853398db97517bdc86c0b}} 
+cv\+::\+Mat \hyperlink{structLandmark_a0b3dba38446853398db97517bdc86c0b}{descriptor}
+\begin{DoxyCompactList}\small\item\em Descriptor of this landmark. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structLandmark_ab6b387d9b5bf168cff54b75e7057af1f}\label{structLandmark_ab6b387d9b5bf168cff54b75e7057af1f}} 
+int \hyperlink{structLandmark_ab6b387d9b5bf168cff54b75e7057af1f}{ID}
+\begin{DoxyCompactList}\small\item\em Unique ID of this landmark. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structLandmark_a2014817684a0334546b4364b43b054bd}\label{structLandmark_a2014817684a0334546b4364b43b054bd}} 
+int \hyperlink{structLandmark_a2014817684a0334546b4364b43b054bd}{times\+\_\+inlier}
+\begin{DoxyCompactList}\small\item\em Number of times this landmark was an inlier during R\+A\+N\+S\+AC. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structLandmark_ae942ecddd4c541e4e83c047fafd3d57b}\label{structLandmark_ae942ecddd4c541e4e83c047fafd3d57b}} 
+int \hyperlink{structLandmark_ae942ecddd4c541e4e83c047fafd3d57b}{times\+\_\+outlier}
+\begin{DoxyCompactList}\small\item\em Number of times this landmark was an outlier during R\+A\+N\+S\+AC. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structLandmark_a8c76e8e5bd6a2a2dadb6f265ed675ea8}\label{structLandmark_a8c76e8e5bd6a2a2dadb6f265ed675ea8}} 
+ros\+::\+Time \hyperlink{structLandmark_a8c76e8e5bd6a2a2dadb6f265ed675ea8}{creation\+\_\+time}
+\begin{DoxyCompactList}\small\item\em Time when this landmark was created. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structLandmark_ac16679901a25ce77e612d27a6104e465}\label{structLandmark_ac16679901a25ce77e612d27a6104e465}} 
+static int {\bfseries I\+D\+\_\+counter}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A \hyperlink{structLandmark}{Landmark} is a 3D point with a descriptor used to localize the drone. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structLandmark_a17dfe0ec5742240823d44deb443c6046}\label{structLandmark_a17dfe0ec5742240823d44deb443c6046}} 
+\index{Landmark@{Landmark}!Landmark@{Landmark}}
+\index{Landmark@{Landmark}!Landmark@{Landmark}}
+\subsubsection{\texorpdfstring{Landmark()}{Landmark()}}
+{\footnotesize\ttfamily Landmark\+::\+Landmark (\begin{DoxyParamCaption}\item[{cv\+::\+Point3d \&}]{coordinates,  }\item[{cv\+::\+Mat \&}]{descriptor }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em coordinates} & 3D coordinates of the landmark \\
+\hline
+\mbox{\tt in}  & {\em descriptor} & Descriptor of the landmark \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/map/\hyperlink{landmark_8h}{landmark.\+h}\end{DoxyCompactItemize}

@@ -1,5 +1,5 @@
 /*
- *  This file is part of boris_drone 2016.
+ *  This file is part of ucl_drone 2016.
  *  For more information, refer
  *  to the corresponding header file.
  *
@@ -8,13 +8,13 @@
  *
  */
 
-#include <boris_drone/map/mapping_node.h>
+#include <ucl_drone/map/mapping_node.h>
 
 Frame::Frame()
 {
 }
 
-Frame::Frame(boris_drone::ProcessedImageMsg::ConstPtr msg)
+Frame::Frame(ucl_drone::ProcessedImageMsg::ConstPtr msg)
 {
   this->pose = msg->pose;
 

@@ -1,5 +1,5 @@
 /*
- *  This file is part of boris_drone 2016.
+ *  This file is part of ucl_drone 2016.
  *  For more information, refer
  *  to the corresponding header file.
  *
@@ -8,7 +8,7 @@
  *
  */
 
-#include <boris_drone/multi_strategy.h>
+#include <ucl_drone/multi_strategy.h>
 
 MultiStrategy::MultiStrategy()
 {
@@ -18,7 +18,7 @@ MultiStrategy::MultiStrategy()
 
   // Publishers
   drones_roles_channel = nh_.resolveName("drones_roles");  // broadcast a list of roles
-  drones_roles_pub = nh_.advertise<boris_drone::DroneRoles>(drones_roles_channel, 1);
+  drones_roles_pub = nh_.advertise<ucl_drone::DroneRoles>(drones_roles_channel, 1);
 }
 
 MultiStrategy::~MultiStrategy()
@@ -36,14 +36,14 @@ void MultiStrategy::init()
   role_list.push_back(role1);
 }
 
-void MultiStrategy::readyCb(const boris_drone::DroneRole::ConstPtr readyPtr)
+void MultiStrategy::readyCb(const ucl_drone::DroneRole::ConstPtr readyPtr)
 {
   // TODO: Add to a std::vector the drone name contained in readyPtr
 }
 
 void MultiStrategy::PublishDroneRole()
 {
-  boris_drone::DroneRoles msg = DroneRole::DroneRolesToMsg(role_list);
+  ucl_drone::DroneRoles msg = DroneRole::DroneRolesToMsg(role_list);
   drones_roles_pub.publish(msg);
 }
 

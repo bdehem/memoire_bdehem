@@ -1,111 +1,17 @@
 <?xml version="1.0"?>
 
 
-<!-- Launch file for the starting mission for the thesis of Boris Dehem-->
-<!-- Work In Progress -->
 <launch>
-  <arg name="threshold"              default="250" />
 
-  <arg name="max_matches"            default="200"/>
-  <arg name="no_bundle_adjustment"   default="false"/>
-  <arg name="dlt_triangulation"      default="false"/>
-  <arg name="midpoint_triangulation" default="false"/>
-  <arg name="test_robustness"        default="false"/>
-  <arg name="bundle_adjustment_tol"  default="0.05"/>
-  <arg name="quiet_ba"               default="false" />
-  <arg name="rpt2"                   default="6" />
-  <arg name="rpt3"                   default="10" />
-  <arg name="rpt4"                   default="-1" />
+  <include file="$(find ucl_drone)/launch/components/global_params.xml" />
+  <include file="$(find ucl_drone)/launch/components/gui.xml" />
+  <include file="$(find ucl_drone)/launch/components/slam.xml" />
+  <include file="$(find ucl_drone)/launch/components/driver.xml" />
 
+  <node name="ucl_drone_manual_pose_estimation" pkg="ucl_drone" type="manual_pose_estimation" output="screen" />
 
+  <!-- overriding default values of included files -->
+  <param name="ucl_drone_mapping_node/sonar_unavailable"    value="true" />
 
-  <!-- IPv4 address of your drones -->
-  <arg name="drone_name" default="arnold" />
-  <arg name="mb1_ip" default="192.168.1.1" />
-  <!-- Ultrasound frequency (7 or 8). -->
-  <arg name="freq" default="8" />
-
-
-  <!-- [begin] RELAY TOPICS BETWEEN boris_drone_GUI AND ARDRONE_AUTONOMY -->
-  <!-- if you need something more sophisticated, create your node and replace the corresponding relay -->
-  <node name="relay_navdata" pkg="topic_tools" type="relay"  args="ardrone/navdata navdata"></node>
-  <node name="relay_emergency" pkg="topic_tools" type="relay"  args="ardrone/reset"></node>
-  <node name="relay_land" pkg="topic_tools" type="relay"  args="land ardrone/land"></node>
-  <node name="relay_takeoff" pkg="topic_tools" type="relay"  args="takeoff ardrone/takeoff"></node>
-  <!-- [end] RELAY TOPICS BETWEEN boris_drone_GUI AND ARDRONE_AUTONOMY -->
-
-  <node name="ardrone_driver" pkg="ardrone_autonomy" type="ardrone_driver"
-        output="screen" clear_params="true" args="-ip $(arg mb1_ip)">
-
-    <param name="tf_prefix" value="$(arg drone_name)/autonomy_mb1" />
-    <param name="outdoor" value="0" />
-    <param name="looprate" value="30" />
-    <!-- <param name="max_bitrate" value="4000" />
-    <param name="bitrate" value="4000" />-->
-    <param name="navdata_demo" value="0" />
-    <param name="flight_without_shell" value="0" />
-    <param name="altitude_max" value="4000" />
-    <param name="altitude_min" value="50" />
-    <param name="euler_angle_max" value="0.21" />
-    <param name="control_vz_max" value="700" />
-    <!-- <param name="control_yaw" value="1.75" /> -->
-    <!-- <param name="detect_type" value="10" />
-    <param name="enemy_colors" value="3" />
-    <param name="detections_select_h" value="32" />
-    <param name="detections_select_v_hsync" value="128" />
-    <param name="enemy_without_shell" value="0" />-->
-    <param name="ultrasound_freq" value="$(arg freq)" />
-    <param name="realtime_navdata" value="true" />
-    <param name="realtime_video" value="true" />
-    <!-- Covariance Values (3x3 matrices reshaped to 1x9)-->
-    <rosparam param="cov/imu_la">[0.1, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.1]</rosparam>
-    <rosparam param="cov/imu_av">[1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]</rosparam>
-    <rosparam param="cov/imu_or">[1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 100000.0]</rosparam>
-  </node>
-<!--
-  <node name="image_proc_bottom" pkg="image_proc" type="image_proc" ns="ardrone/bottom"/>
--->
-  <node name="image_proc_front" pkg="image_proc" type="image_proc" ns="ardrone/front"/>
-
-  <node name="vision_gui" pkg="boris_drone" type="vision_gui" output="screen">
-    <param name="draw_keypoints" value="true" />
-    <param name="draw_target" value="true" />
-  </node>
-
-  <node name="boris_drone_manual_pose_estimation" pkg="boris_drone" type="manual_pose_estimation" output="screen">
-  </node>
-
-  <!-- bottom camera -->
-  <!--<rosparam param="cam_matrix">[705.0, 0.0, 319.16, 0.0, 705.0, 219.6, 0.0, 0.0, 1.0]</rosparam>
-  <rosparam param="img_size">[640.0, 360.0]</rosparam>-->
-  <!-- bottom camera -->
-
-  <!-- front camera -->
-  <rosparam param="cam_matrix">[529.1, 0.0, 350.6, 0.0, 529.1, 182.2, 0.0, 0.0, 1.0]</rosparam>
-  <rosparam param="img_size">[735.0, 360.0]</rosparam>
-  <!-- front camera -->
-
-  <node name="boris_drone_computer_vision" pkg="boris_drone" type="computer_vision" output="screen">
-    <param name="video_channel" value="ardrone/front/image_rect_color"/>
-    <param name="cam_type" value="front"/>
-    <param name="use_OpticalFlowPyrLK" value="true"/>
-  </node>
-
-  <node name="boris_drone_mapping_node" pkg="boris_drone" type="mapping_node" output="screen">
-    <param name="test_robustness"        value="$(arg test_robustness)" />
-    <param name="threshold_kf_match"     value="$(arg threshold)" />
-    <param name="max_matches"            value="$(arg max_matches)" />
-    <param name="no_bundle_adjustment"   value="$(arg no_bundle_adjustment)"/>
-    <param name="dlt_triangulation"      value="$(arg dlt_triangulation)"/>
-    <param name="midpoint_triangulation" value="$(arg midpoint_triangulation)"/>
-    <param name="rpt2" value="$(arg rpt2)"/>
-    <param name="rpt3" value="$(arg rpt3)"/>
-    <param name="rpt4" value="$(arg rpt4)"/>
-  </node>
-
-  <node name="boris_drone_bundle_adjuster" pkg="boris_drone" type="bundle_adjuster" output="screen">
-    <param name="bundle_adjustment_tol" value="$(arg bundle_adjustment_tol)" />
-    <param name="quiet"                 value="$(arg quiet_ba)" />
-  </node>
-  <node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/$(env USER)/bagfiles/ptitour /processed_image /manual_pose_estimation"/>
+  <param name="ucl_drone_computer_vision/autonomy_unavailable" value="true" />
 </launch>

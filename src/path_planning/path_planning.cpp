@@ -1,5 +1,5 @@
 /*
- *  This file is part of boris_drone 2016.
+ *  This file is part of ucl_drone 2016.
  *  For more information, refer
  *  to the corresponding header file.
  *
@@ -13,7 +13,7 @@
  *
  */
 
-#include "boris_drone/path_planning.h"
+#include "ucl_drone/path_planning.h"
 
 PathPlanning::PathPlanning()
 {
@@ -29,7 +29,7 @@ PathPlanning::PathPlanning()
 
   // Publishers
   poseref_channel = nh.resolveName("pose_ref");
-  poseref_pub     = nh.advertise<boris_drone::Pose3D>(poseref_channel, 1);
+  poseref_pub     = nh.advertise<ucl_drone::Pose3D>(poseref_channel, 1);
 
   initPose(destination);
   initPose(pose);
@@ -38,7 +38,7 @@ PathPlanning::PathPlanning()
 // Destructor
 PathPlanning::~PathPlanning(){}
 
-void PathPlanning::destinationCb(const boris_drone::Pose3D::ConstPtr destinationPtr)
+void PathPlanning::destinationCb(const ucl_drone::Pose3D::ConstPtr destinationPtr)
 {
   destination = *destinationPtr;
 }
@@ -50,7 +50,7 @@ void PathPlanning::publishPoseRef()
 
 void PathPlanning::publishPoseRef(double x_ref, double y_ref, double z_ref, double rotZ_ref)
 {
-  boris_drone::Pose3D custom_destination;
+  ucl_drone::Pose3D custom_destination;
   custom_destination.x = x_ref;
   custom_destination.y = y_ref;
   custom_destination.z = z_ref;
@@ -60,12 +60,12 @@ void PathPlanning::publishPoseRef(double x_ref, double y_ref, double z_ref, doub
   poseref_pub.publish(custom_destination);
 }
 
-void PathPlanning::poseCb(const boris_drone::Pose3D::ConstPtr posePtr)
+void PathPlanning::poseCb(const ucl_drone::Pose3D::ConstPtr posePtr)
 {
   pose = *posePtr;
 }
 
-void PathPlanning::strategyCb(const boris_drone::StrategyMsg::ConstPtr strategyPtr)
+void PathPlanning::strategyCb(const ucl_drone::StrategyMsg::ConstPtr strategyPtr)
 {
   strategy = strategyPtr->type;
   if (strategy==69)
@@ -75,7 +75,7 @@ void PathPlanning::strategyCb(const boris_drone::StrategyMsg::ConstPtr strategyP
 }
 
 
-void PathPlanning::initPose(boris_drone::Pose3D& pose_to_init)
+void PathPlanning::initPose(ucl_drone::Pose3D& pose_to_init)
 {
   pose_to_init.x = 0.0;
   pose_to_init.y = 0.0;

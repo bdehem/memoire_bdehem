@@ -28,7 +28,7 @@ See Rowier documentation
 3.	In a console, run
 
     ```
-    $ cd src/boris_drone/drone_preparation/Appareillage
+    $ cd src/ucl_drone/drone_preparation/Appareillage
     $ bash autoconfarparrot
     ```
 

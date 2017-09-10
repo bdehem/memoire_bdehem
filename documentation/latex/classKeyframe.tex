@@ -1,0 +1,118 @@
+\hypertarget{classKeyframe}{}\section{Keyframe Class Reference}
+\label{classKeyframe}\index{Keyframe@{Keyframe}}
+
+
+A keyframe is a snapshot of a previous pose of the drone, with the image seen by the drone at that time.  
+
+
+
+
+{\ttfamily \#include $<$keyframe.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classKeyframe_ac9546775756767dc481259b8bea2fc9b}\label{classKeyframe_ac9546775756767dc481259b8bea2fc9b}} 
+\hyperlink{classKeyframe_ac9546775756767dc481259b8bea2fc9b}{Keyframe} ()
+\begin{DoxyCompactList}\small\item\em Empty Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classKeyframe_a4bfb8c03eac34ee1e8d7e0d6820ebb67}{Keyframe} (const \hyperlink{structFrame}{Frame} \&frame, \hyperlink{structCamera}{Camera} $\ast$cam)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classKeyframe_a84369da5f39b656942799baefd31f1c9}\label{classKeyframe_a84369da5f39b656942799baefd31f1c9}} 
+void \hyperlink{classKeyframe_a84369da5f39b656942799baefd31f1c9}{set\+As\+Seeing} (int pt\+ID, int idx\+\_\+in\+\_\+kf)
+\begin{DoxyCompactList}\small\item\em Set keypoint at index idx\+\_\+in\+\_\+kf as corresponding to landmark pt\+ID. \end{DoxyCompactList}\item 
+void \hyperlink{classKeyframe_ae71b9b8511a96059dca267764d832f84}{get\+Points\+Seen} (std\+::map$<$ int, std\+::map$<$ int, int $>$ $>$ \&points)
+\begin{DoxyCompactList}\small\item\em Get all landmarks observed by this keyframe. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classKeyframe_a24445f11306b884c02cdaa26ff8b7fbc}\label{classKeyframe_a24445f11306b884c02cdaa26ff8b7fbc}} 
+\hyperlink{classKeyframe_a24445f11306b884c02cdaa26ff8b7fbc}{$\sim$\+Keyframe} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classKeyframe_a40109559c97d332f45a14ab18bfbc98a}\label{classKeyframe_a40109559c97d332f45a14ab18bfbc98a}} 
+void \hyperlink{classKeyframe_a40109559c97d332f45a14ab18bfbc98a}{print} ()
+\begin{DoxyCompactList}\small\item\em Display information about this keyframe in the terminal. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classKeyframe_add1b9a9d0593c5bf958036dccde5f0f2}\label{classKeyframe_add1b9a9d0593c5bf958036dccde5f0f2}} 
+bool \hyperlink{classKeyframe_add1b9a9d0593c5bf958036dccde5f0f2}{remove\+Point} (int pt\+ID)
+\begin{DoxyCompactList}\small\item\em Set point pt\+ID as not seen by this keyframe. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classKeyframe_a59745dde6f8cf868532836970418d17a}\label{classKeyframe_a59745dde6f8cf868532836970418d17a}} 
+int {\bfseries ID}
+\item 
+\mbox{\Hypertarget{classKeyframe_a0645f53861bebd175e92f3d7f8b6f1aa}\label{classKeyframe_a0645f53861bebd175e92f3d7f8b6f1aa}} 
+\hyperlink{structCamera}{Camera} $\ast$ {\bfseries camera}
+\item 
+\mbox{\Hypertarget{classKeyframe_afbc4fb3b5a84ad500a5b705b93a76a8c}\label{classKeyframe_afbc4fb3b5a84ad500a5b705b93a76a8c}} 
+std\+::vector$<$ cv\+::\+Point2f $>$ \hyperlink{classKeyframe_afbc4fb3b5a84ad500a5b705b93a76a8c}{img\+\_\+points}
+\begin{DoxyCompactList}\small\item\em 2D coordinates of keypoints in the image \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classKeyframe_a6b63cc72bb999189e39cb6b50a32db17}\label{classKeyframe_a6b63cc72bb999189e39cb6b50a32db17}} 
+cv\+::\+Mat \hyperlink{classKeyframe_a6b63cc72bb999189e39cb6b50a32db17}{descriptors}
+\begin{DoxyCompactList}\small\item\em descriptors of the keypoints \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classKeyframe_afd0e8ae2f68a2f53faba80b51d3534b5}\label{classKeyframe_afd0e8ae2f68a2f53faba80b51d3534b5}} 
+ucl\+\_\+drone\+::\+Pose3D \hyperlink{classKeyframe_afd0e8ae2f68a2f53faba80b51d3534b5}{pose}
+\begin{DoxyCompactList}\small\item\em estimated pose (corrected) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classKeyframe_a307c0a3860d8796d4b4568b611a484d7}\label{classKeyframe_a307c0a3860d8796d4b4568b611a484d7}} 
+ucl\+\_\+drone\+::\+Pose3D \hyperlink{classKeyframe_a307c0a3860d8796d4b4568b611a484d7}{ref\+\_\+pose}
+\begin{DoxyCompactList}\small\item\em estimated pose at keyframe creation time \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classKeyframe_ab5b8f32d67271dde2b54214948c22c91}\label{classKeyframe_ab5b8f32d67271dde2b54214948c22c91}} 
+int \hyperlink{classKeyframe_ab5b8f32d67271dde2b54214948c22c91}{npts}
+\begin{DoxyCompactList}\small\item\em Number of observed keypoints. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classKeyframe_a6f01f99a9ebe43e0c3de2beb7f3ae31a}\label{classKeyframe_a6f01f99a9ebe43e0c3de2beb7f3ae31a}} 
+int \hyperlink{classKeyframe_a6f01f99a9ebe43e0c3de2beb7f3ae31a}{n\+\_\+mapped\+\_\+pts}
+\begin{DoxyCompactList}\small\item\em Number of observed keypoints that have been mapped (landmarks) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classKeyframe_a93cea4e722c086c6eef86d7413fb1d4e}\label{classKeyframe_a93cea4e722c086c6eef86d7413fb1d4e}} 
+std\+::vector$<$ int $>$ \hyperlink{classKeyframe_a93cea4e722c086c6eef86d7413fb1d4e}{point\+\_\+\+I\+Ds}
+\begin{DoxyCompactList}\small\item\em I\+Ds of the observed landmarks. -\/1 for points not in map, -\/2 for deleted points. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classKeyframe_a513cda64443d5c30982d372ad1f386ab}\label{classKeyframe_a513cda64443d5c30982d372ad1f386ab}} 
+std\+::map$<$ int, int $>$ \hyperlink{classKeyframe_a513cda64443d5c30982d372ad1f386ab}{point\+\_\+indices}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classMap}{Map} giving the index withing this keyframe of landmarks from their ID. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classKeyframe_a320393f7f28d713fb62b5786c91031d3}\label{classKeyframe_a320393f7f28d713fb62b5786c91031d3}} 
+static int {\bfseries I\+D\+\_\+counter}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A keyframe is a snapshot of a previous pose of the drone, with the image seen by the drone at that time. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classKeyframe_a4bfb8c03eac34ee1e8d7e0d6820ebb67}\label{classKeyframe_a4bfb8c03eac34ee1e8d7e0d6820ebb67}} 
+\index{Keyframe@{Keyframe}!Keyframe@{Keyframe}}
+\index{Keyframe@{Keyframe}!Keyframe@{Keyframe}}
+\subsubsection{\texorpdfstring{Keyframe()}{Keyframe()}}
+{\footnotesize\ttfamily Keyframe\+::\+Keyframe (\begin{DoxyParamCaption}\item[{const \hyperlink{structFrame}{Frame} \&}]{frame,  }\item[{\hyperlink{structCamera}{Camera} $\ast$}]{cam }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em frame} & \hyperlink{structFrame}{Frame} from which the \hyperlink{classKeyframe}{Keyframe} is built \\
+\hline
+\mbox{\tt in}  & {\em cam} & \hyperlink{structCamera}{Camera} seeing this keyframe \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classKeyframe_ae71b9b8511a96059dca267764d832f84}\label{classKeyframe_ae71b9b8511a96059dca267764d832f84}} 
+\index{Keyframe@{Keyframe}!get\+Points\+Seen@{get\+Points\+Seen}}
+\index{get\+Points\+Seen@{get\+Points\+Seen}!Keyframe@{Keyframe}}
+\subsubsection{\texorpdfstring{get\+Points\+Seen()}{getPointsSeen()}}
+{\footnotesize\ttfamily void Keyframe\+::get\+Points\+Seen (\begin{DoxyParamCaption}\item[{std\+::map$<$ int, std\+::map$<$ int, int $>$ $>$ \&}]{points }\end{DoxyParamCaption})}
+
+
+
+Get all landmarks observed by this keyframe. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in,out}  & {\em points} & \hyperlink{classMap}{Map} with as keys the I\+Ds of landmarks seen, and as value, another map. The inner map has as key the ID of the keyframe and as value the index of the points in this keyframe corresponding to the landmark. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/map/\hyperlink{keyframe_8h}{keyframe.\+h}\end{DoxyCompactItemize}

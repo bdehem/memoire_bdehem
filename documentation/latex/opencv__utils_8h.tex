@@ -1,0 +1,98 @@
+\hypertarget{opencv__utils_8h}{}\section{include/ucl\+\_\+drone/opencv\+\_\+utils.h File Reference}
+\label{opencv__utils_8h}\index{include/ucl\+\_\+drone/opencv\+\_\+utils.\+h@{include/ucl\+\_\+drone/opencv\+\_\+utils.\+h}}
+
+
+opencv\+\_\+utils contains functions to handle frame transformation with opencv according with the Pose3D message definition  
+
+
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include $<$opencv2/core/core.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/imgproc/imgproc.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/nonfree/features2d.\+hpp$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/\+Pose3\+D.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/ucl\+\_\+drone.\+h$>$}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+cv\+::\+Mat \hyperlink{opencv__utils_8h_aad803f196ea04d7c2182eeef15f73c7b}{rotation\+MatrixX} (const double angle)
+\item 
+cv\+::\+Mat \hyperlink{opencv__utils_8h_a61b976824a2176281266c10e8cb658a6}{rotation\+MatrixY} (const double angle)
+\item 
+cv\+::\+Mat \hyperlink{opencv__utils_8h_a81b5b9fc28496c0730f8a132b642bf3e}{rotation\+MatrixZ} (const double angle)
+\item 
+cv\+::\+Mat \hyperlink{opencv__utils_8h_a8146103c162008c6ab8ba0ff1132b3a2}{roll\+Pitch\+Yaw\+To\+Rotation\+Matrix} (const double roll, const double pitch, const double yaw)
+\begin{DoxyCompactList}\small\item\em Get rotation matrix from R\+PY angles If yaw angle is turned around z axis, then pitch angle around y axis, and finally roll angle around x axis, the result is a rotation matrix whose columns are the coordinates of the new base expressed in the old base. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{opencv__utils_8h_a150a62ab7b12b39ad029dcded3983bd5}\label{opencv__utils_8h_a150a62ab7b12b39ad029dcded3983bd5}} 
+void \hyperlink{opencv__utils_8h_a150a62ab7b12b39ad029dcded3983bd5}{get\+Camera\+Position\+Matrices} (const ucl\+\_\+drone\+::\+Pose3D \&pose, cv\+::\+Mat \&R, cv\+::\+Mat \&T, bool front)
+\begin{DoxyCompactList}\small\item\em rotation matrix used by cv \end{DoxyCompactList}\item 
+cv\+::\+Mat \hyperlink{opencv__utils_8h_a34df6181528c5f7cbaee1d6e075721d5}{r\+T\+Matrix} (const cv\+::\+Mat rot, const double tx, const double ty, const double tz)
+\item 
+\mbox{\Hypertarget{opencv__utils_8h_a1d8d9eb5dc8dc949b60426819b5883ed}\label{opencv__utils_8h_a1d8d9eb5dc8dc949b60426819b5883ed}} 
+void \hyperlink{opencv__utils_8h_a1d8d9eb5dc8dc949b60426819b5883ed}{debug\+R\+T\+Matrix} (cv\+::\+Mat Rt)
+\begin{DoxyCompactList}\small\item\em Debug for the transformation (rotation and transltation) matrix. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{opencv__utils_8h_ad168d409acb01c511f49e940b62bc7bd}\label{opencv__utils_8h_ad168d409acb01c511f49e940b62bc7bd}} 
+std\+::vector$<$ cv\+::\+Point2f $>$ \hyperlink{opencv__utils_8h_ad168d409acb01c511f49e940b62bc7bd}{Points} (const std\+::vector$<$ cv\+::\+Key\+Point $>$ \&keypoints)
+\begin{DoxyCompactList}\small\item\em This method converts opencv keypoint coordinates to opencv point format. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+opencv\+\_\+utils contains functions to handle frame transformation with opencv according with the Pose3D message definition 
+
+\begin{DoxyAuthor}{Author}
+Arnaud Jacques \& Alexandre Leclere 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2016
+\end{DoxyDate}
+Part of ucl\+\_\+drone. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{opencv__utils_8h_a8146103c162008c6ab8ba0ff1132b3a2}\label{opencv__utils_8h_a8146103c162008c6ab8ba0ff1132b3a2}} 
+\index{opencv\+\_\+utils.\+h@{opencv\+\_\+utils.\+h}!roll\+Pitch\+Yaw\+To\+Rotation\+Matrix@{roll\+Pitch\+Yaw\+To\+Rotation\+Matrix}}
+\index{roll\+Pitch\+Yaw\+To\+Rotation\+Matrix@{roll\+Pitch\+Yaw\+To\+Rotation\+Matrix}!opencv\+\_\+utils.\+h@{opencv\+\_\+utils.\+h}}
+\subsubsection{\texorpdfstring{roll\+Pitch\+Yaw\+To\+Rotation\+Matrix()}{rollPitchYawToRotationMatrix()}}
+{\footnotesize\ttfamily cv\+::\+Mat roll\+Pitch\+Yaw\+To\+Rotation\+Matrix (\begin{DoxyParamCaption}\item[{const double}]{roll,  }\item[{const double}]{pitch,  }\item[{const double}]{yaw }\end{DoxyParamCaption})}
+
+
+
+Get rotation matrix from R\+PY angles If yaw angle is turned around z axis, then pitch angle around y axis, and finally roll angle around x axis, the result is a rotation matrix whose columns are the coordinates of the new base expressed in the old base. 
+
+Example\+: pt\+\_\+world = 3D vector in world coordinates A = roll\+Pitch\+Yaw\+To\+Rotation\+Matrix(roll,pitch,yaw) pt\+\_\+cam = A.\+t()$\ast$pt\+\_\+world; Where roll, pitch and yaw are the angles to rotate to obtain a coordinate system where z points forward, x points right, y points down from the point of view of the camera \begin{DoxyReturn}{Returns}
+the rotation matrix given the roll,pitch,yaw angles 
+\end{DoxyReturn}
+\mbox{\Hypertarget{opencv__utils_8h_aad803f196ea04d7c2182eeef15f73c7b}\label{opencv__utils_8h_aad803f196ea04d7c2182eeef15f73c7b}} 
+\index{opencv\+\_\+utils.\+h@{opencv\+\_\+utils.\+h}!rotation\+MatrixX@{rotation\+MatrixX}}
+\index{rotation\+MatrixX@{rotation\+MatrixX}!opencv\+\_\+utils.\+h@{opencv\+\_\+utils.\+h}}
+\subsubsection{\texorpdfstring{rotation\+Matrix\+X()}{rotationMatrixX()}}
+{\footnotesize\ttfamily cv\+::\+Mat rotation\+MatrixX (\begin{DoxyParamCaption}\item[{const double}]{angle }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+the rotation matrix given the roll angle (around x axis) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{opencv__utils_8h_a61b976824a2176281266c10e8cb658a6}\label{opencv__utils_8h_a61b976824a2176281266c10e8cb658a6}} 
+\index{opencv\+\_\+utils.\+h@{opencv\+\_\+utils.\+h}!rotation\+MatrixY@{rotation\+MatrixY}}
+\index{rotation\+MatrixY@{rotation\+MatrixY}!opencv\+\_\+utils.\+h@{opencv\+\_\+utils.\+h}}
+\subsubsection{\texorpdfstring{rotation\+Matrix\+Y()}{rotationMatrixY()}}
+{\footnotesize\ttfamily cv\+::\+Mat rotation\+MatrixY (\begin{DoxyParamCaption}\item[{const double}]{angle }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+the rotation matrix given the pitch angle (around y axis) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{opencv__utils_8h_a81b5b9fc28496c0730f8a132b642bf3e}\label{opencv__utils_8h_a81b5b9fc28496c0730f8a132b642bf3e}} 
+\index{opencv\+\_\+utils.\+h@{opencv\+\_\+utils.\+h}!rotation\+MatrixZ@{rotation\+MatrixZ}}
+\index{rotation\+MatrixZ@{rotation\+MatrixZ}!opencv\+\_\+utils.\+h@{opencv\+\_\+utils.\+h}}
+\subsubsection{\texorpdfstring{rotation\+Matrix\+Z()}{rotationMatrixZ()}}
+{\footnotesize\ttfamily cv\+::\+Mat rotation\+MatrixZ (\begin{DoxyParamCaption}\item[{const double}]{angle }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+the rotation matrix given the yaw angle (around z axis) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{opencv__utils_8h_a34df6181528c5f7cbaee1d6e075721d5}\label{opencv__utils_8h_a34df6181528c5f7cbaee1d6e075721d5}} 
+\index{opencv\+\_\+utils.\+h@{opencv\+\_\+utils.\+h}!r\+T\+Matrix@{r\+T\+Matrix}}
+\index{r\+T\+Matrix@{r\+T\+Matrix}!opencv\+\_\+utils.\+h@{opencv\+\_\+utils.\+h}}
+\subsubsection{\texorpdfstring{r\+T\+Matrix()}{rTMatrix()}}
+{\footnotesize\ttfamily cv\+::\+Mat r\+T\+Matrix (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat}]{rot,  }\item[{const double}]{tx,  }\item[{const double}]{ty,  }\item[{const double}]{tz }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+the transformation (rotation and transltation) matrix 
+\end{DoxyReturn}

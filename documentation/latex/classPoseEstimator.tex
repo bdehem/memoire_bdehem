@@ -1,0 +1,190 @@
+\hypertarget{classPoseEstimator}{}\section{Pose\+Estimator Class Reference}
+\label{classPoseEstimator}\index{Pose\+Estimator@{Pose\+Estimator}}
+
+
+This class defines an object which wraps all method to perform the pose estimation based on fusion between sensors and visual information.  
+
+
+
+
+{\ttfamily \#include $<$pose\+\_\+estimation.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_a323752971558cbf1c2ab605655cdf120}\label{classPoseEstimator_a323752971558cbf1c2ab605655cdf120}} 
+\hyperlink{classPoseEstimator_a323752971558cbf1c2ab605655cdf120}{Pose\+Estimator} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a9a39dc735c4f07db843f5d69859254b4}\label{classPoseEstimator_a9a39dc735c4f07db843f5d69859254b4}} 
+\hyperlink{classPoseEstimator_a9a39dc735c4f07db843f5d69859254b4}{$\sim$\+Pose\+Estimator} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_ae2f5e526cec1efe55d784e9a403176cb}\label{classPoseEstimator_ae2f5e526cec1efe55d784e9a403176cb}} 
+void \hyperlink{classPoseEstimator_ae2f5e526cec1efe55d784e9a403176cb}{publish\+\_\+pose} ()
+\begin{DoxyCompactList}\small\item\em sends message with the fused pose \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a00ac39efb220483e62f4adb359d0f997}\label{classPoseEstimator_a00ac39efb220483e62f4adb359d0f997}} 
+void \hyperlink{classPoseEstimator_a00ac39efb220483e62f4adb359d0f997}{publish\+\_\+end\+\_\+reset\+\_\+pose} ()
+\begin{DoxyCompactList}\small\item\em sends message at the end of the reset time \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_acd454e1cf1760ee87afda4b2b3051588}\label{classPoseEstimator_acd454e1cf1760ee87afda4b2b3051588}} 
+void \hyperlink{classPoseEstimator_acd454e1cf1760ee87afda4b2b3051588}{do\+Reset} ()
+\begin{DoxyCompactList}\small\item\em performs the reset \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a3816f761030c23edda909f8ada8ae013}\label{classPoseEstimator_a3816f761030c23edda909f8ada8ae013}} 
+void \hyperlink{classPoseEstimator_a3816f761030c23edda909f8ada8ae013}{do\+Flat\+Trim} ()
+\begin{DoxyCompactList}\small\item\em calls flattrim from ardrone\+\_\+autonomy \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_a0bc724bd1916a0368cad55d93882a525}\label{classPoseEstimator_a0bc724bd1916a0368cad55d93882a525}} 
+bool \hyperlink{classPoseEstimator_a0bc724bd1916a0368cad55d93882a525}{odometry\+\_\+publishing}
+\begin{DoxyCompactList}\small\item\em true after the first Odometry message is received \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a114807c229a2dad46c0d8546e06d8271}\label{classPoseEstimator_a114807c229a2dad46c0d8546e06d8271}} 
+bool \hyperlink{classPoseEstimator_a114807c229a2dad46c0d8546e06d8271}{visual\+\_\+pose\+\_\+available}
+\begin{DoxyCompactList}\small\item\em true when the last visual pose message is not yet processed \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a7dc4da9163baf3c6809ae45ab4a7ff37}\label{classPoseEstimator_a7dc4da9163baf3c6809ae45ab4a7ff37}} 
+bool \hyperlink{classPoseEstimator_a7dc4da9163baf3c6809ae45ab4a7ff37}{pending\+\_\+reset}
+\begin{DoxyCompactList}\small\item\em true during the reset phase \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_a344d9a481663cdadda7a89862c1359c8}\label{classPoseEstimator_a344d9a481663cdadda7a89862c1359c8}} 
+void \hyperlink{classPoseEstimator_a344d9a481663cdadda7a89862c1359c8}{navdata\+Cb} (const ardrone\+\_\+autonomy\+::\+Navdata\+::\+Const\+Ptr navdata\+Ptr)
+\begin{DoxyCompactList}\small\item\em Callback\+: do a copy of last Navdata message. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_ac651cb76898cd29654ac15733820b81b}\label{classPoseEstimator_ac651cb76898cd29654ac15733820b81b}} 
+void \hyperlink{classPoseEstimator_ac651cb76898cd29654ac15733820b81b}{odometry\+Cb} (const nav\+\_\+msgs\+::\+Odometry\+::\+Const\+Ptr odometry\+Ptr)
+\begin{DoxyCompactList}\small\item\em Callback\+: do a copy of last Odometry message. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_afa8fb8525cbb015f7d8e6b6bdf8a0f7c}\label{classPoseEstimator_afa8fb8525cbb015f7d8e6b6bdf8a0f7c}} 
+void \hyperlink{classPoseEstimator_afa8fb8525cbb015f7d8e6b6bdf8a0f7c}{pose\+Visual\+Cb} (const ucl\+\_\+drone\+::\+Pose3\+D\+::\+Const\+Ptr pose\+Visual\+Ptr)
+\begin{DoxyCompactList}\small\item\em Callback\+: do a copy of last visual pose message. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a2efff8393b8a32ff5bf6909353d9a1d6}\label{classPoseEstimator_a2efff8393b8a32ff5bf6909353d9a1d6}} 
+bool \hyperlink{classPoseEstimator_a2efff8393b8a32ff5bf6909353d9a1d6}{pose\+Fusion} (ucl\+\_\+drone\+::\+Pose3D \&pose\+\_\+msg)
+\begin{DoxyCompactList}\small\item\em Copy of Odometry behalve for (x,y) position, the integration of velocities is recomputed. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_ace23bcfb7a0c364d6002ea90b230c89c}\label{classPoseEstimator_ace23bcfb7a0c364d6002ea90b230c89c}} 
+bool \hyperlink{classPoseEstimator_ace23bcfb7a0c364d6002ea90b230c89c}{queue\+Pose\+Fusion} (ucl\+\_\+drone\+::\+Pose3D \&pose\+\_\+msg)
+\begin{DoxyCompactList}\small\item\em Simple fusion between Odometry and visual pose estimation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a7c29c13f657b0c088051c98a35ac2aa1}\label{classPoseEstimator_a7c29c13f657b0c088051c98a35ac2aa1}} 
+void \hyperlink{classPoseEstimator_a7c29c13f657b0c088051c98a35ac2aa1}{process\+Queue} (std\+::queue$<$ std\+::pair$<$ ros\+::\+Time, double $>$ $>$ \&myqueue, double \&result)
+\begin{DoxyCompactList}\small\item\em Sum all the values contained in myqueue (used in queue\+Pose\+Fusion) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a64a7fd9af5c69a24ece7b3939ada5f82}\label{classPoseEstimator_a64a7fd9af5c69a24ece7b3939ada5f82}} 
+void \hyperlink{classPoseEstimator_a64a7fd9af5c69a24ece7b3939ada5f82}{push\+Queue} (std\+::queue$<$ std\+::pair$<$ ros\+::\+Time, double $>$ $>$ \&myqueue, double item)
+\begin{DoxyCompactList}\small\item\em Add item to myqueue (used in queue\+Pose\+Fusion) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_aa4008a36554351285abf7ce0412ffa92}\label{classPoseEstimator_aa4008a36554351285abf7ce0412ffa92}} 
+bool \hyperlink{classPoseEstimator_aa4008a36554351285abf7ce0412ffa92}{pose\+Copy} (ucl\+\_\+drone\+::\+Pose3D \&pose\+\_\+msg)
+\begin{DoxyCompactList}\small\item\em Simple copy of Odometry. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a9e57a0eb0cc230f076819483f7c267ad}\label{classPoseEstimator_a9e57a0eb0cc230f076819483f7c267ad}} 
+void \hyperlink{classPoseEstimator_a9e57a0eb0cc230f076819483f7c267ad}{reset\+Cb} (const std\+\_\+msgs\+::\+Empty msg)
+\begin{DoxyCompactList}\small\item\em Callback\+: Listen to reset message and switch reset on. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_adcbf38cabb7c5f157377c6aa5f263bda}\label{classPoseEstimator_adcbf38cabb7c5f157377c6aa5f263bda}} 
+ros\+::\+Node\+Handle {\bfseries nh}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_a494ff9513ee5930ebba518a77c43341b}\label{classPoseEstimator_a494ff9513ee5930ebba518a77c43341b}} 
+ros\+::\+Subscriber \hyperlink{classPoseEstimator_a494ff9513ee5930ebba518a77c43341b}{navdata\+\_\+sub}
+\begin{DoxyCompactList}\small\item\em Subscriber to Navdata messages from ardrone\+\_\+autonomy. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a02db92fc3a0ae907a1cf1472a335755a}\label{classPoseEstimator_a02db92fc3a0ae907a1cf1472a335755a}} 
+ros\+::\+Subscriber \hyperlink{classPoseEstimator_a02db92fc3a0ae907a1cf1472a335755a}{odometry\+\_\+sub}
+\begin{DoxyCompactList}\small\item\em Subscriber to Odometry messages from ardrone\+\_\+autonomy. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a406a5393a202ead0ac70be31f91c0e03}\label{classPoseEstimator_a406a5393a202ead0ac70be31f91c0e03}} 
+ros\+::\+Subscriber \hyperlink{classPoseEstimator_a406a5393a202ead0ac70be31f91c0e03}{pose\+\_\+visual\+\_\+sub}
+\begin{DoxyCompactList}\small\item\em Subscriber to visual pose messages from mapping node. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a968a684959472a7c024001c83ab599e7}\label{classPoseEstimator_a968a684959472a7c024001c83ab599e7}} 
+ros\+::\+Subscriber \hyperlink{classPoseEstimator_a968a684959472a7c024001c83ab599e7}{reset\+\_\+sub}
+\begin{DoxyCompactList}\small\item\em Subscriber to Reset messages (e.\+g. from gui) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_af67c0ef508b43d003a526e446ead55b7}\label{classPoseEstimator_af67c0ef508b43d003a526e446ead55b7}} 
+ros\+::\+Publisher \hyperlink{classPoseEstimator_af67c0ef508b43d003a526e446ead55b7}{pose\+\_\+pub}
+\begin{DoxyCompactList}\small\item\em Publisher of fused pose estimation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a003cb92c65e3df8ee3eec5457c2cb14a}\label{classPoseEstimator_a003cb92c65e3df8ee3eec5457c2cb14a}} 
+ros\+::\+Publisher \hyperlink{classPoseEstimator_a003cb92c65e3df8ee3eec5457c2cb14a}{end\+\_\+reset\+\_\+pose\+\_\+pub}
+\begin{DoxyCompactList}\small\item\em Publisher of signal for the reset ending. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a996d417c3aa31ef1df69d3924e722a50}\label{classPoseEstimator_a996d417c3aa31ef1df69d3924e722a50}} 
+std\+::string {\bfseries navdata\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_a70457beb87cde6d1de96cab86672b8e7}\label{classPoseEstimator_a70457beb87cde6d1de96cab86672b8e7}} 
+std\+::string {\bfseries odometry\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_a41f6270fda106d3d8aea45199c99c569}\label{classPoseEstimator_a41f6270fda106d3d8aea45199c99c569}} 
+std\+::string {\bfseries pose\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_a99620f9d6575c1ef5a7301366b9a8c11}\label{classPoseEstimator_a99620f9d6575c1ef5a7301366b9a8c11}} 
+std\+::string {\bfseries end\+\_\+reset\+\_\+pose\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_ac9a299435f631cb8f90a2e4ef4b5d999}\label{classPoseEstimator_ac9a299435f631cb8f90a2e4ef4b5d999}} 
+std\+::string {\bfseries pose\+\_\+visual\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_af98830c98e1e4d08422b2331e775ac08}\label{classPoseEstimator_af98830c98e1e4d08422b2331e775ac08}} 
+std\+::string {\bfseries pose\+\_\+visual\+\_\+correction\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_aeb15fe957ded7a90c5ad14aaf1e4d1d0}\label{classPoseEstimator_aeb15fe957ded7a90c5ad14aaf1e4d1d0}} 
+std\+::string {\bfseries imu\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_a54e1e130e05eb405b8beb805ca44d913}\label{classPoseEstimator_a54e1e130e05eb405b8beb805ca44d913}} 
+std\+::string {\bfseries reset\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_a293224ff63dc5d962014cae5115ea938}\label{classPoseEstimator_a293224ff63dc5d962014cae5115ea938}} 
+ardrone\+\_\+autonomy\+::\+Navdata \hyperlink{classPoseEstimator_a293224ff63dc5d962014cae5115ea938}{last\+Navdata\+Received}
+\begin{DoxyCompactList}\small\item\em Copy of the last Navdata message received from ardrone\+\_\+autonomy. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_aca1cc1090a68a47373bfa825b67cc3fe}\label{classPoseEstimator_aca1cc1090a68a47373bfa825b67cc3fe}} 
+nav\+\_\+msgs\+::\+Odometry \hyperlink{classPoseEstimator_aca1cc1090a68a47373bfa825b67cc3fe}{last\+Odometry\+Received}
+\begin{DoxyCompactList}\small\item\em Copy of the last Odometry message received from ardrone\+\_\+autonomy. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a465171e028c8f657cfcdf67ba99116af}\label{classPoseEstimator_a465171e028c8f657cfcdf67ba99116af}} 
+ucl\+\_\+drone\+::\+Pose3D \hyperlink{classPoseEstimator_a465171e028c8f657cfcdf67ba99116af}{lastpose\+Visual\+Received}
+\begin{DoxyCompactList}\small\item\em Copy of the last visual pose computed in map node. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_aaa66951498ad2123f33f045b52092c99}\label{classPoseEstimator_aaa66951498ad2123f33f045b52092c99}} 
+ros\+::\+Time {\bfseries odom\+\_\+time}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_a22e1a70281ee753a9cc5eef7724891a0}\label{classPoseEstimator_a22e1a70281ee753a9cc5eef7724891a0}} 
+std\+::queue$<$ std\+::pair$<$ ros\+::\+Time, double $>$ $>$ {\bfseries queue\+\_\+dx}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_ad2bb985c658924f32839e982d892a64b}\label{classPoseEstimator_ad2bb985c658924f32839e982d892a64b}} 
+std\+::queue$<$ std\+::pair$<$ ros\+::\+Time, double $>$ $>$ {\bfseries queue\+\_\+dy}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_ab3b5a648096b51fd9ea556bd241e3275}\label{classPoseEstimator_ab3b5a648096b51fd9ea556bd241e3275}} 
+std\+::queue$<$ std\+::pair$<$ ros\+::\+Time, double $>$ $>$ {\bfseries queue\+\_\+drotZ}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_a47569959ece1772e0718bd4db647075b}\label{classPoseEstimator_a47569959ece1772e0718bd4db647075b}} 
+double \hyperlink{classPoseEstimator_a47569959ece1772e0718bd4db647075b}{odometry\+\_\+x}
+\begin{DoxyCompactList}\small\item\em Accumulator for the x direction. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a8d021c53559e3eed37042daa129886e0}\label{classPoseEstimator_a8d021c53559e3eed37042daa129886e0}} 
+double \hyperlink{classPoseEstimator_a8d021c53559e3eed37042daa129886e0}{odometry\+\_\+y}
+\begin{DoxyCompactList}\small\item\em Accumulator for the y direction. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a7e5f70725c486fc98a3496dfd54038e2}\label{classPoseEstimator_a7e5f70725c486fc98a3496dfd54038e2}} 
+double \hyperlink{classPoseEstimator_a7e5f70725c486fc98a3496dfd54038e2}{odometry\+\_\+rotX}
+\begin{DoxyCompactList}\small\item\em Accumulator for the rotX angle. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a42f6e82ce30e665dee169bbd77d838c3}\label{classPoseEstimator_a42f6e82ce30e665dee169bbd77d838c3}} 
+double {\bfseries odometry\+\_\+rotY}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_a7d5b45620b52bb2d796466fb686ef3b7}\label{classPoseEstimator_a7d5b45620b52bb2d796466fb686ef3b7}} 
+double {\bfseries odometry\+\_\+rotZ}
+\item 
+\mbox{\Hypertarget{classPoseEstimator_af29239cea591731035f1d28baa5f4948}\label{classPoseEstimator_af29239cea591731035f1d28baa5f4948}} 
+double \hyperlink{classPoseEstimator_af29239cea591731035f1d28baa5f4948}{rot\+\_\+\+Z\+\_\+offset}
+\begin{DoxyCompactList}\small\item\em Offset of rotZ from ardrone\+\_\+autonomy at reset. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a855a33d2b02cb2206f9ef81ce37e89d7}\label{classPoseEstimator_a855a33d2b02cb2206f9ef81ce37e89d7}} 
+double \hyperlink{classPoseEstimator_a855a33d2b02cb2206f9ef81ce37e89d7}{last\+RotX}
+\begin{DoxyCompactList}\small\item\em Copy of the last rotX received in Odometry. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a1f34203f6b6f47bac3a8d4fe49c5bcf2}\label{classPoseEstimator_a1f34203f6b6f47bac3a8d4fe49c5bcf2}} 
+double \hyperlink{classPoseEstimator_a1f34203f6b6f47bac3a8d4fe49c5bcf2}{last\+RotY}
+\begin{DoxyCompactList}\small\item\em Copy of the last rotY received in Odometry. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_aa73d51ce96778db91ec0381e320fd79a}\label{classPoseEstimator_aa73d51ce96778db91ec0381e320fd79a}} 
+double \hyperlink{classPoseEstimator_aa73d51ce96778db91ec0381e320fd79a}{last\+RotZ}
+\begin{DoxyCompactList}\small\item\em Copy of the last rotZ received in Odometry. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a363e82d379f09e271a792aab8716b721}\label{classPoseEstimator_a363e82d379f09e271a792aab8716b721}} 
+double \hyperlink{classPoseEstimator_a363e82d379f09e271a792aab8716b721}{previous\+\_\+rotX}
+\begin{DoxyCompactList}\small\item\em Copy of the previous rotX received in Odometry. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_adef29793b0babf65bfd54edff4f54d0f}\label{classPoseEstimator_adef29793b0babf65bfd54edff4f54d0f}} 
+double \hyperlink{classPoseEstimator_adef29793b0babf65bfd54edff4f54d0f}{previous\+\_\+rotY}
+\begin{DoxyCompactList}\small\item\em Copy of the previous rotY received in Odometry. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_a9f7fd73224b194ae6a79d11d4d423a1c}\label{classPoseEstimator_a9f7fd73224b194ae6a79d11d4d423a1c}} 
+double \hyperlink{classPoseEstimator_a9f7fd73224b194ae6a79d11d4d423a1c}{previous\+\_\+rotZ}
+\begin{DoxyCompactList}\small\item\em Copy of the previous rotZ received in Odometry. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classPoseEstimator_ac666314fac74836d4f1fbc8ea1f52a28}\label{classPoseEstimator_ac666314fac74836d4f1fbc8ea1f52a28}} 
+bool \hyperlink{classPoseEstimator_ac666314fac74836d4f1fbc8ea1f52a28}{use\+\_\+visual\+\_\+pose}
+\begin{DoxyCompactList}\small\item\em if false only information from ardrone\+\_\+autonomy is used \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class defines an object which wraps all method to perform the pose estimation based on fusion between sensors and visual information. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/\hyperlink{pose__estimation_8h}{pose\+\_\+estimation.\+h}\end{DoxyCompactItemize}

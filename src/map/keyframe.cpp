@@ -1,14 +1,14 @@
 /*
- *  This file is part of boris_drone 2016.
+ *  This file is part of ucl_drone 2017.
  *  For more information, please refer
  *  to the corresponding header file.
  *
- *  \author Arnaud Jacques & Alexandre Leclere
- *  \date 2016
+ *  \author Boris Dehem
+ *  \date 2017
  *
  */
 
-#include <boris_drone/map/keyframe.h>
+#include <ucl_drone/map/keyframe.h>
 
 int Keyframe::ID_counter = 0;
 

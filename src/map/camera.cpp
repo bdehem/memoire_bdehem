@@ -1,4 +1,12 @@
-#include <boris_drone/map/camera.h>
+/*!
+ *  This file is part of ucl_drone 2017.
+ *  For more information, refer to the corresponding header file.
+ *
+ *  \author Boris Dehem
+ *  \date 2017
+ */
+
+#include <ucl_drone/map/camera.h>
 
 Camera::Camera() {}
 

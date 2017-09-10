@@ -1,0 +1,46 @@
+\hypertarget{structFrame}{}\section{Frame Struct Reference}
+\label{structFrame}\index{Frame@{Frame}}
+
+
+A \hyperlink{structFrame}{Frame} object stores Image\+Processed message.  
+
+
+
+
+{\ttfamily \#include $<$frame.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structFrame_ad2e5946cf41d4817e750500acf05d02b}\label{structFrame_ad2e5946cf41d4817e750500acf05d02b}} 
+\hyperlink{structFrame_ad2e5946cf41d4817e750500acf05d02b}{Frame} ()
+\begin{DoxyCompactList}\small\item\em Contructor for an empty object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structFrame_add2e167df3a42e48e9e74a696167cdbb}\label{structFrame_add2e167df3a42e48e9e74a696167cdbb}} 
+\hyperlink{structFrame_add2e167df3a42e48e9e74a696167cdbb}{Frame} (ucl\+\_\+drone\+::\+Processed\+Image\+Msg\+::\+Const\+Ptr msg)
+\begin{DoxyCompactList}\small\item\em Contructor\+: msg is used for the initialization. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structFrame_abec8c7bccdfc88cb4da137caae9f73d6}\label{structFrame_abec8c7bccdfc88cb4da137caae9f73d6}} 
+\hyperlink{structFrame_abec8c7bccdfc88cb4da137caae9f73d6}{$\sim$\+Frame} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structFrame_aac79e8043bbfe9452cdb9ca3ba88f87f}\label{structFrame_aac79e8043bbfe9452cdb9ca3ba88f87f}} 
+std\+::vector$<$ cv\+::\+Point2f $>$ \hyperlink{structFrame_aac79e8043bbfe9452cdb9ca3ba88f87f}{img\+\_\+points}
+\begin{DoxyCompactList}\small\item\em 2D coordinates of keypoints in image in Open\+CV format \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structFrame_a358eda120b8420754f30f69007e9fecb}\label{structFrame_a358eda120b8420754f30f69007e9fecb}} 
+cv\+::\+Mat \hyperlink{structFrame_a358eda120b8420754f30f69007e9fecb}{descriptors}
+\begin{DoxyCompactList}\small\item\em descriptors of keypoints in Open\+CV format \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structFrame_a883305db1380185b86ff2179e15ed1fb}\label{structFrame_a883305db1380185b86ff2179e15ed1fb}} 
+ucl\+\_\+drone\+::\+Pose3D \hyperlink{structFrame_a883305db1380185b86ff2179e15ed1fb}{pose}
+\begin{DoxyCompactList}\small\item\em pose from which frame was taken \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structFrame_ad9f543b70f36f55579544b5922487236}\label{structFrame_ad9f543b70f36f55579544b5922487236}} 
+sensor\+\_\+msgs\+::\+Image \hyperlink{structFrame_ad9f543b70f36f55579544b5922487236}{image}
+\begin{DoxyCompactList}\small\item\em video image in the R\+OS format after rescaling \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A \hyperlink{structFrame}{Frame} object stores Image\+Processed message. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/map/\hyperlink{frame_8h}{frame.\+h}\end{DoxyCompactItemize}

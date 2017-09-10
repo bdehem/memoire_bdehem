@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(boris_drone)
+project(ucl_drone)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -124,7 +124,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES boris_drone
+#  LIBRARIES ucl_drone
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 CATKIN_DEPENDS ardrone_autonomy message_runtime
@@ -146,14 +146,14 @@ include_directories(
 
 
 ## Declare a C++ library
-# add_library(boris_drone
-#   src/${PROJECT_NAME}/boris_drone.cpp
+# add_library(ucl_drone
+#   src/${PROJECT_NAME}/ucl_drone.cpp
 # )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(boris_drone ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(ucl_drone ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 set(MAPPING_SOURCE_FILES
 	src/map/mapping_node.cpp
@@ -168,29 +168,29 @@ set(MAPPING_SOURCE_FILES
   src/read_from_launch.cpp
 )
 set(MAPPING_HEADER_FILES
-	include/boris_drone/map/mapping_node.h
-	include/boris_drone/map/map.h
-	include/boris_drone/map/keyframe.h
-	include/boris_drone/map/frame.h
-  include/boris_drone/map/landmark.h
-  include/boris_drone/map/map_utils.h
-  include/boris_drone/map/projection_2D.h
-  include/boris_drone/map/camera.h
-  include/boris_drone/opencv_utils.h
-  include/boris_drone/read_from_launch.h
+	include/ucl_drone/map/mapping_node.h
+	include/ucl_drone/map/map.h
+	include/ucl_drone/map/keyframe.h
+	include/ucl_drone/map/frame.h
+  include/ucl_drone/map/landmark.h
+  include/ucl_drone/map/map_utils.h
+  include/ucl_drone/map/projection_2D.h
+  include/ucl_drone/map/camera.h
+  include/ucl_drone/opencv_utils.h
+  include/ucl_drone/read_from_launch.h
 )
 set(COMPUTER_VISION_SOURCE_FILES
   src/computer_vision/processed_image.cpp
   src/computer_vision/target.cpp
 )
 set(COMPUTER_VISION_HEADER_FILES
-  include/boris_drone/constants/feature_types.h
-  include/boris_drone/computer_vision/processed_image.h
-  include/boris_drone/computer_vision/target.h
+  include/ucl_drone/constants/feature_types.h
+  include/ucl_drone/computer_vision/processed_image.h
+  include/ucl_drone/computer_vision/target.h
 )
 
 ## Declare a C++ executable
-# add_executable(boris_drone_node src/boris_drone_node.cpp)
+# add_executable(ucl_drone_node src/ucl_drone_node.cpp)
 add_executable(controller src/controller/controller.cpp)
 add_executable(bundle_adjuster src/map/bundle_adjuster.cpp src/opencv_utils.cpp)
 add_executable(image_piper src/imagepiper.cpp)
@@ -198,7 +198,7 @@ add_executable(pose_estimation src/pose_estimation/pose_estimation.cpp)
 add_executable(manual_pose_estimation src/pose_estimation/manual_pose_estimation.cpp)
 add_executable(mapping_node ${MAPPING_SOURCE_FILES}         ${MAPPING_HEADER_FILES}
                             ${COMPUTER_VISION_SOURCE_FILES} ${COMPUTER_VISION_HEADER_FILES})
-add_executable(computer_vision  src/computer_vision/image_processor.cpp include/boris_drone/computer_vision/image_processor.h
+add_executable(computer_vision  src/computer_vision/image_processor.cpp include/ucl_drone/computer_vision/image_processor.h
  ${COMPUTER_VISION_SOURCE_FILES} ${COMPUTER_VISION_HEADER_FILES}
  src/map/projection_2D.cpp src/opencv_utils.cpp src/read_from_launch.cpp)
 add_executable(vision_gui  src/vision_gui/vision_gui.cpp  src/vision_gui/vision_gui.cpp)
@@ -224,7 +224,7 @@ add_dependencies(strategy ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_
 add_dependencies(multi_strategy ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(boris_drone_node
+# target_link_libraries(ucl_drone_node
 #   ${catkin_LIBRARIES}
 # )
 target_link_libraries(controller ${catkin_LIBRARIES})
@@ -254,7 +254,7 @@ target_link_libraries(multi_strategy ${catkin_LIBRARIES})
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS boris_drone boris_drone_node
+# install(TARGETS ucl_drone ucl_drone_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -279,7 +279,7 @@ target_link_libraries(multi_strategy ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_boris_drone.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_ucl_drone.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

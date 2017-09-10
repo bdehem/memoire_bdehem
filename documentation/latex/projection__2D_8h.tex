@@ -1,0 +1,68 @@
+\hypertarget{projection__2D_8h}{}\section{include/ucl\+\_\+drone/map/projection\+\_\+2D.h File Reference}
+\label{projection__2D_8h}\index{include/ucl\+\_\+drone/map/projection\+\_\+2\+D.\+h@{include/ucl\+\_\+drone/map/projection\+\_\+2\+D.\+h}}
+
+
+Workspace transformation from the image coordinates to the world coordinates Simple ground projection is used.  
+
+
+{\ttfamily \#include $<$ucl\+\_\+drone/ucl\+\_\+drone.\+h$>$}\newline
+{\ttfamily \#include $<$ros/package.\+h$>$}\newline
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include $<$tf/transform\+\_\+datatypes.\+h$>$}\newline
+{\ttfamily \#include $<$opencv2/calib3d/calib3d.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/core/core.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/imgproc/imgproc.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/nonfree/features2d.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/nonfree/nonfree.\+hpp$>$}\newline
+{\ttfamily \#include $<$pcl/visualization/point\+\_\+cloud\+\_\+geometry\+\_\+handlers.\+h$>$}\newline
+{\ttfamily \#include $<$pcl/common/common\+\_\+headers.\+h$>$}\newline
+{\ttfamily \#include $<$pcl/point\+\_\+types.\+h$>$}\newline
+{\ttfamily \#include $<$pcl/visualization/cloud\+\_\+viewer.\+h$>$}\newline
+{\ttfamily \#include $<$pcl/visualization/pcl\+\_\+visualizer.\+h$>$}\newline
+{\ttfamily \#include $<$pcl\+\_\+conversions/pcl\+\_\+conversions.\+h$>$}\newline
+{\ttfamily \#include $<$pcl\+\_\+ros/point\+\_\+cloud.\+h$>$}\newline
+{\ttfamily \#include $<$boost/shared\+\_\+ptr.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/thread/thread.\+hpp$>$}\newline
+{\ttfamily \#include $<$sensor\+\_\+msgs/image\+\_\+encodings.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/\+Pose3\+D.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/\+Processed\+Image\+Msg.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/\+Target\+Detected.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/opencv\+\_\+utils.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/read\+\_\+from\+\_\+launch.\+h$>$}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{projection__2D_8h_a352b88671f7110fe57f5d31e0f90ce78}{projection\+\_\+2D} (std\+::vector$<$ cv\+::\+Point2f $>$ \&points\+\_\+in, ucl\+\_\+drone\+::\+Pose3D \&pose, std\+::vector$<$ cv\+::\+Point3f $>$ \&points\+\_\+out, bool h\+\_\+flag=false)
+\begin{DoxyCompactList}\small\item\em This function computes the ground projection. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Workspace transformation from the image coordinates to the world coordinates Simple ground projection is used. 
+
+\begin{DoxyAuthor}{Authors}
+Arnaud Jacques \& Alexandre Leclere 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{projection__2D_8h_a352b88671f7110fe57f5d31e0f90ce78}\label{projection__2D_8h_a352b88671f7110fe57f5d31e0f90ce78}} 
+\index{projection\+\_\+2\+D.\+h@{projection\+\_\+2\+D.\+h}!projection\+\_\+2D@{projection\+\_\+2D}}
+\index{projection\+\_\+2D@{projection\+\_\+2D}!projection\+\_\+2\+D.\+h@{projection\+\_\+2\+D.\+h}}
+\subsubsection{\texorpdfstring{projection\+\_\+2\+D()}{projection\_2D()}}
+{\footnotesize\ttfamily void projection\+\_\+2D (\begin{DoxyParamCaption}\item[{std\+::vector$<$ cv\+::\+Point2f $>$ \&}]{points\+\_\+in,  }\item[{ucl\+\_\+drone\+::\+Pose3D \&}]{pose,  }\item[{std\+::vector$<$ cv\+::\+Point3f $>$ \&}]{points\+\_\+out,  }\item[{bool}]{h\+\_\+flag = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+This function computes the ground projection. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em points\+\_\+in} & Open\+CV 2D points to be projected, in the Open\+CV image coordinates \\
+\hline
+\mbox{\tt in}  & {\em pose} & pose of the drone from which keypoints were detected \\
+\hline
+\mbox{\tt out}  & {\em points\+\_\+out} & Open\+CV 3D points, result of the projection in world coordiantes \\
+\hline
+\mbox{\tt in}  & {\em h\+\_\+flag} & set this boolean to true if the drone don\textquotesingle{}t publish its sensors (when not flying) \\
+\hline
+\end{DoxyParams}

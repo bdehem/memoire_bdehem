@@ -1,0 +1,98 @@
+\hypertarget{classBundleAdjuster}{}\section{Bundle\+Adjuster Class Reference}
+\label{classBundleAdjuster}\index{Bundle\+Adjuster@{Bundle\+Adjuster}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classBundleAdjuster_a651f71f75070c7d5cd49efb38c2808bc}\label{classBundleAdjuster_a651f71f75070c7d5cd49efb38c2808bc}} 
+\hyperlink{classBundleAdjuster_a651f71f75070c7d5cd49efb38c2808bc}{Bundle\+Adjuster} ()
+\begin{DoxyCompactList}\small\item\em Empty Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBundleAdjuster_a3b3104319a37e77d3d3ed04b8fb8ac69}\label{classBundleAdjuster_a3b3104319a37e77d3d3ed04b8fb8ac69}} 
+\hyperlink{classBundleAdjuster_a3b3104319a37e77d3d3ed04b8fb8ac69}{$\sim$\+Bundle\+Adjuster} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \hyperlink{classBundleAdjuster_a105b7ec8a5ad3518fd1084cec4d86271}{publish\+Bundle} (const \hyperlink{classBALProblem}{B\+A\+L\+Problem} \&bal\+\_\+problem, bool converged, std\+::vector$<$ double $>$ \&cost\+\_\+of\+\_\+point, double time\+\_\+taken, int n\+\_\+iter)
+\begin{DoxyCompactList}\small\item\em Publish result of bundle adjustment. \end{DoxyCompactList}\item 
+void \hyperlink{classBundleAdjuster_ab02856e3e01f04742f1c74350e5a31da}{compute\+Residuals} (ceres\+::\+Problem \&problem, \hyperlink{classBALProblem}{B\+A\+L\+Problem} \&bal\+\_\+problem, std\+::vector$<$ double $>$ \&cost\+\_\+of\+\_\+point)
+\begin{DoxyCompactList}\small\item\em Compute contribution of each landmark to the objective function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classBundleAdjuster_ac252cd426bfdad4e3089d885a2ab6ac2}\label{classBundleAdjuster_ac252cd426bfdad4e3089d885a2ab6ac2}} 
+void \hyperlink{classBundleAdjuster_ac252cd426bfdad4e3089d885a2ab6ac2}{bundle\+Cb} (const ucl\+\_\+drone\+::\+Bundle\+Msg\+::\+Const\+Ptr bundle\+Ptr)
+\begin{DoxyCompactList}\small\item\em Callback for bundle messages. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classBundleAdjuster_a8c5244bc2bb628671e4ec1ae7223d48b}\label{classBundleAdjuster_a8c5244bc2bb628671e4ec1ae7223d48b}} 
+ros\+::\+Node\+Handle {\bfseries nh}
+\item 
+\mbox{\Hypertarget{classBundleAdjuster_a13bf648cbda845ad9e2e967044466a2b}\label{classBundleAdjuster_a13bf648cbda845ad9e2e967044466a2b}} 
+ros\+::\+Subscriber \hyperlink{classBundleAdjuster_a13bf648cbda845ad9e2e967044466a2b}{bundle\+\_\+sub}
+\begin{DoxyCompactList}\small\item\em Channel for incoming bundle messages containing the problem. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBundleAdjuster_aa7fc095e5a139823d29e0fecc49a70ae}\label{classBundleAdjuster_aa7fc095e5a139823d29e0fecc49a70ae}} 
+std\+::string \hyperlink{classBundleAdjuster_aa7fc095e5a139823d29e0fecc49a70ae}{bundle\+\_\+channel}
+\begin{DoxyCompactList}\small\item\em Subscriber to incoming bundle messages containing the problem. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBundleAdjuster_a20004f81ad40cf5a0f8d33bfc844ff1d}\label{classBundleAdjuster_a20004f81ad40cf5a0f8d33bfc844ff1d}} 
+ros\+::\+Publisher \hyperlink{classBundleAdjuster_a20004f81ad40cf5a0f8d33bfc844ff1d}{bundled\+\_\+pub}
+\begin{DoxyCompactList}\small\item\em Channel for outgoing bundle messages containing the result. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBundleAdjuster_a5b25d46bd77478007054b980e7923278}\label{classBundleAdjuster_a5b25d46bd77478007054b980e7923278}} 
+std\+::string \hyperlink{classBundleAdjuster_a5b25d46bd77478007054b980e7923278}{bundled\+\_\+channel}
+\begin{DoxyCompactList}\small\item\em Publisher of outgoing bundle messages containing the result. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBundleAdjuster_a15dbb0662b4dff9a0569d749a1cffc0a}\label{classBundleAdjuster_a15dbb0662b4dff9a0569d749a1cffc0a}} 
+double \hyperlink{classBundleAdjuster_a15dbb0662b4dff9a0569d749a1cffc0a}{tolerance}
+\begin{DoxyCompactList}\small\item\em Convergence threshold during optimization. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBundleAdjuster_a1d066c42887fcb742bd95ecaf42ac0ed}\label{classBundleAdjuster_a1d066c42887fcb742bd95ecaf42ac0ed}} 
+bool \hyperlink{classBundleAdjuster_a1d066c42887fcb742bd95ecaf42ac0ed}{quiet\+\_\+ba}
+\begin{DoxyCompactList}\small\item\em If true, no output in terminal during bundle adjustment. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBundleAdjuster_aaa8620c07fe93536105d6b179d32eee0}\label{classBundleAdjuster_aaa8620c07fe93536105d6b179d32eee0}} 
+double \hyperlink{classBundleAdjuster_aaa8620c07fe93536105d6b179d32eee0}{huber\+\_\+delta}
+\begin{DoxyCompactList}\small\item\em Parameter of Huber\textquotesingle{}s loss function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classBundleAdjuster_ab02856e3e01f04742f1c74350e5a31da}\label{classBundleAdjuster_ab02856e3e01f04742f1c74350e5a31da}} 
+\index{Bundle\+Adjuster@{Bundle\+Adjuster}!compute\+Residuals@{compute\+Residuals}}
+\index{compute\+Residuals@{compute\+Residuals}!Bundle\+Adjuster@{Bundle\+Adjuster}}
+\subsubsection{\texorpdfstring{compute\+Residuals()}{computeResiduals()}}
+{\footnotesize\ttfamily void Bundle\+Adjuster\+::compute\+Residuals (\begin{DoxyParamCaption}\item[{ceres\+::\+Problem \&}]{problem,  }\item[{\hyperlink{classBALProblem}{B\+A\+L\+Problem} \&}]{bal\+\_\+problem,  }\item[{std\+::vector$<$ double $>$ \&}]{cost\+\_\+of\+\_\+point }\end{DoxyParamCaption})}
+
+
+
+Compute contribution of each landmark to the objective function. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em problem} & ceres\+::\+Problem that was solved (contains constrains and objective function) \\
+\hline
+\mbox{\tt in}  & {\em bal\+\_\+problem} & \hyperlink{classBALProblem}{B\+A\+L\+Problem} that was solved (contains parameters and constants) \\
+\hline
+\mbox{\tt out}  & {\em cost\+\_\+of\+\_\+point} & Contribution of each landmark to the objective function \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classBundleAdjuster_a105b7ec8a5ad3518fd1084cec4d86271}\label{classBundleAdjuster_a105b7ec8a5ad3518fd1084cec4d86271}} 
+\index{Bundle\+Adjuster@{Bundle\+Adjuster}!publish\+Bundle@{publish\+Bundle}}
+\index{publish\+Bundle@{publish\+Bundle}!Bundle\+Adjuster@{Bundle\+Adjuster}}
+\subsubsection{\texorpdfstring{publish\+Bundle()}{publishBundle()}}
+{\footnotesize\ttfamily void Bundle\+Adjuster\+::publish\+Bundle (\begin{DoxyParamCaption}\item[{const \hyperlink{classBALProblem}{B\+A\+L\+Problem} \&}]{bal\+\_\+problem,  }\item[{bool}]{converged,  }\item[{std\+::vector$<$ double $>$ \&}]{cost\+\_\+of\+\_\+point,  }\item[{double}]{time\+\_\+taken,  }\item[{int}]{n\+\_\+iter }\end{DoxyParamCaption})}
+
+
+
+Publish result of bundle adjustment. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em bal\+\_\+problem} & \hyperlink{classBALProblem}{B\+A\+L\+Problem} that was solved \\
+\hline
+\mbox{\tt in}  & {\em converged} & True if optimization converged \\
+\hline
+\mbox{\tt in}  & {\em cost\+\_\+of\+\_\+point} & Contribution of each landmark to the objective function \\
+\hline
+\mbox{\tt in}  & {\em time\+\_\+taken} & Time taken for bundle adjustment \\
+\hline
+\mbox{\tt in}  & {\em n\+\_\+iter);} & Number of solver iterations \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/map/\hyperlink{bundle__adjuster_8h}{bundle\+\_\+adjuster.\+h}\end{DoxyCompactItemize}

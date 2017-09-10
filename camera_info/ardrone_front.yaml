@@ -1,6 +1,6 @@
 image_width: 640
 image_height: 360
-camera_name: boris_drone_5_motherboard2_ardrone_front
+camera_name: ucl_drone_5_motherboard2_ardrone_front
 camera_matrix:
   rows: 3
   cols: 3

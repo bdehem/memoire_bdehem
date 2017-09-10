@@ -1,5 +1,14 @@
+/*
+ *  This file is part of ucl_drone 2017.
+ *  For more information, please refer
+ *  to the corresponding header file.
+ *
+ *  \author Boris Dehem
+ *  \date 2017
+ *
+ */
 
-#include <boris_drone/map/landmark.h>
+#include <ucl_drone/map/landmark.h>
 
 int Landmark::ID_counter = 0;
 

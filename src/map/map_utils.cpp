@@ -1,6 +1,14 @@
+/*
+ *  This file is part of ucl_drone 2017.
+ *  For more information, please refer
+ *  to the corresponding header file.
+ *
+ *  \author Boris Dehem
+ *  \date 2017
+ *
+ */
 
-
-#include <boris_drone/map/map_utils.h>
+#include <ucl_drone/map/map_utils.h>
 
 void matchDescriptors(const cv::Mat& descriptors1, const cv::Mat& descriptors2,
   std::vector<int>& matching_indices_1, std::vector<int>& matching_indices_2, double threshold, int max_matches)
@@ -71,7 +79,7 @@ bool pointIsVisible(const Keyframe kf, const cv::Point3d& point3D, double thresh
   return true;
 }
 
-double poseDistance(const boris_drone::Pose3D& pose0, const boris_drone::Pose3D& pose1)
+double poseDistance(const ucl_drone::Pose3D& pose0, const ucl_drone::Pose3D& pose1)
 {
   return sqrt((pose0.x-pose1.x)*(pose0.x-pose1.x)
             + (pose0.y-pose1.y)*(pose0.y-pose1.y)
@@ -118,7 +126,7 @@ bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, in
   cv::Mat pt1_h, pt2_h, u, P, x_hat, x1_hat, temp, x_tilde, x1_tilde;
   cv::Mat V, epsil, mult;
   cv::Point2d pt1, pt2;
-  boris_drone::Pose3D pose1, pose2;
+  ucl_drone::Pose3D pose1, pose2;
   Camera cam1, cam2;
   std::vector<cv::Point2d> cam0pnts,cam1pnts;
   cv::Mat pnts3D(4,1,CV_64F);
@@ -208,94 +216,6 @@ bool triangulate(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, in
   return true;
 }
 
-bool triangulate_dlt(cv::Point3d& pt_out, Keyframe* kf1, Keyframe* kf2, int idx1, int idx2)
-{
-  cv::Mat drone2world1,drone2world2,cam2world1, cam2world2, origin1, origin2, P0, P1;
-  cv::Mat T1, T2, K1, K2, F;
-  cv::Point2d pt1, pt2;
-  boris_drone::Pose3D pose1, pose2;
-  Camera cam1, cam2;
-  std::vector<cv::Point2d> cam0pnts,cam1pnts;
-  cv::Mat pnts3D(4,1,CV_64F);
-  pt1 = kf1->img_points[idx1];  pose1 = kf1->pose;  cam1 = kf1->camera;
-  pt2 = kf2->img_points[idx2];  pose2 = kf2->pose;  cam2 = kf2->camera;
-  //getCameraPositionMatrices(pose1, cam2world1, origin1, true);
-  //getCameraPositionMatrices(pose2, cam2world2, origin2, true);
-  getCameraPositionMatrices(pose1, drone2world1, origin1, true);
-  getCameraPositionMatrices(pose2, drone2world2, origin2, true);
-  cam2world1 = drone2world1*cam1.get_R();
-  cam2world2 = drone2world2*cam2.get_R();
-  K1 = cam1.get_K();
-  K2 = cam2.get_K();
-  T1 = (cv::Mat_<double>(3, 4) << 1, 0, 0, -origin1.at<double>(0,0),
-                                  0, 1, 0, -origin1.at<double>(1,0),
-                                  0, 0, 1, -origin1.at<double>(2,0)
-  );
-  T2 = (cv::Mat_<double>(3, 4) << 1, 0, 0, -origin2.at<double>(0,0),
-                                  0, 1, 0, -origin2.at<double>(1,0),
-                                  0, 0, 1, -origin2.at<double>(2,0)
-  );
-  P0 = K1*cam2world1.t()*T1;
-  P1 = K2*cam2world2.t()*T2;
-  cam0pnts.push_back(pt1);
-  cam1pnts.push_back(pt2);
-  cv::triangulatePoints(P0,P1,cam0pnts,cam1pnts,pnts3D);
-
-  pt_out.x = pnts3D.at<double>(0,0)/pnts3D.at<double>(3,0);
-  pt_out.y = pnts3D.at<double>(1,0)/pnts3D.at<double>(3,0);
-  pt_out.z = pnts3D.at<double>(2,0)/pnts3D.at<double>(3,0);
-  return true;
-}
-
-bool triangulate_midpoint(cv::Point3d& pt_out, Keyframe *kf1, Keyframe *kf2, int idx1, int idx2)
-{
-  //Midpoint method : http://geomalgorithms.com/a07-_distance.html
-  double angleThresh = PI/40;
-
-  /* get coordinates */
-  cv::Mat drone2world1,drone2world2,cam2world1, cam2world2, origin1, origin2;
-  cv::Point2d pt1,pt2;
-  Camera cam1, cam2;
-  boris_drone::Pose3D pose1, pose2;
-  pt1 = kf1->img_points[idx1];  pose1 = kf1->pose;  cam1 = kf1->camera;
-  pt2 = kf2->img_points[idx2];  pose2 = kf2->pose;  cam2 = kf2->camera;
-  //getCameraPositionMatrices(pose1, cam2world1, origin1, true);
-  //getCameraPositionMatrices(pose2, cam2world2, origin2, true);
-  getCameraPositionMatrices(pose1, drone2world1, origin1, true);
-  getCameraPositionMatrices(pose2, drone2world2, origin2, true);
-  cam2world1 = drone2world1*cam1.get_R();
-  cam2world2 = drone2world2*cam2.get_R();
-
-  /* compute point coordinates in calibrated image coordinates (=rays in camera coordinates) */
-  cv::Mat ray1_cam = (cv::Mat_<double>(3, 1) << (pt1.x - cam1.cx) / cam1.fx,
-                                                (pt1.y - cam1.cy) / cam1.fy, 1);
-  cv::Mat ray2_cam = (cv::Mat_<double>(3, 1) << (pt2.x - cam2.cx) / cam2.fx,
-                                                (pt2.y - cam2.cy) / cam2.fy, 1);
-  /* convert to world coordinates */
-  cv::Mat ray1 = cam2world1 * ray1_cam;
-  cv::Mat ray2 = cam2world2 * ray2_cam;
-
-  /* compute closest points on both rays and take midpoint*/
-  double a,b,c,d,e,k1,k2,denominator;
-  cv::Mat p1, p2, temp;
-  temp = ray1.t() * ray1; a = temp.at<double>(0, 0);
-  temp = ray1.t() * ray2; b = temp.at<double>(0, 0);
-  temp = ray2.t() * ray2; c = temp.at<double>(0, 0);
-  temp = ray1.t() * (origin1 - origin2); d = temp.at<double>(0, 0);
-  temp = ray2.t() * (origin1 - origin2); e = temp.at<double>(0, 0);
-  denominator = (a*c) - (b*b);
-  k1 = ((b*e) - (c*d))/denominator;
-  k2 = ((a*e) - (b*d))/denominator;
-  p1 = origin1 + k1*ray1;
-  p2 = origin2 + k2*ray2;
-
-  pt_out.x = (p1.at<double>(0, 0) + p2.at<double>(0,0))/2;
-  pt_out.y = (p1.at<double>(1, 0) + p2.at<double>(1,0))/2;
-  pt_out.z = (p1.at<double>(2, 0) + p2.at<double>(2,0))/2;
-  return true;
-}
-
-
 inline void getVandEpsil(cv::Mat& V, cv::Mat& epsil, cv::Mat& x_hat, cv::Mat& x1_hat,
   cv::Mat& x_tilde, cv::Mat& x1_tilde, double f)
 {
@@ -326,4 +246,25 @@ inline void getVandEpsil(cv::Mat& V, cv::Mat& epsil, cv::Mat& x_hat, cv::Mat& x1
            (x1  + x1t)*f       ,
            (y1  + y1t)*f       ,
            f*f                 );
+}
+
+void getFundamentalMatrix(const cv::Mat &P1, const cv::Mat &P2, cv::Mat F)
+{
+  cv::Mat_<double> X[3];
+  vconcat( P1.row(1), P1.row(2), X[0] );
+  vconcat( P1.row(2), P1.row(0), X[1] );
+  vconcat( P1.row(0), P1.row(1), X[2] );
+
+  cv::Mat_<double> Y[3];
+  vconcat( P2.row(1), P2.row(2), Y[0] );
+  vconcat( P2.row(2), P2.row(0), Y[1] );
+  vconcat( P2.row(0), P2.row(1), Y[2] );
+
+  cv::Mat_<double> XY;
+  for (int i = 0; i < 3; ++i)
+    for (int j = 0; j < 3; ++j)
+    {
+      vconcat(X[j], Y[i], XY);
+      F.at<double>(i, j) = determinant(XY);
+    }
 }

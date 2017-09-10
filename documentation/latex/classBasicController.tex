@@ -1,0 +1,223 @@
+\hypertarget{classBasicController}{}\section{Basic\+Controller Class Reference}
+\label{classBasicController}\index{Basic\+Controller@{Basic\+Controller}}
+
+
+A basic position controller.  
+
+
+
+
+{\ttfamily \#include $<$controller.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classBasicController_abc17a144ac3ef28ac5c7e252d43f181e}\label{classBasicController_abc17a144ac3ef28ac5c7e252d43f181e}} 
+\hyperlink{classBasicController_abc17a144ac3ef28ac5c7e252d43f181e}{Basic\+Controller} ()
+\begin{DoxyCompactList}\small\item\em Contructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBasicController_a5fb79f16fa38caafb83f92be4e3e4338}\label{classBasicController_a5fb79f16fa38caafb83f92be4e3e4338}} 
+\hyperlink{classBasicController_a5fb79f16fa38caafb83f92be4e3e4338}{$\sim$\+Basic\+Controller} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBasicController_aa8a949cd579a036c95788cc0c084fc1a}\label{classBasicController_aa8a949cd579a036c95788cc0c084fc1a}} 
+void {\bfseries init} ()
+\item 
+\mbox{\Hypertarget{classBasicController_a09cfd055deb93c90e1b8e4b00ec0ab63}\label{classBasicController_a09cfd055deb93c90e1b8e4b00ec0ab63}} 
+void {\bfseries control\+Loop} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+ucl\+\_\+drone\+::\+Pose3D \hyperlink{classBasicController_aa888b6ee902621dff3d9e551e83b0dcb}{last\+Pose\+Received}
+\begin{DoxyCompactList}\small\item\em Service method. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBasicController_a6c591b2116095fb9f394713d8dc7f3e5}\label{classBasicController_a6c591b2116095fb9f394713d8dc7f3e5}} 
+ucl\+\_\+drone\+::\+Pose3D \hyperlink{classBasicController_a6c591b2116095fb9f394713d8dc7f3e5}{last\+Pose\+Ref\+Received}
+\begin{DoxyCompactList}\small\item\em Pose desired. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classBasicController_af14cd6cf6e4390b9fc54c58cd1036b0f}\label{classBasicController_af14cd6cf6e4390b9fc54c58cd1036b0f}} 
+void \hyperlink{classBasicController_af14cd6cf6e4390b9fc54c58cd1036b0f}{regu\+XY} (double \&xvel\+\_\+cmd, double \&yvel\+\_\+cmd, double x\+\_\+mes, double y\+\_\+mes, double x\+\_\+desired, double y\+\_\+desired, double yaw, double regu\+\_\+new\+\_\+time\+\_\+xy)
+\begin{DoxyCompactList}\small\item\em Service to set a new Pose. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBasicController_a41e7e3652e12ff6f879fcf3268e247c3}\label{classBasicController_a41e7e3652e12ff6f879fcf3268e247c3}} 
+void {\bfseries reguZ} (double \&zvel\+\_\+cmd, double alt\+\_\+mes, double alt\+\_\+desired, double regu\+\_\+new\+\_\+time\+\_\+z)
+\item 
+\mbox{\Hypertarget{classBasicController_ad7f78d2e47455d57df98999eb03f949f}\label{classBasicController_ad7f78d2e47455d57df98999eb03f949f}} 
+void {\bfseries regu\+Yaw} (double \&yawvel\+\_\+cmd, double yaw\+\_\+mes, double yaw\+\_\+desired, double regu\+\_\+new\+\_\+time)
+\item 
+\mbox{\Hypertarget{classBasicController_a76cab83a59dc83a663c0407139f30ff3}\label{classBasicController_a76cab83a59dc83a663c0407139f30ff3}} 
+void {\bfseries send\+Vel\+To\+Drone} (double pitch, double roll, double yaw\+\_\+vel, double zvel\+\_\+cmd, bool force=false)
+\item 
+\mbox{\Hypertarget{classBasicController_ae248e4bdec617baa60831ec3777efe26}\label{classBasicController_ae248e4bdec617baa60831ec3777efe26}} 
+void \hyperlink{classBasicController_ae248e4bdec617baa60831ec3777efe26}{pose\+Cb} (const ucl\+\_\+drone\+::\+Pose3\+D\+::\+Const\+Ptr pose\+Ptr)
+\begin{DoxyCompactList}\small\item\em Callback when pose is received. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBasicController_a07f9891bc885b23c46c73fb6e4f91d4e}\label{classBasicController_a07f9891bc885b23c46c73fb6e4f91d4e}} 
+void \hyperlink{classBasicController_a07f9891bc885b23c46c73fb6e4f91d4e}{pose\+Ref\+Cb} (const ucl\+\_\+drone\+::\+Pose3\+D\+::\+Const\+Ptr pose\+Ref\+Ptr)
+\begin{DoxyCompactList}\small\item\em Callback when new pose ref is received. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBasicController_a322ca98b3e291e1220231e126b916126}\label{classBasicController_a322ca98b3e291e1220231e126b916126}} 
+void {\bfseries strategy\+Cb} (const ucl\+\_\+drone\+::\+Strategy\+Msg\+::\+Const\+Ptr strategy\+Ptr)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classBasicController_ad3615f65d1e04ba119410a99a033cce5}\label{classBasicController_ad3615f65d1e04ba119410a99a033cce5}} 
+ros\+::\+Node\+Handle {\bfseries nh}
+\item 
+\mbox{\Hypertarget{classBasicController_a1f68b6098c6ebae96536b6af0d4249d3}\label{classBasicController_a1f68b6098c6ebae96536b6af0d4249d3}} 
+std\+::string {\bfseries pose\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classBasicController_af7e0b737040008bd23587a4410c68789}\label{classBasicController_af7e0b737040008bd23587a4410c68789}} 
+std\+::string {\bfseries poseref\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classBasicController_acb568ee9a9cac23c166cae6f9669b919}\label{classBasicController_acb568ee9a9cac23c166cae6f9669b919}} 
+std\+::string {\bfseries strategy\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classBasicController_a8f7a307913c8a6346b1b20e1ef2b2b78}\label{classBasicController_a8f7a307913c8a6346b1b20e1ef2b2b78}} 
+ros\+::\+Subscriber {\bfseries pose\+\_\+sub}
+\item 
+\mbox{\Hypertarget{classBasicController_a4b675c96d5fd55909d54954a05ce895b}\label{classBasicController_a4b675c96d5fd55909d54954a05ce895b}} 
+ros\+::\+Subscriber {\bfseries poseref\+\_\+sub}
+\item 
+\mbox{\Hypertarget{classBasicController_af849e8c1048d3ebba7df8747a63d0532}\label{classBasicController_af849e8c1048d3ebba7df8747a63d0532}} 
+ros\+::\+Subscriber {\bfseries strategy\+\_\+sub}
+\item 
+\mbox{\Hypertarget{classBasicController_a10cfcdc6130131cb8d839749916db29e}\label{classBasicController_a10cfcdc6130131cb8d839749916db29e}} 
+std\+::string {\bfseries control\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classBasicController_a6b77400f69939dbb61b3fd91cc084e96}\label{classBasicController_a6b77400f69939dbb61b3fd91cc084e96}} 
+std\+::string {\bfseries toggle\+State\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classBasicController_a4853d787d93b8c224ad69261183addbf}\label{classBasicController_a4853d787d93b8c224ad69261183addbf}} 
+std\+::string {\bfseries reset\+\_\+channel}
+\item 
+\mbox{\Hypertarget{classBasicController_ade299929680609d2f9d0ffc82e3982de}\label{classBasicController_ade299929680609d2f9d0ffc82e3982de}} 
+ros\+::\+Publisher {\bfseries vel\+\_\+pub}
+\item 
+\mbox{\Hypertarget{classBasicController_a3d2fd00140236eab74e4dda6f3682c3a}\label{classBasicController_a3d2fd00140236eab74e4dda6f3682c3a}} 
+ros\+::\+Publisher {\bfseries toggle\+State\+\_\+pub}
+\item 
+\mbox{\Hypertarget{classBasicController_a04da74dd252e76cd413abc7bf6350788}\label{classBasicController_a04da74dd252e76cd413abc7bf6350788}} 
+ros\+::\+Publisher {\bfseries reset\+\_\+pub}
+\item 
+\mbox{\Hypertarget{classBasicController_a8cdd31f8f4790f5f5e1d51f4f24f6c04}\label{classBasicController_a8cdd31f8f4790f5f5e1d51f4f24f6c04}} 
+bool \hyperlink{classBasicController_a8cdd31f8f4790f5f5e1d51f4f24f6c04}{is\+Controlling}
+\begin{DoxyCompactList}\small\item\em is true if the controller is running \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBasicController_aa9596daa384068405a024ceddade01b8}\label{classBasicController_aa9596daa384068405a024ceddade01b8}} 
+float \hyperlink{classBasicController_aa9596daa384068405a024ceddade01b8}{alt\+\_\+ref}
+\begin{DoxyCompactList}\small\item\em Reference. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBasicController_a51e2fa4e52b8b02bb0eeba0643a44793}\label{classBasicController_a51e2fa4e52b8b02bb0eeba0643a44793}} 
+double {\bfseries x\+\_\+ref}
+\item 
+\mbox{\Hypertarget{classBasicController_a2fe5e6ebebbdd449d1561161c44ff67b}\label{classBasicController_a2fe5e6ebebbdd449d1561161c44ff67b}} 
+double {\bfseries y\+\_\+ref}
+\item 
+\mbox{\Hypertarget{classBasicController_a01c9e7c422b19f04e659d839dae529bb}\label{classBasicController_a01c9e7c422b19f04e659d839dae529bb}} 
+double {\bfseries yaw\+\_\+ref}
+\item 
+\mbox{\Hypertarget{classBasicController_a658f46df4ec01ee39006dece311fb355}\label{classBasicController_a658f46df4ec01ee39006dece311fb355}} 
+double {\bfseries Kp\+\_\+xy}
+\item 
+\mbox{\Hypertarget{classBasicController_a73f018ed09fb0f893f976f3ce418fa51}\label{classBasicController_a73f018ed09fb0f893f976f3ce418fa51}} 
+double {\bfseries Ki\+\_\+xy}
+\item 
+\mbox{\Hypertarget{classBasicController_a9337c106d6bacdebdbf3217171be5c0d}\label{classBasicController_a9337c106d6bacdebdbf3217171be5c0d}} 
+double {\bfseries Kd\+\_\+xy}
+\item 
+\mbox{\Hypertarget{classBasicController_a676d0f90f971b5e5ed37b28239c49afc}\label{classBasicController_a676d0f90f971b5e5ed37b28239c49afc}} 
+double {\bfseries Kp\+\_\+z}
+\item 
+\mbox{\Hypertarget{classBasicController_ad03cb3e7062e7059d22d212084a3b1de}\label{classBasicController_ad03cb3e7062e7059d22d212084a3b1de}} 
+double {\bfseries Ki\+\_\+z}
+\item 
+\mbox{\Hypertarget{classBasicController_ad2e29bb9a90753c52bade5f76f9cffac}\label{classBasicController_ad2e29bb9a90753c52bade5f76f9cffac}} 
+double {\bfseries Kd\+\_\+z}
+\item 
+\mbox{\Hypertarget{classBasicController_aff53792c6975840342a1e504a7f58d8a}\label{classBasicController_aff53792c6975840342a1e504a7f58d8a}} 
+double {\bfseries Kp\+\_\+yaw}
+\item 
+\mbox{\Hypertarget{classBasicController_aabf188f818989b4e1f921c4935cdeddf}\label{classBasicController_aabf188f818989b4e1f921c4935cdeddf}} 
+double {\bfseries Ki\+\_\+yaw}
+\item 
+\mbox{\Hypertarget{classBasicController_a0c4fd59c05c96473d15fa6e2874d0659}\label{classBasicController_a0c4fd59c05c96473d15fa6e2874d0659}} 
+double {\bfseries Kd\+\_\+yaw}
+\item 
+\mbox{\Hypertarget{classBasicController_ad259f5478944815236288133f846cdd5}\label{classBasicController_ad259f5478944815236288133f846cdd5}} 
+double {\bfseries integral\+\_\+x\+\_\+error}
+\item 
+\mbox{\Hypertarget{classBasicController_ae7064e94ef1092cd8602ea43b121e136}\label{classBasicController_ae7064e94ef1092cd8602ea43b121e136}} 
+double {\bfseries integral\+\_\+y\+\_\+error}
+\item 
+\mbox{\Hypertarget{classBasicController_a9a1e632a86e715292654c3033237cacb}\label{classBasicController_a9a1e632a86e715292654c3033237cacb}} 
+double {\bfseries integral\+\_\+z\+\_\+error}
+\item 
+\mbox{\Hypertarget{classBasicController_a0a04158ba14f655c1d5a3ce1417ab2dc}\label{classBasicController_a0a04158ba14f655c1d5a3ce1417ab2dc}} 
+double {\bfseries integral\+\_\+yaw\+\_\+error}
+\item 
+\mbox{\Hypertarget{classBasicController_a5802b8c445ae4884f07354f6730dacda}\label{classBasicController_a5802b8c445ae4884f07354f6730dacda}} 
+double {\bfseries anti\+\_\+windup\+\_\+yaw}
+\item 
+\mbox{\Hypertarget{classBasicController_ac287678892c924dd508d2b0b2aed1b80}\label{classBasicController_ac287678892c924dd508d2b0b2aed1b80}} 
+double {\bfseries time\+\_\+xy\+\_\+old}
+\item 
+\mbox{\Hypertarget{classBasicController_a37700b485f74179888d86de8eab5c22b}\label{classBasicController_a37700b485f74179888d86de8eab5c22b}} 
+double {\bfseries time\+\_\+z\+\_\+old}
+\item 
+\mbox{\Hypertarget{classBasicController_aab9775b1d77c3fcff8b4cf37a1622ca9}\label{classBasicController_aab9775b1d77c3fcff8b4cf37a1622ca9}} 
+double {\bfseries time\+\_\+yaw\+\_\+old}
+\item 
+\mbox{\Hypertarget{classBasicController_a2525d13bccbed6b902f6787ca2d7bb50}\label{classBasicController_a2525d13bccbed6b902f6787ca2d7bb50}} 
+double {\bfseries delta\+\_\+x\+\_\+old}
+\item 
+\mbox{\Hypertarget{classBasicController_a9a97137433249210c69a46759ef13edf}\label{classBasicController_a9a97137433249210c69a46759ef13edf}} 
+double {\bfseries delta\+\_\+y\+\_\+old}
+\item 
+\mbox{\Hypertarget{classBasicController_a7c4082bcaab8f822ba9bc6551d56b433}\label{classBasicController_a7c4082bcaab8f822ba9bc6551d56b433}} 
+double {\bfseries delta\+\_\+z\+\_\+old}
+\item 
+\mbox{\Hypertarget{classBasicController_a98fd6815fd2a8ac32971357758563549}\label{classBasicController_a98fd6815fd2a8ac32971357758563549}} 
+double {\bfseries delta\+\_\+yaw\+\_\+old}
+\item 
+\mbox{\Hypertarget{classBasicController_a80ce892be869a79aad3820746d9f4f45}\label{classBasicController_a80ce892be869a79aad3820746d9f4f45}} 
+double {\bfseries x\+\_\+desired\+\_\+old}
+\item 
+\mbox{\Hypertarget{classBasicController_a669b91b002b6a6885c19f133749b2c1a}\label{classBasicController_a669b91b002b6a6885c19f133749b2c1a}} 
+double {\bfseries y\+\_\+desired\+\_\+old}
+\item 
+\mbox{\Hypertarget{classBasicController_a960f426392ca522ec3848146e89488ff}\label{classBasicController_a960f426392ca522ec3848146e89488ff}} 
+double {\bfseries z\+\_\+desired\+\_\+old}
+\item 
+\mbox{\Hypertarget{classBasicController_a34950b75d0736f650de9fb51ea2712d3}\label{classBasicController_a34950b75d0736f650de9fb51ea2712d3}} 
+double {\bfseries yaw\+\_\+desired\+\_\+old}
+\item 
+\mbox{\Hypertarget{classBasicController_a0a30a5cee02df2b8c4acefae8dda49b9}\label{classBasicController_a0a30a5cee02df2b8c4acefae8dda49b9}} 
+double {\bfseries x\+\_\+vel\+\_\+cmd\+\_\+old}
+\item 
+\mbox{\Hypertarget{classBasicController_a9cb6f3c560f37b1e8634b53e5e915941}\label{classBasicController_a9cb6f3c560f37b1e8634b53e5e915941}} 
+double {\bfseries y\+\_\+vel\+\_\+cmd\+\_\+old}
+\item 
+\mbox{\Hypertarget{classBasicController_a0ac1af77e241c0dbb07dcf7e5b0a6465}\label{classBasicController_a0ac1af77e241c0dbb07dcf7e5b0a6465}} 
+double {\bfseries z\+\_\+vel\+\_\+cmd\+\_\+old}
+\item 
+\mbox{\Hypertarget{classBasicController_a63cdc89bf058ac27463644a4f6e73d2d}\label{classBasicController_a63cdc89bf058ac27463644a4f6e73d2d}} 
+double {\bfseries yaw\+\_\+vel\+\_\+cmd\+\_\+old}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A basic position controller. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classBasicController_aa888b6ee902621dff3d9e551e83b0dcb}\label{classBasicController_aa888b6ee902621dff3d9e551e83b0dcb}} 
+\index{Basic\+Controller@{Basic\+Controller}!last\+Pose\+Received@{last\+Pose\+Received}}
+\index{last\+Pose\+Received@{last\+Pose\+Received}!Basic\+Controller@{Basic\+Controller}}
+\subsubsection{\texorpdfstring{last\+Pose\+Received}{lastPoseReceived}}
+{\footnotesize\ttfamily ucl\+\_\+drone\+::\+Pose3D Basic\+Controller\+::last\+Pose\+Received}
+
+
+
+Service method. 
+
+Measure 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/\hyperlink{controller_8h}{controller.\+h}\end{DoxyCompactItemize}

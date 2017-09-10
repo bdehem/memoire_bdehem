@@ -1,54 +1,42 @@
 <?xml version="1.0"?>
 
-<!-- roslaunch boris_drone benchmark.launch rpt2:=-1 rpt3:=-1 -->
+<!-- Launch the SLAM algorithm with as input a rosbag file contained in <home directory>/bagfiles
+     (by default, this is the benchmark.bag file)-->
 
 
 <launch>
-  <arg name="file_in"                default="benchmark"/>
-  <arg name="max_matches"            default="250"/>
-  <arg name="test_robustness"        default="false"/>
-  <arg name="no_bundle_adjustment"   default="false"/>
-  <arg name="dlt_triangulation"      default="false"/>
-  <arg name="midpoint_triangulation" default="false"/>
-  <arg name="bundle_adjustment_tol"  default="0.05"/>
-  <arg name="rpt2"                   default="5.0" />
-  <arg name="rpt3"                   default="5.0" />
-  <arg name="remove_cst"             default="-1" />
-  <arg name="remove_coeff"           default="-1" />
-  <arg name="huber_delta"            default="0.05" />
-  <arg name="file_out"  default="result_robust_$(arg test_robustness)_mm_$(arg max_matches)_batol_$(arg bundle_adjustment_tol)_rpt2_$(arg rpt2)_rpt3_$(arg rpt3)_rmvcst_$(arg remove_cst)_rmvcoeff_$(arg remove_coeff)_huberdelta_$(arg huber_delta)_noba_$(arg no_bundle_adjustment)_mid_$(arg midpoint_triangulation)_dlt_$(arg dlt_triangulation)"/>
+  <arg name="file_in"   default="benchmark"/>
+  <arg name="file_out"  default="benchmark_result"/>
 
-  <include file="$(find boris_drone)/launch/global_params.xml" />
-  <include file="$(find boris_drone)/launch/gui.xml" />
-  <include file="$(find boris_drone)/launch/slam.xml" />
+  <arg name="min_dist"        default="0.10" />
+  <arg name="min_time"        default="1" />
+  <arg name="time_thresh"     default="100" />
+  <arg name="dist_thresh"     default="0.6" />
+  <arg name="inliers_thresh"  default="40" />
+  <arg name="FOV_thresh"      default="0.33" />
+  <arg name="n_kf_local_ba"   default="7" />
+  <arg name="freq_global_ba"  default="6" />
 
-  <node name="boris_drone_manual_pose_estimation" pkg="boris_drone" type="manual_pose_estimation" output="screen" />
-  <node pkg="rosbag" type="play"   name="player"   output="screen" args="-q /home/$(env USER)/bagfiles/$(arg file_in).bag"/>
-  <node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/$(env USER)/bagfiles/$(arg file_out).bag /pose_visual /pose_estimation /benchmark"/>
+  <include file="$(find ucl_drone)/launch/components/global_params.xml" />
+  <include file="$(find ucl_drone)/launch/components/gui.xml" />
+  <include file="$(find ucl_drone)/launch/components/slam.xml" />
 
+  <node name="ucl_drone_manual_pose_estimation" pkg="ucl_drone" type="manual_pose_estimation" output="screen" />
+  <node name="player"                             pkg="rosbag"      type="play"                   output="screen"
+                                                   args="-q /home/$(env USER)/bagfiles/$(arg file_in).bag -r 0.75"/>
 
-  <param name="boris_drone_mapping_node/max_matches"            value="$(arg max_matches)"/>
-  <param name="boris_drone_mapping_node/test_robustness"        value="$(arg test_robustness)"/>
-  <param name="boris_drone_mapping_node/no_bundle_adjustment"   value="$(arg no_bundle_adjustment)"/>
-  <param name="boris_drone_mapping_node/midpoint_triangulation" value="$(arg midpoint_triangulation)"/>
-  <param name="boris_drone_mapping_node/dlt_triangulation"      value="$(arg dlt_triangulation)"/>
-  <param name="boris_drone_mapping_node/outlier_threshold"      value="$(arg outlier_threshold)"/>
-  <param name="boris_drone_mapping_node/remove_cst"             value="$(arg remove_cst)"/>
-  <param name="boris_drone_mapping_node/remove_coeff"           value="$(arg remove_coeff)"/>
-  <param name="boris_drone_mapping_node/only_init"              value="true" />
-  <param name="boris_drone_mapping_node/benchmark"              value="true" />
+  <!-- overriding default values of included files -->
+  <param name="ucl_drone_mapping_node/sonar_unavailable"    value="true" />
+  <param name="ucl_drone_mapping_node/min_dist"             value="$(arg min_dist)" />
+  <param name="ucl_drone_mapping_node/min_time"             value="$(arg min_time)" />
+  <param name="ucl_drone_mapping_node/time_thresh"          value="$(arg time_thresh)" />
+  <param name="ucl_drone_mapping_node/inliers_thresh"       value="$(arg inliers_thresh)" />
+  <param name="ucl_drone_mapping_node/dist_thresh"          value="$(arg dist_thresh)" />
+  <param name="ucl_drone_mapping_node/FOV_thresh"           value="$(arg FOV_thresh)" />
+  <param name="ucl_drone_mapping_node/n_kf_local_ba"        value="$(arg n_kf_local_ba)" />
+  <param name="ucl_drone_mapping_node/freq_global_ba"       value="$(arg freq_global_ba)" />
+  <param name="ucl_drone_mapping_node/no_bundle_adjustment" value="false" />
+  <param name="ucl_drone_mapping_node/manual_keyframes"     value="false" />
 
-  <param name="boris_drone_mapping_node/min_dist"               value="$(arg min_dist)" />
-  <param name="boris_drone_mapping_node/min_time"               value="$(arg min_time)" />
-  <param name="boris_drone_mapping_node/time_thresh"            value="$(arg time_thresh)" />
-  <param name="boris_drone_mapping_node/inliers_thresh"         value="$(arg inliers_thresh)" />
-  <param name="boris_drone_mapping_node/n_kf_local_ba"          value="$(arg n_kf_local_ba)" />
-  <param name="boris_drone_mapping_node/freq_global_ba"         value="$(arg freq_global_ba)" />
-
-  <param name="boris_drone_bundle_adjuster/bundle_adjustment_tol"  value="$(arg bundle_adjustment_tol)"/>
-  <param name="boris_drone_bundle_adjuster/huber_delta"            value="$(arg huber_delta)"/>
-
-
-
-
+  <param name="ucl_drone_computer_vision/autonomy_unavailable" value="true" />
 </launch>

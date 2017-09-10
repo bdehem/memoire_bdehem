@@ -1,0 +1,414 @@
+\hypertarget{classMap}{}\section{Map Class Reference}
+\label{classMap}\index{Map@{Map}}
+
+
+{\ttfamily \#include $<$map.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMap_a0f5ad0fd4563497b4214038cbca8b582}\label{classMap_a0f5ad0fd4563497b4214038cbca8b582}} 
+\hyperlink{classMap_a0f5ad0fd4563497b4214038cbca8b582}{Map} ()
+\begin{DoxyCompactList}\small\item\em Contructors. Initialize an empty map. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_af1812fd08e41c2afa080a6b2691876d6}\label{classMap_af1812fd08e41c2afa080a6b2691876d6}} 
+{\bfseries Map} (ros\+::\+Node\+Handle $\ast$\hyperlink{classMap_a4bf0c12711369ea6ca8da6d1f1b2ad2f}{nh})
+\item 
+\mbox{\Hypertarget{classMap_aa403fbe09394ccf39747588f5168e3b2}\label{classMap_aa403fbe09394ccf39747588f5168e3b2}} 
+\hyperlink{classMap_aa403fbe09394ccf39747588f5168e3b2}{$\sim$\+Map} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a904c445fdce79257fedeba09070cf88a}\label{classMap_a904c445fdce79257fedeba09070cf88a}} 
+void {\bfseries reset} ()
+\item 
+bool \hyperlink{classMap_af98ac6aead03ee4b47a38b57240afd50}{process\+Frame} (\hyperlink{structFrame}{Frame} \&frame, ucl\+\_\+drone\+::\+Pose3D \&Pn\+P\+\_\+pose)
+\begin{DoxyCompactList}\small\item\em This function is called on each new frame, it calls pnp, and the decision to create a keyframe. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_ab5b44206f7045aa6cd18cfb120d15865}\label{classMap_ab5b44206f7045aa6cd18cfb120d15865}} 
+void \hyperlink{classMap_ab5b44206f7045aa6cd18cfb120d15865}{set\+Manual\+Pose} (const ucl\+\_\+drone\+::\+Pose3D \&\hyperlink{classMap_a08c5f5b93d3b296eab01d0f0702822ae}{manual\+\_\+pose})
+\begin{DoxyCompactList}\small\item\em Set manual pose to manual\+\_\+pose. \end{DoxyCompactList}\item 
+bool \hyperlink{classMap_ad6cda6f3731694cede731fa8fa05155e}{is\+Initialized} ()
+\begin{DoxyCompactList}\small\item\em Check whether map is is\+Initialized. \end{DoxyCompactList}\item 
+void \hyperlink{classMap_aefd9f26662bca1cf8e2963def923f558}{update\+Bundle} (const ucl\+\_\+drone\+::\+Bundle\+Msg\+::\+Const\+Ptr bundle\+Ptr)
+\begin{DoxyCompactList}\small\item\em Update a bundle Update keyframes and landmarks that were adjusted by the bundle adjustment node. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_ad486aa15dfc0a826c69badf9a80b2954}\label{classMap_ad486aa15dfc0a826c69badf9a80b2954}} 
+void \hyperlink{classMap_ad486aa15dfc0a826c69badf9a80b2954}{publish\+Benchmark\+Info} ()
+\begin{DoxyCompactList}\small\item\em Publish information for benchamrking. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a21406c7b75af70f36ddae1885d148302}\label{classMap_a21406c7b75af70f36ddae1885d148302}} 
+void \hyperlink{classMap_a21406c7b75af70f36ddae1885d148302}{print\+\_\+benchmark\+\_\+info} ()
+\begin{DoxyCompactList}\small\item\em Print benchmark information to terminal. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a8ab4414eb7329e247bd079ec1b5bdeba}\label{classMap_a8ab4414eb7329e247bd079ec1b5bdeba}} 
+void \hyperlink{classMap_a8ab4414eb7329e247bd079ec1b5bdeba}{print\+\_\+info} ()
+\begin{DoxyCompactList}\small\item\em Print information of the map to terminal. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a32152c9ee2de6b6a71ba58dd365079ba}\label{classMap_a32152c9ee2de6b6a71ba58dd365079ba}} 
+void \hyperlink{classMap_a32152c9ee2de6b6a71ba58dd365079ba}{print\+\_\+landmarks} ()
+\begin{DoxyCompactList}\small\item\em Print landmarks to terminal. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_ad1d96561dbffb346907123260fb0e45e}\label{classMap_ad1d96561dbffb346907123260fb0e45e}} 
+void \hyperlink{classMap_ad1d96561dbffb346907123260fb0e45e}{print\+\_\+keyframes} ()
+\begin{DoxyCompactList}\small\item\em Print keyframes to terminal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMap_aace3b377aebfad95cc2f3a90cd5ea42d}\label{classMap_aace3b377aebfad95cc2f3a90cd5ea42d}} 
+pcl\+::\+Point\+Cloud$<$ pcl\+::\+Point\+X\+YZ $>$\+::Ptr \hyperlink{classMap_aace3b377aebfad95cc2f3a90cd5ea42d}{cloud}
+\begin{DoxyCompactList}\small\item\em Pointer to P\+CL pointcloud object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classMap_adcf461a96fe117cb8273a524b03bcd26}{do\+PnP} (const \hyperlink{structFrame}{Frame} \&current\+\_\+frame, ucl\+\_\+drone\+::\+Pose3D \&Pn\+P\+\_\+pose, int \&n\+\_\+inliers, double \&inlier\+\_\+coverage)
+\begin{DoxyCompactList}\small\item\em This method computes the PnP estimation. \end{DoxyCompactList}\item 
+int \hyperlink{classMap_a2d773b1af5301314878d0c84482976d0}{match\+With\+Frame} (const \hyperlink{structFrame}{Frame} \&frame, std\+::vector$<$ cv\+::\+Point3f $>$ \&inliers\+\_\+map\+\_\+matching\+\_\+points, std\+::vector$<$ cv\+::\+Point2f $>$ \&inliers\+\_\+frame\+\_\+matching\+\_\+points, double \&inlier\+\_\+coverage)
+\begin{DoxyCompactList}\small\item\em Match a frame with the map. \end{DoxyCompactList}\item 
+bool \hyperlink{classMap_add1699053ae7e04cd83c897d3791bef5}{keyframe\+Needed} (bool manual\+\_\+pose\+\_\+received, int n\+\_\+inliers, double inlier\+\_\+coverage, ucl\+\_\+drone\+::\+Pose3D \&current\+\_\+pose)
+\begin{DoxyCompactList}\small\item\em Decide whether a new keyframe is needed. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_aea46eb87782d2a4809bbd0fe80916257}\label{classMap_aea46eb87782d2a4809bbd0fe80916257}} 
+void \hyperlink{classMap_aea46eb87782d2a4809bbd0fe80916257}{new\+Keyframe} (\hyperlink{structFrame}{Frame} \&frame)
+\begin{DoxyCompactList}\small\item\em Make a new keyframe from a frame. \end{DoxyCompactList}\item 
+void \hyperlink{classMap_ade3c9580af4b73c0468947f04def9930}{match\+Keyframes} (\hyperlink{classKeyframe}{Keyframe} $\ast$kf0, \hyperlink{classKeyframe}{Keyframe} $\ast$kf1)
+\begin{DoxyCompactList}\small\item\em Match two keyframes and add any new matches to the map. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a7657dddc73848fb09e09c1f4340e9618}\label{classMap_a7657dddc73848fb09e09c1f4340e9618}} 
+void \hyperlink{classMap_a7657dddc73848fb09e09c1f4340e9618}{match\+Keyframe\+With\+Map} (\hyperlink{classKeyframe}{Keyframe} $\ast$kf)
+\begin{DoxyCompactList}\small\item\em Match a keyframe with the map and update the keyframe to reflect new observations. \end{DoxyCompactList}\item 
+int \hyperlink{classMap_aab50e2ea33f3ea247488990047951987}{get\+Points\+For\+BA} (std\+::vector$<$ int $>$ \&kf\+I\+Ds, std\+::map$<$ int, std\+::map$<$ int, int $>$ $>$ \&points)
+\begin{DoxyCompactList}\small\item\em Get points to adjust for bundle adjustment. \end{DoxyCompactList}\item 
+void \hyperlink{classMap_ad516c23a920c67aecee60a52acc09c98}{do\+Bundle\+Adjustment} (std\+::vector$<$ int $>$ kf\+I\+Ds, bool is\+\_\+global)
+\begin{DoxyCompactList}\small\item\em Prepare a bundle message and send it (to the bundle adjustment node) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a32f9567481df1e6960610a83b7f0064b}\label{classMap_a32f9567481df1e6960610a83b7f0064b}} 
+void {\bfseries target\+Detected\+Publisher} ()
+\item 
+\mbox{\Hypertarget{classMap_a41fbdde09e8108430000882355fc79ad}\label{classMap_a41fbdde09e8108430000882355fc79ad}} 
+int \hyperlink{classMap_a41fbdde09e8108430000882355fc79ad}{add\+Point} (cv\+::\+Point3d \&coordinates, cv\+::\+Mat \&descriptor)
+\begin{DoxyCompactList}\small\item\em Add a landmark to the map. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_adea14ee9f987c9bb6d242cb5e439bbd7}\label{classMap_adea14ee9f987c9bb6d242cb5e439bbd7}} 
+void \hyperlink{classMap_adea14ee9f987c9bb6d242cb5e439bbd7}{remove\+Point} (int pt\+ID)
+\begin{DoxyCompactList}\small\item\em Remove a landmark from the map. \end{DoxyCompactList}\item 
+void \hyperlink{classMap_a4338fe122941088dc90ed54dfb8e286d}{update\+Point} (int pt\+ID, cv\+::\+Point3d new\+\_\+point)
+\begin{DoxyCompactList}\small\item\em Update the coordinates of a landmark. \end{DoxyCompactList}\item 
+void \hyperlink{classMap_a1e548f20958c5719c79ca45ed8a8893a}{set\+Point\+As\+Seen} (int pt\+ID, int kf\+ID, int idx\+\_\+in\+\_\+kf)
+\begin{DoxyCompactList}\small\item\em Seta point as seen by a keyframe. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a0a4ccf9ee6358552dda552b76ab2619c}\label{classMap_a0a4ccf9ee6358552dda552b76ab2619c}} 
+void \hyperlink{classMap_a0a4ccf9ee6358552dda552b76ab2619c}{remove\+Keyframe} (int kf\+ID)
+\begin{DoxyCompactList}\small\item\em Remove a keyframe from the map. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMap_a4bf0c12711369ea6ca8da6d1f1b2ad2f}\label{classMap_a4bf0c12711369ea6ca8da6d1f1b2ad2f}} 
+ros\+::\+Node\+Handle $\ast$ \hyperlink{classMap_a4bf0c12711369ea6ca8da6d1f1b2ad2f}{nh}
+\begin{DoxyCompactList}\small\item\em pointer to R\+OS node handle of \hyperlink{classMappingNode}{Mapping\+Node} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_ace0707010dc9f99268170b69b1a390e7}\label{classMap_ace0707010dc9f99268170b69b1a390e7}} 
+std\+::string \hyperlink{classMap_ace0707010dc9f99268170b69b1a390e7}{bundle\+\_\+channel}
+\begin{DoxyCompactList}\small\item\em Channel for bundles to be adjusted. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a19f0dddf99a284cffef5c1119bc4dde4}\label{classMap_a19f0dddf99a284cffef5c1119bc4dde4}} 
+ros\+::\+Publisher \hyperlink{classMap_a19f0dddf99a284cffef5c1119bc4dde4}{bundle\+\_\+pub}
+\begin{DoxyCompactList}\small\item\em Publisher for bundles to be adjusted. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a89c73a3c3de88c3656ded53b7ff28c4f}\label{classMap_a89c73a3c3de88c3656ded53b7ff28c4f}} 
+std\+::string \hyperlink{classMap_a89c73a3c3de88c3656ded53b7ff28c4f}{benchmark\+\_\+channel}
+\begin{DoxyCompactList}\small\item\em Channel for benchamrk information. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a96dea5fd8286b76a01685e97c0972002}\label{classMap_a96dea5fd8286b76a01685e97c0972002}} 
+ros\+::\+Publisher \hyperlink{classMap_a96dea5fd8286b76a01685e97c0972002}{benchmark\+\_\+pub}
+\begin{DoxyCompactList}\small\item\em Publisher of benchamrk information. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a8c2c3f9134ec1c77288b6147c4249897}\label{classMap_a8c2c3f9134ec1c77288b6147c4249897}} 
+double \hyperlink{classMap_a8c2c3f9134ec1c77288b6147c4249897}{thresh\+\_\+descriptor\+\_\+match}
+\begin{DoxyCompactList}\small\item\em Threshold for matches between descriptors. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a575ed053aec5a34555ee9642b95765eb}\label{classMap_a575ed053aec5a34555ee9642b95765eb}} 
+int \hyperlink{classMap_a575ed053aec5a34555ee9642b95765eb}{max\+\_\+matches}
+\begin{DoxyCompactList}\small\item\em Max number of matches when matching sets of descriptors. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a8a3acc93b77883137eba917691492674}\label{classMap_a8a3acc93b77883137eba917691492674}} 
+bool \hyperlink{classMap_a8a3acc93b77883137eba917691492674}{no\+\_\+bundle\+\_\+adjustment}
+\begin{DoxyCompactList}\small\item\em If true, bundle adjustment is never performed. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_abef231667d94cca21fe6afd15f6b7cc0}\label{classMap_abef231667d94cca21fe6afd15f6b7cc0}} 
+bool \hyperlink{classMap_abef231667d94cca21fe6afd15f6b7cc0}{only\+\_\+init}
+\begin{DoxyCompactList}\small\item\em If true, no keyframes are created after initialization. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_ac931ea7b0cb5591952779c5e5ab6192e}\label{classMap_ac931ea7b0cb5591952779c5e5ab6192e}} 
+double \hyperlink{classMap_ac931ea7b0cb5591952779c5e5ab6192e}{outlier\+\_\+threshold}
+\begin{DoxyCompactList}\small\item\em Threshold on contribution to bundle adjustment objective for a point to be considered an outlier. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_aa7020f7c1d53310e0d8c6b616038fc0e}\label{classMap_aa7020f7c1d53310e0d8c6b616038fc0e}} 
+bool \hyperlink{classMap_aa7020f7c1d53310e0d8c6b616038fc0e}{manual\+\_\+keyframes}
+\begin{DoxyCompactList}\small\item\em If true, keyframe decision is not made automatically, but when the user sends a message. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a2472bc3b74a98eb9158ad866727ffee0}\label{classMap_a2472bc3b74a98eb9158ad866727ffee0}} 
+bool \hyperlink{classMap_a2472bc3b74a98eb9158ad866727ffee0}{sonar\+\_\+unavailable}
+\begin{DoxyCompactList}\small\item\em Set true for tests with the drone landed and sonar data is unavailable to use visual data instead. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a794eea744a2ea7532fd6cf99a015410d}\label{classMap_a794eea744a2ea7532fd6cf99a015410d}} 
+int \hyperlink{classMap_a794eea744a2ea7532fd6cf99a015410d}{n\+\_\+kf\+\_\+local\+\_\+ba}
+\begin{DoxyCompactList}\small\item\em Number of keyframes to adjust when running local bundle adjustment. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a0452c93c8870a6cb76660fb75be202fb}\label{classMap_a0452c93c8870a6cb76660fb75be202fb}} 
+int \hyperlink{classMap_a0452c93c8870a6cb76660fb75be202fb}{freq\+\_\+global\+\_\+ba}
+\begin{DoxyCompactList}\small\item\em Frequency at which to run global bundle adjustment. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a45d93dc7966ef968d3730754526549ea}\label{classMap_a45d93dc7966ef968d3730754526549ea}} 
+double \hyperlink{classMap_a45d93dc7966ef968d3730754526549ea}{min\+\_\+dist}
+\begin{DoxyCompactList}\small\item\em Minimal distance to last keyframe to create a new one. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a080c23dee123aa9c5ddabb012a43ea55}\label{classMap_a080c23dee123aa9c5ddabb012a43ea55}} 
+double \hyperlink{classMap_a080c23dee123aa9c5ddabb012a43ea55}{min\+\_\+time}
+\begin{DoxyCompactList}\small\item\em Minimal time between keyframes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_af5695f2e241107aa812cc5c1826fef37}\label{classMap_af5695f2e241107aa812cc5c1826fef37}} 
+double \hyperlink{classMap_af5695f2e241107aa812cc5c1826fef37}{inliers\+\_\+thresh}
+\begin{DoxyCompactList}\small\item\em Create a keyframe when less than this amount of R\+A\+N\+S\+AC inliers. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a35fc2ab0486f0f82512c0eb6bf4b1ccd}\label{classMap_a35fc2ab0486f0f82512c0eb6bf4b1ccd}} 
+double \hyperlink{classMap_a35fc2ab0486f0f82512c0eb6bf4b1ccd}{F\+O\+V\+\_\+thresh}
+\begin{DoxyCompactList}\small\item\em Create a keyframe when more than this fraction of the screen has no keypoints (from any side) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a57996d0d3379ead3e4e7877db836ef33}\label{classMap_a57996d0d3379ead3e4e7877db836ef33}} 
+double \hyperlink{classMap_a57996d0d3379ead3e4e7877db836ef33}{time\+\_\+thresh}
+\begin{DoxyCompactList}\small\item\em Create a keyframe when more time than this has elapsed since last one. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_afc0703cae7e706c952f45685a74d0626}\label{classMap_afc0703cae7e706c952f45685a74d0626}} 
+double \hyperlink{classMap_afc0703cae7e706c952f45685a74d0626}{dist\+\_\+thresh}
+\begin{DoxyCompactList}\small\item\em Create a keyframe when farther than this from last keyframe. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a42aaec155f0d5f18aeda45a0bebb5d71}\label{classMap_a42aaec155f0d5f18aeda45a0bebb5d71}} 
+bool \hyperlink{classMap_a42aaec155f0d5f18aeda45a0bebb5d71}{is\+\_\+adjusting\+\_\+bundle}
+\begin{DoxyCompactList}\small\item\em True while bundle adjustment is running. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_af5a5af988716e8be41c5129fff01d73a}\label{classMap_af5a5af988716e8be41c5129fff01d73a}} 
+int \hyperlink{classMap_af5a5af988716e8be41c5129fff01d73a}{n\+\_\+inliers\+\_\+moving\+\_\+avg}
+\begin{DoxyCompactList}\small\item\em Average number of inliers in recent frames (far away frames have a lower weight in the average) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_aa0395513a7ef43438f5ee965e3b9f2dd}\label{classMap_aa0395513a7ef43438f5ee965e3b9f2dd}} 
+ros\+::\+Time \hyperlink{classMap_aa0395513a7ef43438f5ee965e3b9f2dd}{last\+\_\+new\+\_\+keyframe}
+\begin{DoxyCompactList}\small\item\em Time when a keyframe was last added. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_ac029a5c3bdc1a95c39519a30c2435670}\label{classMap_ac029a5c3bdc1a95c39519a30c2435670}} 
+int \hyperlink{classMap_ac029a5c3bdc1a95c39519a30c2435670}{kf\+\_\+since\+\_\+last\+\_\+global\+\_\+\+BA}
+\begin{DoxyCompactList}\small\item\em Number of keyframes created since last time global bundle adjustment was run. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a7183a0cc5d16367c2248eb7db0e6839a}\label{classMap_a7183a0cc5d16367c2248eb7db0e6839a}} 
+std\+::vector$<$ double $>$ \hyperlink{classMap_a7183a0cc5d16367c2248eb7db0e6839a}{B\+A\+\_\+times}
+\begin{DoxyCompactList}\small\item\em Times taken by bundle adjustment. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a5d91c796d77673ab8751fe0549ee36aa}\label{classMap_a5d91c796d77673ab8751fe0549ee36aa}} 
+std\+::vector$<$ int $>$ \hyperlink{classMap_a5d91c796d77673ab8751fe0549ee36aa}{B\+A\+\_\+num\+\_\+iter}
+\begin{DoxyCompactList}\small\item\em Number of iterations of bundle adjustment. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_ad3aacc2f037e8c13212129d34d0e161f}\label{classMap_ad3aacc2f037e8c13212129d34d0e161f}} 
+\hyperlink{structCamera}{Camera} \hyperlink{classMap_ad3aacc2f037e8c13212129d34d0e161f}{camera}
+\begin{DoxyCompactList}\small\item\em \hyperlink{structCamera}{Camera} used during mapping. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a08c5f5b93d3b296eab01d0f0702822ae}\label{classMap_a08c5f5b93d3b296eab01d0f0702822ae}} 
+ucl\+\_\+drone\+::\+Pose3D \hyperlink{classMap_a08c5f5b93d3b296eab01d0f0702822ae}{manual\+\_\+pose}
+\begin{DoxyCompactList}\small\item\em Manual pose (received from user) if using it. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a34358cab2d1f7415b9a55f9bcdb66cdb}\label{classMap_a34358cab2d1f7415b9a55f9bcdb66cdb}} 
+bool \hyperlink{classMap_a34358cab2d1f7415b9a55f9bcdb66cdb}{manual\+\_\+pose\+\_\+available}
+\begin{DoxyCompactList}\small\item\em true when a manual pose is available \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a2dacbc072a53ef895f2c1fb018c29b43}\label{classMap_a2dacbc072a53ef895f2c1fb018c29b43}} 
+std\+::vector$<$ int $>$ \hyperlink{classMap_a2dacbc072a53ef895f2c1fb018c29b43}{landmark\+\_\+\+I\+Ds}
+\begin{DoxyCompactList}\small\item\em Vector of I\+Ds for each landmark in the map. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a2a08612e9c0b4009aacafcf7668af0b3}\label{classMap_a2a08612e9c0b4009aacafcf7668af0b3}} 
+std\+::map$<$ int, \hyperlink{structLandmark}{Landmark} $\ast$ $>$ \hyperlink{classMap_a2a08612e9c0b4009aacafcf7668af0b3}{landmarks}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classMap}{Map} of landmark I\+Ds to landmarks. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_aa46daeabf122cad6598cf684ee723884}\label{classMap_aa46daeabf122cad6598cf684ee723884}} 
+std\+::map$<$ int, \hyperlink{classKeyframe}{Keyframe} $\ast$ $>$ \hyperlink{classMap_aa46daeabf122cad6598cf684ee723884}{keyframes}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classMap}{Map} of keyframe I\+Ds to keyframes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a54b766b2b43d23be965610d9c5ca16f2}\label{classMap_a54b766b2b43d23be965610d9c5ca16f2}} 
+std\+::map$<$ int, \hyperlink{classKeyframe}{Keyframe} $\ast$ $>$\+::iterator \hyperlink{classMap_a54b766b2b43d23be965610d9c5ca16f2}{first\+\_\+kf\+\_\+to\+\_\+adjust}
+\begin{DoxyCompactList}\small\item\em Iterator to oldest keyframe to include in local bundle adjsutment. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a28b528d6d4769cec76f32a66251faf4c}\label{classMap_a28b528d6d4769cec76f32a66251faf4c}} 
+cv\+::\+Mat \hyperlink{classMap_a28b528d6d4769cec76f32a66251faf4c}{descriptors}
+\begin{DoxyCompactList}\small\item\em descriptors of landmarks \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_aed26fe7354f99268588ebbcdd1718ba2}\label{classMap_aed26fe7354f99268588ebbcdd1718ba2}} 
+cv\+::\+Mat \hyperlink{classMap_aed26fe7354f99268588ebbcdd1718ba2}{tvec}
+\begin{DoxyCompactList}\small\item\em last translation vector (PnP estimation) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMap_a361dde7c4a9710f4d228bb32b7a596d7}\label{classMap_a361dde7c4a9710f4d228bb32b7a596d7}} 
+cv\+::\+Mat \hyperlink{classMap_a361dde7c4a9710f4d228bb32b7a596d7}{rvec}
+\begin{DoxyCompactList}\small\item\em last rotational vector (PnP estimation) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMap_a688d93e7daa5dacfdcf68041fc0ce683}\label{classMap_a688d93e7daa5dacfdcf68041fc0ce683}} 
+static const int \hyperlink{classMap_a688d93e7daa5dacfdcf68041fc0ce683}{threshold\+\_\+lost} = 10
+\begin{DoxyCompactList}\small\item\em Drone is considered as lost when it has less R\+A\+N\+S\+AC inliers than this. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This object wraps functions to execute the mapping task 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classMap_ad516c23a920c67aecee60a52acc09c98}\label{classMap_ad516c23a920c67aecee60a52acc09c98}} 
+\index{Map@{Map}!do\+Bundle\+Adjustment@{do\+Bundle\+Adjustment}}
+\index{do\+Bundle\+Adjustment@{do\+Bundle\+Adjustment}!Map@{Map}}
+\subsubsection{\texorpdfstring{do\+Bundle\+Adjustment()}{doBundleAdjustment()}}
+{\footnotesize\ttfamily void Map\+::do\+Bundle\+Adjustment (\begin{DoxyParamCaption}\item[{std\+::vector$<$ int $>$}]{kf\+I\+Ds,  }\item[{bool}]{is\+\_\+global }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Prepare a bundle message and send it (to the bundle adjustment node) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em kf\+I\+Ds} & I\+Ds of keyframes to adjust \\
+\hline
+\mbox{\tt in}  & {\em is\+\_\+global} & If true, disregard kf\+I\+Ds, and use all keyframes \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMap_adcf461a96fe117cb8273a524b03bcd26}\label{classMap_adcf461a96fe117cb8273a524b03bcd26}} 
+\index{Map@{Map}!do\+PnP@{do\+PnP}}
+\index{do\+PnP@{do\+PnP}!Map@{Map}}
+\subsubsection{\texorpdfstring{do\+Pn\+P()}{doPnP()}}
+{\footnotesize\ttfamily int Map\+::do\+PnP (\begin{DoxyParamCaption}\item[{const \hyperlink{structFrame}{Frame} \&}]{current\+\_\+frame,  }\item[{ucl\+\_\+drone\+::\+Pose3D \&}]{Pn\+P\+\_\+pose,  }\item[{int \&}]{n\+\_\+inliers,  }\item[{double \&}]{inlier\+\_\+coverage }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+This method computes the PnP estimation. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em current\+\_\+frame} & The frame containing keypoints of the last camera observation \\
+\hline
+\mbox{\tt out}  & {\em Pn\+P\+\_\+pose} & The visual pose estimation \\
+\hline
+\mbox{\tt out}  & {\em inliers} & The indices of keypoints with a correct matching \\
+\hline
+\mbox{\tt in}  & {\em inlier\+\_\+coverage} & fraction of the screen without R\+A\+N\+S\+AC inliers \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMap_aab50e2ea33f3ea247488990047951987}\label{classMap_aab50e2ea33f3ea247488990047951987}} 
+\index{Map@{Map}!get\+Points\+For\+BA@{get\+Points\+For\+BA}}
+\index{get\+Points\+For\+BA@{get\+Points\+For\+BA}!Map@{Map}}
+\subsubsection{\texorpdfstring{get\+Points\+For\+B\+A()}{getPointsForBA()}}
+{\footnotesize\ttfamily int Map\+::get\+Points\+For\+BA (\begin{DoxyParamCaption}\item[{std\+::vector$<$ int $>$ \&}]{kf\+I\+Ds,  }\item[{std\+::map$<$ int, std\+::map$<$ int, int $>$ $>$ \&}]{points }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Get points to adjust for bundle adjustment. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em kf\+I\+Ds} & I\+Ds of keyframes to adjust \\
+\hline
+\mbox{\tt out}  & {\em points} & \hyperlink{classMap}{Map} of all points seen by at least two of the keyframes in kf\+I\+Ds \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMap_ad6cda6f3731694cede731fa8fa05155e}\label{classMap_ad6cda6f3731694cede731fa8fa05155e}} 
+\index{Map@{Map}!is\+Initialized@{is\+Initialized}}
+\index{is\+Initialized@{is\+Initialized}!Map@{Map}}
+\subsubsection{\texorpdfstring{is\+Initialized()}{isInitialized()}}
+{\footnotesize\ttfamily bool Map\+::is\+Initialized (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Check whether map is is\+Initialized. 
+
+\begin{DoxyReturn}{Returns}
+true if map is is\+Initialized 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMap_add1699053ae7e04cd83c897d3791bef5}\label{classMap_add1699053ae7e04cd83c897d3791bef5}} 
+\index{Map@{Map}!keyframe\+Needed@{keyframe\+Needed}}
+\index{keyframe\+Needed@{keyframe\+Needed}!Map@{Map}}
+\subsubsection{\texorpdfstring{keyframe\+Needed()}{keyframeNeeded()}}
+{\footnotesize\ttfamily bool Map\+::keyframe\+Needed (\begin{DoxyParamCaption}\item[{bool}]{manual\+\_\+pose\+\_\+received,  }\item[{int}]{n\+\_\+inliers,  }\item[{double}]{inlier\+\_\+coverage,  }\item[{ucl\+\_\+drone\+::\+Pose3D \&}]{current\+\_\+pose }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Decide whether a new keyframe is needed. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em manual\+\_\+pose\+\_\+received} & True is a manual pose was received (used when manual\+\_\+keyframes=true) \\
+\hline
+\mbox{\tt out}  & {\em n\+\_\+inliers} & Number of R\+A\+N\+S\+AC inliers \\
+\hline
+\mbox{\tt out}  & {\em inlier\+\_\+coverage} & Fraction of the screen (in the frame) without R\+A\+N\+S\+AC inliers \\
+\hline
+\mbox{\tt out}  & {\em current\+\_\+pose} & Current estimated pose \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if a new keyframe is needed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMap_ade3c9580af4b73c0468947f04def9930}\label{classMap_ade3c9580af4b73c0468947f04def9930}} 
+\index{Map@{Map}!match\+Keyframes@{match\+Keyframes}}
+\index{match\+Keyframes@{match\+Keyframes}!Map@{Map}}
+\subsubsection{\texorpdfstring{match\+Keyframes()}{matchKeyframes()}}
+{\footnotesize\ttfamily void Map\+::match\+Keyframes (\begin{DoxyParamCaption}\item[{\hyperlink{classKeyframe}{Keyframe} $\ast$}]{kf0,  }\item[{\hyperlink{classKeyframe}{Keyframe} $\ast$}]{kf1 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Match two keyframes and add any new matches to the map. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em kf0} & First keyframe to match \\
+\hline
+\mbox{\tt in}  & {\em kf1} & Second keyframe to match \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMap_a2d773b1af5301314878d0c84482976d0}\label{classMap_a2d773b1af5301314878d0c84482976d0}} 
+\index{Map@{Map}!match\+With\+Frame@{match\+With\+Frame}}
+\index{match\+With\+Frame@{match\+With\+Frame}!Map@{Map}}
+\subsubsection{\texorpdfstring{match\+With\+Frame()}{matchWithFrame()}}
+{\footnotesize\ttfamily int Map\+::match\+With\+Frame (\begin{DoxyParamCaption}\item[{const \hyperlink{structFrame}{Frame} \&}]{frame,  }\item[{std\+::vector$<$ cv\+::\+Point3f $>$ \&}]{inliers\+\_\+map\+\_\+matching\+\_\+points,  }\item[{std\+::vector$<$ cv\+::\+Point2f $>$ \&}]{inliers\+\_\+frame\+\_\+matching\+\_\+points,  }\item[{double \&}]{inlier\+\_\+coverage }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Match a frame with the map. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em frame} & The frame to match \\
+\hline
+\mbox{\tt out}  & {\em inliers\+\_\+map\+\_\+matching\+\_\+points} & The 3D points from the map with a match in the frame \\
+\hline
+\mbox{\tt out}  & {\em inliers\+\_\+frame\+\_\+matching\+\_\+points} & The 2D points from the frame with a match in the map \\
+\hline
+\mbox{\tt in}  & {\em inlier\+\_\+coverage} & fraction of the screen (in the frame) without R\+A\+N\+S\+AC inliers \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMap_af98ac6aead03ee4b47a38b57240afd50}\label{classMap_af98ac6aead03ee4b47a38b57240afd50}} 
+\index{Map@{Map}!process\+Frame@{process\+Frame}}
+\index{process\+Frame@{process\+Frame}!Map@{Map}}
+\subsubsection{\texorpdfstring{process\+Frame()}{processFrame()}}
+{\footnotesize\ttfamily bool Map\+::process\+Frame (\begin{DoxyParamCaption}\item[{\hyperlink{structFrame}{Frame} \&}]{frame,  }\item[{ucl\+\_\+drone\+::\+Pose3D \&}]{Pn\+P\+\_\+pose }\end{DoxyParamCaption})}
+
+
+
+This function is called on each new frame, it calls pnp, and the decision to create a keyframe. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em frame} & \hyperlink{structFrame}{Frame} to process (estimate position, and decide whether to craete a keyframe) \\
+\hline
+\mbox{\tt out}  & {\em Pn\+P\+\_\+pose} & result of pnp (estimated pose) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMap_a1e548f20958c5719c79ca45ed8a8893a}\label{classMap_a1e548f20958c5719c79ca45ed8a8893a}} 
+\index{Map@{Map}!set\+Point\+As\+Seen@{set\+Point\+As\+Seen}}
+\index{set\+Point\+As\+Seen@{set\+Point\+As\+Seen}!Map@{Map}}
+\subsubsection{\texorpdfstring{set\+Point\+As\+Seen()}{setPointAsSeen()}}
+{\footnotesize\ttfamily void Map\+::set\+Point\+As\+Seen (\begin{DoxyParamCaption}\item[{int}]{pt\+ID,  }\item[{int}]{kf\+ID,  }\item[{int}]{idx\+\_\+in\+\_\+kf }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Seta point as seen by a keyframe. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em pt\+ID} & ID of point to be set as seen \\
+\hline
+\mbox{\tt in}  & {\em kf\+ID} & ID of keyframe to be set as seeing the point \\
+\hline
+\mbox{\tt in}  & {\em idx\+\_\+in\+\_\+kf} & Index of the point in the keyframe \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMap_aefd9f26662bca1cf8e2963def923f558}\label{classMap_aefd9f26662bca1cf8e2963def923f558}} 
+\index{Map@{Map}!update\+Bundle@{update\+Bundle}}
+\index{update\+Bundle@{update\+Bundle}!Map@{Map}}
+\subsubsection{\texorpdfstring{update\+Bundle()}{updateBundle()}}
+{\footnotesize\ttfamily void Map\+::update\+Bundle (\begin{DoxyParamCaption}\item[{const ucl\+\_\+drone\+::\+Bundle\+Msg\+::\+Const\+Ptr}]{bundle\+Ptr }\end{DoxyParamCaption})}
+
+
+
+Update a bundle Update keyframes and landmarks that were adjusted by the bundle adjustment node. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em bundle\+Ptr} & \hyperlink{classBundle}{Bundle} message coming from the bundle adjustment node \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMap_a4338fe122941088dc90ed54dfb8e286d}\label{classMap_a4338fe122941088dc90ed54dfb8e286d}} 
+\index{Map@{Map}!update\+Point@{update\+Point}}
+\index{update\+Point@{update\+Point}!Map@{Map}}
+\subsubsection{\texorpdfstring{update\+Point()}{updatePoint()}}
+{\footnotesize\ttfamily void Map\+::update\+Point (\begin{DoxyParamCaption}\item[{int}]{pt\+ID,  }\item[{cv\+::\+Point3d}]{new\+\_\+point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Update the coordinates of a landmark. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em pt\+ID} & ID of point to update \\
+\hline
+\mbox{\tt in}  & {\em new\+\_\+point} & new coordinates of the point \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/map/\hyperlink{map_8h}{map.\+h}\end{DoxyCompactItemize}

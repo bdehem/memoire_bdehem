@@ -1,13 +1,14 @@
+/*!
+ *  This file is part of ucl_drone 2017.
+ *  Inspired by Bundle Adjustment example from CERES solver (bundle_adjuster.cc)
+ *  For more information, refer to the corresponding header file.
+ *
+ *  \author Boris Dehem
+ *  \date 2017
+ */
+#include <ucl_drone/map/bundle_adjuster.h>
 
-// A minimal, self-contained bundle adjuster using Ceres, that reads
-// files from University of Washington' Bundle Adjustment in the Large dataset:
-// http://grail.cs.washington.edu/projects/bal
-//
-// This does not use the best configuration for solving; see the more involved
-// bundle_adjuster.cc file for details.
-#include <boris_drone/map/bundle_adjuster.h>
-
-BALProblem::BALProblem(const boris_drone::BundleMsg::ConstPtr bundlePtr)
+BALProblem::BALProblem(const ucl_drone::BundleMsg::ConstPtr bundlePtr)
 {
   bundleMsgPtr_     = bundlePtr;
   num_keyframes_    = bundlePtr->num_keyframes;
@@ -178,7 +179,7 @@ BundleAdjuster::BundleAdjuster()
 
   // Publishers
   bundled_channel = nh.resolveName("bundled");
-  bundled_pub     = nh.advertise<boris_drone::BundleMsg>(bundled_channel, 1);
+  bundled_pub     = nh.advertise<ucl_drone::BundleMsg>(bundled_channel, 1);
 
   ros::param::get("~bundle_adjustment_tol", tolerance);
   ros::param::get("~quiet_ba", quiet_ba);
@@ -188,7 +189,7 @@ BundleAdjuster::BundleAdjuster()
 void BundleAdjuster::publishBundle(const BALProblem& bal_problem, bool converged,
             std::vector<double>& cost_of_point, double time_taken, int n_iter)
 {
-  boris_drone::BundleMsg msg = *(bal_problem.bundleMsgPtr_);
+  ucl_drone::BundleMsg msg = *(bal_problem.bundleMsgPtr_);
   int ncam = bal_problem.num_keyframes_ ;  int npt  = bal_problem.num_points_;
   msg.num_keyframes = ncam              ;  msg.num_points  = npt;
   msg.poses.resize(ncam)                ;  msg.points.resize(npt);
@@ -218,7 +219,7 @@ BundleAdjuster::~BundleAdjuster()
 }
 
 
-void BundleAdjuster::bundleCb(const boris_drone::BundleMsg::ConstPtr bundlePtr)
+void BundleAdjuster::bundleCb(const ucl_drone::BundleMsg::ConstPtr bundlePtr)
 {
   //Inspired by example code for bundle adjustment of Ceres (main function)
   //google::InitGoogleLogging(argv[0]);

@@ -1,0 +1,50 @@
+\hypertarget{bundle__adjuster_8h}{}\section{include/ucl\+\_\+drone/map/bundle\+\_\+adjuster.h File Reference}
+\label{bundle__adjuster_8h}\index{include/ucl\+\_\+drone/map/bundle\+\_\+adjuster.\+h@{include/ucl\+\_\+drone/map/bundle\+\_\+adjuster.\+h}}
+
+
+File defining the bundle adjuster node Inspired by \hyperlink{classBundle}{Bundle} Adjustment example from C\+E\+R\+ES solver (bundle\+\_\+adjuster.\+cc)  
+
+
+{\ttfamily \#include $<$ucl\+\_\+drone/ucl\+\_\+drone.\+h$>$}\newline
+{\ttfamily \#include $<$ros/package.\+h$>$}\newline
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include $<$tf/transform\+\_\+datatypes.\+h$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$cstdio$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include \char`\"{}ceres/ceres.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}ceres/rotation.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}ceres/types.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$opencv2/calib3d/calib3d.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/core/core.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/core/eigen.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/imgproc/imgproc.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/nonfree/features2d.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/nonfree/nonfree.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/contrib/contrib.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/shared\+\_\+ptr.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/thread/thread.\+hpp$>$}\newline
+{\ttfamily \#include $<$sensor\+\_\+msgs/image\+\_\+encodings.\+h$>$}\newline
+{\ttfamily \#include $<$std\+\_\+msgs/\+Empty.\+h$>$}\newline
+{\ttfamily \#include $<$std\+\_\+msgs/\+Int16.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/\+Bundle\+Msg.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/opencv\+\_\+utils.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/read\+\_\+from\+\_\+launch.\+h$>$}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classBALProblem}{B\+A\+L\+Problem}
+\item 
+class \hyperlink{classBundleAdjuster}{Bundle\+Adjuster}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+File defining the bundle adjuster node Inspired by \hyperlink{classBundle}{Bundle} Adjustment example from C\+E\+R\+ES solver (bundle\+\_\+adjuster.\+cc) 
+
+\begin{DoxyAuthor}{Author}
+Boris Dehem 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2017 
+\end{DoxyDate}

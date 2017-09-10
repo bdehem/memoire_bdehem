@@ -1,0 +1,168 @@
+\hypertarget{map__utils_8h}{}\section{include/ucl\+\_\+drone/map/map\+\_\+utils.h File Reference}
+\label{map__utils_8h}\index{include/ucl\+\_\+drone/map/map\+\_\+utils.\+h@{include/ucl\+\_\+drone/map/map\+\_\+utils.\+h}}
+
+
+This header file contains various utility functions for the mapping task.  
+
+
+{\ttfamily \#include $<$ucl\+\_\+drone/profiling.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/ucl\+\_\+drone.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/\+Pose3\+D.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/opencv\+\_\+utils.\+h$>$}\newline
+{\ttfamily \#include $<$opencv2/calib3d/calib3d.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/core/core.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/imgproc/imgproc.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/nonfree/features2d.\+hpp$>$}\newline
+{\ttfamily \#include $<$opencv2/nonfree/nonfree.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/shared\+\_\+ptr.\+hpp$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/map/camera.\+h$>$}\newline
+{\ttfamily \#include $<$ucl\+\_\+drone/map/keyframe.\+h$>$}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{map__utils_8h_a7570b9eaca5c9d8c72b0751adcdf9513}{match\+Descriptors} (const cv\+::\+Mat \&descriptors1, const cv\+::\+Mat \&descriptors2, std\+::vector$<$ int $>$ \&matching\+\_\+indices\+\_\+1, std\+::vector$<$ int $>$ \&matching\+\_\+indices\+\_\+2, double threshold, int max\+\_\+matches)
+\begin{DoxyCompactList}\small\item\em Obtain matches between two sets of descriptors. \end{DoxyCompactList}\item 
+void \hyperlink{map__utils_8h_a57994c105fadcad3701a5fcc015e2f58}{match\+Descriptors} (const cv\+::\+Mat \&descriptors1, const cv\+::\+Mat \&descriptors2, const std\+::vector$<$ int $>$ \&pt\+I\+Ds1, const std\+::vector$<$ int $>$ \&pt\+I\+Ds2, std\+::vector$<$ int $>$ \&matching\+\_\+indices\+\_\+1, std\+::vector$<$ int $>$ \&matching\+\_\+indices\+\_\+2, double threshold, int max\+\_\+matches)
+\begin{DoxyCompactList}\small\item\em Obtain matches between two sets of descriptors Used when both sets come from keyframes (not from the map). \end{DoxyCompactList}\item 
+double \hyperlink{map__utils_8h_a3b4a82b5a49b25ddbe247d843618810c}{pose\+Distance} (const ucl\+\_\+drone\+::\+Pose3D \&pose0, const ucl\+\_\+drone\+::\+Pose3D \&pose1)
+\begin{DoxyCompactList}\small\item\em Obtain Distance between two poses (disregarding rotations) \end{DoxyCompactList}\item 
+bool \hyperlink{map__utils_8h_a70efdb3274860646272b4a4697cb37d7}{triangulate} (cv\+::\+Point3d \&pt\+\_\+out, \hyperlink{classKeyframe}{Keyframe} $\ast$kf1, \hyperlink{classKeyframe}{Keyframe} $\ast$kf2, int idx1, int idx2)
+\begin{DoxyCompactList}\small\item\em Obtain the 3D position of a point from two observations from known locations. \end{DoxyCompactList}\item 
+bool \hyperlink{map__utils_8h_a1e98d381b05ab424636cf82dcc411657}{point\+Is\+Visible} (const \hyperlink{classKeyframe}{Keyframe} kf, const cv\+::\+Point3d \&point3D, double thresh)
+\begin{DoxyCompactList}\small\item\em Check whether a is within the field of view of a kayframe. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{map__utils_8h_adb33de994c688fa3e29754e09f8c0222}\label{map__utils_8h_adb33de994c688fa3e29754e09f8c0222}} 
+void \hyperlink{map__utils_8h_adb33de994c688fa3e29754e09f8c0222}{get\+Vand\+Epsil} (cv\+::\+Mat \&V, cv\+::\+Mat \&epsil, cv\+::\+Mat \&x\+\_\+hat, cv\+::\+Mat \&x1\+\_\+hat, cv\+::\+Mat \&x\+\_\+tilde, cv\+::\+Mat \&x1\+\_\+tilde, double f)
+\begin{DoxyCompactList}\small\item\em Inner function used by triangulate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{map__utils_8h_a4ee8539bd6bb0a2b64814878d1da5a53}\label{map__utils_8h_a4ee8539bd6bb0a2b64814878d1da5a53}} 
+void \hyperlink{map__utils_8h_a4ee8539bd6bb0a2b64814878d1da5a53}{get\+Fundamental\+Matrix} (const cv\+::\+Mat \&P1, const cv\+::\+Mat \&P2, cv\+::\+Mat F)
+\begin{DoxyCompactList}\small\item\em Inner function used by triangulate. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This header file contains various utility functions for the mapping task. 
+
+\begin{DoxyAuthor}{Authors}
+Boris Dehem  2017 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{map__utils_8h_a7570b9eaca5c9d8c72b0751adcdf9513}\label{map__utils_8h_a7570b9eaca5c9d8c72b0751adcdf9513}} 
+\index{map\+\_\+utils.\+h@{map\+\_\+utils.\+h}!match\+Descriptors@{match\+Descriptors}}
+\index{match\+Descriptors@{match\+Descriptors}!map\+\_\+utils.\+h@{map\+\_\+utils.\+h}}
+\subsubsection{\texorpdfstring{match\+Descriptors()}{matchDescriptors()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void match\+Descriptors (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{descriptors1,  }\item[{const cv\+::\+Mat \&}]{descriptors2,  }\item[{std\+::vector$<$ int $>$ \&}]{matching\+\_\+indices\+\_\+1,  }\item[{std\+::vector$<$ int $>$ \&}]{matching\+\_\+indices\+\_\+2,  }\item[{double}]{threshold,  }\item[{int}]{max\+\_\+matches }\end{DoxyParamCaption})}
+
+
+
+Obtain matches between two sets of descriptors. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em descriptors1} & First set of descriptors \\
+\hline
+\mbox{\tt in}  & {\em descriptors2} & Second set of descriptors \\
+\hline
+\mbox{\tt out}  & {\em matching\+\_\+indices\+\_\+1} & Indices of matches in the first set \\
+\hline
+\mbox{\tt out}  & {\em matching\+\_\+indices\+\_\+2} & Indices of matches in the second set \\
+\hline
+\mbox{\tt in}  & {\em threshold} & Distance threshold for a pair to be considered a match \\
+\hline
+\mbox{\tt in}  & {\em max\+\_\+matches} & Maximal number of matches allowed (no limit if maxmatches is negative) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{map__utils_8h_a57994c105fadcad3701a5fcc015e2f58}\label{map__utils_8h_a57994c105fadcad3701a5fcc015e2f58}} 
+\index{map\+\_\+utils.\+h@{map\+\_\+utils.\+h}!match\+Descriptors@{match\+Descriptors}}
+\index{match\+Descriptors@{match\+Descriptors}!map\+\_\+utils.\+h@{map\+\_\+utils.\+h}}
+\subsubsection{\texorpdfstring{match\+Descriptors()}{matchDescriptors()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void match\+Descriptors (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{descriptors1,  }\item[{const cv\+::\+Mat \&}]{descriptors2,  }\item[{const std\+::vector$<$ int $>$ \&}]{pt\+I\+Ds1,  }\item[{const std\+::vector$<$ int $>$ \&}]{pt\+I\+Ds2,  }\item[{std\+::vector$<$ int $>$ \&}]{matching\+\_\+indices\+\_\+1,  }\item[{std\+::vector$<$ int $>$ \&}]{matching\+\_\+indices\+\_\+2,  }\item[{double}]{threshold,  }\item[{int}]{max\+\_\+matches }\end{DoxyParamCaption})}
+
+
+
+Obtain matches between two sets of descriptors Used when both sets come from keyframes (not from the map). 
+
+No match is considered if either observation already corresponds to a mapped landmark, in that case it must be matched with the map 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em descriptors1} & First set of descriptors \\
+\hline
+\mbox{\tt in}  & {\em descriptors2} & Second set of descriptors \\
+\hline
+\mbox{\tt in}  & {\em pt\+I\+Ds1} & Point I\+Ds of first set in the first keyframe (negative for unmatched points) \\
+\hline
+\mbox{\tt in}  & {\em pt\+I\+Ds2} & Point I\+Ds of first set in the second keyframe (negative for unmatched points) \\
+\hline
+\mbox{\tt out}  & {\em matching\+\_\+indices\+\_\+1} & Indices of matches in the first set \\
+\hline
+\mbox{\tt out}  & {\em matching\+\_\+indices\+\_\+2} & Indices of matches in the second set \\
+\hline
+\mbox{\tt in}  & {\em threshold} & Distance threshold for a pair to be considered a match \\
+\hline
+\mbox{\tt in}  & {\em max\+\_\+matches} & Maximal number of matches allowed (no limit if maxmatches is negative) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{map__utils_8h_a1e98d381b05ab424636cf82dcc411657}\label{map__utils_8h_a1e98d381b05ab424636cf82dcc411657}} 
+\index{map\+\_\+utils.\+h@{map\+\_\+utils.\+h}!point\+Is\+Visible@{point\+Is\+Visible}}
+\index{point\+Is\+Visible@{point\+Is\+Visible}!map\+\_\+utils.\+h@{map\+\_\+utils.\+h}}
+\subsubsection{\texorpdfstring{point\+Is\+Visible()}{pointIsVisible()}}
+{\footnotesize\ttfamily bool point\+Is\+Visible (\begin{DoxyParamCaption}\item[{const \hyperlink{classKeyframe}{Keyframe}}]{kf,  }\item[{const cv\+::\+Point3d \&}]{point3D,  }\item[{double}]{thresh }\end{DoxyParamCaption})}
+
+
+
+Check whether a is within the field of view of a kayframe. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em kf} & \hyperlink{classKeyframe}{Keyframe} to check \\
+\hline
+\mbox{\tt in}  & {\em point3D} & coordinated of point to test \\
+\hline
+\mbox{\tt in}  & {\em thresh} & Threshold. 0 to strictly check whether point is visible, negative to be more tolerant, positive to be more strict \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the point is withun the keyframes field of view 
+\end{DoxyReturn}
+\mbox{\Hypertarget{map__utils_8h_a3b4a82b5a49b25ddbe247d843618810c}\label{map__utils_8h_a3b4a82b5a49b25ddbe247d843618810c}} 
+\index{map\+\_\+utils.\+h@{map\+\_\+utils.\+h}!pose\+Distance@{pose\+Distance}}
+\index{pose\+Distance@{pose\+Distance}!map\+\_\+utils.\+h@{map\+\_\+utils.\+h}}
+\subsubsection{\texorpdfstring{pose\+Distance()}{poseDistance()}}
+{\footnotesize\ttfamily double pose\+Distance (\begin{DoxyParamCaption}\item[{const ucl\+\_\+drone\+::\+Pose3D \&}]{pose0,  }\item[{const ucl\+\_\+drone\+::\+Pose3D \&}]{pose1 }\end{DoxyParamCaption})}
+
+
+
+Obtain Distance between two poses (disregarding rotations) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em pose0} & First pose \\
+\hline
+\mbox{\tt in}  & {\em pose1} & Second pose \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Distance between the two keyframes 
+\end{DoxyReturn}
+\mbox{\Hypertarget{map__utils_8h_a70efdb3274860646272b4a4697cb37d7}\label{map__utils_8h_a70efdb3274860646272b4a4697cb37d7}} 
+\index{map\+\_\+utils.\+h@{map\+\_\+utils.\+h}!triangulate@{triangulate}}
+\index{triangulate@{triangulate}!map\+\_\+utils.\+h@{map\+\_\+utils.\+h}}
+\subsubsection{\texorpdfstring{triangulate()}{triangulate()}}
+{\footnotesize\ttfamily bool triangulate (\begin{DoxyParamCaption}\item[{cv\+::\+Point3d \&}]{pt\+\_\+out,  }\item[{\hyperlink{classKeyframe}{Keyframe} $\ast$}]{kf1,  }\item[{\hyperlink{classKeyframe}{Keyframe} $\ast$}]{kf2,  }\item[{int}]{idx1,  }\item[{int}]{idx2 }\end{DoxyParamCaption})}
+
+
+
+Obtain the 3D position of a point from two observations from known locations. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em pt\+\_\+out} & 3D position of the point \\
+\hline
+\mbox{\tt in}  & {\em kf1} & First keyframe observing the point \\
+\hline
+\mbox{\tt in}  & {\em kf2} & Second keyframe observing the point \\
+\hline
+\mbox{\tt in}  & {\em idx1} & Index of the point in the first keyframe \\
+\hline
+\mbox{\tt in}  & {\em idx2} & Index of the point in the second keyframe \\
+\hline
+\end{DoxyParams}

@@ -1,0 +1,84 @@
+\hypertarget{classDroneRole}{}\section{Drone\+Role Class Reference}
+\label{classDroneRole}\index{Drone\+Role@{Drone\+Role}}
+
+
+Class definition to handle drone roles objects.  
+
+
+
+
+{\ttfamily \#include $<$drone\+\_\+role.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classDroneRole_af1b674a0c15bf46499eb9fe2b2f16755}{Drone\+Role} (std\+::string \hyperlink{classDroneRole_a2677904c7efdc304a3849684ea426cc5}{name})
+\begin{DoxyCompactList}\small\item\em Contructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classDroneRole_a50c97d5dcaa58cfdd50ba02e2c8bf93b}\label{classDroneRole_a50c97d5dcaa58cfdd50ba02e2c8bf93b}} 
+\hyperlink{classDroneRole_a50c97d5dcaa58cfdd50ba02e2c8bf93b}{$\sim$\+Drone\+Role} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classDroneRole_aa35e9032449d6fbbf76bbdbc6b9f3833}\label{classDroneRole_aa35e9032449d6fbbf76bbdbc6b9f3833}} 
+void {\bfseries Set\+Drone\+Role} (int \hyperlink{classDroneRole_a7daa71aa6eade189dfb62337b2b56b63}{role})
+\item 
+\mbox{\Hypertarget{classDroneRole_a47a6e47d6905aaf483bfc97d0f45f628}\label{classDroneRole_a47a6e47d6905aaf483bfc97d0f45f628}} 
+void {\bfseries Set\+Drone\+Role} (int \hyperlink{classDroneRole_a7daa71aa6eade189dfb62337b2b56b63}{role}, std\+::vector$<$ std\+::string $>$ params)
+\item 
+\mbox{\Hypertarget{classDroneRole_a4e69d178100e600156b81627924db574}\label{classDroneRole_a4e69d178100e600156b81627924db574}} 
+void {\bfseries Set\+Drone\+Role} (int \hyperlink{classDroneRole_a7daa71aa6eade189dfb62337b2b56b63}{role}, std\+::string param)
+\item 
+\mbox{\Hypertarget{classDroneRole_abd4e4edca936b2cbfdf67da92bb48762}\label{classDroneRole_abd4e4edca936b2cbfdf67da92bb48762}} 
+void {\bfseries Set\+Drone\+Role} (int \hyperlink{classDroneRole_a7daa71aa6eade189dfb62337b2b56b63}{role}, int number\+\_\+of\+\_\+params,...)
+\item 
+\mbox{\Hypertarget{classDroneRole_afa3e4b99dd71de450c1c60214f30f59d}\label{classDroneRole_afa3e4b99dd71de450c1c60214f30f59d}} 
+int {\bfseries Get\+Drone\+Role} ()
+\item 
+\mbox{\Hypertarget{classDroneRole_a5959cc815f11ecdb2c3652ff351bc336}\label{classDroneRole_a5959cc815f11ecdb2c3652ff351bc336}} 
+ucl\+\_\+drone\+::\+Drone\+Role {\bfseries Drone\+Role\+To\+Msg} ()
+\item 
+\mbox{\Hypertarget{classDroneRole_a8ec5eeea8fa64a3ef4a5a4fe0e889426}\label{classDroneRole_a8ec5eeea8fa64a3ef4a5a4fe0e889426}} 
+void {\bfseries Msg\+To\+Drone\+Role} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classDroneRole_a77f9d5ece253c26e7e8fc820890b32e8}\label{classDroneRole_a77f9d5ece253c26e7e8fc820890b32e8}} 
+static ucl\+\_\+drone\+::\+Drone\+Roles {\bfseries Drone\+Roles\+To\+Msg} (std\+::vector$<$ \hyperlink{classDroneRole}{Drone\+Role} $>$ roles)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classDroneRole_a7daa71aa6eade189dfb62337b2b56b63}\label{classDroneRole_a7daa71aa6eade189dfb62337b2b56b63}} 
+int \hyperlink{classDroneRole_a7daa71aa6eade189dfb62337b2b56b63}{role}
+\begin{DoxyCompactList}\small\item\em Identification number of the role (see \hyperlink{ucl__drone_8h}{ucl\+\_\+drone.\+h} for definitions) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classDroneRole_a389b433b4f99fb36cce468ae9ae698d1}\label{classDroneRole_a389b433b4f99fb36cce468ae9ae698d1}} 
+std\+::vector$<$ std\+::string $>$ \hyperlink{classDroneRole_a389b433b4f99fb36cce468ae9ae698d1}{parameters}
+\begin{DoxyCompactList}\small\item\em A vector of strings to use as parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classDroneRole_a2677904c7efdc304a3849684ea426cc5}\label{classDroneRole_a2677904c7efdc304a3849684ea426cc5}} 
+std\+::string \hyperlink{classDroneRole_a2677904c7efdc304a3849684ea426cc5}{name}
+\begin{DoxyCompactList}\small\item\em Drone name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class definition to handle drone roles objects. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classDroneRole_af1b674a0c15bf46499eb9fe2b2f16755}\label{classDroneRole_af1b674a0c15bf46499eb9fe2b2f16755}} 
+\index{Drone\+Role@{Drone\+Role}!Drone\+Role@{Drone\+Role}}
+\index{Drone\+Role@{Drone\+Role}!Drone\+Role@{Drone\+Role}}
+\subsubsection{\texorpdfstring{Drone\+Role()}{DroneRole()}}
+{\footnotesize\ttfamily Drone\+Role\+::\+Drone\+Role (\begin{DoxyParamCaption}\item[{std\+::string}]{name }\end{DoxyParamCaption})}
+
+
+
+Contructor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em name} & String containing the name of the drone \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/ucl\+\_\+drone/\hyperlink{drone__role_8h}{drone\+\_\+role.\+h}\end{DoxyCompactItemize}
