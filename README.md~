@@ -20,6 +20,7 @@ Please read `CONTRIBUTING.md` if you are going to contribute to this project.
 
 ## Documentation
 This folder `src/ucl_drone/documentation` contains the documentation generated in html with doxygen
+`Link to Documentation` show an index of the classes of the project
 
 
 ## Folders structure

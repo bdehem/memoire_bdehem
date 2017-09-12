@@ -101,8 +101,6 @@ ProcessedImage::ProcessedImage(const sensor_msgs::Image& msg, const ucl_drone::P
         keypoints.insert(keypoints.end(), detected_keypoints.begin(), detected_keypoints.end());
         descriptors.push_back(detected_descriptors);
         n_pts = this->keypoints.size();
-        std::cout << "\033[1;36m[TIC TOC]: " << "Hybrid" << ": " << ros::Time::now().toSec() - thetime << "\033[0m\n";
-        ROS_INFO("Hybrid at %f",ros::Time::now().toSec());
       }
       return;
     case 0:

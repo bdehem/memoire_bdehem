@@ -8,12 +8,18 @@
   <arg name="file_in"   default="benchmark"/>
   <arg name="file_out"  default="benchmark_result"/>
 
+  <!-- If set to true, ne keyframes will be created after initialization (so only 4 keyframes will be created) -->
+  <arg name="only_init"       default="true" />
+
+  <!-- Parameters for keyframe creation -->
   <arg name="min_dist"        default="0.10" />
   <arg name="min_time"        default="1" />
   <arg name="time_thresh"     default="100" />
   <arg name="dist_thresh"     default="0.6" />
   <arg name="inliers_thresh"  default="40" />
   <arg name="FOV_thresh"      default="0.33" />
+
+  <!-- Parameters for local/global bundle adjustment -->
   <arg name="n_kf_local_ba"   default="7" />
   <arg name="freq_global_ba"  default="6" />
 
@@ -22,8 +28,8 @@
   <include file="$(find ucl_drone)/launch/components/slam.xml" />
 
   <node name="ucl_drone_manual_pose_estimation" pkg="ucl_drone" type="manual_pose_estimation" output="screen" />
-  <node name="player"                             pkg="rosbag"      type="play"                   output="screen"
-                                                   args="-q /home/$(env USER)/bagfiles/$(arg file_in).bag -r 0.75"/>
+  <node name="player"                           pkg="rosbag"    type="play"                   output="screen"
+                                                   args="-q /home/$(env USER)/bagfiles/simulations/$(arg file_in).bag -r 0.75"/>
 
   <!-- overriding default values of included files -->
   <param name="ucl_drone_mapping_node/sonar_unavailable"    value="true" />
@@ -37,6 +43,7 @@
   <param name="ucl_drone_mapping_node/freq_global_ba"       value="$(arg freq_global_ba)" />
   <param name="ucl_drone_mapping_node/no_bundle_adjustment" value="false" />
   <param name="ucl_drone_mapping_node/manual_keyframes"     value="false" />
+  <param name="ucl_drone_mapping_node/only_init"            value="$(arg only_init)" />
 
   <param name="ucl_drone_computer_vision/autonomy_unavailable" value="true" />
 </launch>

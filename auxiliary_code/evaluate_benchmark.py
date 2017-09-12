@@ -79,9 +79,8 @@ def evaluate_benchmark(file_in, do_plot):
     return (avgerrD,avgerrR,batime)
 
 def main():
-    fn = "vanillaBA_robust.bag"
-    dirname = '/home/bor/bagfiles/otherpcresults/'
-    dirname = '/home/bor/bagfiles/aout/bag/'
+    fn = "h0.025r5r5_9_REALISTIC.bag"
+    dirname = '/home/laboinmastudent/bagfiles/results/'
     avgerrD,avgerrR,batime = evaluate_benchmark(dirname + fn,True)
     print(fn)
     print(avgerrD)
